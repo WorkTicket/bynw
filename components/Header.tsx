@@ -45,6 +45,13 @@ export default function Header() {
   }, [])
 
   useEffect(() => {
+    document.documentElement.dataset.announcement = announcementVisible ? "visible" : "hidden"
+    return () => {
+      delete document.documentElement.dataset.announcement
+    }
+  }, [announcementVisible])
+
+  useEffect(() => {
     setSeconds(getSecondsUntilEndOfDay())
     const t = setInterval(() => setSeconds(getSecondsUntilEndOfDay()), 1000)
     return () => clearInterval(t)
@@ -80,11 +87,13 @@ export default function Header() {
         />
       )}
 
-      <div className="fixed top-0 left-0 right-0 z-50">
+      <div className="site-header">
+        <div className="site-header__safe-area" aria-hidden="true" />
+
         {announcementVisible && (
-          <div className="bg-gradient-to-r from-wine-900 via-wine-800 to-wine-900 text-white">
-            <div className="section relative flex h-10 items-center justify-center pr-9 text-center sm:h-11 sm:pr-10">
-              <p className="flex flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5 text-[11px] font-medium leading-snug tracking-wide sm:text-xs">
+          <div className="site-header__announcement text-white">
+            <div className="section relative flex min-h-10 items-center justify-center px-5 py-2 pr-11 text-center sm:min-h-11 sm:pr-12">
+              <p className="flex max-w-full flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5 text-[11px] font-medium leading-snug tracking-wide sm:text-xs">
                 <span className="font-semibold text-rose-200">Oferta activa</span>
                 <span className="font-mono font-bold tabular-nums text-amber-300">
                   {seconds !== null ? formatTime(seconds) : "--:--:--"}
@@ -101,7 +110,7 @@ export default function Header() {
               </p>
               <button
                 onClick={dismissAnnouncement}
-                className="absolute right-2.5 flex h-7 w-7 items-center justify-center rounded-full text-white/50 transition hover:bg-white/10 hover:text-white sm:right-3"
+                className="absolute right-2.5 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full text-white/50 transition hover:bg-white/10 hover:text-white sm:right-3"
                 aria-label="Cerrar aviso"
               >
                 <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
@@ -113,10 +122,8 @@ export default function Header() {
         )}
 
         <header
-          className={`border-b transition-all duration-300 ${
-            scrolled
-              ? "border-rose-100/80 bg-white/95 shadow-soft backdrop-blur-xl"
-              : "border-transparent bg-white/80 backdrop-blur-md"
+          className={`site-header__nav transition-[border-color,box-shadow,background-color] duration-300 ${
+            scrolled ? "is-scrolled" : ""
           }`}
         >
           <div className="section flex h-14 items-center justify-between gap-4 sm:h-16">
@@ -178,13 +185,13 @@ export default function Header() {
 
           <div
             id="mobile-nav"
-            className={`overflow-hidden border-t transition-all duration-300 ease-out md:hidden ${
+            className={`overflow-hidden border-t border-rose-100/60 bg-white transition-all duration-300 ease-out md:hidden ${
               open
-                ? "max-h-[24rem] border-rose-100/60 opacity-100"
+                ? "max-h-[24rem] opacity-100"
                 : "max-h-0 border-transparent opacity-0"
             }`}
           >
-            <nav className="section flex flex-col bg-white py-2" aria-label="Móvil">
+            <nav className="section flex flex-col py-2" aria-label="Móvil">
               {links.map((l) => (
                 <Link
                   key={l.href}

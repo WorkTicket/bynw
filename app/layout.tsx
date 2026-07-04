@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Inter, Cormorant_Garamond, Dancing_Script } from "next/font/google"
 import Script from "next/script"
 import "./globals.css"
@@ -28,6 +28,12 @@ const script = Dancing_Script({
   display: "swap",
 })
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+}
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://bynmwcreative.com"),
   title: {
@@ -55,7 +61,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="es-ES" className={`${sans.variable} ${display.variable} ${script.variable}`}>
+    <html lang="es-ES" data-announcement="visible" className={`${sans.variable} ${display.variable} ${script.variable}`}>
       <head>
         <link
           rel="stylesheet"
@@ -68,7 +74,7 @@ export default function RootLayout({
           strategy="afterInteractive"
         />
         <Header />
-        <main className="flex-1 pt-[6.75rem] sm:pt-28">{children}</main>
+        <main className="flex-1 pt-[var(--site-header-offset)]">{children}</main>
         <Footer />
         <FloatingWhatsApp />
         <ExitIntentPopup />
