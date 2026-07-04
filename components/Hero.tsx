@@ -96,11 +96,11 @@ export default function Hero() {
         <div className="order-1 relative mx-auto w-full max-w-lg lg:order-2 lg:max-w-none animate-fade-in-up">
           <div className="relative">
             <div className="absolute -inset-3 rounded-4xl bg-gradient-to-br from-rose-200/50 via-pink-200/40 to-lavender-200/40 blur-xl opacity-70" />
-            <div className="relative overflow-hidden rounded-3xl2 shadow-premium ring-2 ring-white/80">
+            <div className="relative overflow-hidden rounded-3xl2 bg-rose-50/50 shadow-premium ring-2 ring-white/80">
               <img
                 src="/images/imagen-1.jpeg"
                 alt="Colección Maestra de Patrones de Amigurumis y Flores en Crochet"
-                className="w-full aspect-[4/5] sm:aspect-[5/4] object-cover transition-transform duration-700 hover:scale-[1.02]"
+                className="block h-auto w-full object-contain transition-transform duration-700 hover:scale-[1.02]"
               />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-rose-900/10 via-transparent to-white/10" />
             </div>
