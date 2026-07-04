@@ -1,0 +1,487 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: "Cormorant Garamond", serif;
+  --font-sans: "Inter", sans-serif;
+}
+
+/* ── Base ── */
+body {
+  background-color: #fef1f7;
+  color: theme("colors.ink");
+  background-image:
+    radial-gradient(ellipse 80% 50% at 20% 0%, rgba(254, 204, 224, 0.35) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 40% at 85% 15%, rgba(227, 213, 250, 0.25) 0%, transparent 50%),
+    radial-gradient(ellipse 70% 45% at 50% 100%, rgba(254, 229, 239, 0.4) 0%, transparent 55%);
+  background-attachment: fixed;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+::selection {
+  @apply bg-rose-200 text-rose-900;
+}
+
+*:focus-visible {
+  @apply outline-2 outline-offset-2 outline-rose-400 rounded-lg;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ── Cute scrollbar ── */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #fef1f7; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #f76a9e, #faa7c4);
+  border-radius: 999px;
+  border: 2px solid #fef1f7;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #f03e7d, #f672a0);
+}
+
+/* ── Uniform section backgrounds ── */
+.section-white {
+  @apply bg-white relative;
+}
+
+.section-pink {
+  @apply bg-[#fef1f7] relative;
+}
+
+.section-alt {
+  @apply bg-[#fee5ef] relative;
+}
+
+.section-premium-dark {
+  @apply relative overflow-hidden text-white;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 0%, rgba(240, 62, 125, 0.18) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 50% at 90% 80%, rgba(179, 138, 237, 0.12) 0%, transparent 50%),
+    linear-gradient(160deg, #120a0e 0%, #2a0c1a 35%, #4a1a2e 70%, #6b1d45 100%);
+}
+
+.page-sections > section {
+  position: relative;
+}
+
+.page-sections > section:not(:first-child)::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(90%, 48rem);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(247, 106, 158, 0.18), transparent);
+  pointer-events: none;
+}
+
+.page-sections > .section-premium-dark::before,
+.page-sections > .hero-cute::before {
+  display: none;
+}
+
+/* ── Button system ── */
+.btn-primary {
+  @apply inline-flex items-center justify-center text-center rounded-full bg-gradient-to-r from-rose-400 via-pink-500 to-rose-500 px-6 py-3.5 sm:px-7 sm:py-3.5 text-sm font-semibold text-white shadow-lg shadow-pink-500/30 transition-all duration-300 hover:shadow-xl hover:shadow-pink-500/50 hover:scale-[1.04] hover:brightness-110 active:scale-[0.97] tracking-wide;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center rounded-full border-2 border-rose-300/50 bg-white/95 px-6 py-3.5 sm:px-7 sm:py-3.5 text-sm font-medium text-rose-700 shadow-sm transition-all duration-300 hover:border-rose-400 hover:bg-rose-50 hover:shadow-md hover:shadow-rose-200/50 hover:scale-[1.02] active:scale-[0.98];
+}
+
+.btn-whatsapp {
+  @apply inline-flex items-center justify-center rounded-full bg-gradient-to-r from-rose-500 to-pink-600 px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-rose-500/30 transition-all duration-300 hover:shadow-xl hover:shadow-rose-500/50 hover:scale-[1.02] hover:brightness-110 active:scale-[0.98] tracking-wide;
+}
+
+.btn-lead {
+  @apply inline-flex items-center justify-center rounded-full bg-gradient-to-r from-rose-400 via-pink-500 to-rose-600 px-6 py-4 sm:px-8 sm:py-4 text-sm font-semibold text-white shadow-xl shadow-pink-500/40 transition-all duration-300 hover:shadow-2xl hover:shadow-pink-500/60 hover:scale-[1.04] hover:brightness-110 active:scale-[0.97] tracking-wider;
+}
+
+.btn-lead-dark {
+  @apply inline-flex items-center justify-center rounded-full bg-gradient-to-r from-rose-500 to-pink-600 px-8 py-4 text-sm font-semibold text-white shadow-xl shadow-pink-500/30 transition-all duration-300 hover:shadow-2xl hover:shadow-pink-500/50 hover:scale-[1.03] active:scale-[0.97] tracking-wider;
+}
+
+.btn-outline {
+  @apply inline-flex items-center justify-center rounded-full border-2 border-rose-300/40 bg-rose-50/80 px-6 py-3 text-sm font-medium text-rose-700 backdrop-blur-sm transition-all duration-300 hover:border-rose-400 hover:bg-rose-100 hover:shadow-md hover:shadow-rose-200/30;
+}
+
+/* ── Cute decorative button variant ── */
+.btn-cute {
+  @apply inline-flex items-center justify-center rounded-full bg-gradient-to-r from-rose-400 via-pink-500 to-rose-500 px-7 py-4 text-sm font-bold text-white shadow-cute transition-all duration-300 hover:shadow-cute-hover hover:scale-[1.04] active:scale-[0.96] tracking-wider relative overflow-hidden;
+}
+.btn-cute::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* ── Card system ── */
+.glass-card {
+  @apply rounded-xl2 border border-rose-100/50 bg-white/90 shadow-glass backdrop-blur-sm transition-all duration-300 hover:shadow-card-hover;
+}
+
+.glass-card-dark {
+  @apply rounded-xl2 border border-white/10 bg-white/5 shadow-card-dark backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:shadow-premium-dark;
+}
+
+.premium-card {
+  @apply bg-white border border-rose-100/40 rounded-2xl2 shadow-card transition-all duration-500 hover:shadow-premium hover:-translate-y-0.5;
+}
+
+.premium-card-header {
+  @apply absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-rose-400 via-pink-500 to-rose-400 scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100;
+}
+
+/* ── Cute card with decorative border ── */
+.cute-card {
+  @apply bg-white border-2 border-rose-100/80 rounded-2xl2 shadow-md shadow-rose-200/30 transition-all duration-500 hover:shadow-xl hover:shadow-rose-300/40 hover:-translate-y-1;
+  position: relative;
+}
+.cute-card::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #fecce0, #faa7c4, #ceb5f5);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: -1;
+}
+.cute-card:hover::before {
+  opacity: 1;
+}
+
+/* ── Static cute card (no hover glow, just style) ── */
+.cute-card-static {
+  @apply bg-white border-2 border-rose-100/80 rounded-2xl2 shadow-md shadow-rose-200/20;
+  position: relative;
+}
+.cute-card-static::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #fecce0, #faa7c4, #ceb5f5);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: -1;
+}
+.cute-card-static:hover::before {
+  opacity: 1;
+}
+
+/* ── Layout ── */
+.section {
+  @apply mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8;
+}
+
+.section-padding {
+  @apply py-16 sm:py-24 lg:py-28;
+}
+
+.section-header {
+  @apply mx-auto mb-12 max-w-2xl text-center sm:mb-14;
+}
+
+.section-header h2 {
+  @apply font-display text-3xl font-semibold text-ink sm:text-4xl lg:text-5xl tracking-tight leading-[1.12];
+}
+
+.section-header h2 .accent-script {
+  @apply font-script font-semibold not-italic;
+  font-size: 1.08em;
+}
+
+.section-header p {
+  @apply mt-4 text-base text-muted leading-relaxed sm:text-lg;
+}
+
+/* Hero — soft cute girly gradient */
+.hero-cute {
+  background:
+    radial-gradient(ellipse 90% 60% at 50% -10%, rgba(254, 204, 224, 0.55) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 95% 30%, rgba(227, 213, 250, 0.35) 0%, transparent 55%),
+    radial-gradient(ellipse 45% 35% at 5% 70%, rgba(254, 229, 239, 0.45) 0%, transparent 50%),
+    linear-gradient(180deg, #fff5f9 0%, #fef1f7 45%, #f8f5fe 100%);
+}
+
+/* ── Text utilities ── */
+.gradient-text,
+.gradient-text-rose,
+.gradient-text-candy {
+  display: inline-block;
+  padding: 0 0.06em 0.22em;
+  line-height: 1.25;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text {
+  @apply bg-gradient-to-r from-rose-400 via-pink-500 to-rose-600;
+}
+
+.gradient-text-rose {
+  @apply bg-gradient-to-r from-rose-400 via-pink-500 to-rose-600;
+}
+
+.gradient-text-candy {
+  @apply bg-gradient-to-r from-rose-300 via-pink-400 to-lavender-400;
+}
+
+/* ── Dividers ── */
+.section-divider {
+  @apply mx-auto h-px w-20 bg-gradient-to-r from-transparent via-rose-300 to-transparent;
+}
+
+/* ── Cute heart divider ── */
+.divider-hearts {
+  @apply mx-auto flex items-center justify-center gap-3 text-rose-300;
+}
+.divider-hearts::before,
+.divider-hearts::after {
+  content: '';
+  @apply block h-px w-12 bg-gradient-to-r from-transparent via-rose-300 to-transparent;
+}
+
+/* ── Decorative frill dividers ── */
+.frilly {
+  height: 20px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 20'%3E%3Cpath d='M0 7 C0 2,2.5 2,2.5 7 C2.5 2,5 2,5 7 C5 2,7.5 2,7.5 7 C7.5 2,10 2,10 7 C10 2,12.5 2,12.5 7 C12.5 2,15 2,15 7 C15 2,17.5 2,17.5 7 C17.5 2,20 2,20 7' fill='none' stroke='rgba(247,106,158,0.25)' stroke-width='0.8'/%3E%3Ccircle cx='2.5' cy='2.5' r='1' fill='rgba(247,106,158,0.15)'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-size: 60px 20px;
+}
+
+.section-frill {
+  position: relative;
+}
+.section-frill::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 8'%3E%3Cpath d='M0 7 C0 0,5 0,5 7 C5 0,10 0,10 7 C10 0,15 0,15 7 C15 0,20 0,20 7' fill='none' stroke='rgba(247,106,158,0.4)' stroke-width='1.2'/%3E%3Ccircle cx='2.5' cy='2.5' r='1' fill='rgba(247,106,158,0.25)'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-size: 20px 8px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Badges ── */
+.badge {
+  @apply inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-rose-100 to-pink-100 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.15em] text-rose-700 shadow-sm;
+}
+
+.badge-accent {
+  @apply inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-pink-100 to-lavender-100 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.15em] text-pink-700 shadow-sm;
+}
+
+/* ── Misc ── */
+.price-tag {
+  @apply inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-rose-500 to-pink-600 px-3.5 py-1.5 text-sm font-semibold text-white shadow-md shadow-pink-500/30;
+}
+
+.trust-badge {
+  @apply flex items-center justify-center gap-2 rounded-xl2 border border-rose-200 bg-rose-50/80 px-4 py-3 text-sm font-medium text-rose-800;
+}
+
+.premium-input {
+  @apply w-full rounded-xl border-2 border-rose-200/70 bg-white px-4 py-3.5 text-sm text-ink placeholder:text-muted/40 transition-all duration-200 focus:border-rose-400 focus:ring-2 focus:ring-rose-400/20 focus:outline-none;
+}
+
+/* ── Collection buy button (individual product pages) ── */
+.hotmart-fb.hotmart__button-checkout.btn-collection-buy {
+  background: linear-gradient(135deg, #d43d78 0%, #e01e5f 50%, #f03e7d 100%) !important;
+  border: none !important;
+  outline: none !important;
+  border-radius: 9999px !important;
+  font-family: inherit !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.05em !important;
+  text-align: center !important;
+  text-shadow: none !important;
+  animation: collection-buy-pulse 1.8s ease-in-out infinite !important;
+  transition: none !important;
+  box-shadow: 0 8px 25px rgba(240, 62, 125, 0.35) !important;
+}
+
+.hotmart-fb.hotmart__button-checkout.btn-collection-buy:hover,
+.hotmart-fb.hotmart__button-checkout.btn-collection-buy:focus,
+.hotmart-fb.hotmart__button-checkout.btn-collection-buy:active {
+  background: linear-gradient(135deg, #d43d78 0%, #e01e5f 50%, #f03e7d 100%) !important;
+  border: none !important;
+  outline: none !important;
+}
+
+.hotmart-fb.hotmart__button-checkout.btn-collection-buy:hover {
+  animation: none !important;
+  transform: scale(1.05) !important;
+  box-shadow: 0 20px 50px rgba(240, 62, 125, 0.5) !important;
+  filter: brightness(1.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease !important;
+}
+
+@keyframes collection-buy-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 8px 25px rgba(240, 62, 125, 0.35), 0 0 0 0 rgba(240, 62, 125, 0.55);
+  }
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 14px 40px rgba(240, 62, 125, 0.5), 0 0 0 14px rgba(240, 62, 125, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hotmart-fb.hotmart__button-checkout.btn-collection-buy {
+    animation: none !important;
+  }
+  .buy-btn-pulse-ring {
+    display: none;
+  }
+}
+
+@keyframes urgentPulseAccent {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(240, 62, 125, 0.4); }
+  50% { box-shadow: 0 0 0 16px rgba(240, 62, 125, 0); }
+}
+
+.urgent-pulse-accent {
+  animation: urgentPulseAccent 2s ease-in-out infinite;
+}
+
+/* ── Cute decorative background patterns ── */
+.bg-dots-rose {
+  background-image: radial-gradient(circle, rgba(247,106,158,0.12) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+.bg-dots-lavender {
+  background-image: radial-gradient(circle, rgba(179,138,237,0.1) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+.bg-hearts-subtle {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M20 32 C12 24 4 16 4 10 C4 6 7 3 11 3 C15 3 20 8 20 8 C20 8 25 3 29 3 C33 3 36 6 36 10 C36 16 28 24 20 32Z' fill='rgba(247,106,158,0.06)' stroke='none'/%3E%3C/svg%3E");
+  background-size: 40px 40px;
+}
+
+/* ── Sparkle glow effect ── */
+.sparkle-glow {
+  position: relative;
+}
+.sparkle-glow::after {
+  content: '✨';
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  transform: scale(0.5);
+}
+.sparkle-glow:hover::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ── Cute border glow on hover ── */
+.hover-glow-rose {
+  transition: box-shadow 0.3s ease;
+}
+.hover-glow-rose:hover {
+  box-shadow: 0 0 30px rgba(240, 62, 125, 0.15), 0 0 60px rgba(240, 62, 125, 0.05);
+}
+
+/* ── Glassmorphism with rose tint ── */
+.glass-rose {
+  background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(254,241,247,0.7));
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(254,226,239,0.5);
+}
+
+/* ── Navigation ── */
+.nav-link {
+  @apply relative rounded-full px-3.5 py-2 text-sm font-medium text-muted transition-all duration-200 hover:bg-rose-50 hover:text-rose-700;
+}
+
+.nav-link-active {
+  @apply bg-rose-50 text-rose-700 font-semibold;
+}
+
+.nav-link-active::after {
+  content: "";
+  position: absolute;
+  bottom: 0.35rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1rem;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #f76a9e, #f03e7d);
+}
+
+/* ── Trust bar ── */
+.trust-bar {
+  animation: trustBarIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
+@keyframes trustBarIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Premium dark section text ── */
+.section-premium-dark .section-header h2,
+.section-premium-dark h2 {
+  @apply text-white;
+}
+
+.section-premium-dark .section-header p,
+.section-premium-dark p {
+  @apply text-white/65;
+}
+
+.section-premium-dark .gradient-text-rose {
+  background: linear-gradient(135deg, #fb9fc2 0%, #f76a9e 40%, #faa7c4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

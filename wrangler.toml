@@ -1,0 +1,14 @@
+name = "manos-creativas-bynmw"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output/static"
+
+# Public vars (safe to commit):
+[vars]
+NEXT_PUBLIC_SITE_URL = "https://manoscreativasbynmw.com"
+
+# Add secrets via `wrangler secret put` for production (never commit these):
+# - MAILCHIMP_API_KEY       → saves free-gift signups to Mailchimp
+# - MAILCHIMP_AUDIENCE_ID   → Mailchimp audience/list ID for contacts
+# - RESEND_API_KEY          → optional, for contact form notifications only
+# - CONTACT_EMAIL           → optional override for contact form destination
