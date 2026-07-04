@@ -87,9 +87,9 @@ export default function Header() {
         />
       )}
 
-      <div className="site-header">
-        <div className="site-header__safe-area" aria-hidden="true" />
+      <div className="ios-status-bar" aria-hidden="true" />
 
+      <div className="site-header">
         {announcementVisible && (
           <div className="site-header__announcement text-white">
             <div className="section relative flex min-h-10 items-center justify-center px-5 py-2 pr-11 text-center sm:min-h-11 sm:pr-12">
