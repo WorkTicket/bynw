@@ -1,14 +1,20 @@
-name = "manos-creativas-bynmw"
+name = "bynmwcreative"
+main = ".open-next/worker.js"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
-pages_build_output_dir = ".vercel/output/static"
+workers_dev = false
 
-# Public vars (safe to commit):
+routes = [
+  { pattern = "bynmwcreative.com", custom_domain = true },
+  { pattern = "www.bynmwcreative.com", custom_domain = true },
+]
+
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
+
 [vars]
-NEXT_PUBLIC_SITE_URL = "https://manoscreativasbynmw.com"
+NEXT_PUBLIC_SITE_URL = "https://bynmwcreative.com"
 
-# Add secrets via `wrangler secret put` for production (never commit these):
-# - MAILCHIMP_API_KEY       → saves free-gift signups to Mailchimp
-# - MAILCHIMP_AUDIENCE_ID   → Mailchimp audience/list ID for contacts
-# - RESEND_API_KEY          → optional, for contact form notifications only
-# - CONTACT_EMAIL           → optional override for contact form destination
+# Secrets (set via `wrangler secret put`):
+# MAILCHIMP_API_KEY, MAILCHIMP_AUDIENCE_ID, RESEND_API_KEY, CONTACT_EMAIL

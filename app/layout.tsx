@@ -29,7 +29,7 @@ const script = Dancing_Script({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://manoscreativasbynmw.com"),
+  metadataBase: new URL("https://bynmwcreative.com"),
   title: {
     default: "Manos Creativas Bynmw ⋆ Patrones de Crochet en PDF",
     template: "%s ⋆ Manos Creativas Bynmw",

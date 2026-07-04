@@ -5,7 +5,7 @@ import { ShoppingBagIcon, ScissorsIcon, FlowerIcon, CrochetHookIcon } from "@/li
 
 export default function Hero() {
   return (
-    <section className="hero-cute relative min-h-[calc(100dvh-7rem)] overflow-hidden pt-16 pb-20 sm:pt-20 sm:pb-24 lg:pt-24">
+    <section className="hero-cute relative min-h-[calc(100dvh-7rem)] overflow-hidden pt-8 pb-20 sm:pt-20 sm:pb-24 lg:pt-24">
       <div className="pointer-events-none absolute inset-0 bg-dots-rose opacity-60" />
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -top-32 -right-32 h-80 w-80 rounded-full bg-rose-300/25 blur-3xl" />
@@ -19,8 +19,8 @@ export default function Hero() {
       </div>
 
       <div className="section relative z-10 flex flex-col gap-10 lg:grid lg:grid-cols-2 lg:items-center lg:gap-14 xl:gap-16">
-        {/* Copy — first on mobile */}
-        <div className="order-1 flex flex-col items-center text-center lg:order-1 lg:items-start lg:text-left animate-fade-in-up">
+        {/* Copy — second on mobile, left on desktop */}
+        <div className="order-2 flex flex-col items-center text-center lg:order-1 lg:items-start lg:text-left animate-fade-in-up" style={{ animationDelay: "0.15s" }}>
           <div className="inline-flex items-center gap-2 rounded-full border border-rose-200/60 bg-white/85 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-rose-600 shadow-sm backdrop-blur-sm mb-5 sm:mb-6">
             <span className="flex h-2 w-2 rounded-full bg-rose-400 animate-pulse shadow-sm shadow-rose-400/50" />
             +500 clientas satisfechas
@@ -92,8 +92,8 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Image — second on mobile */}
-        <div className="order-2 relative mx-auto w-full max-w-lg lg:order-2 lg:max-w-none animate-fade-in-up" style={{ animationDelay: "0.15s" }}>
+        {/* Image — first on mobile, right on desktop */}
+        <div className="order-1 relative mx-auto w-full max-w-lg lg:order-2 lg:max-w-none animate-fade-in-up">
           <div className="relative">
             <div className="absolute -inset-3 rounded-4xl bg-gradient-to-br from-rose-200/50 via-pink-200/40 to-lavender-200/40 blur-xl opacity-70" />
             <div className="relative overflow-hidden rounded-3xl2 shadow-premium ring-2 ring-white/80">

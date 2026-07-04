@@ -14,6 +14,6 @@ export const GIFT_MAGNET = {
 } as const
 
 export function getGiftDownloadUrl(origin?: string): string {
-  const base = origin || process.env.NEXT_PUBLIC_SITE_URL || "https://manoscreativasbynmw.com"
+  const base = origin || process.env.NEXT_PUBLIC_SITE_URL || "https://bynmwcreative.com"
   return `${base.replace(/\/$/, "")}${GIFT_MAGNET.filePath}`
 }
