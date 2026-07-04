@@ -66,13 +66,12 @@ export default function Header() {
     sessionStorage.setItem("announcement-dismissed", "true")
   }
 
-  const headerTop = announcementVisible ? "top-12 sm:top-11" : "top-0"
 
   return (
-    <>
+    <div className="fixed top-0 left-0 right-0 z-50">
       {announcementVisible && (
-        <div className="fixed top-0 left-0 right-0 z-[60] bg-gradient-to-r from-wine-900 via-wine-800 to-wine-900 text-white">
-          <div className="section relative flex min-h-10 items-center justify-center py-1 pr-8 text-center sm:h-11 sm:py-0">
+        <div className="bg-gradient-to-r from-wine-900 via-wine-800 to-wine-900 text-white">
+          <div className="section relative flex h-12 items-center justify-center pr-8 text-center sm:h-11">
             <p className="flex flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5 text-[11px] font-medium leading-snug tracking-wide sm:text-xs">
               <span className="font-semibold text-rose-200">Oferta activa</span>
               <span className="font-mono font-bold tabular-nums text-amber-300">{seconds !== null ? formatTime(seconds) : "--:--:--"}</span>
@@ -96,26 +95,26 @@ export default function Header() {
       )}
 
       <header
-        className={`fixed ${headerTop} left-0 right-0 z-50 transition-all duration-500 ${
+        className={`transition-all duration-500 ${
           scrolled
-            ? "border-b border-rose-200/40 bg-white/92 shadow-soft backdrop-blur-xl"
-            : "border-b border-rose-100/30 bg-white/75 backdrop-blur-md"
+            ? "bg-white/92 shadow-soft backdrop-blur-xl"
+            : "bg-white/75 backdrop-blur-md"
         }`}
       >
         <div className="section flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="relative h-9 w-9 overflow-hidden rounded-full ring-2 ring-rose-200 transition-all duration-300 group-hover:ring-rose-400 shadow-md group-hover:shadow-rose-glow">
+          <Link href="/" className="flex min-w-0 items-center gap-2 group sm:gap-2.5">
+            <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full ring-2 ring-rose-200 transition-all duration-300 group-hover:ring-rose-400 shadow-md group-hover:shadow-rose-glow">
               <img
                 src="/images/logo.png"
                 alt="Manos Creativas Bynmw"
                 className="h-full w-full object-cover"
               />
             </div>
-            <div className="hidden sm:block">
-              <span className="font-display text-lg font-semibold gradient-text-rose leading-none tracking-tight">
+            <div className="min-w-0">
+              <span className="block truncate font-display text-sm font-semibold gradient-text-rose leading-none tracking-tight sm:text-lg">
                 Manos Creativas
               </span>
-              <p className="-mt-0.5 font-script text-sm text-rose-500 leading-none">
+              <p className="-mt-0.5 truncate font-script text-xs text-rose-500 leading-none sm:text-sm">
                 Bynmw
               </p>
             </div>
@@ -201,6 +200,6 @@ export default function Header() {
           </div>
         </div>
       </header>
-    </>
+    </div>
   )
 }

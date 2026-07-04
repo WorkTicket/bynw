@@ -72,7 +72,7 @@ export default function ProductPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <section className="relative overflow-hidden bg-gradient-to-b from-white via-rose-50/20 to-white pt-28 pb-24 sm:pt-32 sm:pb-28">
+      <section className="relative overflow-x-clip bg-gradient-to-b from-white via-rose-50/20 to-white pb-24 sm:pb-28">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -top-40 -right-40 h-[30rem] w-[30rem] rounded-full bg-wine-100/20 blur-3xl" />
           <div className="absolute -bottom-40 -left-40 h-[30rem] w-[30rem] rounded-full bg-rose-100/20 blur-3xl" />
@@ -91,7 +91,7 @@ export default function ProductPage({ params }: Props) {
                 </div>
                 <div className="flex flex-col items-center text-center lg:items-start lg:text-left lg:order-1">
                   <span className="badge">Colección</span>
-                  <h1 className="mt-4 font-display text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-semibold text-ink tracking-tight leading-[1.1]">
+                  <h1 className="mt-4 font-display text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-semibold text-ink tracking-tight leading-snug">
                     {product.title}
                   </h1>
 
@@ -113,8 +113,8 @@ export default function ProductPage({ params }: Props) {
                       {product.buyText}
                     </HotmartBuyButton>
 
-                    <div className="flex justify-center lg:justify-start">
-                      <PaymentLogos className="h-8 sm:h-10" />
+                    <div className="flex justify-center">
+                      <PaymentLogos />
                     </div>
 
                     <div className="trust-badge text-center lg:text-left text-xs">
@@ -156,13 +156,11 @@ export default function ProductPage({ params }: Props) {
                     </h2>
                     <div className="mt-8 grid items-center gap-8 sm:grid-cols-2">
                       <div className="overflow-hidden rounded-xl shadow-md ring-1 ring-white/10 bg-wine-50/40">
-                        <div className="aspect-[4/3]">
-                          <img
-                            src={`/images/${product.bonusImage}`}
-                            alt="Bonos incluidos"
-                            className="h-full w-full object-contain"
-                          />
-                        </div>
+                        <img
+                          src={`/images/${product.bonusImage}`}
+                          alt="Bonos incluidos"
+                          className="block h-auto w-full object-contain"
+                        />
                       </div>
                       <div>
                         <ul className="space-y-3">
@@ -194,13 +192,11 @@ export default function ProductPage({ params }: Props) {
                       </h2>
                       <div className="mt-8 grid items-center gap-8 sm:grid-cols-2">
                         <div className="overflow-hidden rounded-xl shadow-md ring-1 ring-white/10 bg-rose-50/40">
-                          <div className="aspect-[4/3]">
-                            <img
-                              src={`/images/imagen-4.jpeg`}
-                              alt="Obsequios adicionales"
-                              className="h-full w-full object-contain"
-                            />
-                          </div>
+                          <img
+                            src={`/images/imagen-4.jpeg`}
+                            alt="Obsequios adicionales"
+                            className="block h-auto w-full object-contain"
+                          />
                         </div>
                         <div>
                           <ul className="space-y-3">
@@ -241,10 +237,15 @@ export default function ProductPage({ params }: Props) {
                   </div>
 
                   <div className="mt-8 sm:mt-10 grid gap-8 lg:grid-cols-5 lg:gap-12 items-center">
-                    <div className="relative order-1 lg:col-span-3">
+                    <div className="relative order-1 mx-auto w-full max-w-[200px] sm:max-w-[240px] lg:col-span-3 lg:max-w-[280px] xl:max-w-xs">
                       <div className="absolute -inset-2 rounded-2xl2 bg-rose-100/20 blur-xl" />
                       <div className="relative overflow-hidden rounded-2xl2 shadow-xl ring-1 ring-white/10">
-                        <ImageCarousel images={product.deliveryImages} noAutoplay aspect="aspect-video" alt={`Entrega de ${product.title}`} />
+                        <ImageCarousel
+                          images={product.deliveryImages}
+                          aspect="aspect-[9/16]"
+                          interval={3500}
+                          alt={`Entrega de ${product.title}`}
+                        />
                       </div>
                     </div>
 
@@ -284,7 +285,7 @@ export default function ProductPage({ params }: Props) {
                   <div className="relative">
                     <div className="absolute -inset-2 rounded-2xl2 bg-wine-100/10 blur-xl" />
                     <div className="relative overflow-hidden rounded-2xl2 shadow-xl ring-1 ring-white/10">
-                      <ImageCarousel images={product.qualityImages} noAutoplay aspect="aspect-video" alt={`Calidad de ${product.title}`} />
+                      <ImageCarousel images={product.qualityImages} noAutoplay alt={`Calidad de ${product.title}`} />
                     </div>
                   </div>
                 </div>
@@ -305,8 +306,8 @@ export default function ProductPage({ params }: Props) {
                     <HotmartBuyButton href={product.buyUrl} className="mt-6">
                       {product.buyText}
                     </HotmartBuyButton>
-                    <div className="mt-4 flex justify-center">
-                      <PaymentLogos className="h-8 sm:h-10" />
+                    <div className="mt-3 flex justify-center">
+                      <PaymentLogos />
                     </div>
                     <div className="mt-3 trust-badge text-center text-xs">
                       Pago 100% seguro. Socio oficial: Hotmart.

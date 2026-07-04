@@ -11,6 +11,7 @@
 body {
   background-color: #fef1f7;
   color: theme("colors.ink");
+  overflow-x: clip;
   background-image:
     radial-gradient(ellipse 80% 50% at 20% 0%, rgba(254, 204, 224, 0.35) 0%, transparent 55%),
     radial-gradient(ellipse 60% 40% at 85% 15%, rgba(227, 213, 250, 0.25) 0%, transparent 50%),
@@ -49,6 +50,7 @@ body::before {
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 /* ── Cute scrollbar ── */
