@@ -52,6 +52,38 @@ export default function Header() {
   }, [announcementVisible])
 
   useEffect(() => {
+    function measureSafeAreaTop(): number {
+      const probe = document.createElement("div")
+      probe.style.cssText =
+        "position:fixed;top:0;left:0;padding-top:constant(safe-area-inset-top);padding-top:env(safe-area-inset-top);visibility:hidden;pointer-events:none;"
+      document.body.appendChild(probe)
+      const inset = parseFloat(getComputedStyle(probe).paddingTop) || 0
+      probe.remove()
+      return inset
+    }
+
+    function applySafeAreaTop() {
+      let top = measureSafeAreaTop()
+
+      if (top === 0 && /iPhone|iPad|iPod/.test(navigator.userAgent)) {
+        const minDim = Math.min(window.screen.width, window.screen.height)
+        const maxDim = Math.max(window.screen.width, window.screen.height)
+        top = maxDim >= 812 && minDim >= 375 ? 47 : 20
+      }
+
+      document.documentElement.style.setProperty("--safe-area-top", `${top}px`)
+    }
+
+    applySafeAreaTop()
+    window.addEventListener("orientationchange", applySafeAreaTop)
+    window.visualViewport?.addEventListener("resize", applySafeAreaTop)
+    return () => {
+      window.removeEventListener("orientationchange", applySafeAreaTop)
+      window.visualViewport?.removeEventListener("resize", applySafeAreaTop)
+    }
+  }, [])
+
+  useEffect(() => {
     setSeconds(getSecondsUntilEndOfDay())
     const t = setInterval(() => setSeconds(getSecondsUntilEndOfDay()), 1000)
     return () => clearInterval(t)
@@ -88,8 +120,6 @@ export default function Header() {
       )}
 
       <div className="site-header">
-        <div className="site-header__safe-area" aria-hidden="true" />
-
         {announcementVisible && (
           <div className="site-header__announcement text-white">
             <div className="section relative flex min-h-10 items-center justify-center px-5 py-2 pr-11 text-center sm:min-h-11 sm:pr-12">
