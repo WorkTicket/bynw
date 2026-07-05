@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { GIFT_MAGNET } from "@/lib/gift-magnet"
-import { downloadGiftPdf, isIOSGiftDownload } from "@/lib/download-gift"
+import { isAndroidGiftDownload, isIOSGiftDownload } from "@/lib/download-gift"
 
 type Props = {
   variant?: "inline" | "hero" | "compact"
@@ -13,25 +13,17 @@ type Props = {
 }
 
 function LeadMagnetSuccess({ dark = false }: { dark?: boolean }) {
-  const [downloading, setDownloading] = useState(false)
-  const [downloadError, setDownloadError] = useState(false)
   const [isIOS, setIsIOS] = useState(false)
+  const [isAndroid, setIsAndroid] = useState(false)
 
   useEffect(() => {
     setIsIOS(isIOSGiftDownload())
+    setIsAndroid(isAndroidGiftDownload())
   }, [])
 
-  async function handleDownload() {
-    setDownloading(true)
-    setDownloadError(false)
-    try {
-      await downloadGiftPdf()
-    } catch {
-      setDownloadError(true)
-    } finally {
-      setDownloading(false)
-    }
-  }
+  const downloadHref = GIFT_MAGNET.downloadPath
+  const buttonClass =
+    "mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-rose-400 to-pink-500 px-6 py-3.5 text-sm font-semibold tracking-wide text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-rose-glow active:scale-[0.98]"
 
   return (
     <div
@@ -112,44 +104,44 @@ function LeadMagnetSuccess({ dark = false }: { dark?: boolean }) {
         </ul>
       </div>
 
-      <button
-        type="button"
-        onClick={handleDownload}
-        disabled={downloading}
-        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-rose-400 to-pink-500 px-6 py-3.5 text-sm font-semibold tracking-wide text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-rose-glow active:scale-[0.98] disabled:cursor-wait disabled:opacity-80"
-      >
-        {downloading ? (
-          <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-          </svg>
-        ) : (
+      {isIOS ? (
+        <a
+          href={downloadHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={buttonClass}
+        >
           <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
           </svg>
-        )}
-        {downloading ? "Abriendo PDF..." : isIOS ? "Abrir patrón PDF" : "Descargar patrón PDF"}
-      </button>
-
-      {downloadError && (
-        <p className={`mt-3 text-center text-xs ${dark ? "text-rose-300" : "text-rose-500"}`}>
-          No se pudo abrir el PDF.{" "}
-          <a
-            href={GIFT_MAGNET.filePath}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline"
-          >
-            Toca aquí para abrirlo directamente
-          </a>
-          .
-        </p>
+          Abrir patrón PDF
+        </a>
+      ) : (
+        <a href={downloadHref} download={GIFT_MAGNET.fileName} className={buttonClass}>
+          <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+          </svg>
+          Descargar patrón PDF
+        </a>
       )}
+
+      <a
+        href={downloadHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`mt-3 block text-center text-xs underline underline-offset-2 ${
+          dark ? "text-white/50 hover:text-white/70" : "text-muted/70 hover:text-muted"
+        }`}
+      >
+        ¿No funciona? Abrir el PDF en una pestaña nueva
+      </a>
 
       <p className={`mt-3 text-center text-xs ${dark ? "text-white/35" : "text-muted/50"}`}>
         {isIOS
-          ? "En iPhone: pulsa el botón y elige Guardar en Archivos o Compartir."
-          : "El PDF se guardará en tu carpeta de descargas."}
+          ? "En iPhone: pulsa el botón, luego ⋯ arriba a la derecha y elige «Guardar en Archivos»."
+          : isAndroid
+            ? "En Samsung/Android: el PDF se guardará en Descargas. Si no, usa el enlace de abajo."
+            : "El PDF se guardará en tu carpeta de descargas."}
       </p>
     </div>
   )
