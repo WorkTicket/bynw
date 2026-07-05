@@ -5,9 +5,13 @@ export function isIOSGiftDownload(): boolean {
   return /iPad|iPhone|iPod/.test(navigator.userAgent)
 }
 
+export function openIOSGiftDrive(): void {
+  window.location.assign(GIFT_MAGNET.iosDriveUrl)
+}
+
 export async function triggerGiftDownload(): Promise<void> {
   if (isIOSGiftDownload()) {
-    window.location.assign(GIFT_MAGNET.downloadPath)
+    openIOSGiftDrive()
     return
   }
 

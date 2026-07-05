@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { GIFT_MAGNET } from "@/lib/gift-magnet"
-import { triggerGiftDownload } from "@/lib/download-gift"
+import { isIOSGiftDownload, openIOSGiftDrive, triggerGiftDownload } from "@/lib/download-gift"
 
 type Props = {
   variant?: "inline" | "hero" | "compact"
@@ -14,6 +14,7 @@ type Props = {
 
 function LeadMagnetSuccess({ dark = false }: { dark?: boolean }) {
   const [downloading, setDownloading] = useState(false)
+  const isIOS = isIOSGiftDownload()
 
   async function handleDownload() {
     setDownloading(true)
@@ -58,7 +59,9 @@ function LeadMagnetSuccess({ dark = false }: { dark?: boolean }) {
             ¡Listo! Ya puedes descargar tu regalo
           </p>
           <p className={`mt-1 text-sm ${dark ? "text-white/60" : "text-muted"}`}>
-            Tu patrón está disponible aquí mismo. Pulsa el botón para guardarlo en tu dispositivo.
+            {isIOS
+              ? "Pulsa el botón para abrir el PDF en Google Drive y guardarlo en tu iPhone."
+              : "Tu patrón está disponible aquí mismo. Pulsa el botón para guardarlo en tu dispositivo."}
           </p>
         </div>
       </div>
@@ -106,22 +109,33 @@ function LeadMagnetSuccess({ dark = false }: { dark?: boolean }) {
         </ul>
       </div>
 
-      <button type="button" onClick={handleDownload} disabled={downloading} className={buttonClass}>
-        {downloading ? (
-          <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-          </svg>
-        ) : (
+      {isIOS ? (
+        <a href={GIFT_MAGNET.iosDriveUrl} className={buttonClass}>
           <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5M16.5 6L21 10.5M21 10.5H15.75M21 10.5v5.25" />
           </svg>
-        )}
-        {downloading ? "Descargando..." : "Descargar patrón PDF"}
-      </button>
+          Abrir patrón en Google Drive
+        </a>
+      ) : (
+        <button type="button" onClick={handleDownload} disabled={downloading} className={buttonClass}>
+          {downloading ? (
+            <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+            </svg>
+          ) : (
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+          )}
+          {downloading ? "Descargando..." : "Descargar patrón PDF"}
+        </button>
+      )}
 
       <p className={`mt-3 text-center text-xs ${dark ? "text-white/35" : "text-muted/50"}`}>
-        El PDF se guardará en tu dispositivo.
+        {isIOS
+          ? "Toca el PDF en Drive y elige Descargar o Guardar en Archivos."
+          : "El PDF se guardará en tu dispositivo."}
       </p>
     </div>
   )
@@ -144,8 +158,13 @@ export default function LeadMagnet({ variant = "inline", submitLabel, placeholde
       })
       if (!res.ok) throw new Error("Request failed")
       setStatus("success")
-      setName(""); setEmail("")
-      void triggerGiftDownload()
+      setName("")
+      setEmail("")
+      if (isIOSGiftDownload()) {
+        openIOSGiftDrive()
+      } else {
+        void triggerGiftDownload()
+      }
     } catch { setStatus("error") }
   }
 
@@ -218,7 +237,9 @@ export default function LeadMagnet({ variant = "inline", submitLabel, placeholde
       {status === "error" && <p className={`mt-3 text-xs ${dark ? "text-rose-300" : "text-rose-500"}`}>Algo salió mal. Inténtalo de nuevo.</p>}
       {status !== "error" && (
         <p className={`mt-3 text-center text-xs ${dark ? "text-white/40" : isHero ? "text-muted/55" : "text-muted/40"} ${!isHero && !isCompact ? "sm:text-left" : ""}`}>
-          Descarga al instante en la web. Sin spam. ♡
+          {isIOSGiftDownload()
+            ? "En iPhone te llevamos a Google Drive para descargar el PDF. Sin spam. ♡"
+            : "Descarga al instante en la web. Sin spam. ♡"}
         </p>
       )}
     </form>

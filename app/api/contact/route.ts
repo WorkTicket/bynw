@@ -1,3 +1,5 @@
+import { sendContactNotification } from "@/lib/contact-email"
+
 export async function POST(req: Request) {
   try {
     const data = await req.json()
@@ -23,26 +25,22 @@ export async function POST(req: Request) {
       })
     }
 
-    if (process.env.RESEND_API_KEY) {
-      const resendRes = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          from: "Manos Creativas Bynmw <noreply@manoscreativasbynmw.com>",
-          to: process.env.CONTACT_EMAIL || "bynw808@gmail.com",
-          subject: `Nuevo mensaje de contacto de ${name || "anónimo"}`,
-          text: `Nombre: ${name || "No indicado"}\nCorreo electrónico: ${email}\nTeléfono: ${phone || "No indicado"}\n\nMensaje:\n${message || "No indicado"}`,
-        }),
+    const notification = await sendContactNotification({
+      name,
+      email: email.trim(),
+      phone,
+      message,
+    })
+
+    if (!notification.ok) {
+      console.error("Contact email failed:", notification.error, { name, email })
+      return new Response(JSON.stringify({ error: "No se pudo enviar el mensaje. Inténtalo de nuevo." }), {
+        status: 503,
+        headers: { "Content-Type": "application/json" },
       })
-      if (!resendRes.ok) {
-        throw new Error("Failed to send email")
-      }
     }
 
-    console.log("Contact form submission:", { name, email, phone, message })
+    console.log("Contact form submission sent:", { name, email, phone })
 
     return new Response(JSON.stringify({ ok: true }), {
       status: 200,

@@ -12,6 +12,7 @@ export const GIFT_MAGNET = {
   filePath: "/gift/patron-guerreras-kpop.pdf",
   downloadPath: "/api/gift",
   fileName: "Patron-Guerreras-KPOP-Manos-Creativas-Bynmw.pdf",
+  iosDriveUrl: "https://drive.google.com/drive/folders/1rHI7QJ7TB8pQPHBI_jdsy5iOdx8Q2ahf",
 } as const
 
 export function getGiftDownloadUrl(origin?: string): string {
