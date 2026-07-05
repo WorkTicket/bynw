@@ -1,5 +1,6 @@
 import Link from "next/link"
 import type { Product } from "@/lib/products"
+import { parsePriceValue } from "@/lib/pricing"
 import { LayersIcon } from "@/lib/icons"
 
 type Props = {
@@ -7,12 +8,11 @@ type Props = {
 }
 
 export default function ProductCard({ product }: Props) {
-  const discount = Math.round(
-    (1 -
-      parseFloat(product.price.replace("€", "").replace(",", ".")) /
-        parseFloat(product.originalPrice.replace("€", "").replace(",", "."))) *
-      100
-  )
+  const priceNum = parsePriceValue(product.price)
+  const originalNum = parsePriceValue(product.originalPrice)
+  const discount = originalNum > 0
+    ? Math.round((1 - priceNum / originalNum) * 100)
+    : 0
 
   return (
     <Link href={`/shop/${product.slug}`} className="group block h-full">

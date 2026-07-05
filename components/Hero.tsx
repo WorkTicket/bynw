@@ -1,9 +1,13 @@
 "use client"
 
 import LeadMagnet from "./LeadMagnet"
+import { useCountry } from "./CountryProvider"
 import { ShoppingBagIcon, ScissorsIcon, FlowerIcon, CrochetHookIcon } from "@/lib/icons"
 
 export default function Hero() {
+  const country = useCountry()
+  const heroPrice = country === "MX" ? "MX$173" : "8€"
+
   return (
     <section className="hero-cute relative min-h-[calc(100dvh-7rem)] overflow-hidden pt-8 pb-20 sm:pt-20 sm:pb-24 lg:pt-24">
       <div className="pointer-events-none absolute inset-0 bg-dots-rose opacity-60" />
@@ -110,7 +114,7 @@ export default function Hero() {
               <p className="text-[10px] text-muted">en 3 colecciones</p>
             </div>
             <div className="absolute -top-3 right-4 sm:-top-4 animate-float rounded-2xl bg-white/95 px-4 py-3 shadow-premium border border-rose-200/60 backdrop-blur-sm z-10 text-center sm:text-left" style={{ animationDelay: "2s" }}>
-              <p className="text-sm font-bold gradient-text-rose">Desde 8€</p>
+              <p className="text-sm font-bold gradient-text-rose">Desde {heroPrice}</p>
               <p className="text-[10px] text-muted">Acceso vitalicio</p>
             </div>
 

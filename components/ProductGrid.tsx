@@ -3,10 +3,14 @@
 import Link from "next/link"
 import ProductCard from "./ProductCard"
 import ScrollReveal from "@/components/ScrollReveal"
+import { useCountry } from "./CountryProvider"
 import { products } from "@/lib/products"
+import { getLocalizedProduct } from "@/lib/pricing"
 import { ShoppingBagIcon } from "@/lib/icons"
 
 export default function ProductGrid() {
+  const country = useCountry()
+
   return (
     <section className="section-pink section-padding overflow-hidden">
       <div className="pointer-events-none absolute inset-0">
@@ -31,7 +35,7 @@ export default function ProductGrid() {
         <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((p, i) => (
             <ScrollReveal key={p.slug} delay={i * 120}>
-              <ProductCard product={p} />
+              <ProductCard product={getLocalizedProduct(p, country)} />
             </ScrollReveal>
           ))}
         </div>

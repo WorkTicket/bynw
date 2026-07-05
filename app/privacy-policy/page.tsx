@@ -39,8 +39,8 @@ export default function PrivacyPolicyPage() {
               <p className="mt-2">
                 El responsable del tratamiento de tus datos es Manos Creativas Bynmw.
                 Puedes contactarnos en{" "}
-                <a href="mailto:manoscreativasbynmw@gmail.com" className="text-rose-600 hover:underline">
-                  manoscreativasbynmw@gmail.com
+                <a href="mailto:bynw808@gmail.com" className="text-rose-600 hover:underline">
+                  bynw808@gmail.com
                 </a>{" "}
                 o por WhatsApp al +57 300 850 4709.
               </p>
@@ -101,8 +101,8 @@ export default function PrivacyPolicyPage() {
                 Puedes acceder, rectificar, suprimir u oponerte al tratamiento de tus
                 datos, as&iacute; como solicitar la limitaci&oacute;n o portabilidad
                 escribi&eacute;ndonos a{" "}
-                <a href="mailto:manoscreativasbynmw@gmail.com" className="text-rose-600 hover:underline">
-                  manoscreativasbynmw@gmail.com
+                <a href="mailto:bynw808@gmail.com" className="text-rose-600 hover:underline">
+                  bynw808@gmail.com
                 </a>
                 . Tambi&eacute;n puedes darte de baja del bolet&iacute;n en cualquier
                 momento desde el enlace incluido en nuestros correos.

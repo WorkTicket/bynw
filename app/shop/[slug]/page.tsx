@@ -1,10 +1,12 @@
 import { notFound } from "next/navigation"
 import { Metadata } from "next"
+import { cookies } from "next/headers"
 import ImageCarousel from "@/components/ImageCarousel"
 import ScrollReveal from "@/components/ScrollReveal"
 import HotmartBuyButton from "@/components/HotmartBuyButton"
 import PaymentLogos from "@/components/PaymentLogos"
 import { products, getProductBySlug } from "@/lib/products"
+import { getLocalizedProduct } from "@/lib/pricing"
 
 type Props = { params: { slug: string } }
 
@@ -28,19 +30,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const sectionHeading = "font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-ink tracking-tight leading-normal overflow-visible pb-1"
 
 export default function ProductPage({ params }: Props) {
+  const cookieStore = cookies()
+  const country = cookieStore.get("user_country")?.value
   const product = getProductBySlug(params.slug)
   if (!product) notFound()
+
+  const localizedProduct = getLocalizedProduct(product, country)
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
-    name: product.title,
-    description: product.description,
+    name: localizedProduct.title,
+    description: localizedProduct.description,
     offers: {
       "@type": "Offer",
-      price: product.price.replace("€", ""),
-      priceCurrency: "EUR",
-      url: product.buyUrl,
+      price: localizedProduct.price.replace(/[^0-9.]/g, ""),
+      priceCurrency: country === "MX" ? "MXN" : "EUR",
+      url: localizedProduct.buyUrl,
       availability: "https://schema.org/InStock",
     },
   }
@@ -86,31 +92,31 @@ export default function ProductPage({ params }: Props) {
                 <div className="relative lg:order-2">
                   <div className="absolute -inset-3 rounded-3xl2 bg-wine-gradient opacity-5 blur-xl" />
                   <div className="relative overflow-hidden rounded-2xl2 shadow-2xl ring-1 ring-white/10">
-                    <ImageCarousel images={product.images} interval={2500} alt={product.title} />
+                    <ImageCarousel images={localizedProduct.images} interval={2500} alt={localizedProduct.title} />
                   </div>
                 </div>
                 <div className="flex flex-col items-center text-center lg:items-start lg:text-left lg:order-1">
                   <span className="badge">Colección</span>
                   <h1 className="mt-4 font-display text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-semibold text-ink tracking-tight leading-snug">
-                    {product.title}
+                    {localizedProduct.title}
                   </h1>
 
                   <div className="mt-6 flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4">
                     <span className="text-3xl sm:text-4xl font-bold gradient-text">
-                      {product.price}
+                      {localizedProduct.price}
                     </span>
                     <span className="text-lg sm:text-xl text-muted/40 line-through">
-                      {product.originalPrice}
+                      {localizedProduct.originalPrice}
                     </span>
                   </div>
 
                   <p className="mt-5 text-base sm:text-lg text-muted leading-relaxed">
-                    {product.description}
+                    {localizedProduct.description}
                   </p>
 
                   <div className="mt-8 space-y-4 w-full">
-                    <HotmartBuyButton href={product.buyUrl}>
-                      {product.buyText}
+                    <HotmartBuyButton href={localizedProduct.buyUrl}>
+                      {localizedProduct.buyText}
                     </HotmartBuyButton>
 
                     <div className="flex justify-center">
@@ -134,7 +140,7 @@ export default function ProductPage({ params }: Props) {
                 </h2>
                 <div className="section-divider mt-4" />
                 <p className="mt-6 text-base sm:text-lg text-muted leading-relaxed">
-                  {product.description}
+                  {localizedProduct.description}
                 </p>
                 <div className="mt-6 rounded-2xl2 bg-wine-50/40 border border-wine-100/30 p-5 sm:p-6">
                   <h3 className="font-display text-lg font-semibold text-ink mb-4">
@@ -303,8 +309,8 @@ export default function ProductPage({ params }: Props) {
                     <p className="mt-3 text-sm text-muted">
                       Acceso inmediato a la colección y a los bonos incluidos.
                     </p>
-                    <HotmartBuyButton href={product.buyUrl} className="mt-6">
-                      {product.buyText}
+                    <HotmartBuyButton href={localizedProduct.buyUrl} className="mt-6">
+                      {localizedProduct.buyText}
                     </HotmartBuyButton>
                     <div className="mt-3 flex justify-center">
                       <PaymentLogos />

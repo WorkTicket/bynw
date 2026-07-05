@@ -32,7 +32,7 @@ export async function POST(req: Request) {
         },
         body: JSON.stringify({
           from: "Manos Creativas Bynmw <noreply@manoscreativasbynmw.com>",
-          to: process.env.CONTACT_EMAIL || "natalia@manoscreativasbynmw.com",
+          to: process.env.CONTACT_EMAIL || "bynw808@gmail.com",
           subject: `Nuevo mensaje de contacto de ${name || "anónimo"}`,
           text: `Nombre: ${name || "No indicado"}\nCorreo: ${email}\nTeléfono: ${phone || "No indicado"}\n\nMensaje:\n${message || "No indicado"}`,
         }),

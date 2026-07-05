@@ -1,8 +1,10 @@
 import { Metadata } from "next"
+import { cookies } from "next/headers"
 import ScrollReveal from "@/components/ScrollReveal"
 import ProductCard from "@/components/ProductCard"
 import LeadMagnet from "@/components/LeadMagnet"
 import { products } from "@/lib/products"
+import { getLocalizedProduct } from "@/lib/pricing"
 
 const sectionHeading = "font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-ink tracking-tight leading-snug"
 
@@ -61,6 +63,9 @@ function Stars({ count }: { count: number }) {
 }
 
 export default function ShopPage() {
+  const cookieStore = cookies()
+  const country = cookieStore.get("user_country")?.value
+
   return (
     <>
       <section className="relative overflow-hidden bg-gradient-to-b from-white via-rose-50/30 to-white pt-32 pb-20 sm:pt-40 sm:pb-28">
@@ -112,7 +117,7 @@ export default function ShopPage() {
           <div className="mt-10 sm:mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {products.map((p, i) => (
               <ScrollReveal key={p.id} delay={i * 150}>
-                <ProductCard product={p} />
+                <ProductCard product={getLocalizedProduct(p, country)} />
               </ScrollReveal>
             ))}
           </div>

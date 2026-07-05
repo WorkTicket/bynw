@@ -14,12 +14,20 @@ type Props = {
 function LeadMagnetSuccess({ dark = false }: { dark?: boolean }) {
   return (
     <div
-      className={`rounded-2xl2 border p-5 sm:p-6 text-left ${
+      className={`rounded-2xl2 border overflow-hidden p-5 sm:p-6 text-left ${
         dark
           ? "border-white/15 bg-white/10 backdrop-blur-sm"
           : "border-rose-200 bg-rose-50/60"
       }`}
     >
+      <div className="mb-5 -mx-5 -mt-5 sm:-mx-6 sm:-mt-6">
+        <img
+          src="/images/kpop.jpeg"
+          alt={GIFT_MAGNET.title}
+          className="w-full h-44 sm:h-52 object-cover"
+        />
+      </div>
+
       <div className="flex items-start gap-3">
         <div
           className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${
@@ -84,7 +92,7 @@ function LeadMagnetSuccess({ dark = false }: { dark?: boolean }) {
       </div>
 
       <a
-        href={GIFT_MAGNET.filePath}
+        href={GIFT_MAGNET.downloadApiPath}
         download={GIFT_MAGNET.fileName}
         className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-rose-400 to-pink-500 px-6 py-3.5 text-sm font-semibold tracking-wide text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-rose-glow active:scale-[0.98]"
       >
