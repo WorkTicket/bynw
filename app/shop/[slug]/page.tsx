@@ -1,12 +1,24 @@
 import { notFound } from "next/navigation"
 import { Metadata } from "next"
-import { cookies } from "next/headers"
+import { cookies, headers } from "next/headers"
 import ImageCarousel from "@/components/ImageCarousel"
 import ScrollReveal from "@/components/ScrollReveal"
 import HotmartBuyButton from "@/components/HotmartBuyButton"
 import PaymentLogos from "@/components/PaymentLogos"
 import { products, getProductBySlug } from "@/lib/products"
 import { getLocalizedProduct } from "@/lib/pricing"
+
+function getCountry(): string | null {
+  const cookieStore = cookies()
+  const cookieCountry = cookieStore.get("user_country")?.value
+  if (cookieCountry) return cookieCountry
+  try {
+    const headersList = headers()
+    return headersList.get("cf-ipcountry") || null
+  } catch {
+    return null
+  }
+}
 
 type Props = { params: { slug: string } }
 
@@ -30,8 +42,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const sectionHeading = "font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-ink tracking-tight leading-normal overflow-visible pb-1"
 
 export default function ProductPage({ params }: Props) {
-  const cookieStore = cookies()
-  const country = cookieStore.get("user_country")?.value
+  const country = getCountry()
   const product = getProductBySlug(params.slug)
   if (!product) notFound()
 

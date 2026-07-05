@@ -1,10 +1,22 @@
 import { Metadata } from "next"
-import { cookies } from "next/headers"
+import { cookies, headers } from "next/headers"
 import ScrollReveal from "@/components/ScrollReveal"
 import ProductCard from "@/components/ProductCard"
 import LeadMagnet from "@/components/LeadMagnet"
 import { products } from "@/lib/products"
 import { getLocalizedProduct } from "@/lib/pricing"
+
+function getCountry(): string | null {
+  const cookieStore = cookies()
+  const cookieCountry = cookieStore.get("user_country")?.value
+  if (cookieCountry) return cookieCountry
+  try {
+    const headersList = headers()
+    return headersList.get("cf-ipcountry") || null
+  } catch {
+    return null
+  }
+}
 
 const sectionHeading = "font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-ink tracking-tight leading-snug"
 
@@ -63,8 +75,7 @@ function Stars({ count }: { count: number }) {
 }
 
 export default function ShopPage() {
-  const cookieStore = cookies()
-  const country = cookieStore.get("user_country")?.value
+  const country = getCountry()
 
   return (
     <>

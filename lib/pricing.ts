@@ -39,19 +39,3 @@ export function parsePriceValue(price: string): number {
   const cleaned = price.replace(/[^0-9,.]/g, "").replace(",", ".")
   return parseFloat(cleaned) || 0
 }
-
-export function getPriceFrom(product: Product, country: string | null | undefined): string {
-  if (country === "MX") {
-    const lowestMx = Math.min(
-      ...Object.values(mxPricing).map((p) => parsePriceValue(p.price))
-    )
-    return `MX$${lowestMx}`
-  }
-  const lowestEur = Math.min(
-    ...product.id ? [] : []
-  )
-  return "8€"
-}
-
-export const MEXICO_HERO_PRICE = "MX$173"
-export const DEFAULT_HERO_PRICE = "8€"

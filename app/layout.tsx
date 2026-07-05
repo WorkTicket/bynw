@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next"
 import { Inter, Cormorant_Garamond, Dancing_Script } from "next/font/google"
-import { cookies } from "next/headers"
+import { cookies, headers } from "next/headers"
 import Script from "next/script"
 import "./globals.css"
 import Header from "@/components/Header"
@@ -8,6 +8,18 @@ import Footer from "@/components/Footer"
 import FloatingWhatsApp from "@/components/FloatingWhatsApp"
 import ExitIntentPopup from "@/components/ExitIntentPopup"
 import CountryProvider from "@/components/CountryProvider"
+
+function getCountry(): string | null {
+  const cookieStore = cookies()
+  const cookieCountry = cookieStore.get("user_country")?.value
+  if (cookieCountry) return cookieCountry
+  try {
+    const headersList = headers()
+    return headersList.get("cf-ipcountry") || null
+  } catch {
+    return null
+  }
+}
 
 const sans = Inter({
   subsets: ["latin"],
@@ -38,8 +50,7 @@ export const viewport: Viewport = {
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  const cookieStore = cookies()
-  const country = cookieStore.get("user_country")?.value
+  const country = getCountry()
   const locale = country === "MX" ? "es_MX" : "es_ES"
 
   return {
@@ -69,11 +80,10 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const cookieStore = cookies()
-  const country = cookieStore.get("user_country")?.value || null
+  const country = getCountry()
 
   return (
-    <html lang={country === "MX" ? "es-MX" : "es-ES"} data-announcement="visible" className={`${sans.variable} ${display.variable} ${script.variable}`}>
+    <html lang={country === "MX" ? "es-MX" : "es-ES"} className={`${sans.variable} ${display.variable} ${script.variable}`}>
       <head>
         <link
           rel="stylesheet"
