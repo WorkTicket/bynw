@@ -268,7 +268,7 @@ export default function ProductPage({ params }: Props) {
 
                     <div className="order-2 flex flex-col gap-4 text-center lg:text-left lg:col-span-2">
                       <p className="text-sm sm:text-base text-muted leading-relaxed">
-                        Nada de procesos raros. Cuando completes la compra, te llegará un correo con acceso inmediato a todos los patrones.
+                        Nada de procesos raros. Cuando completes la compra, te llegará un correo electrónico con acceso inmediato a todos los patrones.
                       </p>
                       <p className="text-sm sm:text-base text-muted leading-relaxed">
                         Todo va organizado en carpetas con nombre, como ves en la imagen. Solo tienes que abrir el patrón que quieras tejer.

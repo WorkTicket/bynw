@@ -52,7 +52,7 @@ export default function PrivacyPolicyPage() {
               </h2>
               <ul className="mt-3 list-disc pl-6 space-y-2">
                 <li>
-                  <strong>Formulario de contacto:</strong> nombre, correo, tel&eacute;fono
+                  <strong>Formulario de contacto:</strong> nombre, correo electr&oacute;nico, tel&eacute;fono
                   (opcional) y mensaje.
                 </li>
                 <li>
@@ -105,7 +105,7 @@ export default function PrivacyPolicyPage() {
                   bynw808@gmail.com
                 </a>
                 . Tambi&eacute;n puedes darte de baja del bolet&iacute;n en cualquier
-                momento desde el enlace incluido en nuestros correos.
+                momento desde el enlace incluido en nuestros correos electr&oacute;nicos.
               </p>
             </div>
 

@@ -157,7 +157,7 @@ export default function ShopPage() {
             {[
               {
                 title: "Acceso Inmediato",
-                desc: "Recibes todo al momento en tu correo tras la compra. Sin esperas ni envíos físicos.",
+                desc: "Recibes todo al momento en tu correo electrónico tras la compra. Sin esperas ni envíos físicos.",
                 icon: (
                   <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -437,7 +437,7 @@ export default function ShopPage() {
                   </div>
                 </div>
                 <p className="mt-6 text-center text-xs text-muted">
-                  O escríbenos por <strong>correo</strong> o WhatsApp
+                  O escríbenos por <strong>correo electrónico</strong> o WhatsApp
                 </p>
               </div>
             </div>

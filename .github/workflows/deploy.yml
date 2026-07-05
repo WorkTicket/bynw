@@ -1,4 +1,4 @@
-name: Deploy to Cloudflare
+name: Deploy to Cloudflare Workers
 
 on:
   push:
@@ -27,4 +27,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: opennextjs-cloudflare build && opennextjs-cloudflare deploy
+          command: npm run deploy

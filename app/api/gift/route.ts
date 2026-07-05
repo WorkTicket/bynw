@@ -1,14 +1,13 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare"
 import { GIFT_MAGNET } from "@/lib/gift-magnet"
 
-function attachmentResponse(pdf: ArrayBuffer) {
-  return new Response(pdf, {
-    headers: {
-      "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="${GIFT_MAGNET.fileName}"`,
-      "Cache-Control": "public, max-age=86400",
-    },
-  })
+function attachmentResponse(source: Response) {
+  const headers = new Headers(source.headers)
+  headers.set("Content-Type", "application/pdf")
+  headers.set("Content-Disposition", `attachment; filename="${GIFT_MAGNET.fileName}"`)
+  headers.set("Cache-Control", "public, max-age=86400")
+  headers.delete("content-encoding")
+  return new Response(source.body, { headers, status: source.status })
 }
 
 export async function GET(request: Request) {
@@ -21,7 +20,7 @@ export async function GET(request: Request) {
     if (assets) {
       const assetResponse = await assets.fetch(assetRequest)
       if (assetResponse.ok) {
-        return attachmentResponse(await assetResponse.arrayBuffer())
+        return attachmentResponse(assetResponse)
       }
     }
   } catch {
@@ -33,5 +32,5 @@ export async function GET(request: Request) {
     return new Response("PDF no encontrado", { status: 404 })
   }
 
-  return attachmentResponse(await response.arrayBuffer())
+  return attachmentResponse(response)
 }

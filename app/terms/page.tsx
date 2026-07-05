@@ -45,7 +45,7 @@ export default function TermsPage() {
               <p className="mt-2">
                 Todos los productos ofrecidos en Manos Creativas Bynmw son
                 archivos digitales en formato PDF. Una vez realizada la compra,
-                recibir&aacute;s un enlace de descarga por correo.
+                recibir&aacute;s un enlace de descarga por correo electr&oacute;nico.
               </p>
               <p className="mt-2">
                 Los patrones digitales est&aacute;n protegidos por derechos de autor.

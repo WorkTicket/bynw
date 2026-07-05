@@ -1,12 +1,8 @@
 # Crafting Pattern — Pro Site Boilerplate
 
-A Next.js 14 + Tailwind CSS boilerplate, themed pink, set up to deploy to
-Cloudflare Pages (with Cloudflare Workers via the Edge runtime).
+A Next.js 14 + Tailwind CSS site deployed to **Cloudflare Workers** with static assets via OpenNext.
 
-**Start here:** [`DEV_INSTRUCTIONS.md`](./DEV_INSTRUCTIONS.md) has the full
-build plan for whoever (or whatever coding agent) implements the rest of the
-site — pages to build, product/checkout decisions to confirm, contact form
-email integration, and Cloudflare deployment steps.
+**Start here:** [`DEV_INSTRUCTIONS.md`](./DEV_INSTRUCTIONS.md)
 
 ## Quick start
 
@@ -22,4 +18,8 @@ npm run dev
 npm run deploy
 ```
 
-See `DEV_INSTRUCTIONS.md` §9 for full Cloudflare Pages setup.
+This builds with OpenNext and deploys one Worker to Cloudflare. The Worker handles SSR and API routes; static files (images, PDFs, JS/CSS) are served from the Workers **ASSETS** binding (Cloudflare's static CDN).
+
+That is the supported "Workers + static hosting" setup for Next.js with OpenNext. A separate Cloudflare Pages project is not required and is not supported by this adapter.
+
+See `DEV_INSTRUCTIONS.md` §9 for full Cloudflare setup.

@@ -66,7 +66,7 @@ export default function ContactForm() {
               {["name", "email", "phone"].map((f) => (
                 <div key={f}>
                   <label className="mb-1.5 block text-xs font-medium text-muted">
-                    {f === "name" ? "Nombre *" : f === "email" ? "Correo *" : "Teléfono (opcional)"}
+                    {f === "name" ? "Nombre *" : f === "email" ? "Correo electrónico *" : "Teléfono (opcional)"}
                   </label>
                   <input
                     name={f}

@@ -9,7 +9,7 @@ export async function POST(req: Request) {
     }
 
     if (!email) {
-      return new Response(JSON.stringify({ error: "El correo es obligatorio" }), {
+      return new Response(JSON.stringify({ error: "El correo electrónico es obligatorio" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
       })
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
           from: "Manos Creativas Bynmw <noreply@manoscreativasbynmw.com>",
           to: process.env.CONTACT_EMAIL || "bynw808@gmail.com",
           subject: `Nuevo mensaje de contacto de ${name || "anónimo"}`,
-          text: `Nombre: ${name || "No indicado"}\nCorreo: ${email}\nTeléfono: ${phone || "No indicado"}\n\nMensaje:\n${message || "No indicado"}`,
+          text: `Nombre: ${name || "No indicado"}\nCorreo electrónico: ${email}\nTeléfono: ${phone || "No indicado"}\n\nMensaje:\n${message || "No indicado"}`,
         }),
       })
       if (!resendRes.ok) {

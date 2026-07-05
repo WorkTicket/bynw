@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     }
 
     if (!email) {
-      return new Response(JSON.stringify({ error: "El correo es obligatorio" }), {
+      return new Response(JSON.stringify({ error: "El correo electrónico es obligatorio" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
       })

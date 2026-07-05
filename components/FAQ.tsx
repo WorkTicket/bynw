@@ -6,7 +6,7 @@ import ScrollReveal from "@/components/ScrollReveal"
 
 const faqs = [
   { q: "¿Necesito experiencia previa en crochet?", a: "No hace falta. Cada colección trae vídeos para principiantes donde repasamos abreviaturas y puntadas básicas. Con eso ya puedes seguir los patrones." },
-  { q: "¿Cómo recibo los patrones después de comprar?", a: "En cuanto se confirme el pago te llega un correo con el enlace para descargar todos los PDF. El acceso no caduca." },
+  { q: "¿Cómo recibo los patrones después de comprar?", a: "En cuanto se confirme el pago te llega un correo electrónico con el enlace para descargar todos los PDF. El acceso no caduca." },
   { q: "¿Qué métodos de pago aceptáis?", a: "Los pagos pasan por Hotmart. Puedes pagar con tarjeta, PayPal y otros métodos según tu país." },
   { q: "¿Puedo imprimir los patrones?", a: "Sí, están en PDF listos para imprimir. También puedes consultarlos en el móvil, la tablet o el ordenador." },
   { q: "¿Hay garantía de satisfacción?", a: "Sí. Tienes 7 días para pedir la devolución si los patrones no encajan contigo." },

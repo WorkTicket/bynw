@@ -33,7 +33,7 @@ export const products: Product[] = [
     description:
       "Más de 200 patrones de princesas Disney en PDF, con instrucciones claras y fotos en cada paso. Para artesanas que buscan resultados bonitos y uniformes.",
     specs:
-      "Contenido: más de 200 patrones de Princesas Disney.\nIdioma: español.\nFormato: PDF descargable e imprimible.\nGuía paso a paso con fotos en alta resolución.\nEntrega: acceso inmediato por correo en cuanto se confirme el pago.",
+      "Contenido: más de 200 patrones de Princesas Disney.\nIdioma: español.\nFormato: PDF descargable e imprimible.\nGuía paso a paso con fotos en alta resolución.\nEntrega: acceso inmediato por correo electrónico en cuanto se confirme el pago.",
     caption: "Y muchos diseños exclusivos más…",
     images: [
       "imagen-2.jpeg",
