@@ -92,7 +92,7 @@ function LeadMagnetSuccess({ dark = false }: { dark?: boolean }) {
       </div>
 
       <a
-        href={GIFT_MAGNET.downloadApiPath}
+        href={GIFT_MAGNET.filePath}
         download={GIFT_MAGNET.fileName}
         className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-rose-400 to-pink-500 px-6 py-3.5 text-sm font-semibold tracking-wide text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-rose-glow active:scale-[0.98]"
       >

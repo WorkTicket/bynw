@@ -11,10 +11,9 @@ export const GIFT_MAGNET = {
   ],
   filePath: "/gift/patron-guerreras-kpop.pdf",
   fileName: "Patron-Guerreras-KPOP-Manos-Creativas-Bynmw.pdf",
-  downloadApiPath: "/api/download-gift",
 } as const
 
 export function getGiftDownloadUrl(origin?: string): string {
   const base = origin || process.env.NEXT_PUBLIC_SITE_URL || "https://bynmwcreative.com"
-  return `${base.replace(/\/$/, "")}${GIFT_MAGNET.downloadApiPath}`
+  return `${base.replace(/\/$/, "")}${GIFT_MAGNET.filePath}`
 }
