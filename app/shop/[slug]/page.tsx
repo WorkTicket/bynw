@@ -291,7 +291,7 @@ export default function ProductPage({ params }: Props) {
                   <div className="relative">
                     <div className="absolute -inset-2 rounded-2xl2 bg-wine-100/10 blur-xl" />
                     <div className="relative overflow-hidden rounded-2xl2 shadow-xl ring-1 ring-white/10">
-                      <ImageCarousel images={product.qualityImages} noAutoplay alt={`Calidad de ${product.title}`} />
+                      <ImageCarousel images={product.qualityImages} alt={`Calidad de ${product.title}`} />
                     </div>
                   </div>
                 </div>
