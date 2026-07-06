@@ -1,24 +1,12 @@
 import { notFound } from "next/navigation"
 import { Metadata } from "next"
-import { cookies, headers } from "next/headers"
 import ImageCarousel from "@/components/ImageCarousel"
 import ScrollReveal from "@/components/ScrollReveal"
 import HotmartBuyButton from "@/components/HotmartBuyButton"
 import PaymentLogos from "@/components/PaymentLogos"
 import { products, getProductBySlug } from "@/lib/products"
 import { getLocalizedProduct } from "@/lib/pricing"
-
-function getCountry(): string | null {
-  const cookieStore = cookies()
-  const cookieCountry = cookieStore.get("user_country")?.value
-  if (cookieCountry) return cookieCountry
-  try {
-    const headersList = headers()
-    return headersList.get("cf-ipcountry") || null
-  } catch {
-    return null
-  }
-}
+import { getCountry } from "@/lib/country"
 
 type Props = { params: { slug: string } }
 
@@ -210,7 +198,7 @@ export default function ProductPage({ params }: Props) {
                       <div className="mt-8 grid items-center gap-8 sm:grid-cols-2">
                         <div className="overflow-hidden rounded-xl shadow-md ring-1 ring-white/10 bg-rose-50/40">
                           <img
-                            src={`/images/imagen-4.jpeg`}
+                            src={`/images/imagen-4.webp`}
                             alt="Obsequios adicionales"
                             className="block h-auto w-full object-contain"
                           />

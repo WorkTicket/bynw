@@ -38,8 +38,9 @@ function LeadMagnetSuccess({ dark = false }: { dark?: boolean }) {
     >
       <div className="mb-5 -mx-5 -mt-5 sm:-mx-6 sm:-mt-6">
         <img
-          src="/images/kpop.jpeg"
+          src="/images/kpop.webp"
           alt={GIFT_MAGNET.title}
+          loading="lazy"
           className="w-full h-44 sm:h-52 object-cover"
         />
       </div>

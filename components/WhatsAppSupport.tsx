@@ -40,7 +40,7 @@ export default function WhatsAppSupport() {
                   <div className="absolute -inset-3 md:-inset-4 rounded-full bg-rose-100/40 blur-xl" />
                   <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 opacity-20 blur-sm" />
                   <div className="relative h-20 w-20 md:h-28 md:w-28 overflow-hidden rounded-full ring-4 ring-rose-200 shadow-xl">
-                    <img src="/images/manoscreative.jpg" alt="Natalia - Fundadora" className="h-full w-full object-cover" />
+                    <img src="/images/manoscreative.webp" alt="Natalia - Fundadora" className="h-full w-full object-cover" />
                   </div>
                 </div>
               </div>

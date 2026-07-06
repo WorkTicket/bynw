@@ -22,7 +22,7 @@ export default function Guarantee() {
                 <div className="relative mx-auto md:mx-0">
                   <div className="absolute -inset-2 sm:-inset-3 rounded-full bg-rose-100/50 blur-md" />
                   <div className="relative h-20 w-20 sm:h-28 sm:w-28 overflow-hidden rounded-full ring-4 ring-rose-200 shadow-xl">
-                    <img src="/images/imagen-17.png" alt="Garantía de 7 días" className="h-full w-full object-cover" />
+                    <img src="/images/imagen-17.webp" alt="Garantía de 7 días" loading="lazy" className="h-full w-full object-cover" />
                   </div>
                 </div>
                 <div className="text-center md:text-left">

@@ -27,7 +27,7 @@ export default function BeginnerCallout() {
             <div className="absolute -inset-4 rounded-3xl2 bg-gradient-to-br from-rose-300 to-pink-400 opacity-5 blur-xl" />
             <div className="relative overflow-hidden rounded-2xl2 shadow-2xl ring-1 ring-rose-200/20">
               <div className="aspect-[4/3]">
-                <img src="/images/imagen-19.jpeg" alt="Aprende crochet desde cero" className="h-full w-full object-cover transition-transform duration-700 hover:scale-105" />
+                <img src="/images/imagen-19.webp" alt="Aprende crochet desde cero" className="h-full w-full object-cover transition-transform duration-700 hover:scale-105" />
               </div>
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-rose-900/10 via-transparent to-transparent" />
             </div>

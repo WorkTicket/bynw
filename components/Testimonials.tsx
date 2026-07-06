@@ -7,19 +7,19 @@ import ScrollReveal from "@/components/ScrollReveal"
 const testimonials = [
   {
     name: "María García",
-    avatar: "imagen-18-2.jpeg",
+    avatar: "imagen-18-2.webp",
     text: "Los patrones son súper claros y fáciles de seguir. Mi primer amigurumi quedó hermoso gracias a las instrucciones paso a paso.",
     rating: 5,
   },
   {
     name: "Laura Fernández",
-    avatar: "imagen-18-1.jpeg",
+    avatar: "imagen-18-1.webp",
     text: "Compré la colección de Princesas Disney y me encanta. La calidad de los patrones es increíble, se nota el amor en cada detalle.",
     rating: 5,
   },
   {
     name: "Ana Martínez",
-    avatar: "imagen-18-3.jpeg",
+    avatar: "imagen-18-3.webp",
     text: "Las flores eternas son mi perdición. Los patrones son detallados y el resultado final es precioso. Recomendadísimo.",
     rating: 5,
   },

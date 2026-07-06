@@ -59,7 +59,7 @@ export default function AboutPage() {
                     <div className="aspect-[4/3]">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        src="/images/imagen-1.jpeg"
+                        src="/images/imagen-1.webp"
                         alt="Manos Creativas Bynmw"
                         className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
                       />

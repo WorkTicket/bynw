@@ -1,22 +1,10 @@
 import { Metadata } from "next"
-import { cookies, headers } from "next/headers"
 import ScrollReveal from "@/components/ScrollReveal"
 import ProductCard from "@/components/ProductCard"
 import LeadMagnet from "@/components/LeadMagnet"
 import { products } from "@/lib/products"
 import { getLocalizedProduct } from "@/lib/pricing"
-
-function getCountry(): string | null {
-  const cookieStore = cookies()
-  const cookieCountry = cookieStore.get("user_country")?.value
-  if (cookieCountry) return cookieCountry
-  try {
-    const headersList = headers()
-    return headersList.get("cf-ipcountry") || null
-  } catch {
-    return null
-  }
-}
+import { getCountry } from "@/lib/country"
 
 const sectionHeading = "font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-ink tracking-tight leading-snug"
 
@@ -37,28 +25,28 @@ const testimonials = [
     location: "Madrid, España",
     text: "Los patrones son súper claros y fáciles de seguir. En una semana ya había terminado mi primer amigurumi. ¡Natalia responde todas las dudas por WhatsApp al instante!",
     rating: 5,
-    image: "imagen-18.jpeg",
+    image: "imagen-18.webp",
   },
   {
     name: "Laura Sánchez",
     location: "Barcelona, España",
     text: "Había intentado aprender crochet varias veces y siempre abandonaba. Con los videos tutoriales y las explicaciones, por fin entendí. Ya llevo 5 muñecos hechos.",
     rating: 5,
-    image: "imagen-18-1.jpeg",
+    image: "imagen-18-1.webp",
   },
   {
     name: "Carmen López",
     location: "Sevilla, España",
     text: "La colección de flores es espectacular. Las clientas me encargan ramos y no doy abasto. La mejor inversión que he hecho para mi emprendimiento.",
     rating: 5,
-    image: "imagen-18-2.jpeg",
+    image: "imagen-18-2.webp",
   },
   {
     name: "Ana Martínez",
     location: "Valencia, España",
     text: "Compré la colección de Princesas Disney para hacer el regalo de cumpleaños de mi hija. Quedó precioso. Los patrones son muy detallados y fáciles de entender.",
     rating: 5,
-    image: "imagen-18-3.jpeg",
+    image: "imagen-18-3.webp",
   },
 ]
 
@@ -335,7 +323,7 @@ export default function ShopPage() {
                     <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-rose-400 to-wine-500 opacity-20 blur-sm" />
                     <div className="relative h-20 w-20 md:h-28 md:w-28 overflow-hidden rounded-full ring-4 ring-rose-200 shadow-xl">
                       <img
-                        src="/images/manoscreative.jpg"
+                        src="/images/manoscreative.webp"
                         alt="Natalia - Fundadora"
                         className="h-full w-full object-cover"
                       />

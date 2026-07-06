@@ -16,6 +16,25 @@ declare global {
   }
 }
 
+function loadHotmartCSS() {
+  if (document.querySelector('link[href*="hotmart-fb"]')) return
+  const link = document.createElement('link')
+  link.rel = 'stylesheet'
+  link.href = 'https://static.hotmart.com/css/hotmart-fb.min.css'
+  document.head.appendChild(link)
+}
+
+function loadHotmartJS(): Promise<void> {
+  if (window.jQuery) return Promise.resolve()
+  return new Promise((resolve) => {
+    const script = document.createElement('script')
+    script.src = 'https://static.hotmart.com/checkout/widget.min.js'
+    script.async = true
+    script.onload = () => resolve()
+    document.body.appendChild(script)
+  })
+}
+
 function isMobileCheckout() {
   if (typeof window === 'undefined') return false
   return (
@@ -45,22 +64,25 @@ export default function HotmartBuyButton({ href, children, className }: Props) {
   const anchorRef = useRef<HTMLAnchorElement>(null)
 
   useEffect(() => {
-    const anchor = anchorRef.current
-    if (!anchor) return
+    loadHotmartCSS()
+    loadHotmartJS().then(() => {
+      const anchor = anchorRef.current
+      if (!anchor) return
 
-    const tryBind = () => bindHotmartCheckout(anchor)
-    if (tryBind()) return
+      const tryBind = () => bindHotmartCheckout(anchor)
+      if (tryBind()) return
 
-    const interval = window.setInterval(() => {
-      if (tryBind()) window.clearInterval(interval)
-    }, 200)
+      const interval = window.setInterval(() => {
+        if (tryBind()) window.clearInterval(interval)
+      }, 200)
 
-    const timeout = window.setTimeout(() => window.clearInterval(interval), 15000)
+      const timeout = window.setTimeout(() => window.clearInterval(interval), 15000)
 
-    return () => {
-      window.clearInterval(interval)
-      window.clearTimeout(timeout)
-    }
+      return () => {
+        window.clearInterval(interval)
+        window.clearTimeout(timeout)
+      }
+    })
   }, [href])
 
   return (

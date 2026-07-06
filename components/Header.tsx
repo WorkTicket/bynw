@@ -130,7 +130,7 @@ export default function Header() {
             <Link href="/" className="flex min-w-0 items-center gap-2 group sm:gap-2.5">
               <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full ring-2 ring-rose-200 transition-all duration-300 group-hover:ring-rose-400 shadow-sm sm:h-9 sm:w-9">
                 <img
-                  src="/images/logo.png"
+                  src="/images/logo.webp"
                   alt="Manos Creativas Bynmw"
                   className="h-full w-full object-cover"
                 />

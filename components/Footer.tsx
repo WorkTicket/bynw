@@ -29,8 +29,9 @@ export default function Footer() {
             <div className="flex items-center gap-2.5">
               <div className="relative h-9 w-9 overflow-hidden rounded-full ring-2 ring-rose-200 shadow-md">
                 <img
-                  src="/images/logo.png"
+                  src="/images/logo.webp"
                   alt="Manos Creativas Bynmw"
+                  loading="lazy"
                   className="h-full w-full object-cover"
                 />
               </div>

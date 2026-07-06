@@ -40,7 +40,7 @@ export default function ContactPage() {
                 <div className="absolute -inset-2 rounded-full bg-rose-100/50 blur-md" />
                 <div className="relative h-20 w-20 overflow-hidden rounded-full ring-4 ring-rose-200 shadow-xl">
                   <img
-                    src="/images/manoscreative.jpg"
+                    src="/images/manoscreative.webp"
                     alt="Natalia - Manos Creativas"
                     className="h-full w-full object-cover"
                   />

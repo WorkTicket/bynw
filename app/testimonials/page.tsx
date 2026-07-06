@@ -9,12 +9,12 @@ export const metadata: Metadata = {
 }
 
 const reviewScreenshots = [
-  "imagen-18.jpeg",
-  "imagen-18-1.jpeg",
-  "imagen-18-2.jpeg",
-  "imagen-18-3.jpeg",
-  "imagen-18-4.jpeg",
-  "imagen-18-5.jpeg",
+  "imagen-18.webp",
+  "imagen-18-1.webp",
+  "imagen-18-2.webp",
+  "imagen-18-3.webp",
+  "imagen-18-4.webp",
+  "imagen-18-5.webp",
 ]
 
 export default function TestimonialsPage() {

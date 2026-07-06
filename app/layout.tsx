@@ -1,35 +1,23 @@
 import type { Metadata, Viewport } from "next"
 import { Inter, Cormorant_Garamond, Dancing_Script } from "next/font/google"
-import { cookies, headers } from "next/headers"
-import Script from "next/script"
 import "./globals.css"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import FloatingWhatsApp from "@/components/FloatingWhatsApp"
 import ExitIntentPopup from "@/components/ExitIntentPopup"
 import CountryProvider from "@/components/CountryProvider"
-
-function getCountry(): string | null {
-  const cookieStore = cookies()
-  const cookieCountry = cookieStore.get("user_country")?.value
-  if (cookieCountry) return cookieCountry
-  try {
-    const headersList = headers()
-    return headersList.get("cf-ipcountry") || null
-  } catch {
-    return null
-  }
-}
+import { getCountry } from "@/lib/country"
 
 const sans = Inter({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-sans",
   display: "swap",
 })
 
 const display = Cormorant_Garamond({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["500", "600", "700"],
   style: ["normal", "italic"],
   variable: "--font-display",
   display: "swap",
@@ -37,7 +25,7 @@ const display = Cormorant_Garamond({
 
 const script = Dancing_Script({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "600"],
   variable: "--font-script",
   display: "swap",
 })
@@ -69,9 +57,9 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: "Manos Creativas Bynmw",
       type: "website",
       locale,
-      images: [{ url: "/images/imagen-1.jpeg", width: 1200, height: 630, alt: "Manos Creativas Bynmw - Patrones de Crochet" }],
+      images: [{ url: "/images/imagen-1.webp", width: 1200, height: 630, alt: "Manos Creativas Bynmw - Patrones de Crochet" }],
     },
-    icons: { icon: "/images/logo.png", apple: "/images/logo.png" },
+    icons: { icon: "/images/logo-64.png", apple: "/images/logo-64.png" },
   }
 }
 
@@ -85,16 +73,17 @@ export default async function RootLayout({
   return (
     <html lang={country === "MX" ? "es-MX" : "es-ES"} className={`${sans.variable} ${display.variable} ${script.variable}`}>
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://static.hotmart.com" />
         <link
-          rel="stylesheet"
-          href="https://static.hotmart.com/css/hotmart-fb.min.css"
+          rel="preload"
+          as="image"
+          href="/images/imagen-1.webp"
+          fetchPriority="high"
         />
       </head>
       <body className="flex min-h-screen flex-col font-sans antialiased text-ink bg-rose-50">
-        <Script
-          src="https://static.hotmart.com/checkout/widget.min.js"
-          strategy="afterInteractive"
-        />
         <CountryProvider initialCountry={country}>
           <Header />
           <main className="flex-1 pt-[var(--site-header-offset)]">{children}</main>

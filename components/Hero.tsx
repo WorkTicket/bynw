@@ -81,7 +81,7 @@ export default function Hero() {
 
           <div className="mt-7 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
             <div className="flex -space-x-2">
-              {["imagen-18.jpeg", "imagen-18-1.jpeg", "imagen-18-2.jpeg", "imagen-18-3.jpeg"].map((img) => (
+              {["imagen-18.webp", "imagen-18-1.webp", "imagen-18-2.webp", "imagen-18-3.webp"].map((img) => (
                 <div key={img} className="h-9 w-9 overflow-hidden rounded-full border-2 border-white shadow-md ring-1 ring-rose-200/50">
                   <img src={`/images/${img}`} alt="Cliente satisfecha" className="h-full w-full object-cover" />
                 </div>
@@ -102,8 +102,11 @@ export default function Hero() {
             <div className="absolute -inset-3 rounded-4xl bg-gradient-to-br from-rose-200/50 via-pink-200/40 to-lavender-200/40 blur-xl opacity-70" />
             <div className="relative overflow-hidden rounded-3xl2 bg-rose-50/50 shadow-premium ring-2 ring-white/80">
               <img
-                src="/images/imagen-1.jpeg"
+                src="/images/imagen-1.webp"
                 alt="Colección Maestra de Patrones de Amigurumis y Flores en Crochet"
+                width="1200"
+                height="900"
+                fetchPriority="high"
                 className="block h-auto w-full object-contain transition-transform duration-700 hover:scale-[1.02]"
               />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-rose-900/10 via-transparent to-white/10" />
