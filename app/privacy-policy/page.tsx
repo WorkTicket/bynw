@@ -52,10 +52,6 @@ export default function PrivacyPolicyPage() {
               </h2>
               <ul className="mt-3 list-disc pl-6 space-y-2">
                 <li>
-                  <strong>Formulario de contacto:</strong> nombre, correo electr&oacute;nico, tel&eacute;fono
-                  (opcional) y mensaje.
-                </li>
-                <li>
                   <strong>Descarga de regalo gratuito:</strong> nombre y correo
                   electr&oacute;nico.
                 </li>

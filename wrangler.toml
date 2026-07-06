@@ -15,9 +15,6 @@ binding = "ASSETS"
 
 [vars]
 NEXT_PUBLIC_SITE_URL = "https://bynmwcreative.com"
-CONTACT_EMAIL = "bynw808@gmail.com"
 
 # Secrets (set via `wrangler secret put`):
 # MAILCHIMP_API_KEY, MAILCHIMP_AUDIENCE_ID
-# GMAIL_CONTACT_WEBHOOK_URL, GMAIL_CONTACT_WEBHOOK_TOKEN  (contact form → bynw808@gmail.com)
-# RESEND_API_KEY  (optional fallback for contact form)

@@ -9,7 +9,6 @@ import WhatsAppSupport from "@/components/WhatsAppSupport"
 import FAQ from "@/components/FAQ"
 import LeadMagnetSection from "@/components/LeadMagnetSection"
 import UrgencyCTA from "@/components/UrgencyCTA"
-import ContactForm from "@/components/ContactForm"
 
 export default function HomePage() {
   return (
@@ -25,7 +24,6 @@ export default function HomePage() {
       <FAQ />
       <LeadMagnetSection />
       <UrgencyCTA />
-      <ContactForm />
     </div>
   )
 }

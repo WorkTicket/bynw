@@ -437,7 +437,7 @@ export default function ShopPage() {
                   </div>
                 </div>
                 <p className="mt-6 text-center text-xs text-muted">
-                  O escríbenos por <strong>correo electrónico</strong> o WhatsApp
+                  O escr&iacute;benos por <strong>WhatsApp</strong>
                 </p>
               </div>
             </div>
