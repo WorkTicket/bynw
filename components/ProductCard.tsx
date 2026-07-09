@@ -55,7 +55,7 @@ export default function ProductCard({ product }: Props) {
             <span className="text-[10px] font-semibold text-rose-600 bg-rose-50 rounded-full px-2 py-0.5 border border-rose-200">{discount}% OFF</span>
           </div>
 
-          <p className="mt-1 text-[11px] font-medium text-green-600 bg-green-50 rounded-full px-2 py-0.5 self-start">
+          <p className="mt-1 text-[11px] font-medium text-rose-600 bg-rose-50 rounded-full px-2 py-0.5 self-start border border-rose-200">
             Ahorras {product.price.includes("€") ? `${savings}€` : product.price.includes("MX$") ? `MX$${savings}` : `${savings}`}
           </p>
 

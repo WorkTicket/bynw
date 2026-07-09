@@ -39,12 +39,6 @@ export default function LiveViewerCount({ productId }: { productId: string }) {
     return () => document.removeEventListener("click", handler, { capture: true })
   }, [productId, bump])
 
-  useEffect(() => {
-    const tick = 4000 + Math.floor(Math.random() * 6000)
-    const timer = setInterval(bump, tick)
-    return () => clearInterval(timer)
-  }, [bump])
-
   return (
     <div className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full bg-black/60 backdrop-blur-sm px-3 py-1.5 text-[10px] font-semibold text-white shadow-lg animate-pulse">
       <EyeIcon className="text-rose-300" size={11} />

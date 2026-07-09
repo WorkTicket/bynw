@@ -134,7 +134,7 @@ export default function ProductPage({ params }: Props) {
                     <span className="text-lg sm:text-xl text-muted/40 line-through">
                       {localizedProduct.originalPrice}
                     </span>
-                    <span className="inline-flex items-center gap-1 rounded-full bg-green-50 text-green-700 px-3 py-1 text-sm font-bold border border-green-200">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-rose-50 text-rose-700 px-3 py-1 text-sm font-bold border border-rose-200">
                       <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                       Ahorras {savingsFormatted} ({discount}%)
                     </span>
