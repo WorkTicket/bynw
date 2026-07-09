@@ -94,6 +94,7 @@ export default function HotmartBuyButton({ href, children, className }: Props) {
       <a
         ref={anchorRef}
         href={href}
+        data-track-hotmart-click={href}
         className="hotmart-fb hotmart__button-checkout btn-collection-buy relative z-10 w-full text-sm sm:text-base py-4 sm:py-5"
         onClick={(e) => {
           if (!isMobileCheckout()) e.preventDefault()

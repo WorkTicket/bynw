@@ -195,6 +195,8 @@ export default function ProductPage({ params }: Props) {
                         <img
                           src={`/images/${product.bonusImage}`}
                           alt="Bonos incluidos"
+                          loading="lazy"
+                          decoding="async"
                           className="block h-auto w-full object-contain"
                         />
                       </div>
@@ -231,6 +233,8 @@ export default function ProductPage({ params }: Props) {
                           <img
                             src={`/images/imagen-4.webp`}
                             alt="Obsequios adicionales"
+                            loading="lazy"
+                            decoding="async"
                             className="block h-auto w-full object-contain"
                           />
                         </div>

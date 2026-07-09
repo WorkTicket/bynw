@@ -78,6 +78,8 @@ export default function AboutPage() {
                       <img
                         src="/images/imagen-1.webp"
                         alt="Manos Creativas Bynmw"
+                        loading="lazy"
+                        decoding="async"
                         className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
                       />
                     </div>

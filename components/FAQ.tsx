@@ -13,11 +13,29 @@ const faqs = [
   { q: "¿Tenéis soporte si tengo dudas?", a: "Sí. Natalia responde por WhatsApp si te atascas con algún patrón o técnica." },
 ]
 
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: f.a,
+    },
+  })),
+}
+
 export default function FAQ() {
   const [openIdx, setOpenIdx] = useState<number | null>(null)
 
   return (
-    <section className="section-white section-padding overflow-hidden">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <section className="section-white section-padding overflow-hidden">
       <div className="pointer-events-none absolute inset-0">
         <HelpCircleIcon className="absolute top-8 right-[8%] text-rose-200/20 animate-breathe hidden sm:block" size={36} style={{ animationDelay: "0.5s" }} />
       </div>
@@ -57,5 +75,6 @@ export default function FAQ() {
         </div>
       </div>
     </section>
+    </>
   )
 }

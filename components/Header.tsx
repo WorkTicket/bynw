@@ -132,6 +132,9 @@ export default function Header() {
                 <img
                   src="/images/logo.webp"
                   alt="Manos Creativas Bynmw"
+                  fetchPriority="high"
+                  width="36"
+                  height="36"
                   className="h-full w-full object-cover"
                 />
               </div>

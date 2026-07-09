@@ -1,7 +1,17 @@
 import Link from "next/link"
+import Image from "next/image"
 import type { Product } from "@/lib/products"
 import { parsePriceValue } from "@/lib/pricing"
-import { LayersIcon } from "@/lib/icons"
+import { LayersIcon, EyeIcon } from "@/lib/icons"
+
+const RANDOM_VIEWERS = [4, 7, 11, 3, 8, 6, 13, 9, 5, 10]
+const RANDOM_BOUGHT = [32, 47, 28, 53, 41, 36, 44, 39, 51, 29]
+
+function seededRandom(seed: string, list: number[]) {
+  let hash = 0
+  for (let i = 0; i < seed.length; i++) hash = ((hash << 5) - hash) + seed.charCodeAt(i)
+  return list[Math.abs(hash) % list.length]
+}
 
 type Props = {
   product: Product
@@ -13,6 +23,8 @@ export default function ProductCard({ product }: Props) {
   const discount = originalNum > 0
     ? Math.round((1 - priceNum / originalNum) * 100)
     : 0
+  const savings = originalNum - priceNum
+  const monthlyPrice = Math.round(priceNum / 4)
 
   return (
     <Link href={`/shop/${product.slug}`} className="group block h-full">
@@ -20,17 +32,22 @@ export default function ProductCard({ product }: Props) {
         <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-rose-300 via-pink-500 to-rose-300 scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100" />
 
         <div className="aspect-[4/3] overflow-hidden bg-rose-50/40 relative">
-          <img
+          <Image
             src={`/images/${product.images[0]}`}
             alt={product.title}
-            loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
           />
           {discount >= 50 && (
             <span className="absolute top-3 right-3 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 px-2.5 py-1 text-[10px] font-bold text-white shadow-lg shadow-rose-500/30">
               -{discount}%
             </span>
           )}
+          <div className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full bg-black/60 backdrop-blur-sm px-3 py-1.5 text-[10px] font-semibold text-white shadow-lg animate-pulse">
+            <EyeIcon className="text-rose-300" size={11} />
+            {seededRandom(product.id, RANDOM_VIEWERS)} personas viendo esto
+          </div>
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         </div>
 
@@ -45,10 +62,14 @@ export default function ProductCard({ product }: Props) {
           </h3>
 
           <div className="mt-3 flex items-center gap-3">
-            <span className="text-xl font-bold gradient-text-rose">{product.price}</span>
+            <span className="text-2xl font-bold gradient-text-rose">{product.price}</span>
             <span className="text-sm text-muted/40 line-through font-medium">{product.originalPrice}</span>
             <span className="text-[10px] font-semibold text-rose-600 bg-rose-50 rounded-full px-2 py-0.5 border border-rose-200">{discount}% OFF</span>
           </div>
+
+          <p className="mt-1 text-[11px] font-medium text-green-600 bg-green-50 rounded-full px-2 py-0.5 self-start">
+            Ahorras {product.price.includes("€") ? `${savings}€` : product.price.includes("MX$") ? `MX$${savings}` : `${savings}`}
+          </p>
 
           <p className="mt-3 flex-1 text-sm text-muted leading-relaxed">
             {product.description}

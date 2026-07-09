@@ -265,6 +265,10 @@ export default function ShopPage() {
                         <img
                           src={`/images/${t.image}`}
                           alt={t.name}
+                          loading="lazy"
+                          decoding="async"
+                          width="56"
+                          height="56"
                           className="h-full w-full object-cover"
                         />
                       </div>
@@ -342,6 +346,10 @@ export default function ShopPage() {
                       <img
                         src="/images/manoscreative.webp"
                         alt="Natalia - Fundadora"
+                        loading="lazy"
+                        decoding="async"
+                        width="112"
+                        height="112"
                         className="h-full w-full object-cover"
                       />
                     </div>

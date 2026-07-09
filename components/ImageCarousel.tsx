@@ -8,7 +8,7 @@ type Props = {
   interval?: number
   className?: string
   noAutoplay?: boolean
-  /** Tailwind aspect class (e.g. aspect-video). Omit for natural image height. */
+  /** Tailwind aspect class (e.g. aspect-video). Defaults to aspect-square. */
   aspect?: string
   alt?: string
 }
@@ -26,28 +26,18 @@ export default function ImageCarousel({ images, interval = 2000, className = "",
 
   if (images.length === 0) return null
 
-  const frame = aspect ?? ""
+  const frame = aspect ?? "aspect-square"
 
   return (
     <div className={`group relative shadow-soft ${className}`}>
       <div className={`overflow-hidden rounded-2xl2 bg-rose-50/40 ring-1 ring-rose-200/30 ${frame}`}>
-        {frame ? (
-          <div className="flex h-full w-full items-center justify-center">
-            <img
-              src={`/images/${images[idx]}`}
-              alt={alt}
-              loading="lazy"
-              className="max-h-full max-w-full object-contain transition-opacity duration-500 ease-out"
-            />
-          </div>
-        ) : (
+        <div className="flex h-full w-full items-center justify-center">
           <img
             src={`/images/${images[idx]}`}
             alt={alt}
-            loading="lazy"
-            className="block h-auto w-full object-contain transition-all duration-700 ease-out"
+            className="max-h-full max-w-full object-contain transition-all duration-700 ease-out"
           />
-        )}
+        </div>
       </div>
 
       {images.length > 1 && (

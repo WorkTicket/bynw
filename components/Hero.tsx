@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import LeadMagnet from "./LeadMagnet"
 import { useCountry } from "./CountryProvider"
 import { ShoppingBagIcon, ScissorsIcon, FlowerIcon, CrochetHookIcon } from "@/lib/icons"
@@ -57,14 +58,17 @@ export default function Hero() {
           </div>
 
           <div className="mt-8 flex w-full max-w-sm flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center lg:justify-start">
-            <a href="/shop" className="btn-cute w-full sm:w-auto text-sm sm:text-base px-8 py-4 inline-flex items-center justify-center gap-2">
-              <ShoppingBagIcon className="text-white/90" size={18} />
+            <a href="/shop" className="btn-cute w-full sm:w-auto text-sm sm:text-base px-10 py-5 inline-flex items-center justify-center gap-2 shadow-xl shadow-rose-500/30 hover:shadow-2xl hover:shadow-rose-500/40 text-lg">
+              <ShoppingBagIcon className="text-white/90" size={20} />
               Ver Colecciones
             </a>
             <a href="/about" className="btn-secondary w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4">
               Conocer más
             </a>
           </div>
+          <p className="mt-3 text-xs text-muted/60 text-center lg:text-left">
+            Desde solo {heroPrice} — Acceso inmediato de por vida
+          </p>
 
           <div className="mt-8 w-full max-w-lg rounded-2xl2 glass-rose border border-rose-100/80 p-6 shadow-soft sm:p-7 lg:max-w-xl">
             <div className="mb-5 flex items-start gap-3">
@@ -82,8 +86,8 @@ export default function Hero() {
           <div className="mt-7 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
             <div className="flex -space-x-2">
               {["imagen-18.webp", "imagen-18-1.webp", "imagen-18-2.webp", "imagen-18-3.webp"].map((img) => (
-                <div key={img} className="h-9 w-9 overflow-hidden rounded-full border-2 border-white shadow-md ring-1 ring-rose-200/50">
-                  <img src={`/images/${img}`} alt="Cliente satisfecha" className="h-full w-full object-cover" />
+                <div key={img} className="h-9 w-9 overflow-hidden rounded-full border-2 border-white shadow-md ring-1 ring-rose-200/50 relative">
+                  <Image src={`/images/${img}`} alt="Cliente satisfecha" fill className="object-cover" sizes="36px" />
                 </div>
               ))}
               <div className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-rose-400 to-pink-500 text-[10px] font-bold text-white shadow-md ring-1 ring-rose-200/50">
@@ -101,12 +105,12 @@ export default function Hero() {
           <div className="relative">
             <div className="absolute -inset-3 rounded-4xl bg-gradient-to-br from-rose-200/50 via-pink-200/40 to-lavender-200/40 blur-xl opacity-70" />
             <div className="relative overflow-hidden rounded-3xl2 bg-rose-50/50 shadow-premium ring-2 ring-white/80">
-              <img
+              <Image
                 src="/images/imagen-1.webp"
                 alt="Colección Maestra de Patrones de Amigurumis y Flores en Crochet"
-                width="1200"
-                height="900"
-                fetchPriority="high"
+                width={1200}
+                height={900}
+                priority
                 className="block h-auto w-full object-contain transition-transform duration-700 hover:scale-[1.02]"
               />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-rose-900/10 via-transparent to-white/10" />

@@ -66,7 +66,7 @@ export default function Testimonials() {
 
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 overflow-hidden rounded-full ring-2 ring-rose-200">
-                  <img src={`/images/${t.avatar}`} alt={t.name} className="h-full w-full object-cover" />
+                  <img src={`/images/${t.avatar}`} alt={t.name} loading="lazy" decoding="async" width="40" height="40" className="h-full w-full object-cover" />
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-ink">{t.name}</p>

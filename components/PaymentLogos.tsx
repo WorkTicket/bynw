@@ -47,7 +47,7 @@ export default function PaymentLogos({ className = "h-5" }: { className?: string
           <OxxoLogo />
           <MercadoPagoLogo />
           <SpeiLogo />
-          <img src="/images/paypal.svg" alt="PayPal" className="h-full w-auto" />
+          <img src="/images/paypal.svg" alt="PayPal" loading="lazy" decoding="async" className="h-full w-auto" />
         </>
       ) : (
         euLogos.map((logo) => (
@@ -55,6 +55,8 @@ export default function PaymentLogos({ className = "h-5" }: { className?: string
             key={logo.alt}
             src={logo.src}
             alt={logo.alt}
+            loading="lazy"
+            decoding="async"
             className="h-full w-auto"
           />
         ))

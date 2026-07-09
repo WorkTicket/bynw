@@ -172,12 +172,16 @@ export default async function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://static.hotmart.com" />
+        <link rel="preconnect" href="https://static.hotmart.com" />
+        <link rel="dns-prefetch" href="https://checkout.hotmart.com" />
+        <link rel="dns-prefetch" href="https://api.hotmart.com" />
+        <link rel="dns-prefetch" href="https://connect.facebook.net" />
         <link
           rel="preload"
           as="image"
           href="/images/imagen-1.webp"
           fetchPriority="high"
+          crossOrigin="anonymous"
         />
         <script
           type="application/ld+json"
