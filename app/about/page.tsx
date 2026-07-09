@@ -1,14 +1,31 @@
 import { Metadata } from "next"
 import ScrollReveal from "@/components/ScrollReveal"
 
+const ABOUT_URL = "https://bynmwcreative.com/about"
+
 export const metadata: Metadata = {
   title: "Nosotros",
   description:
-    "Conoce la historia de Manos Creativas Bynmw y nuestra pasión por el crochet.",
+    "Conoce la historia de Manos Creativas Bynmw y nuestra pasión por el crochet. Patrones en PDF para México y España.",
+  alternates: {
+    canonical: ABOUT_URL,
+    languages: {
+      "es-MX": ABOUT_URL,
+      "es-ES": ABOUT_URL,
+      "x-default": ABOUT_URL,
+    },
+  },
   openGraph: {
     title: "Nosotros | Manos Creativas Bynmw",
     description:
-      "Conoce nuestra historia y misión.",
+      "Conoce nuestra historia y misión. Patrones de crochet para tejedoras en México y España.",
+    url: ABOUT_URL,
+  },
+  twitter: {
+    card: "summary",
+    title: "Nosotros | Manos Creativas Bynmw",
+    description:
+      "Conoce nuestra historia y pasión por el crochet.",
   },
 }
 

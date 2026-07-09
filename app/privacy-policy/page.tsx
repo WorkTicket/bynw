@@ -1,8 +1,30 @@
 import { Metadata } from "next"
 import ScrollReveal from "@/components/ScrollReveal"
 
+const PRIVACY_URL = "https://bynmwcreative.com/privacy-policy"
+
 export const metadata: Metadata = {
   title: "Política de Privacidad",
+  description:
+    "Política de privacidad de Manos Creativas Bynmw. Información sobre cómo recopilamos, usamos y protegemos tus datos personales.",
+  alternates: {
+    canonical: PRIVACY_URL,
+    languages: {
+      "es-MX": PRIVACY_URL,
+      "es-ES": PRIVACY_URL,
+      "x-default": PRIVACY_URL,
+    },
+  },
+  openGraph: {
+    title: "Política de Privacidad | Manos Creativas Bynmw",
+    description:
+      "Cómo protegemos tus datos personales. Política de privacidad.",
+    url: PRIVACY_URL,
+  },
+  robots: {
+    index: true,
+    follow: false,
+  },
 }
 
 export default function PrivacyPolicyPage() {

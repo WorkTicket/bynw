@@ -2,10 +2,32 @@ import type { Metadata } from "next"
 import Testimonials from "@/components/Testimonials"
 import ImageCarousel from "@/components/ImageCarousel"
 
+const TESTIMONIALS_URL = "https://bynmwcreative.com/testimonials"
+
 export const metadata: Metadata = {
   title: "Testimonios",
   description:
-    "Lo que dicen nuestras clientas sobre las colecciones de patrones de crochet de Manos Creativas Bynmw.",
+    "Más de 500 clientas en México y España confían en Manos Creativas Bynmw. Descubre lo que dicen sobre nuestras colecciones de patrones de crochet en PDF.",
+  alternates: {
+    canonical: TESTIMONIALS_URL,
+    languages: {
+      "es-MX": TESTIMONIALS_URL,
+      "es-ES": TESTIMONIALS_URL,
+      "x-default": TESTIMONIALS_URL,
+    },
+  },
+  openGraph: {
+    title: "Testimonios | Manos Creativas Bynmw",
+    description:
+      "Más de 500 clientas en México y España confían en nuestras colecciones de patrones de crochet.",
+    url: TESTIMONIALS_URL,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Testimonios | Manos Creativas Bynmw",
+    description:
+      "Más de 500 artesanas confían en nosotros.",
+  },
 }
 
 const reviewScreenshots = [

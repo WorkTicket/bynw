@@ -8,11 +8,28 @@ import { getCountry } from "@/lib/country"
 
 const sectionHeading = "font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-ink tracking-tight leading-snug"
 
+const SHOP_URL = "https://bynmwcreative.com/shop"
+
 export const metadata: Metadata = {
   title: "Colección Maestra de Patrones",
   description:
-    "Patrones de crochet en PDF: amigurumis, Princesas Disney y Flores Eternas. Para todos los niveles.",
+    "Patrones de crochet en PDF: amigurumis, Princesas Disney y Flores Eternas. Para todos los niveles. Envío inmediato a México y España.",
+  alternates: {
+    canonical: SHOP_URL,
+    languages: {
+      "es-MX": SHOP_URL,
+      "es-ES": SHOP_URL,
+      "x-default": SHOP_URL,
+    },
+  },
   openGraph: {
+    title: "Colección Maestra | Manos Creativas Bynmw",
+    description:
+      "Patrones de crochet en PDF: amigurumis, Princesas Disney y Flores Eternas. Descarga inmediata en México y España.",
+    url: SHOP_URL,
+  },
+  twitter: {
+    card: "summary_large_image",
     title: "Colección Maestra | Manos Creativas Bynmw",
     description:
       "Patrones de crochet en PDF: amigurumis, Princesas Disney y Flores Eternas.",

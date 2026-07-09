@@ -1,13 +1,29 @@
 import { Metadata } from "next"
 import ScrollReveal from "@/components/ScrollReveal"
 
+const CONTACT_URL = "https://bynmwcreative.com/contact"
+
 export const metadata: Metadata = {
   title: "Contacto",
   description:
-    "Ponte en contacto con Manos Creativas Bynmw por WhatsApp. Estamos aquí para ayudarte.",
+    "Ponte en contacto con Manos Creativas Bynmw por WhatsApp. Atención personalizada para México y España. Estamos aquí para ayudarte.",
+  alternates: {
+    canonical: CONTACT_URL,
+    languages: {
+      "es-MX": CONTACT_URL,
+      "es-ES": CONTACT_URL,
+      "x-default": CONTACT_URL,
+    },
+  },
   openGraph: {
     title: "Contacto | Manos Creativas Bynmw",
-    description: "Escríbenos por WhatsApp.",
+    description: "Escríbenos por WhatsApp. Atención personalizada para tejedoras en México y España.",
+    url: CONTACT_URL,
+  },
+  twitter: {
+    card: "summary",
+    title: "Contacto | Manos Creativas Bynmw",
+    description: "Escríbenos por WhatsApp. Estamos aquí para ayudarte.",
   },
 }
 

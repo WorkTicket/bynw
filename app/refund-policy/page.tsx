@@ -1,8 +1,30 @@
 import { Metadata } from "next"
 import ScrollReveal from "@/components/ScrollReveal"
 
+const REFUND_URL = "https://bynmwcreative.com/refund-policy"
+
 export const metadata: Metadata = {
   title: "Política de Reembolso",
+  description:
+    "Política de reembolso de Manos Creativas Bynmw. Garantía de 7 días en todas nuestras colecciones de patrones de crochet en PDF.",
+  alternates: {
+    canonical: REFUND_URL,
+    languages: {
+      "es-MX": REFUND_URL,
+      "es-ES": REFUND_URL,
+      "x-default": REFUND_URL,
+    },
+  },
+  openGraph: {
+    title: "Política de Reembolso | Manos Creativas Bynmw",
+    description:
+      "Garantía de 7 días en todas nuestras colecciones de patrones de crochet.",
+    url: REFUND_URL,
+  },
+  robots: {
+    index: true,
+    follow: false,
+  },
 }
 
 export default function RefundPolicyPage() {

@@ -1,8 +1,30 @@
 import { Metadata } from "next"
 import ScrollReveal from "@/components/ScrollReveal"
 
+const TERMS_URL = "https://bynmwcreative.com/terms"
+
 export const metadata: Metadata = {
   title: "Términos y Condiciones",
+  description:
+    "Términos y condiciones de Manos Creativas Bynmw. Conoce nuestras políticas de uso del sitio web y compra de patrones de crochet en PDF.",
+  alternates: {
+    canonical: TERMS_URL,
+    languages: {
+      "es-MX": TERMS_URL,
+      "es-ES": TERMS_URL,
+      "x-default": TERMS_URL,
+    },
+  },
+  openGraph: {
+    title: "Términos y Condiciones | Manos Creativas Bynmw",
+    description:
+      "Términos y condiciones de uso del sitio web y compra de patrones de crochet.",
+    url: TERMS_URL,
+  },
+  robots: {
+    index: true,
+    follow: false,
+  },
 }
 
 export default function TermsPage() {

@@ -1,6 +1,20 @@
+import type { Metadata } from "next"
 import dynamic from "next/dynamic"
 import Hero from "@/components/Hero"
 import TrustBar from "@/components/TrustBar"
+
+const SITE_URL = "https://bynmwcreative.com"
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: SITE_URL,
+    languages: {
+      "es-MX": SITE_URL,
+      "es-ES": SITE_URL,
+      "x-default": SITE_URL,
+    },
+  },
+}
 
 const Testimonials = dynamic(() => import("@/components/Testimonials"))
 const FeatureGrid = dynamic(() => import("@/components/FeatureGrid"))
@@ -17,10 +31,10 @@ export default function HomePage() {
     <div className="page-sections">
       <Hero />
       <TrustBar />
-      <Testimonials />
       <FeatureGrid />
-      <BonusStack />
       <ProductGrid />
+      <Testimonials />
+      <BonusStack />
       <Guarantee />
       <WhatsAppSupport />
       <FAQ />

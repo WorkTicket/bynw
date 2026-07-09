@@ -1,8 +1,30 @@
 import { Metadata } from "next"
 import ScrollReveal from "@/components/ScrollReveal"
 
+const COOKIES_URL = "https://bynmwcreative.com/cookies-policy"
+
 export const metadata: Metadata = {
   title: "Política de Cookies",
+  description:
+    "Política de cookies de Manos Creativas Bynmw. Información sobre las cookies que utilizamos en nuestro sitio web y cómo gestionarlas.",
+  alternates: {
+    canonical: COOKIES_URL,
+    languages: {
+      "es-MX": COOKIES_URL,
+      "es-ES": COOKIES_URL,
+      "x-default": COOKIES_URL,
+    },
+  },
+  openGraph: {
+    title: "Política de Cookies | Manos Creativas Bynmw",
+    description:
+      "Información sobre las cookies que utilizamos y cómo gestionarlas.",
+    url: COOKIES_URL,
+  },
+  robots: {
+    index: true,
+    follow: false,
+  },
 }
 
 export default function CookiesPolicyPage() {

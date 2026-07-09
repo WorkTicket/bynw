@@ -17,12 +17,34 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = getProductBySlug(params.slug)
   if (!product) return {}
+  const url = `https://bynmwcreative.com/shop/${params.slug}`
+  const desc = product.description.slice(0, 160)
   return {
     title: product.title,
-    description: product.description.slice(0, 160),
+    description: desc,
+    alternates: {
+      canonical: url,
+      languages: {
+        "es-MX": url,
+        "es-ES": url,
+        "x-default": url,
+      },
+    },
     openGraph: {
       title: `${product.title} | Manos Creativas Bynmw`,
-      description: product.description.slice(0, 160),
+      description: desc,
+      url,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${product.title} | Manos Creativas Bynmw`,
+      description: desc,
+    },
+    robots: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
     },
   }
 }
@@ -35,6 +57,11 @@ export default function ProductPage({ params }: Props) {
   if (!product) notFound()
 
   const localizedProduct = getLocalizedProduct(product, country)
+  const priceNum = parseFloat(localizedProduct.price.replace(/[^0-9.,]/g, "").replace(",", "."))
+  const originalNum = parseFloat(localizedProduct.originalPrice.replace(/[^0-9.,]/g, "").replace(",", "."))
+  const savings = originalNum - priceNum
+  const savingsFormatted = localizedProduct.price.includes("MX$") ? `MX$${Math.round(savings)}` : `${savings}€`
+  const discount = originalNum > 0 ? Math.round((1 - priceNum / originalNum) * 100) : 0
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -106,6 +133,10 @@ export default function ProductPage({ params }: Props) {
                     </span>
                     <span className="text-lg sm:text-xl text-muted/40 line-through">
                       {localizedProduct.originalPrice}
+                    </span>
+                    <span className="inline-flex items-center gap-1 rounded-full bg-green-50 text-green-700 px-3 py-1 text-sm font-bold border border-green-200">
+                      <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                      Ahorras {savingsFormatted} ({discount}%)
                     </span>
                   </div>
 
