@@ -2,16 +2,8 @@ import Link from "next/link"
 import Image from "next/image"
 import type { Product } from "@/lib/products"
 import { parsePriceValue } from "@/lib/pricing"
-import { LayersIcon, EyeIcon } from "@/lib/icons"
-
-const RANDOM_VIEWERS = [4, 7, 11, 3, 8, 6, 13, 9, 5, 10]
-const RANDOM_BOUGHT = [32, 47, 28, 53, 41, 36, 44, 39, 51, 29]
-
-function seededRandom(seed: string, list: number[]) {
-  let hash = 0
-  for (let i = 0; i < seed.length; i++) hash = ((hash << 5) - hash) + seed.charCodeAt(i)
-  return list[Math.abs(hash) % list.length]
-}
+import { LayersIcon } from "@/lib/icons"
+import LiveViewerCount from "@/components/LiveViewerCount"
 
 type Props = {
   product: Product
@@ -24,7 +16,6 @@ export default function ProductCard({ product }: Props) {
     ? Math.round((1 - priceNum / originalNum) * 100)
     : 0
   const savings = originalNum - priceNum
-  const monthlyPrice = Math.round(priceNum / 4)
 
   return (
     <Link href={`/shop/${product.slug}`} className="group block h-full">
@@ -44,10 +35,7 @@ export default function ProductCard({ product }: Props) {
               -{discount}%
             </span>
           )}
-          <div className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full bg-black/60 backdrop-blur-sm px-3 py-1.5 text-[10px] font-semibold text-white shadow-lg animate-pulse">
-            <EyeIcon className="text-rose-300" size={11} />
-            {seededRandom(product.id, RANDOM_VIEWERS)} personas viendo esto
-          </div>
+          <LiveViewerCount productId={product.id} />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         </div>
 
