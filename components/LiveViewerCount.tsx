@@ -1,36 +1,54 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { EyeIcon } from "@/lib/icons"
 
-const BASE_VIEWERS = [3, 5, 7, 2, 6, 4, 9, 8, 4, 6]
+function getStoredCount(productId: string): number {
+  if (typeof window === "undefined") return 1
+  const raw = localStorage.getItem(`viewers_${productId}`)
+  const n = raw ? parseInt(raw, 10) : 0
+  return n > 0 ? n : 1
+}
 
-function seedFromId(id: string, list: number[]): number {
-  let hash = 0
-  for (let i = 0; i < id.length; i++) hash = ((hash << 5) - hash) + id.charCodeAt(i)
-  return list[Math.abs(hash) % list.length]
+function storeCount(productId: string, count: number) {
+  localStorage.setItem(`viewers_${productId}`, String(count))
 }
 
 export default function LiveViewerCount({ productId }: { productId: string }) {
-  const base = useRef(seedFromId(productId, BASE_VIEWERS))
-  const [count, setCount] = useState(base.current)
+  const [count, setCount] = useState(1)
 
   useEffect(() => {
-    const interval = 3000 + (base.current * 1000)
-    const cap = base.current + 20
-    const timer = setInterval(() => {
-      setCount((prev) => {
-        if (prev >= cap) return prev
-        return prev + 1
-      })
-    }, interval)
+    setCount(getStoredCount(productId))
+  }, [productId])
+
+  const bump = useCallback(() => {
+    setCount((prev) => {
+      const next = prev + 1
+      storeCount(productId, next)
+      return next
+    })
+  }, [productId])
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      const target = e.target as HTMLElement
+      const card = target.closest(`[data-product-card="${productId}"]`)
+      if (card) bump()
+    }
+    document.addEventListener("click", handler, { capture: true })
+    return () => document.removeEventListener("click", handler, { capture: true })
+  }, [productId, bump])
+
+  useEffect(() => {
+    const tick = 4000 + Math.floor(Math.random() * 6000)
+    const timer = setInterval(bump, tick)
     return () => clearInterval(timer)
-  }, [])
+  }, [bump])
 
   return (
     <div className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full bg-black/60 backdrop-blur-sm px-3 py-1.5 text-[10px] font-semibold text-white shadow-lg animate-pulse">
       <EyeIcon className="text-rose-300" size={11} />
-      {count} personas viendo esto
+      {count} {count === 1 ? "persona viendo esto" : "personas viendo esto"}
     </div>
   )
 }

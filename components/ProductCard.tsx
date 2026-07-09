@@ -19,7 +19,7 @@ export default function ProductCard({ product }: Props) {
 
   return (
     <Link href={`/shop/${product.slug}`} className="group block h-full">
-      <div className="relative flex h-full flex-col overflow-hidden rounded-3xl2 bg-white border border-rose-100/40 shadow-soft transition-all duration-500 hover:shadow-premium hover:-translate-y-1.5 hover:border-rose-200/60">
+      <div data-product-card={product.id} className="relative flex h-full flex-col overflow-hidden rounded-3xl2 bg-white border border-rose-100/40 shadow-soft transition-all duration-500 hover:shadow-premium hover:-translate-y-1.5 hover:border-rose-200/60">
         <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-rose-300 via-pink-500 to-rose-300 scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100" />
 
         <div className="aspect-[4/3] overflow-hidden bg-rose-50/40 relative">
