@@ -10,17 +10,44 @@ function todayKey() {
 
 function getDailyCount(productId: string): number {
   if (typeof window === "undefined") return 1
-  const storedDate = localStorage.getItem(`viewers_date_${productId}`)
   const today = todayKey()
-  if (storedDate !== today) return 1
+  const storedDate = localStorage.getItem(`viewers_date_${productId}`)
+  if (storedDate !== today) {
+    localStorage.setItem(`viewers_date_${productId}`, today)
+    localStorage.setItem(`viewers_${productId}`, "1")
+    localStorage.removeItem(`viewers_clicked_${productId}`)
+    return 1
+  }
   const raw = localStorage.getItem(`viewers_${productId}`)
   const n = raw ? parseInt(raw, 10) : 0
   return n > 0 ? n : 1
 }
 
-function storeDailyCount(productId: string, count: number) {
-  localStorage.setItem(`viewers_date_${productId}`, todayKey())
-  localStorage.setItem(`viewers_${productId}`, String(count))
+function bumpAndStore(productId: string) {
+  const today = todayKey()
+  const storedDate = localStorage.getItem(`viewers_date_${productId}`)
+  const alreadyClicked = localStorage.getItem(`viewers_clicked_${productId}`) === today
+
+  if (storedDate !== today) {
+    localStorage.setItem(`viewers_date_${productId}`, today)
+    localStorage.setItem(`viewers_${productId}`, "2")
+    localStorage.setItem(`viewers_clicked_${productId}`, today)
+    return 2
+  }
+
+  if (alreadyClicked) {
+    const raw = localStorage.getItem(`viewers_${productId}`)
+    const n = raw ? parseInt(raw, 10) : 0
+    return n > 0 ? n : 1
+  }
+
+  const raw = localStorage.getItem(`viewers_${productId}`)
+  const prev = raw ? parseInt(raw, 10) : 0
+  const next = (prev > 0 ? prev : 1) + 1
+  localStorage.setItem(`viewers_date_${productId}`, today)
+  localStorage.setItem(`viewers_${productId}`, String(next))
+  localStorage.setItem(`viewers_clicked_${productId}`, today)
+  return next
 }
 
 export default function LiveViewerCount({ productId }: { productId: string }) {
@@ -31,11 +58,7 @@ export default function LiveViewerCount({ productId }: { productId: string }) {
   }, [productId])
 
   const bump = useCallback(() => {
-    setCount((prev) => {
-      const next = prev + 1
-      storeDailyCount(productId, next)
-      return next
-    })
+    setCount(bumpAndStore(productId))
   }, [productId])
 
   useEffect(() => {
