@@ -88,22 +88,24 @@ export default function HotmartBuyButton({ href, children, className }: Props) {
   return (
     <span className={`group relative inline-flex w-full ${className ?? ''}`}>
       <span className="absolute inset-0 pointer-events-none overflow-visible" aria-hidden>
-        {Array.from({ length: 6 }).map((_, i) => {
-          const angle = (i / 6) * 360
+        {Array.from({ length: 5 }).map((_, i) => {
+          const angle = (i / 5) * 360 - 90
           const rad = (angle * Math.PI) / 180
-          const x = 50 + 30 * Math.cos(rad)
-          const y = 50 + 30 * Math.sin(rad)
+          const x = 50 + 35 * Math.cos(rad)
+          const y = 50 + 35 * Math.sin(rad)
           return (
             <span
               key={i}
-              className="heart-burst absolute"
+              className="heart-burst absolute flex items-center justify-center"
               style={{
                 left: `${x}%`,
                 top: `${y}%`,
-                animationDelay: `${i * 0.4}s`,
+                width: "1px",
+                height: "1px",
+                animationDelay: `${i * 0.65}s`,
               }}
             >
-              <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-rose-400/70" viewBox="0 0 32 32" fill="currentColor">
+              <svg className="w-3.5 h-3.5 text-rose-400/80" viewBox="0 0 32 32" fill="currentColor">
                 <path d="M16 28S4 20 4 12a5 5 0 018-3.5A5 5 0 0128 12c0 8-12 16-12 16z" />
               </svg>
             </span>
