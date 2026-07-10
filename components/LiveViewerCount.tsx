@@ -3,14 +3,23 @@
 import { useState, useEffect, useCallback } from "react"
 import { EyeIcon } from "@/lib/icons"
 
-function getStoredCount(productId: string): number {
+function todayKey() {
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`
+}
+
+function getDailyCount(productId: string): number {
   if (typeof window === "undefined") return 1
+  const storedDate = localStorage.getItem(`viewers_date_${productId}`)
+  const today = todayKey()
+  if (storedDate !== today) return 1
   const raw = localStorage.getItem(`viewers_${productId}`)
   const n = raw ? parseInt(raw, 10) : 0
   return n > 0 ? n : 1
 }
 
-function storeCount(productId: string, count: number) {
+function storeDailyCount(productId: string, count: number) {
+  localStorage.setItem(`viewers_date_${productId}`, todayKey())
   localStorage.setItem(`viewers_${productId}`, String(count))
 }
 
@@ -18,13 +27,13 @@ export default function LiveViewerCount({ productId }: { productId: string }) {
   const [count, setCount] = useState(1)
 
   useEffect(() => {
-    setCount(getStoredCount(productId))
+    setCount(getDailyCount(productId))
   }, [productId])
 
   const bump = useCallback(() => {
     setCount((prev) => {
       const next = prev + 1
-      storeCount(productId, next)
+      storeDailyCount(productId, next)
       return next
     })
   }, [productId])
