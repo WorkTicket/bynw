@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, useCallback, useRef } from "react"
+import { useEffect, useState, useCallback } from "react"
 import LeadMagnet from "./LeadMagnet"
 import { GiftIcon } from "@/lib/icons"
 import { GIFT_MAGNET } from "@/lib/gift-magnet"
@@ -8,7 +8,6 @@ import { GIFT_MAGNET } from "@/lib/gift-magnet"
 export default function ExitIntentPopup() {
   const [show, setShow] = useState(false)
   const [dismissed, setDismissed] = useState(false)
-  const scrollFired = useRef(false)
 
   const trigger = useCallback(() => {
     if (dismissed || sessionStorage.getItem("exit-intent-dismissed")) return
@@ -21,20 +20,8 @@ export default function ExitIntentPopup() {
 
   useEffect(() => {
     document.addEventListener("mouseleave", handleMouseLeave)
-
-    const onScroll = () => {
-      if (scrollFired.current) return
-      const pct = document.documentElement.scrollTop / (document.documentElement.scrollHeight - window.innerHeight)
-      if (pct >= 0.5) {
-        scrollFired.current = true
-        trigger()
-      }
-    }
-    window.addEventListener("scroll", onScroll, { passive: true })
-
     return () => {
       document.removeEventListener("mouseleave", handleMouseLeave)
-      window.removeEventListener("scroll", onScroll)
     }
   }, [handleMouseLeave, trigger])
 

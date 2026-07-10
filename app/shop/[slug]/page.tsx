@@ -336,7 +336,7 @@ export default function ProductPage({ params }: Props) {
               <div className="mt-20 sm:mt-28 text-center">
                 <div className="relative mx-auto max-w-lg">
                   <div className="absolute -inset-6 rounded-3xl2 bg-wine-gradient opacity-5 blur-2xl" />
-                  <div className="relative rounded-2xl2 bg-white border border-wine-100/30 p-8 shadow-card">
+                    <div className="relative rounded-2xl2 bg-white border border-wine-100/30 p-6 sm:p-8 shadow-card">
                     <h2 className={`${sectionHeading}`}>
                       ¿Lista para empezar?
                     </h2>
