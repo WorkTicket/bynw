@@ -87,15 +87,27 @@ export default function HotmartBuyButton({ href, children, className }: Props) {
 
   return (
     <span className={`group relative inline-flex w-full ${className ?? ''}`}>
-      <span
-        className="buy-btn-pulse-ring absolute inset-0 rounded-full bg-rose-400/45 animate-ping pointer-events-none motion-reduce:hidden group-hover:hidden"
-        aria-hidden
-      />
+      <span className="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden>
+        <span className="heart-pulse-ring absolute inset-0 flex items-center justify-center">
+          <svg className="h-full w-full text-rose-400/60 animate-heartbeat" viewBox="0 0 32 32" fill="currentColor">
+            <path d="M16 28S4 20 4 12a5 5 0 018-3.5A5 5 0 0128 12c0 8-12 16-12 16z" />
+          </svg>
+        </span>
+        <span className="heart-float heart-float-1 absolute text-rose-300/50" aria-hidden>
+          <svg className="h-3 w-3 sm:h-3.5 sm:w-3.5" viewBox="0 0 32 32" fill="currentColor"><path d="M16 28S4 20 4 12a5 5 0 018-3.5A5 5 0 0128 12c0 8-12 16-12 16z" /></svg>
+        </span>
+        <span className="heart-float heart-float-2 absolute text-pink-300/50" aria-hidden>
+          <svg className="h-2.5 w-2.5 sm:h-3 sm:w-3" viewBox="0 0 32 32" fill="currentColor"><path d="M16 28S4 20 4 12a5 5 0 018-3.5A5 5 0 0128 12c0 8-12 16-12 16z" /></svg>
+        </span>
+        <span className="heart-float heart-float-3 absolute text-rose-400/40" aria-hidden>
+          <svg className="h-2 w-2 sm:h-2.5 sm:w-2.5" viewBox="0 0 32 32" fill="currentColor"><path d="M16 28S4 20 4 12a5 5 0 018-3.5A5 5 0 0128 12c0 8-12 16-12 16z" /></svg>
+        </span>
+      </span>
       <a
         ref={anchorRef}
         href={href}
         data-track-hotmart-click={href}
-        className="hotmart-fb hotmart__button-checkout btn-collection-buy relative z-10 w-full text-sm sm:text-base py-4 sm:py-5"
+        className="hotmart-fb hotmart__button-checkout btn-collection-buy relative z-10 w-full text-sm sm:text-base py-4 sm:py-5 animate-heartbeat-btn"
         onClick={(e) => {
           if (!isMobileCheckout()) e.preventDefault()
         }}

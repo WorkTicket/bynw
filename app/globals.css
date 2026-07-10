@@ -360,7 +360,6 @@ html {
   letter-spacing: 0.05em !important;
   text-align: center !important;
   text-shadow: none !important;
-  animation: collection-buy-pulse 1.8s ease-in-out infinite !important;
   transition: none !important;
   box-shadow: 0 8px 25px rgba(240, 62, 125, 0.35) !important;
 }
@@ -381,6 +380,99 @@ html {
   transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease !important;
 }
 
+/* Heartbeat pulse on the CTA button */
+.animate-heartbeat-btn {
+  animation: heartbeat-btn 1.4s ease-in-out infinite;
+}
+
+@keyframes heartbeat-btn {
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.08); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.06); }
+  56% { transform: scale(1); }
+  70% { transform: scale(1.03); }
+  84% { transform: scale(1); }
+}
+
+/* Large heart pulse ring behind the button */
+.animate-heartbeat {
+  animation: heartbeat-ring 1.4s ease-in-out infinite;
+}
+
+@keyframes heartbeat-ring {
+  0%, 100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  14% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+  28% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  42% {
+    opacity: 0.8;
+    transform: scale(1.08);
+  }
+  56% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+}
+
+/* Floating tiny hearts around the button */
+.heart-float {
+  animation: heart-float 2.2s ease-in-out infinite;
+  pointer-events: none;
+}
+.heart-float-1 { top: -6px; right: 12%; animation-delay: 0s; }
+.heart-float-2 { top: -4px; left: 18%; animation-delay: 0.7s; }
+.heart-float-3 { bottom: -4px; right: 22%; animation-delay: 1.4s; }
+
+@keyframes heart-float {
+  0%, 100% {
+    opacity: 0;
+    transform: translateY(0) scale(0.6);
+  }
+  20% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 0;
+    transform: translateY(-12px) scale(1.1);
+  }
+}
+
+.heart-pulse-ring {
+  animation: heart-pulse-ring 1.4s ease-in-out infinite;
+}
+
+@keyframes heart-pulse-ring {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.92);
+  }
+  14% {
+    opacity: 0.85;
+    transform: scale(1.12);
+  }
+  28% {
+    opacity: 0.3;
+    transform: scale(0.92);
+  }
+  42% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
+  56% {
+    opacity: 0.3;
+    transform: scale(0.92);
+  }
+}
+
 @keyframes collection-buy-pulse {
   0%, 100% {
     transform: scale(1);
@@ -393,11 +485,12 @@ html {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hotmart-fb.hotmart__button-checkout.btn-collection-buy {
+  .hotmart-fb.hotmart__button-checkout.btn-collection-buy,
+  .animate-heartbeat-btn,
+  .animate-heartbeat,
+  .heart-float,
+  .heart-pulse-ring {
     animation: none !important;
-  }
-  .buy-btn-pulse-ring {
-    display: none;
   }
 }
 
