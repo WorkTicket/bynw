@@ -105,7 +105,7 @@ export default function HotmartBuyButton({ href, children, className }: Props) {
                 animationDelay: `${i * 0.65}s`,
               }}
             >
-              <svg className="w-3.5 h-3.5 text-rose-400/80" viewBox="0 0 32 32" fill="currentColor">
+              <svg className="w-3 h-3 text-rose-400/80" viewBox="0 0 32 32" fill="currentColor">
                 <path d="M16 28S4 20 4 12a5 5 0 018-3.5A5 5 0 0128 12c0 8-12 16-12 16z" />
               </svg>
             </span>
@@ -116,7 +116,7 @@ export default function HotmartBuyButton({ href, children, className }: Props) {
         ref={anchorRef}
         href={href}
         data-track-hotmart-click={href}
-        className="hotmart-fb hotmart__button-checkout btn-collection-buy relative z-10 w-full text-xs sm:text-sm py-3 sm:py-3.5 tracking-wider"
+        className="hotmart-fb hotmart__button-checkout btn-collection-buy relative z-10 w-full text-[11px] sm:text-xs py-2.5 sm:py-3 tracking-wider"
         onClick={(e) => {
           if (!isMobileCheckout()) e.preventDefault()
         }}
