@@ -360,8 +360,8 @@ html {
   letter-spacing: 0.08em !important;
   text-align: center !important;
   text-shadow: none !important;
-  animation: btn-soft-glow 3s ease-in-out infinite !important;
-  box-shadow: 0 6px 20px rgba(240, 62, 125, 0.3) !important;
+  animation: btn-soft-glow 2s ease-in-out infinite !important;
+  box-shadow: 0 4px 18px rgba(240, 62, 125, 0.35) !important;
 }
 
 .hotmart-fb.hotmart__button-checkout.btn-collection-buy:hover,
@@ -382,10 +382,12 @@ html {
 
 @keyframes btn-soft-glow {
   0%, 100% {
-    box-shadow: 0 4px 14px rgba(240, 62, 125, 0.25);
+    box-shadow: 0 4px 18px rgba(240, 62, 125, 0.35);
+    transform: scale(1);
   }
   50% {
-    box-shadow: 0 6px 22px rgba(240, 62, 125, 0.4), 0 0 0 4px rgba(240, 62, 125, 0.06);
+    box-shadow: 0 8px 36px rgba(240, 62, 125, 0.6), 0 0 0 10px rgba(240, 62, 125, 0.1);
+    transform: scale(1.025);
   }
 }
 
