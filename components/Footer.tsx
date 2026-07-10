@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { ScissorsIcon, FlowerIcon } from "@/lib/icons"
+import FooterSignature from "@/components/FooterSignature"
 
 export default function Footer() {
   const year = new Date().getFullYear()
@@ -140,6 +141,7 @@ export default function Footer() {
             <span className="text-rose-200">|</span>
             <Link href="/refund-policy" className="transition-colors hover:text-rose-600">Reembolsos</Link>
           </div>
+          <FooterSignature />
         </div>
       </div>
     </footer>
