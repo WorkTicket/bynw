@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     }
 
     if (!email) {
-      return new Response(JSON.stringify({ error: "El correo electrónico es obligatorio" }), {
+      return new Response(JSON.stringify({ error: "El correo electrónico (e-mail) es obligatorio" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
       })
@@ -19,7 +19,7 @@ export async function POST(req: Request) {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email.trim())) {
-      return new Response(JSON.stringify({ error: "Correo electrónico no válido" }), {
+      return new Response(JSON.stringify({ error: "Correo electrónico (e-mail) no válido" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
       })

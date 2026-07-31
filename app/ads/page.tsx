@@ -6,9 +6,9 @@ import { listFeaturedReviews } from "@/lib/reviews"
 
 export const metadata: Metadata = {
   ...createPageMetadata({
-    title: "Colecciones de Crochet en PDF",
+    title: "Colecciones de Crochet o Ganchillo en PDF",
     description:
-      "Elige tu colección de patrones de crochet en PDF. Descarga al momento, acceso de por vida y garantía de 7 días.",
+      "Elige tu colección de patrones de crochet o ganchillo en PDF. Descarga al momento, acceso de por vida y garantía de 7 días.",
     path: "/ads",
     images: [DEFAULT_OG_IMAGE],
     noIndex: true,

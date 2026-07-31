@@ -82,7 +82,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-sm leading-relaxed text-muted max-w-sm">
-              Patrones de crochet en PDF: amigurumis, Princesas Disney y Flores Eternas.
+              Patrones de crochet o ganchillo en PDF: amigurumis, Princesas Disney y Flores Eternas.
               Instrucciones claras y acabados hermosos para crear con confianza.
             </p>
             <p className="font-script text-[1.65rem] text-rose-400">Decora · Diseña · Crea</p>
@@ -115,9 +115,9 @@ export default function Footer() {
             </h3>
             <ul className="space-y-3.5">
               {[
-                { href: "/shop/amigurumis-chenille", label: "Amigurumis" },
-                { href: "/shop/princesas-disney", label: "Princesas Disney" },
-                { href: "/shop/flores-eternas", label: "Flores Eternas" },
+                { href: "/shop/amigurumis-chenille", label: "Patrones de Amigurumis" },
+                { href: "/shop/princesas-disney", label: "Patrones de Princesas Disney" },
+                { href: "/shop/flores-eternas", label: "Patrones de Flores Eternas" },
               ].map((l) => (
                 <li key={l.href}>
                   <Link href={l.href} className="soft-link">

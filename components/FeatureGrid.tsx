@@ -1,5 +1,5 @@
 import {
-  FileTextIcon,
+  MessageCircleIcon,
   BookOpenIcon,
   DownloadIcon,
   InfinityIcon,
@@ -9,9 +9,9 @@ import ScrollReveal from "@/components/ScrollReveal"
 
 const features = [
   {
-    icon: (cls: string) => <FileTextIcon className={cls} size={20} />,
-    title: "Patrones propios",
-    desc: "Diseños de Manos Creativas Bynmw que no verás en otro sitio.",
+    icon: (cls: string) => <MessageCircleIcon className={cls} size={20} />,
+    title: "Soporte WhatsApp",
+    desc: "Natalia te acompaña personalmente cuando lo necesites.",
   },
   {
     icon: (cls: string) => <BookOpenIcon className={cls} size={20} />,

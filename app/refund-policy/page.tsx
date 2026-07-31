@@ -5,7 +5,7 @@ import { createPageMetadata } from "@/lib/seo"
 export const metadata: Metadata = createPageMetadata({
   title: "Política de Reembolso",
   description:
-    "Política de reembolso de Manos Creativas Bynmw. Garantía de 7 días en colecciones de patrones de crochet en PDF.",
+    "Política de reembolso de Manos Creativas Bynmw. Garantía de 7 días en colecciones de patrones de crochet o ganchillo en PDF.",
   path: "/refund-policy",
 })
 

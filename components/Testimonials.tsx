@@ -37,7 +37,12 @@ export default function Testimonials({
   const showMoreLink = showMoreLinkProp ?? !onTestimonialsPage
 
   const visible = useMemo(() => {
-    const list = reviews
+    // Photo reviews first so visitors see product images before scrolling away
+    const list = [...reviews].sort((a, b) => {
+      const aPhoto = reviewImageSrc(a) ? 1 : 0
+      const bPhoto = reviewImageSrc(b) ? 1 : 0
+      return bPhoto - aPhoto
+    })
     return typeof limit === "number" ? list.slice(0, limit) : list
   }, [reviews, limit])
 

@@ -1,11 +1,11 @@
 export const faqs = [
   {
-    q: "¿Necesito experiencia previa en crochet?",
+    q: "¿Necesito experiencia previa en crochet o ganchillo?",
     a: "No hace falta. Cada colección trae vídeos para principiantes donde repasamos abreviaturas y puntadas básicas. Con eso ya puedes seguir los patrones.",
   },
   {
     q: "¿Cómo recibo los patrones después de comprar?",
-    a: "En cuanto se confirme el pago te llega un correo electrónico con el enlace para descargar todos los PDF. El acceso no caduca.",
+    a: "En cuanto se confirme el pago te llega un correo electrónico (e-mail) con el enlace para descargar todos los PDF. El acceso no caduca.",
   },
   {
     q: "¿Qué métodos de pago aceptáis?",

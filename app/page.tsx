@@ -9,7 +9,7 @@ import { listFeaturedReviews, listPublishedReviews } from "@/lib/reviews"
 
 export const metadata: Metadata = {
   ...createPageMetadata({
-    title: { absolute: `${BRAND_NAME} ⋆ Patrones de Crochet en PDF` },
+    title: { absolute: `${BRAND_NAME} ⋆ Patrones de Crochet o Ganchillo en PDF` },
     description: DEFAULT_DESCRIPTION,
     path: "/",
     images: [DEFAULT_OG_IMAGE],
@@ -18,13 +18,11 @@ export const metadata: Metadata = {
 
 const ProductGrid = dynamic(() => import("@/components/ProductGrid"))
 const FeatureGrid = dynamic(() => import("@/components/FeatureGrid"))
-const Testimonials = dynamic(() => import("@/components/Testimonials"))
-const BonusStack = dynamic(() => import("@/components/BonusStack"))
-const Guarantee = dynamic(() => import("@/components/Guarantee"))
 const WhatsAppSupport = dynamic(() => import("@/components/WhatsAppSupport"))
+const Testimonials = dynamic(() => import("@/components/Testimonials"))
+const Guarantee = dynamic(() => import("@/components/Guarantee"))
 const FAQ = dynamic(() => import("@/components/FAQ"))
 const LeadMagnetSection = dynamic(() => import("@/components/LeadMagnetSection"))
-const UrgencyCTA = dynamic(() => import("@/components/UrgencyCTA"))
 
 export default async function HomePage() {
   const [featured, allReviews] = await Promise.all([
@@ -48,13 +46,11 @@ export default async function HomePage() {
       {/* Products early — paid traffic should see offers within one scroll */}
       <ProductGrid />
       <FeatureGrid />
-      <Testimonials reviews={featured} limit={3} showForm />
-      <BonusStack />
-      <Guarantee />
       <WhatsAppSupport />
+      <Testimonials reviews={featured} limit={3} showForm />
+      <Guarantee />
       <LeadMagnetSection />
       <FAQ />
-      <UrgencyCTA />
     </div>
   )
 }

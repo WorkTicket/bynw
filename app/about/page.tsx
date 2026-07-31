@@ -11,7 +11,7 @@ import {
 export const metadata: Metadata = createPageMetadata({
   title: "Nosotros",
   description:
-    "Conoce la historia de Manos Creativas Bynmw y nuestra pasión por el crochet. Patrones en PDF para España.",
+    "Conoce la historia de Manos Creativas Bynmw y nuestra pasión por el crochet o ganchillo. Patrones en PDF para España.",
   path: "/about",
   images: [DEFAULT_OG_IMAGE],
 })
@@ -46,7 +46,7 @@ export default function AboutPage() {
                   De un hobby a una comunidad de artesanas
                 </h2>
                 <p className="mt-5 text-muted leading-relaxed">
-                  Manos Creativas Bynmw nace de la pasión de Natalia por el crochet
+                  Manos Creativas Bynmw nace de la pasión de Natalia por el crochet o ganchillo
                   y de querer compartir patrones claros con tejedoras de cualquier
                   parte. Cada colección está pensada para que puedas seguir los
                   pasos con calma, tanto si empiezas como si ya tienes experiencia.

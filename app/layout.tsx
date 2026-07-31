@@ -52,7 +52,7 @@ export const viewport: Viewport = {
 }
 
 export function generateMetadata(): Metadata {
-  const title = `${BRAND_NAME} ⋆ Patrones de Crochet en PDF`
+  const title = `${BRAND_NAME} ⋆ Patrones de Crochet o Ganchillo en PDF`
 
   // Only set meta verification when a real GSC meta token is provided.
   // HTML-file verification lives at /googleb0de3a7eb0c354a5.html

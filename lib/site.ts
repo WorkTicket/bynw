@@ -18,19 +18,21 @@ export const DEFAULT_OG_LOCALE = "es_ES"
 export const OG_ALTERNATE_LOCALES = [] as const
 
 export const DEFAULT_DESCRIPTION =
-  "Patrones de crochet en PDF: amigurumis, Princesas Disney y Flores Eternas. Descarga al momento, acceso de por vida. Envío digital en España."
+  "Patrones de crochet o ganchillo en PDF: amigurumis, Princesas Disney y Flores Eternas. Descarga al momento, acceso de por vida. Envío digital en España."
 
 export const DEFAULT_OG_IMAGE = {
   url: "/images/og-default.jpg",
   width: 1200,
   height: 630,
-  alt: "Manos Creativas Bynmw — Patrones de crochet en PDF",
+  alt: "Manos Creativas Bynmw — Patrones de crochet o ganchillo en PDF",
 } as const
 
 export const SITE_KEYWORDS = [
   "patrones crochet",
+  "patrones crochet o ganchillo",
   "patrones crochet PDF",
   "patrones crochet España",
+  "patrones ganchillo",
   "amigurumis",
   "patrones amigurumi",
   "flores crochet",

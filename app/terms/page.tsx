@@ -5,7 +5,7 @@ import { createPageMetadata } from "@/lib/seo"
 export const metadata: Metadata = createPageMetadata({
   title: "Términos y Condiciones",
   description:
-    "Términos y condiciones de Manos Creativas Bynmw. Políticas de uso del sitio y compra de patrones de crochet en PDF.",
+    "Términos y condiciones de Manos Creativas Bynmw. Políticas de uso del sitio y compra de patrones de crochet o ganchillo en PDF.",
   path: "/terms",
 })
 
@@ -43,7 +43,7 @@ export default function TermsPage() {
               <p className="mt-2">
                 Todos los productos ofrecidos en Manos Creativas Bynmw son
                 archivos digitales en formato PDF. Una vez realizada la compra,
-                recibirás un enlace de descarga por correo electrónico a través
+                recibirás un enlace de descarga por correo electrónico (e-mail) a través
                 de Hotmart.
               </p>
               <p className="mt-2">
@@ -87,7 +87,7 @@ export default function TermsPage() {
               </h2>
               <p className="mt-2">
                 Manos Creativas Bynmw no se hace responsable de los resultados
-                obtenidos al utilizar nuestros patrones. La técnica de crochet
+                obtenidos al utilizar nuestros patrones. La técnica de crochet o ganchillo
                 depende de la habilidad individual de cada artesana. El acceso
                 a los archivos digitales es de por vida una vez confirmada la
                 compra, sujeto a la disponibilidad del servicio de Hotmart.

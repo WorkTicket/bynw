@@ -59,12 +59,11 @@ export default function ProductFinalCTA({
 
             <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed text-ink/55 sm:mt-6 sm:text-base">
               {shortTitle}
-              <span className="mx-1.5 text-rose-300/70" aria-hidden>
-                ·
-              </span>
-              <span className="font-semibold text-ink">{price}</span>
+            </p>
+            <p className="mx-auto mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+              {price}
               {discount >= 40 ? (
-                <span className="ml-1.5 text-sm font-medium text-rose-600">
+                <span className="ml-2 align-middle text-base font-medium text-rose-600 sm:text-lg">
                   −{discount}%
                 </span>
               ) : null}
@@ -76,9 +75,9 @@ export default function ProductFinalCTA({
             <div className="mt-9 sm:mt-10">
               <HotmartBuyButton
                 {...buyProps}
-                className="mx-auto max-w-sm [&_a]:min-h-[3.15rem] [&_a]:px-10 [&_a]:text-sm sm:[&_a]:px-12 sm:[&_a]:py-5"
+                className="mx-auto max-w-sm [&_a]:min-h-[3.5rem] [&_a]:px-12 [&_a]:text-base [&_a]:font-semibold [&_a]:tracking-wide sm:[&_a]:min-h-[3.75rem] sm:[&_a]:px-14 sm:[&_a]:py-5 sm:[&_a]:text-lg"
               >
-                {`Comprar ahora — ${price}`}
+                Comprar ahora
               </HotmartBuyButton>
             </div>
 

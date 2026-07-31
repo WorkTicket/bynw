@@ -4,7 +4,6 @@ import ScrollReveal from "@/components/ScrollReveal"
 import { createPageMetadata } from "@/lib/seo"
 import {
   CONTACT_EMAIL,
-  CONTACT_PHONE,
   DEFAULT_OG_IMAGE,
   SUPPORT_SLA,
   WHATSAPP_URL,
@@ -17,8 +16,6 @@ export const metadata: Metadata = createPageMetadata({
   path: "/contact",
   images: [DEFAULT_OG_IMAGE],
 })
-
-const phoneDisplay = CONTACT_PHONE.replace(/^\+57-/, "+57 ").replace(/-/g, " ")
 
 export default function ContactPage() {
   return (
@@ -75,7 +72,6 @@ export default function ContactPage() {
                 </svg>
                 Escribir por WhatsApp
               </a>
-              <p className="mt-3 text-xs text-muted">{phoneDisplay}</p>
 
               <a
                 href={`mailto:${CONTACT_EMAIL}`}

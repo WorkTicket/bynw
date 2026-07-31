@@ -1,6 +1,6 @@
 export const GIFT_MAGNET = {
   title: "Patrón de las Guerreras K-POP",
-  subtitle: "Amigurumi en crochet — muestra gratuita",
+  subtitle: "Amigurumi en crochet o ganchillo — muestra gratuita",
   description:
     "Un patrón completo en PDF para que pruebes la calidad de nuestros diseños antes de comprar una colección.",
   features: [

@@ -8,7 +8,7 @@ import { listPublishedReviews } from "@/lib/reviews"
 export const metadata: Metadata = createPageMetadata({
   title: "Testimonios",
   description:
-    "Lee reseñas reales y deja la tuya. Artesanas de España comparten su experiencia con los patrones de crochet en PDF de Manos Creativas Bynmw.",
+    "Lee reseñas reales y deja la tuya. Artesanas de España comparten su experiencia con los patrones de crochet o ganchillo en PDF de Manos Creativas Bynmw.",
   path: "/testimonials",
   images: [DEFAULT_OG_IMAGE],
 })

@@ -43,7 +43,7 @@ export default function AdsCatalogLander({ reviews }: Props) {
           <div className="absolute inset-0 hero-image-drift origin-center scale-[1.04]">
             <Image
               src="/images/hero-editorial.webp"
-              alt="Amigurumi de princesa en crochet junto a un ramo de flores eternas tejidas"
+              alt="Amigurumi de princesa en crochet o ganchillo junto a un ramo de flores eternas tejidas"
               fill
               priority
               sizes="100vw"
@@ -87,7 +87,7 @@ export default function AdsCatalogLander({ reviews }: Props) {
             </p>
             <h1 className="mt-6 font-display text-[2.15rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.85rem] lg:text-[3.15rem]">
               Elige tu colección de{" "}
-              <span className="gradient-text-candy italic">crochet</span>
+              <span className="gradient-text-candy italic">crochet o ganchillo</span>
             </h1>
             <p className="mt-5 max-w-md text-[15px] leading-[1.75] text-muted sm:text-base lg:text-lg">
               Patrones digitales en PDF con fotos paso a paso. Compra una vez,

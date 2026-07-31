@@ -181,21 +181,13 @@ export default async function ProductPage({ params }: Props) {
 
             <ScrollReveal>
               <div className="mx-auto mt-20 sm:mt-28 max-w-3xl">
-                <span className="eyebrow">Descripción</span>
+                <span className="eyebrow">Detalles</span>
                 <h2 className={`mt-3 ${sectionHeading}`}>
-                  Descripción{" "}
-                  <span className="gradient-text-rose italic">general</span>
+                  Especificaciones{" "}
+                  <span className="gradient-text-rose italic">técnicas</span>
                 </h2>
-                <p className="mt-6 text-base sm:text-lg text-muted leading-relaxed">
-                  {localizedProduct.description}
-                </p>
-                <div className="mt-8 border-t border-rose-100/60 pt-8">
-                  <h3 className="font-display text-xl font-semibold text-ink mb-4">
-                    Especificaciones técnicas
-                  </h3>
-                  <div className="space-y-1.5">
-                    {renderSpecs(product.specs)}
-                  </div>
+                <div className="mt-8 space-y-1.5">
+                  {renderSpecs(product.specs)}
                 </div>
               </div>
             </ScrollReveal>
@@ -287,7 +279,7 @@ export default async function ProductPage({ params }: Props) {
 
                     <div className="order-2 flex flex-col gap-4 text-center lg:text-left lg:col-span-3">
                       <p className="text-sm sm:text-base text-muted leading-relaxed">
-                        Nada de procesos raros. Cuando completes la compra, te llegará un correo electrónico con acceso inmediato a todos los patrones.
+                        Nada de procesos raros. Cuando completes la compra, te llegará un correo electrónico (e-mail) con acceso inmediato a todos los patrones.
                       </p>
                       <p className="text-sm sm:text-base text-muted leading-relaxed">
                         Todo va organizado en carpetas con nombre, como ves en la imagen. Solo tienes que abrir el patrón que quieras tejer.

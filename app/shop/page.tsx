@@ -11,7 +11,7 @@ import { reviewImageSrc } from "@/lib/testimonials-data"
 export const metadata: Metadata = createPageMetadata({
   title: "Colección Maestra de Patrones",
   description:
-    "Patrones de crochet en PDF: amigurumis, Princesas Disney y Flores Eternas. Para todos los niveles. Descarga inmediata en España.",
+    "Patrones de crochet o ganchillo en PDF: amigurumis, Princesas Disney y Flores Eternas. Para todos los niveles. Descarga inmediata en España.",
   path: "/shop",
   images: [DEFAULT_OG_IMAGE],
 })
@@ -49,7 +49,7 @@ export default async function ShopPage() {
   const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "Colección Maestra de Patrones de Crochet",
+    name: "Colección Maestra de Patrones de Crochet o Ganchillo",
     itemListElement: products.map((product, index) => ({
       "@type": "ListItem",
       position: index + 1,
@@ -84,7 +84,7 @@ export default async function ShopPage() {
               <span className="eyebrow mt-5">Colección Maestra</span>
               <h1 className="mt-4">
                 Patrones de amigurumis y{" "}
-                <span className="gradient-text-rose italic">flores en crochet</span>
+                <span className="gradient-text-rose italic">flores en crochet o ganchillo</span>
               </h1>
               <p className="mt-6 text-lg text-muted max-w-2xl mx-auto leading-relaxed">
                 PDF de amigurumis, Princesas Disney y Flores Eternas. Tanto si
