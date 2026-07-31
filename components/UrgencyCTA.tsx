@@ -1,5 +1,6 @@
 import Link from "next/link"
 import PetiteOrnament from "@/components/PetiteOrnament"
+import HotmartBuyButton from "@/components/HotmartBuyButton"
 import { getLocalizedProduct } from "@/lib/pricing"
 import { getProductBySlug } from "@/lib/products"
 
@@ -29,12 +30,15 @@ export default function UrgencyCTA() {
           </p>
 
           <div className="mt-10 flex flex-col items-center gap-4 sm:mt-11">
-            <Link
-              href={`/shop/${FEATURED_SLUG}`}
-              className="btn-primary inline-flex min-h-[3.15rem] px-10 text-sm sm:px-14 sm:py-5"
+            <HotmartBuyButton
+              href={featured.buyUrl}
+              contentId={featured.id}
+              contentName={featured.seoTitle}
+              price={featured.price}
+              className="w-full sm:w-auto [&_a]:min-h-[3.15rem] [&_a]:px-10 [&_a]:text-sm sm:[&_a]:px-14 sm:[&_a]:py-5"
             >
-              Comprar Princesas
-            </Link>
+              Comprar Princesas — {featured.price}
+            </HotmartBuyButton>
             <Link
               href="/shop"
               className="text-sm font-medium text-ink/50 transition-colors hover:text-rose-600"

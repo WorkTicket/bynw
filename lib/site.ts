@@ -4,6 +4,8 @@ export const SITE_URL = "https://bynmwcreative.com"
 export const BRAND_NAME = "Manos Creativas Bynmw"
 export const CONTACT_EMAIL = "bynw808@gmail.com"
 export const CONTACT_PHONE = "+57-300-850-4709"
+export const WHATSAPP_URL = "https://wa.me/573008504709"
+export const SUPPORT_SLA = "Respuesta en menos de 24h"
 export const SOCIAL_LINKS = [
   "https://www.tiktok.com/@bynmw8",
   "https://www.instagram.com/bynmw12_",

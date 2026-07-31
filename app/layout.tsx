@@ -139,6 +139,7 @@ export default async function RootLayout({
         {/* Analytics hosts only — Hotmart hints inject when a buy CTA is near */}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://connect.facebook.net" />
+        <link rel="preconnect" href="https://connect.facebook.net" crossOrigin="anonymous" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
@@ -157,6 +158,18 @@ export default async function RootLayout({
         <Footer />
         <FloatingWhatsApp />
         <StickyMobileCTA />
+        {process.env.NEXT_PUBLIC_FB_PIXEL_ID ? (
+          <noscript>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              height={1}
+              width={1}
+              style={{ display: "none" }}
+              src={`https://www.facebook.com/tr?id=${process.env.NEXT_PUBLIC_FB_PIXEL_ID}&ev=PageView&noscript=1`}
+              alt=""
+            />
+          </noscript>
+        ) : null}
       </body>
     </html>
   )

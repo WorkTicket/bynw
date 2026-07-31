@@ -28,17 +28,17 @@ const sectionHeading =
   "font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-ink tracking-tight leading-normal overflow-visible pb-1"
 
 const TRUST_POINTS = [
-  { title: "Acceso inmediato", detail: "Por correo al pagar" },
+  { title: "Acceso inmediato", detail: "PDF por correo al pagar" },
   { title: "Garantía 7 días", detail: "Compra sin riesgo" },
-  { title: "Pago seguro", detail: "Checkout Hotmart" },
-  { title: "Soporte WhatsApp", detail: "Te acompañamos" },
+  { title: "Pago en euros", detail: "Checkout seguro Hotmart" },
+  { title: "Soporte WhatsApp", detail: "Respuesta en 24h" },
 ] as const
 
 const STEPS = [
   {
     n: "01",
     title: "Compras en 2 minutos",
-    detail: "Pago seguro con tarjeta, PayPal u otros métodos de tu país.",
+    detail: "Pago seguro con tarjeta, PayPal o Klarna vía Hotmart.",
   },
   {
     n: "02",
@@ -68,7 +68,8 @@ function buildHeroBenefits(product: Product): string[] {
   const giftCount = product.bonusItems.length + product.extraGiftItems.length
   const patternMatch =
     product.title.match(/más de (\d+)/i) ||
-    product.description.match(/más de (\d+)/i)
+    product.description.match(/más de (\d+)/i) ||
+    product.title.match(/(\d+)\+/i)
   const stackLead = patternMatch
     ? giftCount > 0
       ? `${patternMatch[1]}+ patrones + ${giftCount} bonos incluidos`
@@ -77,12 +78,20 @@ function buildHeroBenefits(product: Product): string[] {
       ? `${giftCount} bonos incluidos con tu compra`
       : "Colección digital en PDF"
 
+  // Keep to 3 bullets so the buy CTA stays in the first mobile viewport (FB in-app).
   return [
     stackLead,
-    "PDF con fotos paso a paso en español",
-    "Descarga al momento · acceso de por vida",
-    "Ideal para principiantes — vídeos y guía desde cero",
+    "Fotos paso a paso en español · acceso de por vida",
+    "Ideal para principiantes — guía desde cero",
   ]
+}
+
+/** Short hero line aligned with Meta ad creative (guide: foto + video ads). */
+function buildHeroSupport(product: Product): string {
+  if (product.slug === "princesas-disney") {
+    return "Fotos paso a paso, descarga al momento y acceso de por vida. Hoy a 15€ · garantía 7 días."
+  }
+  return `${product.description.split(".")[0]}. Descarga al momento · garantía 7 días.`
 }
 
 function BuyBlock({
@@ -134,6 +143,7 @@ export default function AdsProductLander({ product, reviews }: Props) {
     originalNum > 0 ? Math.round((1 - priceNum / originalNum) * 100) : 0
   const savingsLabel = formatSavings(product.price, product.originalPrice)
   const heroBenefits = buildHeroBenefits(product)
+  const heroSupport = buildHeroSupport(product)
   const buyProps = {
     href: product.buyUrl,
     contentId: product.id,
@@ -141,10 +151,8 @@ export default function AdsProductLander({ product, reviews }: Props) {
     price: product.price,
   }
 
-  const buyLabel =
-    discount >= 40
-      ? `Obtener acceso ahora — ${product.price}`
-      : product.buyText
+  // Match Meta ad CTA ("Comprar ahora") — don't dilute with alternate label.
+  const buyLabel = `Comprar ahora — ${product.price}`
 
   const reviewCount = Math.max(SITE_RATING.reviewCount, reviews.length)
 
@@ -159,7 +167,7 @@ export default function AdsProductLander({ product, reviews }: Props) {
       {/* ── Full-bleed hero: product image + one offer ── */}
       <section
         id="oferta"
-        className="hero-editorial relative min-h-[min(92svh,54rem)] scroll-mt-[var(--site-header-offset)] overflow-hidden bg-[#fff9f8] sm:min-h-[min(94svh,56rem)]"
+        className="hero-editorial relative min-h-[min(88svh,50rem)] scroll-mt-[var(--site-header-offset)] overflow-hidden bg-[#fff9f8] sm:min-h-[min(92svh,54rem)]"
       >
         <div className="absolute inset-0">
           <div className="absolute inset-0 hero-image-drift origin-center scale-[1.04]">
@@ -202,25 +210,25 @@ export default function AdsProductLander({ product, reviews }: Props) {
           />
         </div>
 
-        <div className="section relative z-10 flex min-h-[min(92svh,54rem)] flex-col justify-end pb-12 pt-10 sm:min-h-[min(94svh,56rem)] sm:justify-center sm:pb-20 sm:pt-16 lg:pb-24">
+        <div className="section relative z-10 flex min-h-[min(88svh,50rem)] flex-col justify-end pb-10 pt-8 sm:min-h-[min(92svh,54rem)] sm:justify-center sm:pb-20 sm:pt-16 lg:pb-24">
           <div className="max-w-xl animate-fade-in-up lg:max-w-[36rem]">
-            <p className="font-script text-[1.85rem] leading-none text-rose-500 sm:text-[2.25rem]">
+            <p className="font-script text-[1.7rem] leading-none text-rose-500 sm:text-[2.25rem]">
               Manos Creativas Bynmw
             </p>
 
-            <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-rose-500/90">
-              Colección digital en PDF
+            <p className="mt-2.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-rose-500/90">
+              PDF digital · Envío inmediato a España
             </p>
 
-            <h1 className="mt-2.5 font-display text-[2.15rem] font-semibold leading-[1.05] tracking-tight text-ink sm:text-4xl lg:text-[2.85rem]">
+            <h1 className="mt-2 font-display text-[2rem] font-semibold leading-[1.05] tracking-tight text-ink sm:text-4xl lg:text-[2.85rem]">
               {product.shortTitle}
             </h1>
 
-            <p className="mt-3.5 max-w-md text-[15px] leading-[1.7] text-muted sm:text-base">
-              {product.description}
+            <p className="mt-3 max-w-md text-[14px] leading-[1.65] text-muted sm:mt-3.5 sm:text-base">
+              {heroSupport}
             </p>
 
-            <div className="mt-5 flex flex-wrap items-center gap-2">
+            <div className="mt-4 flex flex-wrap items-center gap-2 sm:mt-5">
               <div
                 className="flex items-center gap-0.5"
                 aria-label={`${SITE_RATING_DISPLAY} de 5 estrellas`}
@@ -233,26 +241,26 @@ export default function AdsProductLander({ product, reviews }: Props) {
                 {SITE_RATING_DISPLAY}
               </span>
               <span className="text-sm text-muted">
-                · {reviewCount}+ reseñas de artesanas
+                · {reviewCount}+ reseñas
               </span>
             </div>
 
-            <ul className="mt-5 w-full max-w-md space-y-2.5">
+            <ul className="mt-4 w-full max-w-md space-y-2 sm:mt-5 sm:space-y-2.5">
               {heroBenefits.map((b) => (
                 <li
                   key={b}
-                  className="flex items-start gap-2.5 text-sm text-ink/80 sm:text-[15px]"
+                  className="flex items-start gap-2.5 text-[13px] text-ink/80 sm:text-[15px]"
                 >
                   <CheckCircleIcon
                     className="mt-0.5 shrink-0 text-rose-500"
-                    size={18}
+                    size={17}
                   />
                   <span>{b}</span>
                 </li>
               ))}
             </ul>
 
-            <div className="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <div className="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-1 sm:mt-6">
               <span className="text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
                 {product.price}
               </span>
@@ -263,7 +271,7 @@ export default function AdsProductLander({ product, reviews }: Props) {
               )}
               {discount >= 40 && (
                 <span className="rounded-full bg-rose-100/80 px-2.5 py-0.5 text-xs font-semibold text-rose-700">
-                  −{discount}%
+                  −{discount}% hoy
                 </span>
               )}
             </div>
@@ -272,12 +280,12 @@ export default function AdsProductLander({ product, reviews }: Props) {
                 {savingsLabel}
                 <span className="font-normal text-muted">
                   {" "}
-                  · antes {product.originalPrice}
+                  · antes {product.originalPrice} · actualizaciones de por vida
                 </span>
               </p>
             )}
 
-            <div className="mt-7 w-full max-w-md">
+            <div className="mt-5 w-full max-w-md sm:mt-7">
               <BuyBlock buyProps={buyProps} buyLabel={buyLabel} align="start" />
             </div>
           </div>

@@ -5,9 +5,13 @@ import { CrochetHeart } from "@/lib/crochet-graphics"
 
 export default async function TrustBar() {
   let ratingDisplay = SITE_RATING_DISPLAY
+  let reviewCount = 0
   try {
     const aggregate = await getAggregateRating()
-    if (aggregate.reviewCount > 0) ratingDisplay = aggregate.display
+    if (aggregate.reviewCount > 0) {
+      ratingDisplay = aggregate.display
+      reviewCount = aggregate.reviewCount
+    }
   } catch {
     // Fall back to seed display
   }
@@ -15,8 +19,11 @@ export default async function TrustBar() {
   const stats = [
     { value: String(products.length), label: "Colecciones" },
     { value: ratingDisplay, label: "Valoración" },
+    {
+      value: reviewCount > 0 ? String(reviewCount) : "50+",
+      label: "Reseñas",
+    },
     { value: "PDF", label: "Descarga al momento" },
-    { value: "24h", label: "Soporte WhatsApp" },
   ]
 
   return (

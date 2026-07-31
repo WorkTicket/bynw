@@ -23,7 +23,7 @@ const features = [
   },
   {
     title: "Soporte por WhatsApp",
-    desc: "Natalia te guía personalmente. Resolvemos tus dudas en minutos.",
+    desc: "Natalia te guía personalmente. Resolvemos tus dudas en menos de 24h.",
   },
   {
     title: "Patrones cuidados",
@@ -282,7 +282,7 @@ export default async function ShopPage() {
                 ¿Tienes alguna pregunta?
               </h2>
               <p className="mt-3 text-sm text-muted">
-                Estamos aquí para ayudarte. Te responderemos en menos de 24h.
+                Estamos aquí para ayudarte. Respuesta en menos de 24h.
               </p>
               <a
                 href="https://wa.me/573008504709"

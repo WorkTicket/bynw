@@ -1,4 +1,5 @@
 import ScrollReveal from "@/components/ScrollReveal"
+import { SUPPORT_SLA, WHATSAPP_URL } from "@/lib/site"
 
 export default function WhatsAppSupport() {
   return (
@@ -17,7 +18,7 @@ export default function WhatsAppSupport() {
               </p>
               <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row md:justify-start justify-center">
                 <a
-                  href="https://wa.me/573008504709"
+                  href={WHATSAPP_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   data-track-whatsapp-click="support_section"
@@ -28,7 +29,7 @@ export default function WhatsAppSupport() {
                   </svg>
                   Escribir a Natalia
                 </a>
-                <span className="text-sm text-muted">Respuesta en minutos</span>
+                <span className="text-sm text-muted">{SUPPORT_SLA}</span>
               </div>
             </div>
 

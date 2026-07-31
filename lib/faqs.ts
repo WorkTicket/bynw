@@ -9,7 +9,7 @@ export const faqs = [
   },
   {
     q: "¿Qué métodos de pago aceptáis?",
-    a: "Los pagos pasan por Hotmart. Puedes pagar con tarjeta, PayPal y otros métodos según tu país.",
+    a: "Los pagos pasan por Hotmart. Puedes pagar con tarjeta, PayPal, Klarna y otros métodos según tu país.",
   },
   {
     q: "¿Puedo imprimir los patrones?",
@@ -21,7 +21,7 @@ export const faqs = [
   },
   {
     q: "¿Tenéis soporte si tengo dudas?",
-    a: "Sí. Natalia responde por WhatsApp si te atascas con algún patrón o técnica.",
+    a: "Sí. Natalia responde por WhatsApp en menos de 24h si te atascas con algún patrón o técnica.",
   },
 ] as const
 

@@ -1,7 +1,12 @@
 import { Metadata } from "next"
+import Link from "next/link"
 import ScrollReveal from "@/components/ScrollReveal"
 import { createPageMetadata } from "@/lib/seo"
-import { DEFAULT_OG_IMAGE } from "@/lib/site"
+import {
+  DEFAULT_OG_IMAGE,
+  SUPPORT_SLA,
+  WHATSAPP_URL,
+} from "@/lib/site"
 
 export const metadata: Metadata = createPageMetadata({
   title: "Nosotros",
@@ -121,6 +126,38 @@ export default function AboutPage() {
               </ScrollReveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="section-white section-padding">
+        <div className="section">
+          <ScrollReveal>
+            <div className="mx-auto max-w-xl text-center">
+              <span className="eyebrow">Empieza hoy</span>
+              <h2 className="mt-3 font-display text-3xl font-semibold text-ink sm:text-4xl">
+                Elige tu colección
+              </h2>
+              <p className="mt-4 text-base leading-relaxed text-muted">
+                Patrones en PDF con descarga al momento, acceso de por vida y
+                garantía de 7 días.
+              </p>
+              <div className="mt-8 flex flex-col items-center gap-3.5 sm:flex-row sm:justify-center">
+                <Link href="/shop" className="btn-primary min-h-[3.15rem] px-9 text-sm">
+                  Ver colecciones
+                </Link>
+                <a
+                  href={WHATSAPP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-track-whatsapp-click="about_cta"
+                  className="btn-secondary min-h-[3.15rem] px-9 text-sm"
+                >
+                  Escribir por WhatsApp
+                </a>
+              </div>
+              <p className="mt-4 text-sm text-muted">{SUPPORT_SLA}</p>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
     </>

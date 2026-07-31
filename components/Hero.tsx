@@ -1,5 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
+import HotmartBuyButton from "@/components/HotmartBuyButton"
 import { getLocalizedProduct } from "@/lib/pricing"
 import { getProductBySlug } from "@/lib/products"
 
@@ -22,13 +23,21 @@ export default function Hero() {
           />
         </div>
 
-        {/* Mobile: soft pearl veil */}
+        {/* Mobile: denser pearl veil behind copy for readability */}
         <div
           className="pointer-events-none absolute inset-0 lg:hidden"
           style={{
             background: `
-              linear-gradient(to top, #fff9f8 0%, rgba(255,249,248,0.96) 18%, rgba(255,249,248,0.55) 42%, transparent 68%),
-              linear-gradient(to bottom, rgba(255,249,248,0.88) 0%, transparent 28%)
+              linear-gradient(
+                to top,
+                #fff9f8 0%,
+                #fff9f8 32%,
+                rgba(255,249,248,0.97) 48%,
+                rgba(255,249,248,0.82) 60%,
+                rgba(255,249,248,0.45) 72%,
+                transparent 88%
+              ),
+              linear-gradient(to bottom, rgba(255,249,248,0.92) 0%, transparent 24%)
             `,
           }}
         />
@@ -68,7 +77,7 @@ export default function Hero() {
 
       <div className="section relative z-10 flex min-h-[min(92svh,52rem)] flex-col justify-end pb-14 pt-10 sm:min-h-[min(94svh,54rem)] sm:justify-center sm:pb-24 sm:pt-20 lg:pb-28">
         <div className="max-w-xl animate-fade-in-up lg:max-w-[36rem]">
-          <p className="font-script text-[2.45rem] leading-[1.05] text-rose-500 sm:text-[3.05rem] lg:text-[3.45rem]">
+          <p className="font-script text-[2.45rem] leading-[1.05] text-rose-600 sm:text-[3.05rem] lg:text-[3.45rem] lg:text-rose-500">
             Manos Creativas Bynmw
           </p>
 
@@ -77,21 +86,24 @@ export default function Hero() {
             <span className="gradient-text-candy italic">Crochet</span>
           </h1>
 
-          <p className="mt-5 max-w-md text-[15px] leading-[1.75] text-muted sm:mt-6 sm:text-base lg:text-lg">
+          <p className="mt-5 max-w-md text-[15px] leading-[1.75] text-ink/70 sm:mt-6 sm:text-base lg:text-lg lg:text-muted">
             Colecciones en PDF con fotos paso a paso. Descarga al momento,
             acceso de por vida — listas para tejer o vender.
           </p>
 
           <div className="mt-8 flex flex-col gap-3.5 sm:mt-11 sm:flex-row sm:items-center sm:gap-6">
-            <Link
-              href={`/shop/${FEATURED_SLUG}`}
-              className="btn-primary min-h-[3.25rem] px-9 py-3.5 text-sm sm:px-11"
+            <HotmartBuyButton
+              href={featured.buyUrl}
+              contentId={featured.id}
+              contentName={featured.seoTitle}
+              price={featured.price}
+              className="w-full sm:w-auto [&_a]:min-h-[3.25rem] [&_a]:px-9 [&_a]:py-3.5 [&_a]:text-sm sm:[&_a]:px-11"
             >
-              Comprar Princesas
-            </Link>
+              Comprar Princesas — {featured.price}
+            </HotmartBuyButton>
             <Link
               href="/shop"
-              className="group inline-flex min-h-[2.75rem] items-center justify-center gap-2 px-1 py-2 text-sm font-medium text-ink/60 transition-colors hover:text-rose-600 sm:justify-start"
+              className="group inline-flex min-h-[2.75rem] items-center justify-center gap-2 px-1 py-2 text-sm font-medium text-ink/75 transition-colors hover:text-rose-600 sm:justify-start lg:text-ink/60"
             >
               Ver todas
               <svg
@@ -107,7 +119,7 @@ export default function Hero() {
             </Link>
           </div>
 
-          <p className="mt-7 text-[11px] tracking-[0.06em] text-muted/65 sm:mt-8 sm:text-xs">
+          <p className="mt-7 text-[11px] tracking-[0.06em] text-ink/55 sm:mt-8 sm:text-xs lg:text-muted/65">
             {featured.shortTitle} {featured.price}
             <span className="meta-sep" aria-hidden="true">✦</span>
             Descarga al momento

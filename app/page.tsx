@@ -54,8 +54,8 @@ export default async function HomePage() {
       <BonusStack />
       <Guarantee />
       <WhatsAppSupport />
-      <FAQ />
       <LeadMagnetSection />
+      <FAQ />
       <UrgencyCTA />
     </div>
   )

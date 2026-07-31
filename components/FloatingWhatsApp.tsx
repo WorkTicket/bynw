@@ -1,15 +1,23 @@
 "use client"
 
 import { usePathname } from "next/navigation"
+import { WHATSAPP_URL } from "@/lib/site"
 
 export default function FloatingWhatsApp() {
   const pathname = usePathname()
-  // Ads landers already have sticky buy + footer WhatsApp — keep chrome lean.
-  if (pathname.startsWith("/ads")) return null
+  // Buy pages already have sticky checkout — keep one primary thumb action.
+  // Support pages (about, contact, testimonials) keep the float.
+  if (
+    pathname.startsWith("/ads") ||
+    pathname === "/" ||
+    pathname.startsWith("/shop")
+  ) {
+    return null
+  }
 
   return (
     <a
-      href="https://wa.me/573008504709"
+      href={WHATSAPP_URL}
       target="_blank"
       rel="noopener noreferrer"
       data-track-whatsapp-click="floating"

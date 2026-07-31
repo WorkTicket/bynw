@@ -1,15 +1,24 @@
 import { Metadata } from "next"
+import Link from "next/link"
 import ScrollReveal from "@/components/ScrollReveal"
 import { createPageMetadata } from "@/lib/seo"
-import { DEFAULT_OG_IMAGE } from "@/lib/site"
+import {
+  CONTACT_EMAIL,
+  CONTACT_PHONE,
+  DEFAULT_OG_IMAGE,
+  SUPPORT_SLA,
+  WHATSAPP_URL,
+} from "@/lib/site"
 
 export const metadata: Metadata = createPageMetadata({
   title: "Contacto",
   description:
-    "Ponte en contacto con Manos Creativas Bynmw por WhatsApp. Atención personalizada en España. Estamos aquí para ayudarte.",
+    "Ponte en contacto con Manos Creativas Bynmw por WhatsApp o email. Atención personalizada en España. Estamos aquí para ayudarte.",
   path: "/contact",
   images: [DEFAULT_OG_IMAGE],
 })
+
+const phoneDisplay = CONTACT_PHONE.replace(/^\+57-/, "+57 ").replace(/-/g, " ")
 
 export default function ContactPage() {
   return (
@@ -24,8 +33,8 @@ export default function ContactPage() {
               <span className="eyebrow mt-5">Contacto</span>
               <h1 className="mt-4">Contáctanos</h1>
               <p className="mt-5 text-lg text-muted">
-                ¿Tienes alguna pregunta? Escríbenos por WhatsApp y te respondemos
-                en horario laboral.
+                ¿Tienes alguna pregunta? Escríbenos por WhatsApp o email.
+                {` ${SUPPORT_SLA}.`}
               </p>
             </div>
           </ScrollReveal>
@@ -55,9 +64,10 @@ export default function ContactPage() {
                 consulta.
               </p>
               <a
-                href="https://wa.me/573008504709"
+                href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
+                data-track-whatsapp-click="contact_page"
                 className="btn-primary mt-8 inline-flex w-full items-center justify-center gap-2 py-4"
               >
                 <svg className="h-5 w-5 shrink-0" fill="currentColor" viewBox="0 0 24 24">
@@ -65,7 +75,22 @@ export default function ContactPage() {
                 </svg>
                 Escribir por WhatsApp
               </a>
-              <p className="mt-3 text-xs text-muted">+57 300 850 4709</p>
+              <p className="mt-3 text-xs text-muted">{phoneDisplay}</p>
+
+              <a
+                href={`mailto:${CONTACT_EMAIL}`}
+                className="mt-5 inline-flex text-sm font-medium text-rose-600 transition-colors hover:text-rose-700"
+              >
+                {CONTACT_EMAIL}
+              </a>
+            </ScrollReveal>
+
+            <ScrollReveal delay={80}>
+              <div className="mt-10">
+                <Link href="/shop" className="btn-secondary inline-flex w-full justify-center py-3.5">
+                  Ver colecciones
+                </Link>
+              </div>
             </ScrollReveal>
 
             <ScrollReveal delay={100}>

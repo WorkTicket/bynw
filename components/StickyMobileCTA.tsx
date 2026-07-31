@@ -1,7 +1,6 @@
 "use client"
 
 import { useLayoutEffect } from "react"
-import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { getCatalogFromPrice, getLocalizedProduct } from "@/lib/pricing"
 import { getProductBySlug } from "@/lib/products"
@@ -87,12 +86,15 @@ export default function StickyMobileCTA() {
               Ver colecciones
             </a>
           ) : (
-            <Link
-              href={`/shop/${BESTSELLER_SLUG}`}
-              className="btn-nav shrink-0 min-h-[2.625rem] px-5 py-2.5 text-[11px] tracking-[0.06em]"
+            <HotmartBuyButton
+              href={featured.buyUrl}
+              contentId={featured.id}
+              contentName={featured.seoTitle}
+              price={featured.price}
+              className="!w-auto shrink-0 [&_a]:min-h-[2.625rem] [&_a]:rounded-full [&_a]:px-5 [&_a]:py-2.5 [&_a]:text-[11px] [&_a]:tracking-[0.06em] [&_a]:whitespace-nowrap"
             >
               Comprar
-            </Link>
+            </HotmartBuyButton>
           )}
         </div>
       </div>

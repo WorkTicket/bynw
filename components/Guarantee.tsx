@@ -1,4 +1,10 @@
+import Link from "next/link"
 import ScrollReveal from "@/components/ScrollReveal"
+import HotmartBuyButton from "@/components/HotmartBuyButton"
+import { getLocalizedProduct } from "@/lib/pricing"
+import { getProductBySlug } from "@/lib/products"
+
+const FEATURED_SLUG = "princesas-disney"
 
 /**
  * Boutique guarantee medallion.
@@ -171,6 +177,8 @@ function GuaranteeSeal() {
 }
 
 export default function Guarantee() {
+  const featured = getLocalizedProduct(getProductBySlug(FEATURED_SLUG)!)
+
   return (
     <section className="section-white section-padding">
       <div className="section">
@@ -204,6 +212,23 @@ export default function Guarantee() {
                     </span>
                   )
                 )}
+              </div>
+              <div className="mt-9 flex flex-col items-center gap-3.5 sm:flex-row md:justify-start">
+                <HotmartBuyButton
+                  href={featured.buyUrl}
+                  contentId={featured.id}
+                  contentName={featured.seoTitle}
+                  price={featured.price}
+                  className="w-full sm:w-auto [&_a]:min-h-[3.15rem] [&_a]:px-9 [&_a]:py-3.5 [&_a]:text-sm"
+                >
+                  Comprar Princesas — {featured.price}
+                </HotmartBuyButton>
+                <Link
+                  href="/shop"
+                  className="text-sm font-medium text-ink/50 transition-colors hover:text-rose-600"
+                >
+                  Ver todas las colecciones
+                </Link>
               </div>
             </div>
           </div>

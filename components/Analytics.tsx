@@ -24,6 +24,19 @@ const META_STANDARD = new Set([
   "Search",
 ])
 
+const GA_EVENT_MAP: Record<string, string> = {
+  ViewContent: "view_item",
+  InitiateCheckout: "begin_checkout",
+  Purchase: "purchase",
+  Lead: "generate_lead",
+  Contact: "contact",
+  AddToCart: "add_to_cart",
+}
+
+function isAdsPath(pathname: string | null) {
+  return Boolean(pathname?.startsWith("/ads"))
+}
+
 function trackPageView(url: string) {
   let gaOk = !GA_ID
   let fbOk = !FB_PIXEL_ID
@@ -60,6 +73,32 @@ function trackPageViewWhenReady(url: string, onDone: () => void) {
   return () => window.clearInterval(id)
 }
 
+/**
+ * Fire a Meta (+ optional GA) event once fbq/gtag are ready.
+ * Critical for ViewContent on cold ad landings where the pixel may still be injecting.
+ */
+function whenTrackersReady(
+  fire: () => boolean,
+  onDone?: () => void
+): () => void {
+  if (fire()) {
+    onDone?.()
+    return () => {}
+  }
+
+  let attempts = 0
+  const maxAttempts = 100
+  const id = window.setInterval(() => {
+    attempts += 1
+    if (fire() || attempts >= maxAttempts) {
+      window.clearInterval(id)
+      onDone?.()
+    }
+  }, 200)
+
+  return () => window.clearInterval(id)
+}
+
 /** GA + Meta (auto: standard track vs trackCustom). */
 export function trackEvent(name: string, params?: Record<string, unknown>) {
   if (GA_ID && typeof window.gtag === "function") {
@@ -74,22 +113,26 @@ export function trackEvent(name: string, params?: Record<string, unknown>) {
   }
 }
 
-/** Explicit Meta standard event (+ mirrored GA). */
-export function trackMetaStandard(name: string, params?: Record<string, unknown>) {
-  if (GA_ID && typeof window.gtag === "function") {
-    const gaMap: Record<string, string> = {
-      ViewContent: "view_item",
-      InitiateCheckout: "begin_checkout",
-      Purchase: "purchase",
-      Lead: "generate_lead",
-      Contact: "contact",
-      AddToCart: "add_to_cart",
+/** Explicit Meta standard event (+ mirrored GA). Retries until fbq exists. */
+export function trackMetaStandard(
+  name: string,
+  params?: Record<string, unknown>
+): () => void {
+  const gaName = GA_EVENT_MAP[name] || name
+  let gaSent = !GA_ID
+  let fbSent = !FB_PIXEL_ID
+
+  return whenTrackersReady(() => {
+    if (!gaSent && typeof window.gtag === "function") {
+      window.gtag("event", gaName, params)
+      gaSent = true
     }
-    window.gtag("event", gaMap[name] || name, params)
-  }
-  if (FB_PIXEL_ID && typeof window.fbq === "function") {
-    window.fbq("track", name, params)
-  }
+    if (!fbSent && typeof window.fbq === "function") {
+      window.fbq("track", name, params)
+      fbSent = true
+    }
+    return gaSent && fbSent
+  })
 }
 
 declare global {
@@ -188,8 +231,17 @@ function injectFb() {
   window.fbq("init", FB_PIXEL_ID)
 }
 
-/** Load tags after LCP: idle (max ~2.5s) or first user gesture — keeps attribution intact. */
-function scheduleAnalyticsLoad(load: () => void) {
+/**
+ * Organic pages: load after LCP (idle ≤2.5s or first gesture).
+ * Paid `/ads` landers: load immediately — Meta Test Events + cold traffic need
+ * PageView/ViewContent before bounce.
+ */
+function scheduleAnalyticsLoad(load: () => void, eager: boolean) {
+  if (eager) {
+    load()
+    return () => {}
+  }
+
   let done = false
   const events = ["pointerdown", "keydown", "touchstart", "scroll"] as const
   const opts: AddEventListenerOptions = { once: true, passive: true, capture: true }
@@ -229,14 +281,15 @@ export default function Analytics() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const tracked = useRef<string | null>(null)
+  const eagerAds = isAdsPath(pathname)
 
   useEffect(() => {
     if (!GA_ID && !FB_PIXEL_ID) return
     return scheduleAnalyticsLoad(() => {
       injectGa()
       injectFb()
-    })
-  }, [])
+    }, eagerAds)
+  }, [eagerAds])
 
   useEffect(() => {
     // Persist UTM/fbclid on first landing so Hotmart checkout can inherit them.
@@ -265,13 +318,14 @@ export default function Analytics() {
           ? { ...commerceFromEl(el), event_label: label }
           : { event_label: label, event_category: "engagement" }
 
-        if (GA_ID && typeof window.gtag === "function") {
-          window.gtag("event", binding.ga || binding.meta, params)
-        }
-        if (FB_PIXEL_ID && typeof window.fbq === "function") {
-          if (META_STANDARD.has(binding.meta)) {
-            window.fbq("track", binding.meta, params)
-          } else {
+        if (META_STANDARD.has(binding.meta)) {
+          // Retries until fbq/gtag exist — critical on fast tap after ad click.
+          trackMetaStandard(binding.meta, params)
+        } else {
+          if (GA_ID && typeof window.gtag === "function") {
+            window.gtag("event", binding.ga || binding.meta, params)
+          }
+          if (FB_PIXEL_ID && typeof window.fbq === "function") {
             window.fbq("trackCustom", binding.meta, params)
           }
         }
