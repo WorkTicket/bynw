@@ -38,7 +38,7 @@ export default function AdsCatalogLander({ reviews }: Props) {
 
   return (
     <>
-      <section className="hero-editorial relative min-h-[min(88svh,48rem)] overflow-hidden bg-[#fff9f8] sm:min-h-[min(90svh,50rem)]">
+      <section className="hero-editorial relative min-h-[min(88svh,48rem)] overflow-hidden bg-[#fffaf8] sm:min-h-[min(90svh,50rem)]">
         <div className="absolute inset-0">
           <div className="absolute inset-0 hero-image-drift origin-center scale-[1.04]">
             <Image
@@ -55,8 +55,8 @@ export default function AdsCatalogLander({ reviews }: Props) {
             className="pointer-events-none absolute inset-0 lg:hidden"
             style={{
               background: `
-                linear-gradient(to top, #fff9f8 0%, rgba(255,249,248,0.96) 18%, rgba(255,249,248,0.55) 42%, transparent 68%),
-                linear-gradient(to bottom, rgba(255,249,248,0.88) 0%, transparent 28%)
+                linear-gradient(to top, #fffaf8 0%, rgba(255,250,248,0.96) 18%, rgba(255,250,248,0.55) 42%, transparent 68%),
+                linear-gradient(to bottom, rgba(255,250,248,0.88) 0%, transparent 28%)
               `,
             }}
           />
@@ -67,12 +67,12 @@ export default function AdsCatalogLander({ reviews }: Props) {
               background: `
                 linear-gradient(
                   92deg,
-                  #fff9f8 0%,
-                  #fff9f8 32%,
-                  rgba(255,249,248,0.97) 40%,
-                  rgba(255,249,248,0.82) 50%,
-                  rgba(255,249,248,0.4) 62%,
-                  rgba(255,249,248,0.1) 74%,
+                  #fffaf8 0%,
+                  #fffaf8 32%,
+                  rgba(255,250,248,0.97) 40%,
+                  rgba(255,250,248,0.82) 50%,
+                  rgba(255,250,248,0.4) 62%,
+                  rgba(255,250,248,0.1) 74%,
                   transparent 86%
                 )
               `,

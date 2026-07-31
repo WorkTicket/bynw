@@ -10,7 +10,7 @@ export default function Hero() {
   const featured = getLocalizedProduct(getProductBySlug(FEATURED_SLUG)!)
 
   return (
-    <section className="hero-editorial relative min-h-[min(92svh,52rem)] overflow-hidden bg-[#fff9f8] sm:min-h-[min(94svh,54rem)]">
+    <section className="hero-editorial relative min-h-[min(92svh,52rem)] overflow-hidden bg-[#fffaf8] sm:min-h-[min(94svh,54rem)]">
       <div className="absolute inset-0">
         <div className="absolute inset-0 hero-image-drift">
           <div className="absolute inset-0 origin-[72%_42%] scale-[1.16] -translate-y-[9%] sm:origin-[74%_40%] sm:scale-[1.12] sm:-translate-y-[6%] lg:origin-center lg:scale-[1.04] lg:translate-y-0">
@@ -34,14 +34,14 @@ export default function Hero() {
             background: `
               linear-gradient(
                 to top,
-                #fff9f8 0%,
-                #fff9f8 32%,
-                rgba(255,249,248,0.97) 48%,
-                rgba(255,249,248,0.82) 60%,
-                rgba(255,249,248,0.45) 72%,
+                #fffaf8 0%,
+                #fffaf8 32%,
+                rgba(255,250,248,0.97) 48%,
+                rgba(255,250,248,0.82) 60%,
+                rgba(255,250,248,0.45) 72%,
                 transparent 88%
               ),
-              linear-gradient(to bottom, rgba(255,249,248,0.92) 0%, transparent 24%)
+              linear-gradient(to bottom, rgba(255,250,248,0.92) 0%, transparent 24%)
             `,
           }}
         />
@@ -53,12 +53,12 @@ export default function Hero() {
             background: `
               linear-gradient(
                 92deg,
-                #fff9f8 0%,
-                #fff9f8 32%,
-                rgba(255,249,248,0.97) 40%,
-                rgba(255,249,248,0.82) 50%,
-                rgba(255,249,248,0.4) 62%,
-                rgba(255,249,248,0.1) 74%,
+                #fffaf8 0%,
+                #fffaf8 32%,
+                rgba(255,250,248,0.97) 40%,
+                rgba(255,250,248,0.82) 50%,
+                rgba(255,250,248,0.4) 62%,
+                rgba(255,250,248,0.1) 74%,
                 transparent 86%
               )
             `,

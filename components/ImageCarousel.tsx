@@ -68,7 +68,7 @@ export default function ImageCarousel({
 
   return (
     <div ref={rootRef} className={`group relative ${className}`}>
-      <div className={`relative overflow-hidden rounded-2xl bg-rose-50/30 ${frame}`}>
+      <div className={`corner-accents relative overflow-hidden rounded-2xl bg-rose-50/30 ring-1 ring-rose-100/60 ${frame}`}>
         <Image
           src={`/images/${images[idx]}`}
           alt={alt}

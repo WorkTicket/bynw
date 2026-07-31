@@ -6,6 +6,7 @@ import ScrollReveal from "@/components/ScrollReveal"
 import HotmartBuyButton from "@/components/HotmartBuyButton"
 import PaymentLogos from "@/components/PaymentLogos"
 import MetaViewContent from "@/components/MetaViewContent"
+import ProductFinalCTA from "@/components/ProductFinalCTA"
 import { products, getProductBySlug } from "@/lib/products"
 import { parsePriceValue } from "@/lib/pricing"
 import { DEFAULT_OG_IMAGE } from "@/lib/site"
@@ -15,11 +16,9 @@ import {
   buildBreadcrumbJsonLd,
 } from "@/lib/seo"
 import { listFeaturedReviews } from "@/lib/reviews"
-import { faqJsonLd } from "@/lib/faqs"
 
 const Testimonials = dynamic(() => import("@/components/Testimonials"))
 const Guarantee = dynamic(() => import("@/components/Guarantee"))
-const FAQ = dynamic(() => import("@/components/FAQ"))
 type Props = { params: { slug: string } }
 
 export async function generateStaticParams() {
@@ -100,11 +99,6 @@ export default async function ProductPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
-
       <MetaViewContent
         contentId={localizedProduct.id}
         contentName={localizedProduct.seoTitle}
@@ -337,36 +331,13 @@ export default async function ProductPage({ params }: Props) {
 
       <Testimonials reviews={featuredReviews} limit={3} showForm={false} />
       <Guarantee />
-      <FAQ />
 
-      <section className="section-white section-padding">
-        <div className="section">
-          <ScrollReveal>
-            <div className="mx-auto max-w-md text-center border-t border-rose-100/60 pt-4">
-              <h2 className={sectionHeading}>
-                ¿Lista para empezar?
-              </h2>
-              <p className="mt-3 text-sm text-muted">
-                Acceso inmediato a la colección y a los bonos incluidos.
-              </p>
-              <HotmartBuyButton {...buyProps} className="mt-6">
-                {`Comprar ahora — ${localizedProduct.price}`}
-              </HotmartBuyButton>
-              <p className="mt-4 text-[11px] tracking-wide text-muted/80">
-                Acceso inmediato
-                <span className="meta-sep" aria-hidden="true">✦</span>
-                Garantía 7 días
-              </p>
-              <div className="mt-3 flex justify-center">
-                <PaymentLogos />
-              </div>
-              <p className="mt-3 text-xs text-muted">
-                Pago 100% seguro. Socio oficial: Hotmart.
-              </p>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
+      <ProductFinalCTA
+        shortTitle={localizedProduct.shortTitle}
+        price={localizedProduct.price}
+        buyProps={buyProps}
+        discount={discount}
+      />
     </>
   )
 }

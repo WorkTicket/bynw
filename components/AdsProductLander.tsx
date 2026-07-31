@@ -5,6 +5,7 @@ import ScrollReveal from "@/components/ScrollReveal"
 import HotmartBuyButton from "@/components/HotmartBuyButton"
 import PaymentLogos from "@/components/PaymentLogos"
 import MetaViewContent from "@/components/MetaViewContent"
+import ProductFinalCTA from "@/components/ProductFinalCTA"
 import { parsePriceValue } from "@/lib/pricing"
 import { StarIcon, CheckCircleIcon } from "@/lib/icons"
 import {
@@ -16,7 +17,6 @@ import type { Product } from "@/lib/products"
 
 const Testimonials = dynamic(() => import("@/components/Testimonials"))
 const Guarantee = dynamic(() => import("@/components/Guarantee"))
-const FAQ = dynamic(() => import("@/components/FAQ"))
 type Props = {
   product: Product
   reviews: Review[]
@@ -165,7 +165,7 @@ export default function AdsProductLander({ product, reviews }: Props) {
       {/* ── Full-bleed hero: product image + one offer ── */}
       <section
         id="oferta"
-        className="hero-editorial relative min-h-[min(88svh,50rem)] scroll-mt-[var(--site-header-offset)] overflow-hidden bg-[#fff9f8] sm:min-h-[min(92svh,54rem)]"
+        className="hero-editorial relative min-h-[min(88svh,50rem)] scroll-mt-[var(--site-header-offset)] overflow-hidden bg-[#fffaf8] sm:min-h-[min(92svh,54rem)]"
       >
         <div className="absolute inset-0">
           <div className="absolute inset-0 hero-image-drift origin-center scale-[1.04]">
@@ -183,8 +183,8 @@ export default function AdsProductLander({ product, reviews }: Props) {
             className="pointer-events-none absolute inset-0 lg:hidden"
             style={{
               background: `
-                linear-gradient(to top, #fff9f8 0%, rgba(255,249,248,0.97) 16%, rgba(255,249,248,0.58) 40%, transparent 66%),
-                linear-gradient(to bottom, rgba(255,249,248,0.9) 0%, transparent 26%)
+                linear-gradient(to top, #fffaf8 0%, rgba(255,250,248,0.97) 16%, rgba(255,250,248,0.58) 40%, transparent 66%),
+                linear-gradient(to bottom, rgba(255,250,248,0.9) 0%, transparent 26%)
               `,
             }}
           />
@@ -195,12 +195,12 @@ export default function AdsProductLander({ product, reviews }: Props) {
               background: `
                 linear-gradient(
                   92deg,
-                  #fff9f8 0%,
-                  #fff9f8 30%,
-                  rgba(255,249,248,0.97) 38%,
-                  rgba(255,249,248,0.82) 48%,
-                  rgba(255,249,248,0.4) 60%,
-                  rgba(255,249,248,0.1) 74%,
+                  #fffaf8 0%,
+                  #fffaf8 30%,
+                  rgba(255,250,248,0.97) 38%,
+                  rgba(255,250,248,0.82) 48%,
+                  rgba(255,250,248,0.4) 60%,
+                  rgba(255,250,248,0.1) 74%,
                   transparent 86%
                 )
               `,
@@ -521,33 +521,13 @@ export default function AdsProductLander({ product, reviews }: Props) {
         showMoreLink={false}
       />
       <Guarantee />
-      <FAQ />
 
-      {/* Final close */}
-      <section className="section-premium-dark section-padding">
-        <div className="section">
-          <ScrollReveal>
-            <div className="mx-auto flex max-w-lg flex-col items-center text-center">
-              <p className="font-script text-[1.85rem] leading-none text-rose-400 sm:text-[2.1rem]">
-                Manos Creativas Bynmw
-              </p>
-              <h2 className={`mt-5 ${sectionHeading}`}>
-                Empieza a tejer{" "}
-                <span className="gradient-text-rose italic">hoy</span>
-              </h2>
-              <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted">
-                {product.shortTitle} · {product.price}
-                {discount >= 40 ? ` (−${discount}%)` : ""}
-                {savingsLabel ? ` · ${savingsLabel}` : ""} · acceso inmediato ·
-                garantía 7 días
-              </p>
-              <div className="mt-8 w-full">
-                <BuyBlock buyProps={buyProps} buyLabel={buyLabel} />
-              </div>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
+      <ProductFinalCTA
+        shortTitle={product.shortTitle}
+        price={product.price}
+        buyProps={buyProps}
+        discount={discount}
+      />
     </>
   )
 }

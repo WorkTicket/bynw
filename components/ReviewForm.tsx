@@ -112,7 +112,7 @@ export default function ReviewForm({ variant = "compact", onSubmitted }: Props) 
   if (done) {
     return (
       <div
-        className={`rounded-[1.25rem] border border-rose-100/70 bg-white px-6 py-10 text-center sm:px-8 ${
+        className={`frame-soft px-6 py-10 text-center sm:px-8 ${
           variant === "full" ? "mx-auto max-w-xl" : ""
         }`}
         role="status"
@@ -140,7 +140,7 @@ export default function ReviewForm({ variant = "compact", onSubmitted }: Props) 
   return (
     <form
       onSubmit={handleSubmit}
-      className={`relative rounded-[1.25rem] border border-rose-100/70 bg-white p-5 sm:p-8 ${
+      className={`frame-soft p-5 sm:p-8 ${
         variant === "full" ? "mx-auto max-w-xl" : ""
       }`}
       noValidate

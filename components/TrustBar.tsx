@@ -33,7 +33,7 @@ export default async function TrustBar() {
         className="pointer-events-none absolute inset-x-0 bottom-0 h-24 sm:h-28"
         style={{
           background:
-            "linear-gradient(180deg, transparent 0%, rgba(255, 241, 240, 0.8) 100%)",
+            "linear-gradient(180deg, transparent 0%, rgba(250, 243, 241, 0.85) 100%)",
         }}
         aria-hidden="true"
       />

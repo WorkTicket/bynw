@@ -22,19 +22,19 @@ function GuaranteeSeal() {
       >
         <defs>
           <linearGradient id="gs-rim" x1="18%" y1="10%" x2="82%" y2="90%">
-            <stop offset="0%" stopColor="#f3b8be" />
-            <stop offset="48%" stopColor="#e07a86" />
-            <stop offset="100%" stopColor="#c94d64" />
+            <stop offset="0%" stopColor="#e8b4b8" />
+            <stop offset="48%" stopColor="#d4727e" />
+            <stop offset="100%" stopColor="#b84a5e" />
           </linearGradient>
           <radialGradient id="gs-band" cx="50%" cy="42%" r="58%">
             <stop offset="0%" stopColor="#ffffff" />
-            <stop offset="70%" stopColor="#fff9f8" />
-            <stop offset="100%" stopColor="#ffe9e7" />
+            <stop offset="70%" stopColor="#fffaf8" />
+            <stop offset="100%" stopColor="#f0d6d2" />
           </radialGradient>
           <radialGradient id="gs-core" cx="40%" cy="34%" r="66%">
             <stop offset="0%" stopColor="#fffdfc" />
-            <stop offset="55%" stopColor="#fff1f0" />
-            <stop offset="100%" stopColor="#ffd9d6" />
+            <stop offset="55%" stopColor="#faf3f1" />
+            <stop offset="100%" stopColor="#e8b4b8" />
           </radialGradient>
           <linearGradient id="gs-sheen" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stopColor="#ffffff" stopOpacity="0.7" />
@@ -52,7 +52,7 @@ function GuaranteeSeal() {
         </defs>
 
         {/* Cast shadow */}
-        <ellipse cx="140" cy="256" rx="70" ry="7" fill="#c94d64" opacity="0.1" />
+        <ellipse cx="140" cy="256" rx="70" ry="7" fill="#b84a5e" opacity="0.1" />
 
         {/* Scalloped rose rim */}
         <use href="#gs-scallop" fill="url(#gs-rim)" />
@@ -60,7 +60,7 @@ function GuaranteeSeal() {
         <use
           href="#gs-scallop"
           fill="none"
-          stroke="#fff9f8"
+          stroke="#fffaf8"
           strokeOpacity="0.35"
           strokeWidth="2"
           transform="translate(140 140) scale(0.955) translate(-140 -140)"
@@ -73,7 +73,7 @@ function GuaranteeSeal() {
           cy="140"
           r="100"
           fill="none"
-          stroke="#f0b0b6"
+          stroke="#d9a0a6"
           strokeWidth="1.25"
         />
 
@@ -84,7 +84,7 @@ function GuaranteeSeal() {
           cy="140"
           r="64"
           fill="none"
-          stroke="#e07a86"
+          stroke="#d4727e"
           strokeWidth="1.5"
           opacity="0.55"
         />
@@ -93,7 +93,7 @@ function GuaranteeSeal() {
           cy="140"
           r="58"
           fill="none"
-          stroke="#f5b8be"
+          stroke="#e8b4b8"
           strokeWidth="0.85"
           opacity="0.7"
         />
@@ -103,7 +103,7 @@ function GuaranteeSeal() {
 
         {/* Arc labels — Outfit, generous size & tracking */}
         <text
-          fill="#7a2e40"
+          fill="#5c2a36"
           fontFamily="var(--font-sans), Outfit, system-ui, sans-serif"
           fontSize="13.5"
           fontWeight="700"
@@ -114,7 +114,7 @@ function GuaranteeSeal() {
           </textPath>
         </text>
         <text
-          fill="#7a2e40"
+          fill="#5c2a36"
           fontFamily="var(--font-sans), Outfit, system-ui, sans-serif"
           fontSize="12.5"
           fontWeight="700"
@@ -126,7 +126,7 @@ function GuaranteeSeal() {
         </text>
 
         {/* Petite heart separators at 3 & 9 o'clock */}
-        <g fill="#e07a86" opacity="0.9">
+        <g fill="#d4727e" opacity="0.9">
           <path
             transform="translate(48,140) scale(0.85)"
             d="M0-3.2 C-2.8-5.8-7-3.2-7 0.4 C-7 3.2-2.2 6.4 0 8.2 C2.2 6.4 7 3.2 7 0.4 C7-3.2 2.8-5.8 0-3.2Z"
@@ -142,7 +142,7 @@ function GuaranteeSeal() {
           x="140"
           y="152"
           textAnchor="middle"
-          fill="#6b2436"
+          fill="#5c2a36"
           fontFamily="var(--font-display), 'Bodoni Moda', Georgia, serif"
           fontSize="72"
           fontWeight="600"
@@ -153,7 +153,7 @@ function GuaranteeSeal() {
           x="140"
           y="174"
           textAnchor="middle"
-          fill="#c94d64"
+          fill="#b84a5e"
           fontFamily="var(--font-sans), Outfit, system-ui, sans-serif"
           fontSize="11"
           fontWeight="700"
@@ -166,7 +166,7 @@ function GuaranteeSeal() {
         <path
           d="M118 182 Q140 188 162 182"
           fill="none"
-          stroke="#eba0a8"
+          stroke="#d9a0a6"
           strokeWidth="1.1"
           strokeLinecap="round"
           opacity="0.85"
