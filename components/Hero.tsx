@@ -12,15 +12,17 @@ export default function Hero() {
   return (
     <section className="hero-editorial relative min-h-[min(92svh,52rem)] overflow-hidden bg-[#fff9f8] sm:min-h-[min(94svh,54rem)]">
       <div className="absolute inset-0">
-        <div className="absolute inset-0 hero-image-drift origin-center scale-[1.04]">
-          <Image
-            src="/images/hero-editorial.webp"
-            alt="Amigurumi de princesa en crochet junto a un ramo de flores eternas tejidas"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-[68%_center] sm:object-[72%_center] lg:object-[78%_center]"
-          />
+        <div className="absolute inset-0 hero-image-drift">
+          <div className="absolute inset-0 origin-[72%_48%] scale-[1.62] sm:origin-[74%_45%] sm:scale-[1.38] lg:origin-center lg:scale-[1.04]">
+            <Image
+              src="/images/hero-editorial.webp"
+              alt="Amigurumi de princesa en crochet junto a un ramo de flores eternas tejidas"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-[72%_58%] sm:object-[74%_52%] lg:object-[78%_center]"
+            />
+          </div>
         </div>
 
         {/* Mobile: denser pearl veil behind copy for readability */}
