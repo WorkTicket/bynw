@@ -20,7 +20,13 @@ export default function ScrollReveal({
   variant = "up",
 }: Props) {
   const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: "-40px" })
+  // Trigger when ~12% visible, with a bottom inset so the reveal plays
+  // while the user is still scrolling — not after the block is fully on screen.
+  const inView = useInView(ref, {
+    once: true,
+    margin: "0px 0px -10% 0px",
+    threshold: 0.08,
+  })
   const [reducedMotion, setReducedMotion] = useState(false)
 
   useEffect(() => {
