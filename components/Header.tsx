@@ -87,23 +87,23 @@ export default function Header() {
         <div className="ios-status-bar" aria-hidden="true" />
         <div className="site-header">
           <header className={`site-header__nav ${scrolled ? "is-scrolled" : ""}`}>
-            <div className="section grid h-[3.75rem] grid-cols-[1fr_auto] items-center gap-3 sm:h-16">
-              <Link href="/ads" className="group flex min-w-0 items-center gap-2.5 justify-self-start sm:gap-3.5">
-                <div className="site-header__mark relative h-9 w-9 shrink-0 sm:h-10 sm:w-10">
+            <div className="section grid h-[4.25rem] grid-cols-[1fr_auto] items-center gap-3 sm:h-[4.5rem]">
+              <Link href="/ads" className="group flex min-w-0 items-center gap-3 justify-self-start sm:gap-3.5">
+                <div className="site-header__mark relative h-11 w-11 shrink-0 sm:h-12 sm:w-12">
                   <img
                     src="/images/logo-64.webp"
                     alt="Manos Creativas Bynmw"
-                    width="40"
-                    height="40"
+                    width="48"
+                    height="48"
                     decoding="async"
                     className="h-full w-full object-cover"
                   />
                 </div>
                 <div className="min-w-0">
-                  <span className="block truncate font-display text-[15px] font-semibold leading-none tracking-[-0.02em] text-ink transition-colors group-hover:text-rose-700 sm:text-[17px]">
+                  <span className="block truncate font-display text-[17px] font-semibold leading-tight tracking-[-0.02em] text-ink transition-colors group-hover:text-rose-700 sm:text-[19px]">
                     Manos Creativas
                   </span>
-                  <p className="mt-0.5 truncate font-script text-[15px] leading-none text-rose-500 transition-colors group-hover:text-rose-600 sm:mt-1 sm:text-[17px]">
+                  <p className="mt-0.5 truncate font-script text-[17px] leading-[1.2] text-rose-500 transition-colors group-hover:text-rose-600 sm:mt-1 sm:text-[19px]">
                     Bynmw
                   </p>
                 </div>
@@ -165,27 +165,27 @@ export default function Header() {
         )}
 
         <header className={`site-header__nav ${scrolled ? "is-scrolled" : ""}`}>
-          <div className="section grid h-[3.75rem] grid-cols-[minmax(0,1fr)_auto] items-center gap-3 sm:h-16 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-6">
+          <div className="section grid h-[4.25rem] grid-cols-[minmax(0,1fr)_auto] items-center gap-3 sm:h-[4.5rem] lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-6">
             <Link
               href="/"
-              className="group flex min-w-0 items-center gap-2.5 justify-self-start sm:gap-3.5"
+              className="group flex min-w-0 items-center gap-3 justify-self-start sm:gap-3.5"
               onClick={() => setOpen(false)}
             >
-              <div className="site-header__mark relative h-9 w-9 shrink-0 sm:h-10 sm:w-10">
+              <div className="site-header__mark relative h-11 w-11 shrink-0 sm:h-12 sm:w-12">
                 <img
                   src="/images/logo-64.webp"
                   alt="Manos Creativas Bynmw"
-                  width="40"
-                  height="40"
+                  width="48"
+                  height="48"
                   decoding="async"
                   className="h-full w-full object-cover"
                 />
               </div>
               <div className="min-w-0">
-                <span className="block truncate font-display text-[15px] font-semibold leading-none tracking-[-0.02em] text-ink transition-colors duration-300 group-hover:text-rose-700 sm:text-[17px]">
+                <span className="block truncate font-display text-[17px] font-semibold leading-tight tracking-[-0.02em] text-ink transition-colors duration-300 group-hover:text-rose-700 sm:text-[19px]">
                   Manos Creativas
                 </span>
-                <p className="mt-0.5 truncate font-script text-[15px] leading-none text-rose-500 transition-transform duration-500 group-hover:translate-x-0.5 sm:mt-1 sm:text-[17px]">
+                <p className="mt-0.5 truncate font-script text-[17px] leading-[1.2] text-rose-500 transition-transform duration-500 group-hover:translate-x-0.5 sm:mt-1 sm:text-[19px]">
                   Bynmw
                 </p>
               </div>

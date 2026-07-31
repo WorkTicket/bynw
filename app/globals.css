@@ -7,7 +7,7 @@
   --font-sans: "Outfit", sans-serif;
   --font-script: "Great Vibes", cursive;
   --header-announcement-height: 2.25rem;
-  --header-nav-height: 3.75rem;
+  --header-nav-height: 4.25rem;
   --safe-area-top: env(safe-area-inset-top, 0px);
   --site-header-offset: calc(
     var(--header-announcement-height) + var(--header-nav-height) + var(--safe-area-top)
@@ -26,7 +26,7 @@
 @media (min-width: 640px) {
   :root {
     --header-announcement-height: 2.5rem;
-    --header-nav-height: 4rem;
+    --header-nav-height: 4.5rem;
   }
 }
 
@@ -915,6 +915,18 @@ html {
 @keyframes heroDrift {
   0%, 100% { transform: scale(1.02) translateY(0); }
   50% { transform: scale(1.055) translateY(-1.8%); }
+}
+
+/* Mobile: translate-only — scale drift softens the already-cropped hero */
+@media (max-width: 1023px) {
+  .hero-image-drift {
+    animation: heroDriftMobile 14s ease-in-out infinite;
+  }
+
+  @keyframes heroDriftMobile {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-1.2%); }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
