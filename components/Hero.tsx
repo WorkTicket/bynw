@@ -1,9 +1,12 @@
 import Image from "next/image"
 import Link from "next/link"
-import { getCatalogFromPrice } from "@/lib/pricing"
+import { getLocalizedProduct } from "@/lib/pricing"
+import { getProductBySlug } from "@/lib/products"
+
+const FEATURED_SLUG = "princesas-disney"
 
 export default function Hero() {
-  const heroPrice = getCatalogFromPrice()
+  const featured = getLocalizedProduct(getProductBySlug(FEATURED_SLUG)!)
 
   return (
     <section className="hero-editorial relative min-h-[min(92svh,52rem)] overflow-hidden bg-[#fff9f8] sm:min-h-[min(94svh,54rem)]">
@@ -81,7 +84,7 @@ export default function Hero() {
 
           <div className="mt-8 flex flex-col gap-3.5 sm:mt-11 sm:flex-row sm:items-center sm:gap-6">
             <Link
-              href="/shop/princesas-disney"
+              href={`/shop/${FEATURED_SLUG}`}
               className="btn-primary min-h-[3.25rem] px-9 py-3.5 text-sm sm:px-11"
             >
               Comprar Princesas
@@ -105,7 +108,7 @@ export default function Hero() {
           </div>
 
           <p className="mt-7 text-[11px] tracking-[0.06em] text-muted/65 sm:mt-8 sm:text-xs">
-            Desde {heroPrice}
+            {featured.shortTitle} {featured.price}
             <span className="meta-sep" aria-hidden="true">✦</span>
             Descarga al momento
             <span className="meta-sep" aria-hidden="true">✦</span>

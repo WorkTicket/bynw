@@ -946,23 +946,7 @@ html {
   @apply text-rose-600;
 }
 
-/* ── Sticky mobile CTA ── */
-.sticky-mobile-cta {
-  transform: translate3d(0, 110%, 0);
-  opacity: 0;
-  pointer-events: none;
-  transition:
-    transform 0.55s var(--ease-out-expo),
-    opacity 0.4s var(--ease-out-expo);
-  will-change: transform, opacity;
-}
-
-.sticky-mobile-cta.is-visible {
-  transform: translate3d(0, 0, 0);
-  opacity: 1;
-  pointer-events: auto;
-}
-
+/* ── Sticky mobile CTA (always on for shop/home/ads) ── */
 .sticky-mobile-cta__panel {
   position: relative;
   border-top: 1px solid rgba(245, 184, 190, 0.48);
@@ -1007,6 +991,13 @@ html {
   }
 }
 
+/* Clear footer content so the always-on bar doesn’t cover it */
+@media (max-width: 1023px) {
+  html[data-sticky-cta="visible"] body {
+    padding-bottom: calc(5.35rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
 /* ── Floating WhatsApp ── */
 .floating-whatsapp {
   bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
@@ -1017,12 +1008,12 @@ html {
     0 1px 0 rgba(255, 255, 255, 0.28) inset,
     0 14px 36px -12px rgba(201, 77, 100, 0.52);
   transition:
-    bottom 0.55s var(--ease-out-expo),
+    bottom 0.35s var(--ease-out-expo),
     transform 0.35s var(--ease-out-expo),
     background-color 0.3s ease,
     box-shadow 0.35s var(--ease-out-expo),
-    opacity 0.45s var(--ease-out-expo),
-    visibility 0.45s;
+    opacity 0.4s var(--ease-out-expo),
+    visibility 0.4s;
 }
 
 .floating-whatsapp__sheen {
@@ -1057,14 +1048,14 @@ html {
   }
 }
 
+/* Park WhatsApp above the always-on sticky bar */
 @media (max-width: 1023px) {
   html[data-sticky-cta="visible"] .floating-whatsapp {
-    bottom: calc(5.15rem + env(safe-area-inset-bottom, 0px));
+    bottom: calc(5.65rem + env(safe-area-inset-bottom, 0px));
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sticky-mobile-cta,
   .floating-whatsapp {
     transition-duration: 0.01ms !important;
   }

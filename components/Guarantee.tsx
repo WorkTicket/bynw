@@ -1,5 +1,103 @@
 import ScrollReveal from "@/components/ScrollReveal"
 
+function GuaranteeSeal() {
+  return (
+    <svg
+      viewBox="0 0 240 240"
+      className="h-36 w-36 sm:h-44 sm:w-44"
+      role="img"
+      aria-label="Garantía de 7 días sin riesgo"
+    >
+      <defs>
+        <linearGradient id="guarantee-ring" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#e8a0a8" />
+          <stop offset="50%" stopColor="#c95d6e" />
+          <stop offset="100%" stopColor="#e8a0a8" />
+        </linearGradient>
+      </defs>
+
+      <circle cx="120" cy="120" r="112" fill="#fff9f8" />
+      <circle
+        cx="120"
+        cy="120"
+        r="108"
+        fill="none"
+        stroke="url(#guarantee-ring)"
+        strokeWidth="2.25"
+      />
+      <circle
+        cx="120"
+        cy="120"
+        r="98"
+        fill="none"
+        stroke="#f5b8be"
+        strokeWidth="1"
+        opacity="0.85"
+      />
+
+      <text
+        x="120"
+        y="52"
+        textAnchor="middle"
+        fill="#9a4a58"
+        fontFamily="Georgia, 'Times New Roman', serif"
+        fontSize="13"
+        fontWeight="600"
+        letterSpacing="0.32em"
+      >
+        GARANTÍA
+      </text>
+      <text
+        x="120"
+        y="198"
+        textAnchor="middle"
+        fill="#9a4a58"
+        fontFamily="Georgia, 'Times New Roman', serif"
+        fontSize="12"
+        fontWeight="600"
+        letterSpacing="0.26em"
+      >
+        SIN RIESGO
+      </text>
+
+      <g fill="#d4848f" opacity="0.9">
+        <path
+          transform="translate(42,120)"
+          d="M0-5 L1.4-1.4 L5 0 L1.4 1.4 L0 5 L-1.4 1.4 L-5 0 L-1.4-1.4 Z"
+        />
+        <path
+          transform="translate(198,120)"
+          d="M0-5 L1.4-1.4 L5 0 L1.4 1.4 L0 5 L-1.4 1.4 L-5 0 L-1.4-1.4 Z"
+        />
+      </g>
+
+      <text
+        x="120"
+        y="128"
+        textAnchor="middle"
+        fill="#7a3342"
+        fontFamily="Georgia, 'Times New Roman', serif"
+        fontSize="72"
+        fontWeight="600"
+      >
+        7
+      </text>
+      <text
+        x="120"
+        y="152"
+        textAnchor="middle"
+        fill="#c95d6e"
+        fontFamily="Georgia, 'Times New Roman', serif"
+        fontSize="12"
+        fontWeight="600"
+        letterSpacing="0.35em"
+      >
+        DÍAS
+      </text>
+    </svg>
+  )
+}
+
 export default function Guarantee() {
   return (
     <section className="section-white section-padding">
@@ -7,15 +105,7 @@ export default function Guarantee() {
         <ScrollReveal>
           <div className="mx-auto grid max-w-5xl items-center gap-12 md:grid-cols-[auto_1fr] md:gap-16">
             <div className="mx-auto md:mx-0">
-              <img
-                src="/images/guarantee-seal.svg"
-                alt="Garantía de 7 días sin riesgo"
-                width={176}
-                height={176}
-                loading="lazy"
-                decoding="async"
-                className="h-36 w-36 sm:h-44 sm:w-44"
-              />
+              <GuaranteeSeal />
             </div>
             <div className="text-center md:text-left">
               <span className="eyebrow">Garantía</span>
@@ -32,7 +122,7 @@ export default function Guarantee() {
                   (label, i) => (
                     <span key={label} className="flex items-center gap-x-6 sm:gap-x-8">
                       {i > 0 && (
-                        <span className="hidden text-[8px] text-rose-300/80 sm:inline" aria-hidden="true">
+                        <span className="hidden text-[8px] text-rose-300/80 sm:inline" aria-hidden>
                           ✦
                         </span>
                       )}
