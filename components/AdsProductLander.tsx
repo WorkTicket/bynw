@@ -17,8 +17,6 @@ import type { Product } from "@/lib/products"
 const Testimonials = dynamic(() => import("@/components/Testimonials"))
 const Guarantee = dynamic(() => import("@/components/Guarantee"))
 const FAQ = dynamic(() => import("@/components/FAQ"))
-const BeginnerCallout = dynamic(() => import("@/components/BeginnerCallout"))
-
 type Props = {
   product: Product
   reviews: Review[]
@@ -515,8 +513,6 @@ export default function AdsProductLander({ product, reviews }: Props) {
           </div>
         </section>
       )}
-
-      <BeginnerCallout />
 
       <Testimonials
         reviews={reviews}

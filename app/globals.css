@@ -198,7 +198,7 @@ html[data-nav-open="true"] .floating-whatsapp {
 }
 
 .site-header__mark {
-  overflow: visible;
+  overflow: hidden;
   border-radius: 999px;
   box-shadow:
     0 0 0 1px rgba(245, 184, 190, 0.75),
@@ -215,17 +215,6 @@ html[data-nav-open="true"] .floating-whatsapp {
   border-radius: 999px;
 }
 
-.site-header__yarn-ring {
-  pointer-events: none;
-  position: absolute;
-  inset: -4px;
-  width: calc(100% + 8px);
-  height: calc(100% + 8px);
-  z-index: 2;
-  opacity: 0.9;
-  transition: opacity 0.35s var(--ease-out-expo), transform 0.5s var(--ease-out-expo);
-}
-
 .group:hover .site-header__mark {
   transform: scale(1.03);
   box-shadow:
@@ -234,18 +223,13 @@ html[data-nav-open="true"] .floating-whatsapp {
     0 12px 24px -12px rgba(201, 77, 100, 0.45);
 }
 
-.group:hover .site-header__yarn-ring {
-  opacity: 1;
-  transform: rotate(12deg);
-}
-
-/* Yarn-wrapped desktop nav capsule */
+/* Desktop nav pill — double hairline wrap */
 .site-header__desktop-links {
   position: relative;
   display: flex;
   align-items: center;
   gap: 0.1rem;
-  padding: 0.32rem 0.4rem 0.32rem 1.55rem;
+  padding: 0.32rem 0.4rem;
   border-radius: 999px;
   background: rgba(255, 249, 248, 0.82);
   border: 1px solid rgba(184, 74, 92, 0.28);
@@ -255,7 +239,6 @@ html[data-nav-open="true"] .floating-whatsapp {
     0 0 0 4px rgba(201, 77, 100, 0.14),
     0 8px 22px -14px rgba(201, 77, 100, 0.18);
   isolation: isolate;
-  overflow: visible;
   transition:
     border-color 0.35s var(--ease-out-expo),
     box-shadow 0.35s var(--ease-out-expo);
@@ -270,47 +253,10 @@ html[data-nav-open="true"] .floating-whatsapp {
     0 10px 26px -14px rgba(201, 77, 100, 0.22);
 }
 
-.site-header__yarn-ball {
-  position: absolute;
-  left: -0.45rem;
-  top: 50%;
-  z-index: 3;
-  transform: translateY(-50%);
-  filter: drop-shadow(0 2px 5px rgba(158, 61, 80, 0.16));
-  line-height: 0;
-  transition: transform 0.4s var(--ease-out-expo), filter 0.4s var(--ease-out-expo);
-}
-
-.site-header__desktop-links:hover .site-header__yarn-ball {
-  transform: translateY(-50%) scale(1.03);
-  filter: drop-shadow(0 3px 8px rgba(158, 61, 80, 0.22));
-}
-
-.site-header__yarn-wrap {
-  pointer-events: none;
-  position: absolute;
-  left: -0.15rem;
-  top: 0;
-  width: 3.5rem;
-  height: 100%;
-  z-index: 2;
-  overflow: visible;
-}
-
-.yarn-strand {
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
 @media (min-width: 1280px) {
   .site-header__desktop-links {
     gap: 0.2rem;
-    padding: 0.36rem 0.5rem 0.36rem 1.7rem;
-  }
-
-  .site-header__yarn-ball {
-    left: -0.5rem;
+    padding: 0.36rem 0.5rem;
   }
 }
 
@@ -470,17 +416,6 @@ html[data-nav-open="true"] .floating-whatsapp {
     transform 0.5s var(--ease-out-expo);
 }
 
-.site-header__panel-yarn {
-  margin-bottom: 0.75rem;
-  width: fit-content;
-  filter: drop-shadow(0 4px 10px rgba(168, 58, 82, 0.16));
-  line-height: 0;
-}
-
-.site-header__panel-yarn svg {
-  display: block;
-}
-
 .site-header__panel.is-open .site-header__panel-intro {
   opacity: 1;
   transform: translateY(0);
@@ -602,7 +537,6 @@ html[data-nav-open="true"] .floating-whatsapp {
     animation: none;
   }
 
-  .site-header__yarn-ball,
   .icon-bloom,
   .petite-ornament svg {
     animation: none;
@@ -1099,13 +1033,8 @@ html {
   @apply relative z-[1] whitespace-nowrap rounded-full px-3 py-2 text-[12px] font-medium tracking-[0.04em] text-muted transition-all duration-300 hover:text-ink xl:px-4 xl:text-[13px];
 }
 
-.nav-link__label {
-  position: relative;
-  z-index: 1;
-}
-
-.nav-link__stitch {
-  pointer-events: none;
+.nav-link::after {
+  content: "";
   position: absolute;
   bottom: 0.32rem;
   left: 50%;
@@ -1123,8 +1052,8 @@ html {
   transform: translateY(-1px);
 }
 
-.nav-link:hover .nav-link__stitch,
-.nav-link-active .nav-link__stitch {
+.nav-link:hover::after,
+.nav-link-active::after {
   width: 1.25rem;
 }
 
@@ -1134,7 +1063,7 @@ html {
   box-shadow: 0 1px 0 rgba(255, 249, 248, 0.9) inset;
 }
 
-.nav-link-active .nav-link__stitch {
+.nav-link-active::after {
   width: 1.4rem;
   opacity: 0.9;
 }

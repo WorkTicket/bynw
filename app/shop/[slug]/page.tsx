@@ -20,8 +20,6 @@ import { faqJsonLd } from "@/lib/faqs"
 const Testimonials = dynamic(() => import("@/components/Testimonials"))
 const Guarantee = dynamic(() => import("@/components/Guarantee"))
 const FAQ = dynamic(() => import("@/components/FAQ"))
-const BeginnerCallout = dynamic(() => import("@/components/BeginnerCallout"))
-
 type Props = { params: { slug: string } }
 
 export async function generateStaticParams() {
@@ -337,7 +335,6 @@ export default async function ProductPage({ params }: Props) {
         </div>
       </section>
 
-      <BeginnerCallout />
       <Testimonials reviews={featuredReviews} limit={3} showForm={false} />
       <Guarantee />
       <FAQ />

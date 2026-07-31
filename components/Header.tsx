@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { YarnBall, YarnWrapPath, YarnLogoRing } from "@/components/YarnNavDecor"
 
 const links = [
   { href: "/", label: "Inicio" },
@@ -91,7 +90,6 @@ export default function Header() {
             <div className="section grid h-[4.25rem] grid-cols-[1fr_auto] items-center gap-3 sm:h-[4.5rem]">
               <Link href="/ads" className="group flex min-w-0 items-center gap-3 justify-self-start sm:gap-3.5">
                 <div className="site-header__mark relative h-11 w-11 shrink-0 sm:h-12 sm:w-12">
-                  <YarnLogoRing className="site-header__yarn-ring" />
                   <img
                     src="/images/logo-64.webp"
                     alt="Manos Creativas Bynmw"
@@ -181,7 +179,6 @@ export default function Header() {
               onClick={() => setOpen(false)}
             >
               <div className="site-header__mark relative h-11 w-11 shrink-0 sm:h-12 sm:w-12">
-                <YarnLogoRing className="site-header__yarn-ring" />
                 <img
                   src="/images/logo-64.webp"
                   alt="Manos Creativas Bynmw"
@@ -206,18 +203,13 @@ export default function Header() {
               aria-label="Principal"
             >
               <div className="site-header__desktop-links">
-                <div className="site-header__yarn-ball" aria-hidden="true">
-                  <YarnBall size={22} />
-                </div>
-                <YarnWrapPath className="site-header__yarn-wrap" />
                 {links.map((l) => (
                   <Link
                     key={l.href}
                     href={l.href}
                     className={`nav-link ${isActive(pathname, l.href) ? "nav-link-active" : ""}`}
                   >
-                    <span className="nav-link__label">{l.label}</span>
-                    <span className="nav-link__stitch" aria-hidden="true" />
+                    <span>{l.label}</span>
                   </Link>
                 ))}
               </div>
@@ -271,9 +263,6 @@ export default function Header() {
         </div>
         <nav className="site-header__panel-nav" aria-label="Móvil">
           <div className="site-header__panel-intro">
-            <div className="site-header__panel-yarn" aria-hidden="true">
-              <YarnBall size={28} />
-            </div>
             <p className="font-script text-[1.85rem] leading-none text-rose-500 sm:text-[2.1rem]">
               Manos Creativas
             </p>

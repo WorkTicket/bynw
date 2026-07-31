@@ -18,7 +18,6 @@ export const metadata: Metadata = {
 
 const ProductGrid = dynamic(() => import("@/components/ProductGrid"))
 const FeatureGrid = dynamic(() => import("@/components/FeatureGrid"))
-const BeginnerCallout = dynamic(() => import("@/components/BeginnerCallout"))
 const Testimonials = dynamic(() => import("@/components/Testimonials"))
 const BonusStack = dynamic(() => import("@/components/BonusStack"))
 const Guarantee = dynamic(() => import("@/components/Guarantee"))
@@ -49,7 +48,6 @@ export default async function HomePage() {
       {/* Products early — paid traffic should see offers within one scroll */}
       <ProductGrid />
       <FeatureGrid />
-      <BeginnerCallout />
       <Testimonials reviews={featured} limit={3} showForm />
       <BonusStack />
       <Guarantee />

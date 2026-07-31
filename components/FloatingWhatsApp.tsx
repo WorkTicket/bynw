@@ -5,13 +5,8 @@ import { WHATSAPP_URL } from "@/lib/site"
 
 export default function FloatingWhatsApp() {
   const pathname = usePathname()
-  // Buy pages already have sticky checkout — keep one primary thumb action.
-  // Support pages (about, contact, testimonials) keep the float.
-  if (
-    pathname.startsWith("/ads") ||
-    pathname === "/" ||
-    pathname.startsWith("/shop")
-  ) {
+  // Paid landers keep one primary thumb action (sticky buy).
+  if (pathname.startsWith("/ads")) {
     return null
   }
 
