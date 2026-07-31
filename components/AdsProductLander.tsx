@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic"
+import Image from "next/image"
 import ImageCarousel from "@/components/ImageCarousel"
 import ScrollReveal from "@/components/ScrollReveal"
 import HotmartBuyButton from "@/components/HotmartBuyButton"
@@ -54,7 +55,13 @@ const STEPS = [
 function formatSavings(price: string, originalPrice: string): string | null {
   const saved = parsePriceValue(originalPrice) - parsePriceValue(price)
   if (saved <= 0) return null
-  return `Ahorras ${Math.round(saved)}€`
+  if (/MX\$/i.test(price) || /MX\$/i.test(originalPrice)) {
+    return `Ahorras MX$${Math.round(saved)}`
+  }
+  if (price.includes("€") || originalPrice.includes("€")) {
+    return `Ahorras ${Math.round(saved)}€`
+  }
+  return `Ahorras ${Math.round(saved)}`
 }
 
 function buildHeroBenefits(product: Product): string[] {
@@ -149,118 +156,129 @@ export default function AdsProductLander({ product, reviews }: Props) {
         price={product.price}
       />
 
-      {/* ── Hero: one offer, one CTA ── */}
+      {/* ── Full-bleed hero: product image + one offer ── */}
       <section
         id="oferta"
-        className="relative scroll-mt-[var(--site-header-offset)] overflow-x-clip bg-[#fff9f8] pb-12 pt-6 sm:pb-16 sm:pt-10"
+        className="hero-editorial relative min-h-[min(92svh,54rem)] scroll-mt-[var(--site-header-offset)] overflow-hidden bg-[#fff9f8] sm:min-h-[min(94svh,56rem)]"
       >
-        <div
-          className="pointer-events-none absolute inset-0 opacity-80"
-          aria-hidden="true"
-          style={{
-            background:
-              "radial-gradient(ellipse 80% 50% at 70% 0%, rgba(251,207,214,0.4), transparent 55%), radial-gradient(ellipse 55% 40% at 8% 90%, rgba(255,228,230,0.55), transparent 50%)",
-          }}
-        />
-        <div className="section relative z-10">
-          <div className="mx-auto grid max-w-6xl items-center gap-8 lg:grid-cols-2 lg:gap-14">
-            <div className="relative order-1 lg:order-2">
-              <div className="relative overflow-hidden rounded-2xl bg-rose-50/40 ring-1 ring-rose-100/60">
-                <ImageCarousel
-                  images={product.images}
-                  interval={2500}
-                  alt={product.shortTitle}
-                />
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 hero-image-drift origin-center scale-[1.04]">
+            <Image
+              src={`/images/${product.images[0]}`}
+              alt={product.shortTitle}
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-[68%_center] sm:object-[72%_center] lg:object-[78%_center]"
+            />
+          </div>
+
+          <div
+            className="pointer-events-none absolute inset-0 lg:hidden"
+            style={{
+              background: `
+                linear-gradient(to top, #fff9f8 0%, rgba(255,249,248,0.97) 16%, rgba(255,249,248,0.58) 40%, transparent 66%),
+                linear-gradient(to bottom, rgba(255,249,248,0.9) 0%, transparent 26%)
+              `,
+            }}
+          />
+
+          <div
+            className="pointer-events-none absolute inset-0 hidden lg:block"
+            style={{
+              background: `
+                linear-gradient(
+                  92deg,
+                  #fff9f8 0%,
+                  #fff9f8 30%,
+                  rgba(255,249,248,0.97) 38%,
+                  rgba(255,249,248,0.82) 48%,
+                  rgba(255,249,248,0.4) 60%,
+                  rgba(255,249,248,0.1) 74%,
+                  transparent 86%
+                )
+              `,
+            }}
+          />
+        </div>
+
+        <div className="section relative z-10 flex min-h-[min(92svh,54rem)] flex-col justify-end pb-12 pt-10 sm:min-h-[min(94svh,56rem)] sm:justify-center sm:pb-20 sm:pt-16 lg:pb-24">
+          <div className="max-w-xl animate-fade-in-up lg:max-w-[36rem]">
+            <p className="font-script text-[1.85rem] leading-none text-rose-500 sm:text-[2.25rem]">
+              Manos Creativas Bynmw
+            </p>
+
+            <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-rose-500/90">
+              Colección digital en PDF
+            </p>
+
+            <h1 className="mt-2.5 font-display text-[2.15rem] font-semibold leading-[1.05] tracking-tight text-ink sm:text-4xl lg:text-[2.85rem]">
+              {product.shortTitle}
+            </h1>
+
+            <p className="mt-3.5 max-w-md text-[15px] leading-[1.7] text-muted sm:text-base">
+              {product.description}
+            </p>
+
+            <div className="mt-5 flex flex-wrap items-center gap-2">
+              <div
+                className="flex items-center gap-0.5"
+                aria-label={`${SITE_RATING_DISPLAY} de 5 estrellas`}
+              >
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <StarIcon key={i} className="text-rose-400" size={14} />
+                ))}
               </div>
-              {product.caption && (
-                <p className="mt-3 text-center text-xs text-muted sm:text-sm">
-                  {product.caption}
-                </p>
-              )}
+              <span className="text-sm font-semibold text-ink">
+                {SITE_RATING_DISPLAY}
+              </span>
+              <span className="text-sm text-muted">
+                · {reviewCount}+ reseñas de artesanas
+              </span>
             </div>
 
-            <div className="order-2 flex flex-col items-center text-center lg:order-1 lg:items-start lg:text-left">
-              <p className="font-script text-[1.75rem] leading-none text-rose-500 sm:text-[2.05rem]">
-                Manos Creativas Bynmw
-              </p>
-
-              <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-rose-500/90">
-                Colección digital en PDF
-              </p>
-
-              <h1 className="mt-2.5 font-display text-[2rem] font-semibold leading-[1.06] tracking-tight text-ink sm:text-4xl lg:text-[2.85rem]">
-                {product.shortTitle}
-              </h1>
-
-              <p className="mt-3.5 max-w-md text-[15px] leading-[1.7] text-muted sm:text-base">
-                {product.description}
-              </p>
-
-              {/* Social proof near CTA */}
-              <div className="mt-5 flex flex-wrap items-center justify-center gap-2 lg:justify-start">
-                <div
-                  className="flex items-center gap-0.5"
-                  aria-label={`${SITE_RATING_DISPLAY} de 5 estrellas`}
+            <ul className="mt-5 w-full max-w-md space-y-2.5">
+              {heroBenefits.map((b) => (
+                <li
+                  key={b}
+                  className="flex items-start gap-2.5 text-sm text-ink/80 sm:text-[15px]"
                 >
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <StarIcon key={i} className="text-rose-400" size={14} />
-                  ))}
-                </div>
-                <span className="text-sm font-semibold text-ink">
-                  {SITE_RATING_DISPLAY}
-                </span>
-                <span className="text-sm text-muted">
-                  · {reviewCount}+ reseñas de artesanas
-                </span>
-              </div>
+                  <CheckCircleIcon
+                    className="mt-0.5 shrink-0 text-rose-500"
+                    size={18}
+                  />
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
 
-              <ul className="mt-5 w-full max-w-md space-y-2.5 text-left lg:max-w-none">
-                {heroBenefits.map((b) => (
-                  <li
-                    key={b}
-                    className="flex items-start gap-2.5 text-sm text-ink/80 sm:text-[15px]"
-                  >
-                    <CheckCircleIcon
-                      className="mt-0.5 shrink-0 text-rose-500"
-                      size={18}
-                    />
-                    <span>{b}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="mt-6 flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 lg:justify-start">
-                <span className="text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-                  {product.price}
+            <div className="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <span className="text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+                {product.price}
+              </span>
+              {originalNum > priceNum && (
+                <span className="text-lg text-muted/40 line-through">
+                  {product.originalPrice}
                 </span>
-                {originalNum > priceNum && (
-                  <span className="text-lg text-muted/40 line-through">
-                    {product.originalPrice}
-                  </span>
-                )}
-                {discount >= 40 && (
-                  <span className="rounded-full bg-rose-100/80 px-2.5 py-0.5 text-xs font-semibold text-rose-700">
-                    −{discount}%
-                  </span>
-                )}
-              </div>
-              {savingsLabel && (
-                <p className="mt-1.5 text-xs font-medium text-rose-700/90">
-                  {savingsLabel}
-                  <span className="font-normal text-muted">
-                    {" "}
-                    · antes {product.originalPrice}
-                  </span>
-                </p>
               )}
+              {discount >= 40 && (
+                <span className="rounded-full bg-rose-100/80 px-2.5 py-0.5 text-xs font-semibold text-rose-700">
+                  −{discount}%
+                </span>
+              )}
+            </div>
+            {savingsLabel && (
+              <p className="mt-1.5 text-xs font-medium text-rose-700/90">
+                {savingsLabel}
+                <span className="font-normal text-muted">
+                  {" "}
+                  · antes {product.originalPrice}
+                </span>
+              </p>
+            )}
 
-              <div className="mt-7 w-full">
-                <BuyBlock
-                  buyProps={buyProps}
-                  buyLabel={buyLabel}
-                  align="start"
-                />
-              </div>
+            <div className="mt-7 w-full max-w-md">
+              <BuyBlock buyProps={buyProps} buyLabel={buyLabel} align="start" />
             </div>
           </div>
         </div>
@@ -281,6 +299,37 @@ export default function AdsProductLander({ product, reviews }: Props) {
           </ul>
         </div>
       </section>
+
+      {/* More product shots (below the fold) */}
+      {product.images.length > 1 && (
+        <section className="section-white section-padding">
+          <div className="section">
+            <ScrollReveal>
+              <div className="mx-auto max-w-lg">
+                <div className="text-center">
+                  <span className="eyebrow">La colección</span>
+                  <h2 className={`mt-3 ${sectionHeading}`}>
+                    Mira más{" "}
+                    <span className="gradient-text-rose italic">diseños</span>
+                  </h2>
+                  {product.caption && (
+                    <p className="mx-auto mt-3 max-w-sm text-sm text-muted">
+                      {product.caption}
+                    </p>
+                  )}
+                </div>
+                <div className="mt-8 overflow-hidden rounded-2xl bg-rose-50/40 ring-1 ring-rose-100/60">
+                  <ImageCarousel
+                    images={product.images}
+                    interval={2500}
+                    alt={product.shortTitle}
+                  />
+                </div>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+      )}
 
       {/* Value stack */}
       {(product.bonusItems.length > 0 || product.extraGiftItems.length > 0) && (

@@ -34,6 +34,12 @@ html[data-announcement="hidden"] {
   --site-header-offset: calc(var(--header-nav-height) + var(--safe-area-top));
 }
 
+/*
+ * Header + buttons live in @layer components so Tailwind utilities
+ * (hidden, lg:hidden, lg:inline-flex, etc.) correctly override display.
+ * Unlayered rules after @tailwind utilities win the cascade and break the nav.
+ */
+@layer components {
 /* iOS status bar / Dynamic Island */
 .ios-status-bar {
   position: fixed;
@@ -470,6 +476,7 @@ html[data-nav-open="true"] .floating-whatsapp {
     transition: none;
   }
 }
+} /* end @layer components — header */
 
 /* ── Base ── */
 body {
@@ -582,6 +589,7 @@ html {
 }
 
 /* ── Button system — boutique ── */
+@layer components {
 .btn-primary {
   @apply inline-flex items-center justify-center text-center rounded-2xl bg-rose-500 px-8 py-3.5 sm:px-10 sm:py-4 text-sm font-semibold text-white transition-all duration-300 hover:bg-rose-600 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] tracking-[0.04em];
   box-shadow:
@@ -611,6 +619,7 @@ html {
 .btn-secondary {
   @apply inline-flex items-center justify-center rounded-2xl border border-rose-300/80 bg-white/90 px-8 py-3.5 sm:px-10 sm:py-4 text-sm font-medium text-ink/75 transition-all duration-300 hover:border-rose-400 hover:bg-white hover:text-ink hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99];
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.85) inset;
+}
 }
 
 /* ── Layout ── */

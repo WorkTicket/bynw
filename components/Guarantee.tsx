@@ -9,14 +9,15 @@ export default function Guarantee() {
         <ScrollReveal>
           <div className="mx-auto grid max-w-5xl items-center gap-12 md:grid-cols-[auto_1fr] md:gap-16">
             <div className="mx-auto md:mx-0">
-              <div className="portrait-ring relative h-36 w-36 sm:h-44 sm:w-44">
-                <img
-                  src="/images/imagen-17.webp"
-                  alt="Garantía de 7 días"
-                  loading="lazy"
-                  className="h-full w-full object-cover"
-                />
-              </div>
+              <img
+                src="/images/guarantee-seal.svg"
+                alt="Garantía de 7 días sin riesgo"
+                width={176}
+                height={176}
+                loading="lazy"
+                decoding="async"
+                className="h-36 w-36 sm:h-44 sm:w-44"
+              />
             </div>
             <div className="text-center md:text-left">
               <span className="eyebrow">Garantía</span>

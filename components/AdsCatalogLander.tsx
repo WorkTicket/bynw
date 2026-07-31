@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import dynamic from "next/dynamic"
 import ProductCard from "@/components/ProductCard"
@@ -38,18 +39,51 @@ export default function AdsCatalogLander({ reviews }: Props) {
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-x-clip bg-[#fff9f8] pb-12 pt-10 sm:pb-16 sm:pt-14">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-80"
-          aria-hidden="true"
-          style={{
-            background:
-              "radial-gradient(ellipse 70% 45% at 50% 0%, rgba(251,207,214,0.45), transparent 60%), radial-gradient(ellipse 50% 40% at 90% 80%, rgba(255,228,230,0.5), transparent 55%)",
-          }}
-        />
-        <div className="section relative z-10">
-          <div className="mx-auto max-w-2xl text-center">
+      {/* Full-bleed hero */}
+      <section className="hero-editorial relative min-h-[min(88svh,48rem)] overflow-hidden bg-[#fff9f8] sm:min-h-[min(90svh,50rem)]">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 hero-image-drift origin-center scale-[1.04]">
+            <Image
+              src="/images/hero-editorial.webp"
+              alt="Amigurumi de princesa en crochet junto a un ramo de flores eternas tejidas"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-[68%_center] sm:object-[72%_center] lg:object-[78%_center]"
+            />
+          </div>
+
+          <div
+            className="pointer-events-none absolute inset-0 lg:hidden"
+            style={{
+              background: `
+                linear-gradient(to top, #fff9f8 0%, rgba(255,249,248,0.96) 18%, rgba(255,249,248,0.55) 42%, transparent 68%),
+                linear-gradient(to bottom, rgba(255,249,248,0.88) 0%, transparent 28%)
+              `,
+            }}
+          />
+
+          <div
+            className="pointer-events-none absolute inset-0 hidden lg:block"
+            style={{
+              background: `
+                linear-gradient(
+                  92deg,
+                  #fff9f8 0%,
+                  #fff9f8 32%,
+                  rgba(255,249,248,0.97) 40%,
+                  rgba(255,249,248,0.82) 50%,
+                  rgba(255,249,248,0.4) 62%,
+                  rgba(255,249,248,0.1) 74%,
+                  transparent 86%
+                )
+              `,
+            }}
+          />
+        </div>
+
+        <div className="section relative z-10 flex min-h-[min(88svh,48rem)] flex-col justify-end pb-12 pt-10 sm:min-h-[min(90svh,50rem)] sm:justify-center sm:pb-20 sm:pt-16 lg:pb-24">
+          <div className="max-w-xl animate-fade-in-up lg:max-w-[36rem]">
             <p className="font-script text-[2rem] leading-none text-rose-500 sm:text-[2.4rem]">
               Manos Creativas Bynmw
             </p>
@@ -58,12 +92,12 @@ export default function AdsCatalogLander({ reviews }: Props) {
               Elige tu colección de{" "}
               <span className="gradient-text-candy italic">crochet</span>
             </h1>
-            <p className="mx-auto mt-5 max-w-md text-[15px] leading-[1.75] text-muted sm:text-base lg:text-lg">
+            <p className="mt-5 max-w-md text-[15px] leading-[1.75] text-muted sm:text-base lg:text-lg">
               Patrones digitales en PDF con fotos paso a paso. Compra una vez,
               descarga al momento y teje cuando quieras.
             </p>
 
-            <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+            <div className="mt-5 flex flex-wrap items-center gap-2">
               <div className="flex items-center gap-0.5" aria-hidden="true">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <StarIcon key={i} className="text-rose-400" size={14} />
@@ -77,7 +111,7 @@ export default function AdsCatalogLander({ reviews }: Props) {
               </span>
             </div>
 
-            <div className="mt-8 flex flex-col items-center gap-3.5 sm:flex-row sm:justify-center sm:gap-5">
+            <div className="mt-8 flex flex-col gap-3.5 sm:flex-row sm:items-center sm:gap-5">
               <a href="#colecciones" className="btn-primary min-h-[3.15rem] px-9 text-sm">
                 Ver colecciones
               </a>

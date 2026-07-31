@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="guaranteeTitle">
+  <title id="guaranteeTitle">Garantía 7 días sin riesgo</title>
+  <defs>
+    <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e8a0a8"/>
+      <stop offset="50%" stop-color="#c95d6e"/>
+      <stop offset="100%" stop-color="#e8a0a8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Soft disc -->
+  <circle cx="120" cy="120" r="112" fill="#fff9f8"/>
+  <circle cx="120" cy="120" r="108" fill="none" stroke="url(#ring)" stroke-width="2.25"/>
+  <circle cx="120" cy="120" r="98" fill="none" stroke="#f5b8be" stroke-width="1" opacity="0.85"/>
+
+  <!-- Arc labels -->
+  <path id="topArc" d="M 48 120 A 72 72 0 0 1 192 120" fill="none"/>
+  <path id="botArc" d="M 192 120 A 72 72 0 0 1 48 120" fill="none"/>
+
+  <text fill="#9a4a58" font-family="Georgia, 'Times New Roman', serif" font-size="13" font-weight="600" letter-spacing="0.28em">
+    <textPath href="#topArc" startOffset="50%" text-anchor="middle">GARANTÍA</textPath>
+  </text>
+  <text fill="#9a4a58" font-family="Georgia, 'Times New Roman', serif" font-size="12" font-weight="600" letter-spacing="0.22em">
+    <textPath href="#botArc" startOffset="50%" text-anchor="middle">SIN RIESGO</textPath>
+  </text>
+
+  <!-- Side sparkles -->
+  <g fill="#d4848f" opacity="0.9">
+    <path transform="translate(42,120)" d="M0-5 L1.4-1.4 L5 0 L1.4 1.4 L0 5 L-1.4 1.4 L-5 0 L-1.4-1.4 Z"/>
+    <path transform="translate(198,120)" d="M0-5 L1.4-1.4 L5 0 L1.4 1.4 L0 5 L-1.4 1.4 L-5 0 L-1.4-1.4 Z"/>
+  </g>
+
+  <!-- Center mark -->
+  <text x="120" y="128" text-anchor="middle" fill="#7a3342" font-family="Georgia, 'Times New Roman', serif" font-size="72" font-weight="600">7</text>
+  <text x="120" y="152" text-anchor="middle" fill="#c95d6e" font-family="Georgia, 'Times New Roman', serif" font-size="12" font-weight="600" letter-spacing="0.35em">DÍAS</text>
+</svg>
