@@ -66,21 +66,43 @@ export default function StickyMobileCTA() {
 
   return (
     <div
-      className={`fixed bottom-0 left-0 right-0 z-50 transition-transform duration-300 ease-out lg:hidden ${
-        visible ? "translate-y-0" : "translate-y-full"
+      className={`sticky-mobile-cta fixed bottom-0 left-0 right-0 z-50 lg:hidden ${
+        visible ? "is-visible" : ""
       }`}
       style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+      aria-hidden={!visible}
     >
-      <div className="border-t border-rose-100/70 bg-[#fff9f8]/96 px-4 py-3.5 backdrop-blur-md">
-        <div className="mx-auto flex max-w-lg items-center justify-between gap-3">
-          <div className="min-w-0">
-            <p className="truncate font-script text-[1.15rem] leading-none text-rose-500">
+      <div className="sticky-mobile-cta__panel">
+        <div className="mx-auto flex max-w-lg items-center gap-3.5 px-4 py-3 sm:gap-4 sm:px-5 sm:py-3.5">
+          <div className="min-w-0 flex-1">
+            <p className="truncate font-script text-[1.22rem] leading-none text-rose-500 sm:text-[1.32rem]">
               {localized ? localized.shortTitle : "Manos Creativas"}
             </p>
-            <p className="mt-1 truncate text-[11px] tracking-wide text-muted">
-              {localized
-                ? `${localized.price} · PDF al momento`
-                : `Desde ${fromPrice} · PDF al momento`}
+            <p className="mt-1.5 flex min-w-0 items-baseline gap-1.5 truncate text-[11px] tracking-[0.04em] text-muted">
+              {localized ? (
+                <>
+                  <span className="font-semibold tabular-nums text-ink/85">
+                    {localized.price}
+                  </span>
+                  <span className="text-rose-300/90" aria-hidden>
+                    ·
+                  </span>
+                  <span className="truncate">PDF al momento</span>
+                </>
+              ) : (
+                <>
+                  <span className="shrink-0">
+                    Desde{" "}
+                    <span className="font-semibold tabular-nums text-ink/85">
+                      {fromPrice}
+                    </span>
+                  </span>
+                  <span className="text-rose-300/90" aria-hidden>
+                    ·
+                  </span>
+                  <span className="truncate">PDF al momento</span>
+                </>
+              )}
             </p>
           </div>
           {localized ? (
@@ -89,21 +111,21 @@ export default function StickyMobileCTA() {
               contentId={localized.id}
               contentName={localized.seoTitle}
               price={localized.price}
-              className="!w-auto shrink-0 [&_a]:min-h-[2.5rem] [&_a]:px-4 [&_a]:py-2.5 [&_a]:text-[11px] [&_a]:whitespace-nowrap"
+              className="!w-auto shrink-0 [&_a]:min-h-[2.625rem] [&_a]:rounded-full [&_a]:px-5 [&_a]:py-2.5 [&_a]:text-[11px] [&_a]:tracking-[0.06em] [&_a]:whitespace-nowrap"
             >
               Comprar
             </HotmartBuyButton>
           ) : pathname === "/ads" ? (
             <a
               href="#colecciones"
-              className="btn-nav shrink-0 min-h-[2.5rem] px-4 py-2.5 text-[11px]"
+              className="btn-nav shrink-0 min-h-[2.625rem] px-5 py-2.5 text-[11px] tracking-[0.06em]"
             >
               Ver colecciones
             </a>
           ) : (
             <Link
               href={`/shop/${BESTSELLER_SLUG}`}
-              className="btn-nav shrink-0 min-h-[2.5rem] px-4 py-2.5 text-[11px]"
+              className="btn-nav shrink-0 min-h-[2.625rem] px-5 py-2.5 text-[11px] tracking-[0.06em]"
             >
               Ver Princesas
             </Link>

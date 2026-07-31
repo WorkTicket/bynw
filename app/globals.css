@@ -946,8 +946,109 @@ html {
   @apply text-rose-600;
 }
 
+/* ── Sticky mobile CTA ── */
+.sticky-mobile-cta {
+  transform: translate3d(0, 110%, 0);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.55s var(--ease-out-expo),
+    opacity 0.4s var(--ease-out-expo);
+  will-change: transform, opacity;
+}
+
+.sticky-mobile-cta.is-visible {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sticky-mobile-cta__panel {
+  position: relative;
+  border-top: 1px solid rgba(245, 184, 190, 0.48);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.55) 0%,
+      transparent 42%
+    ),
+    linear-gradient(
+      105deg,
+      rgba(255, 249, 248, 0.94) 0%,
+      rgba(255, 241, 240, 0.97) 48%,
+      rgba(255, 249, 248, 0.94) 100%
+    );
+  -webkit-backdrop-filter: blur(22px) saturate(1.2);
+  backdrop-filter: blur(22px) saturate(1.2);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.72) inset,
+    0 -20px 48px -22px rgba(201, 77, 100, 0.26);
+}
+
+.sticky-mobile-cta__panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.95),
+    transparent
+  );
+  pointer-events: none;
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .sticky-mobile-cta__panel {
+    background: var(--surface-pearl);
+  }
+}
+
+/* ── Floating WhatsApp ── */
 .floating-whatsapp {
   bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+  isolation: isolate;
+  box-shadow:
+    0 0 0 1.5px rgba(255, 255, 255, 0.92),
+    0 0 0 3px rgba(224, 122, 134, 0.38),
+    0 1px 0 rgba(255, 255, 255, 0.28) inset,
+    0 14px 36px -12px rgba(201, 77, 100, 0.52);
+  transition:
+    bottom 0.55s var(--ease-out-expo),
+    transform 0.35s var(--ease-out-expo),
+    background-color 0.3s ease,
+    box-shadow 0.35s var(--ease-out-expo),
+    opacity 0.45s var(--ease-out-expo),
+    visibility 0.45s;
+}
+
+.floating-whatsapp__sheen {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.28) 0%,
+    transparent 48%
+  );
+  pointer-events: none;
+}
+
+.floating-whatsapp:hover {
+  background-color: #c94d64;
+  transform: scale(1.05);
+  box-shadow:
+    0 0 0 1.5px rgba(255, 255, 255, 0.95),
+    0 0 0 3.5px rgba(224, 122, 134, 0.5),
+    0 1px 0 rgba(255, 255, 255, 0.32) inset,
+    0 18px 40px -12px rgba(201, 77, 100, 0.58);
+}
+
+.floating-whatsapp:active {
+  transform: scale(0.96);
 }
 
 @media (min-width: 640px) {
@@ -958,6 +1059,18 @@ html {
 
 @media (max-width: 1023px) {
   html[data-sticky-cta="visible"] .floating-whatsapp {
-    bottom: calc(4.25rem + env(safe-area-inset-bottom, 0px));
+    bottom: calc(5.15rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sticky-mobile-cta,
+  .floating-whatsapp {
+    transition-duration: 0.01ms !important;
+  }
+
+  .floating-whatsapp:hover,
+  .floating-whatsapp:active {
+    transform: none;
   }
 }
