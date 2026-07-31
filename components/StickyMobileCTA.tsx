@@ -55,7 +55,7 @@ export default function StickyMobileCTA() {
       <div className="sticky-mobile-cta__panel">
         <div className="mx-auto flex max-w-lg items-center gap-3.5 px-4 py-3.5 sm:gap-4 sm:px-5">
           <div className="min-w-0 flex-1">
-            <p className="truncate font-script text-[1.22rem] leading-[1.25] text-rose-500 sm:text-[1.32rem]">
+            <p className="truncate font-script text-[1.22rem] leading-[1.25] text-rose-500 sm:text-[1.32rem] sticky-title-cute">
               {title}
             </p>
             <p className="mt-1.5 flex min-w-0 items-baseline gap-1.5 truncate text-[11px] tracking-[0.04em] text-muted">

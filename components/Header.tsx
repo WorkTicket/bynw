@@ -203,6 +203,10 @@ export default function Header() {
               aria-label="Principal"
             >
               <div className="site-header__desktop-links">
+                <span className="nav-sparkle nav-sparkle--a" aria-hidden="true" />
+                <span className="nav-sparkle nav-sparkle--b" aria-hidden="true" />
+                <span className="nav-sparkle nav-sparkle--c" aria-hidden="true" />
+                <span className="nav-sparkle nav-sparkle--heart" aria-hidden="true" />
                 {links.map((l) => (
                   <Link
                     key={l.href}

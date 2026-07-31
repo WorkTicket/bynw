@@ -11,7 +11,7 @@ export default function PetiteOrnament({ className = "", tone = "soft" }: Props)
 
   return (
     <div
-      className={`flex items-center justify-center gap-3 ${color} ${className}`}
+      className={`petite-ornament flex items-center justify-center gap-3 ${color} ${className}`}
       aria-hidden="true"
     >
       <span className="h-px w-8 bg-gradient-to-r from-transparent to-current sm:w-12" />
