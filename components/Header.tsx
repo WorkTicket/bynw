@@ -207,10 +207,9 @@ export default function Header() {
             >
               <div className="site-header__desktop-links">
                 <div className="site-header__yarn-ball" aria-hidden="true">
-                  <YarnBall size={26} />
+                  <YarnBall size={22} />
                 </div>
                 <YarnWrapPath className="site-header__yarn-wrap" />
-                <span className="site-header__yarn-loose" aria-hidden="true" />
                 {links.map((l) => (
                   <Link
                     key={l.href}
@@ -273,7 +272,7 @@ export default function Header() {
         <nav className="site-header__panel-nav" aria-label="Móvil">
           <div className="site-header__panel-intro">
             <div className="site-header__panel-yarn" aria-hidden="true">
-              <YarnBall size={36} />
+              <YarnBall size={28} />
             </div>
             <p className="font-script text-[1.85rem] leading-none text-rose-500 sm:text-[2.1rem]">
               Manos Creativas
