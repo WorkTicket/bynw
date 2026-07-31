@@ -48,7 +48,7 @@ export default function ProductCard({
             className="object-cover transition-transform duration-[1000ms] ease-out group-hover:scale-[1.045]"
           />
           <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-rose-900/[0.12] via-transparent to-white/15 opacity-80 transition-opacity duration-500 group-hover:opacity-50"
+            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#3a2428]/[0.08] via-transparent to-transparent opacity-70 transition-opacity duration-500 group-hover:opacity-40"
             aria-hidden="true"
           />
           {discount >= 50 && (
@@ -58,16 +58,16 @@ export default function ProductCard({
           )}
         </div>
 
-        <div className="flex flex-1 flex-col pt-6 sm:pt-7">
+        <div className="flex flex-1 flex-col pt-5 sm:pt-6">
           <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-rose-500">
             Colección
           </p>
 
-          <h3 className="mt-2.5 font-display text-[1.7rem] font-semibold leading-tight tracking-tight text-ink transition-colors duration-300 group-hover:text-rose-600 sm:text-[1.85rem]">
+          <h3 className="mt-2 font-display text-[1.65rem] font-semibold leading-tight tracking-tight text-ink transition-colors duration-300 group-hover:text-rose-600 sm:text-[1.8rem]">
             {product.shortTitle}
           </h3>
 
-          <div className="mt-3.5 flex items-baseline gap-3">
+          <div className="mt-3 flex items-baseline gap-3">
             <span className="text-lg font-semibold tracking-tight text-ink">
               {product.price}
             </span>
@@ -78,11 +78,11 @@ export default function ProductCard({
             )}
           </div>
 
-          <p className="mt-3.5 flex-1 text-[14px] leading-[1.75] text-muted line-clamp-2 sm:text-sm">
+          <p className="mt-3 flex-1 text-[14px] leading-[1.75] text-muted line-clamp-2 sm:text-sm">
             {product.description}
           </p>
 
-          <span className="mt-6 inline-flex min-h-[2.75rem] items-center gap-2.5 text-sm font-medium tracking-[0.02em] text-rose-500 transition-colors group-hover:text-rose-600">
+          <span className="mt-5 inline-flex min-h-[2.75rem] items-center gap-2.5 text-sm font-medium tracking-[0.02em] text-rose-500 transition-colors group-hover:text-rose-600">
             {ctaLabel}
             <svg
               className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1"

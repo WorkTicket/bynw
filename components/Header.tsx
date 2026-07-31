@@ -100,10 +100,10 @@ export default function Header() {
                   />
                 </div>
                 <div className="min-w-0">
-                  <span className="block truncate font-display text-[15px] font-semibold leading-none tracking-[-0.02em] text-ink sm:text-[17px]">
+                  <span className="block truncate font-display text-[15px] font-semibold leading-none tracking-[-0.02em] text-ink transition-colors group-hover:text-rose-700 sm:text-[17px]">
                     Manos Creativas
                   </span>
-                  <p className="mt-0.5 truncate font-script text-[15px] leading-none text-rose-500 sm:mt-1 sm:text-[17px]">
+                  <p className="mt-0.5 truncate font-script text-[15px] leading-none text-rose-500 transition-colors group-hover:text-rose-600 sm:mt-1 sm:text-[17px]">
                     Bynmw
                   </p>
                 </div>
@@ -113,7 +113,7 @@ export default function Header() {
                   href="#oferta"
                   className="btn-nav justify-self-end whitespace-nowrap text-[11px] sm:text-xs"
                 >
-                  Comprar
+                  Comprar ahora
                 </a>
               ) : (
                 <a

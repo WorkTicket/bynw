@@ -1,13 +1,11 @@
-"use client"
-
 import Image from "next/image"
 import Link from "next/link"
 import dynamic from "next/dynamic"
 import ProductCard from "@/components/ProductCard"
 import PetiteOrnament from "@/components/PetiteOrnament"
 import ScrollReveal from "@/components/ScrollReveal"
-import { products } from "@/lib/products"
-import { getCatalogFromPrice } from "@/lib/pricing"
+import { products, getProductBySlug } from "@/lib/products"
+import { getCatalogFromPrice, getLocalizedProduct } from "@/lib/pricing"
 import { CheckCircleIcon, StarIcon } from "@/lib/icons"
 import {
   SITE_RATING_DISPLAY,
@@ -35,11 +33,11 @@ const sectionHeading =
 
 export default function AdsCatalogLander({ reviews }: Props) {
   const fromPrice = getCatalogFromPrice()
+  const featured = getLocalizedProduct(getProductBySlug("princesas-disney")!)
   const bestsellers = ["princesas-disney", "flores-eternas", "amigurumis-chenille"]
 
   return (
     <>
-      {/* Full-bleed hero */}
       <section className="hero-editorial relative min-h-[min(88svh,48rem)] overflow-hidden bg-[#fff9f8] sm:min-h-[min(90svh,50rem)]">
         <div className="absolute inset-0">
           <div className="absolute inset-0 hero-image-drift origin-center scale-[1.04]">
@@ -84,11 +82,10 @@ export default function AdsCatalogLander({ reviews }: Props) {
 
         <div className="section relative z-10 flex min-h-[min(88svh,48rem)] flex-col justify-end pb-12 pt-10 sm:min-h-[min(90svh,50rem)] sm:justify-center sm:pb-20 sm:pt-16 lg:pb-24">
           <div className="max-w-xl animate-fade-in-up lg:max-w-[36rem]">
-            <p className="font-script text-[2rem] leading-none text-rose-500 sm:text-[2.4rem]">
+            <p className="font-script text-[2.35rem] leading-none text-rose-500 sm:text-[2.75rem]">
               Manos Creativas Bynmw
             </p>
-            <PetiteOrnament className="mt-5" />
-            <h1 className="mt-6 font-display text-[2.35rem] font-semibold leading-[1.05] tracking-[-0.03em] text-ink sm:text-5xl lg:text-[3.25rem]">
+            <h1 className="mt-6 font-display text-[2.15rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.85rem] lg:text-[3.15rem]">
               Elige tu colección de{" "}
               <span className="gradient-text-candy italic">crochet</span>
             </h1>
@@ -116,10 +113,10 @@ export default function AdsCatalogLander({ reviews }: Props) {
                 Ver colecciones
               </a>
               <Link
-                href="/ads/princesas-disney"
+                href={`/ads/${featured.slug}`}
                 className="text-sm font-medium text-ink/55 transition-colors hover:text-rose-600"
               >
-                Más vendida: Princesas →
+                Más vendida: {featured.shortTitle} →
               </Link>
             </div>
 
@@ -128,17 +125,16 @@ export default function AdsCatalogLander({ reviews }: Props) {
               <span className="meta-sep" aria-hidden="true">
                 ✦
               </span>
-              Descarga al momento
+              {featured.shortTitle} {featured.price}
               <span className="meta-sep" aria-hidden="true">
                 ✦
               </span>
-              Acceso de por vida
+              PDF al momento
             </p>
           </div>
         </div>
       </section>
 
-      {/* Trust */}
       <section className="border-y border-rose-100/70 bg-white">
         <div className="section py-5 sm:py-6">
           <ul className="mx-auto flex max-w-4xl flex-wrap items-center justify-center gap-x-6 gap-y-3">
@@ -155,7 +151,6 @@ export default function AdsCatalogLander({ reviews }: Props) {
         </div>
       </section>
 
-      {/* All products */}
       <section id="colecciones" className="section-pink section-padding scroll-mt-28">
         <div className="section">
           <ScrollReveal>
@@ -173,26 +168,29 @@ export default function AdsCatalogLander({ reviews }: Props) {
             </div>
           </ScrollReveal>
 
-          {/* Bestseller highlight strip */}
           <ScrollReveal>
-            <div className="mb-10 flex flex-wrap items-center justify-center gap-2 sm:mb-12">
-              <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-rose-500">
-                Destacadas
-              </span>
-              {bestsellers.map((slug) => {
+            <p className="mb-10 text-center text-[13px] tracking-[0.02em] text-muted sm:mb-12">
+              Destacadas:{" "}
+              {bestsellers.map((slug, i) => {
                 const p = products.find((x) => x.slug === slug)
                 if (!p) return null
                 return (
-                  <Link
-                    key={slug}
-                    href={`/ads/${slug}`}
-                    className="rounded-full bg-white/90 px-3.5 py-1.5 text-xs font-medium text-ink/70 ring-1 ring-rose-100 transition-colors hover:text-rose-600 hover:ring-rose-200"
-                  >
-                    {p.shortTitle}
-                  </Link>
+                  <span key={slug}>
+                    {i > 0 && (
+                      <span className="mx-1.5 text-rose-300" aria-hidden>
+                        ·
+                      </span>
+                    )}
+                    <Link
+                      href={`/ads/${slug}`}
+                      className="font-medium text-ink/75 transition-colors hover:text-rose-600"
+                    >
+                      {p.shortTitle}
+                    </Link>
+                  </span>
                 )
               })}
-            </div>
+            </p>
           </ScrollReveal>
 
           <div className="grid gap-10 sm:grid-cols-2 sm:gap-12 lg:grid-cols-3 lg:gap-14">
@@ -222,7 +220,7 @@ export default function AdsCatalogLander({ reviews }: Props) {
         <div className="section">
           <ScrollReveal>
             <div className="mx-auto max-w-lg text-center">
-              <p className="font-script text-[1.85rem] leading-none text-rose-400 sm:text-[2.1rem]">
+              <p className="font-script text-[2rem] leading-none text-rose-400 sm:text-[2.25rem]">
                 Manos Creativas Bynmw
               </p>
               <h2 className={`mt-5 ${sectionHeading}`}>
@@ -237,10 +235,10 @@ export default function AdsCatalogLander({ reviews }: Props) {
                   Ver colecciones
                 </a>
                 <Link
-                  href="/ads/princesas-disney"
+                  href={`/ads/${featured.slug}`}
                   className="text-sm font-medium text-ink/50 transition-colors hover:text-rose-600"
                 >
-                  Ir a la más vendida →
+                  {featured.shortTitle} {featured.price} →
                 </Link>
               </div>
             </div>

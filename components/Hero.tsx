@@ -68,11 +68,11 @@ export default function Hero() {
 
       <div className="section relative z-10 flex min-h-[min(92svh,52rem)] flex-col justify-end pb-14 pt-10 sm:min-h-[min(94svh,54rem)] sm:justify-center sm:pb-24 sm:pt-20 lg:pb-28">
         <div className="max-w-xl animate-fade-in-up lg:max-w-[36rem]">
-          <p className="font-script text-[2.15rem] leading-[1.05] text-rose-500 sm:text-[2.75rem] lg:text-[3.1rem]">
+          <p className="font-script text-[2.45rem] leading-[1.05] text-rose-500 sm:text-[3.05rem] lg:text-[3.45rem]">
             Manos Creativas Bynmw
           </p>
 
-          <h1 className="mt-5 font-display text-[2.35rem] font-semibold leading-[1.05] tracking-[-0.03em] text-ink sm:mt-7 sm:text-5xl lg:text-[3.55rem] xl:text-[3.85rem]">
+          <h1 className="mt-5 font-display text-[2.15rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:mt-7 sm:text-[2.85rem] lg:text-[3.25rem] xl:text-[3.45rem]">
             Patrones Digitales de{" "}
             <span className="gradient-text-candy italic">Crochet</span>
           </h1>

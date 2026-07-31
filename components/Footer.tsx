@@ -20,9 +20,9 @@ export default function Footer() {
   if (isAds) {
     return (
       <footer className="relative border-t border-rose-100/70 bg-[var(--surface-blush)]">
-        <div className="section relative py-8 sm:py-10">
+        <div className="section relative py-8 pb-12 sm:py-10 sm:pb-12">
           <div className="flex flex-col items-center justify-center gap-3 text-center">
-            <p className="text-[11px] text-muted/75">
+            <p className="text-[11px] tracking-[0.02em] text-muted/75">
               &copy; {year} Manos Creativas Bynmw
             </p>
             <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-muted sm:gap-x-5">
@@ -174,7 +174,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="section relative pb-10 sm:pb-9">
+      <div className="section relative pb-12 sm:pb-11">
         <PetiteOrnament className="mb-8" />
 
         <div className="mb-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-3 sm:gap-x-4">

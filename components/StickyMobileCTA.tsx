@@ -54,7 +54,7 @@ export default function StickyMobileCTA() {
       style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
     >
       <div className="sticky-mobile-cta__panel">
-        <div className="mx-auto flex max-w-lg items-center gap-3.5 px-4 py-3 sm:gap-4 sm:px-5 sm:py-3.5">
+        <div className="mx-auto flex max-w-lg items-center gap-3.5 px-4 py-3.5 sm:gap-4 sm:px-5">
           <div className="min-w-0 flex-1">
             <p className="truncate font-script text-[1.22rem] leading-none text-rose-500 sm:text-[1.32rem]">
               {title}
@@ -77,7 +77,7 @@ export default function StickyMobileCTA() {
               price={localized.price}
               className="!w-auto shrink-0 [&_a]:min-h-[2.625rem] [&_a]:rounded-full [&_a]:px-5 [&_a]:py-2.5 [&_a]:text-[11px] [&_a]:tracking-[0.06em] [&_a]:whitespace-nowrap"
             >
-              Comprar
+              {pathname.startsWith("/ads/") ? "Comprar ahora" : "Comprar"}
             </HotmartBuyButton>
           ) : pathname === "/ads" ? (
             <a

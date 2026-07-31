@@ -31,12 +31,12 @@ export default async function TrustBar() {
       />
 
       <div className="section relative">
-        <div className="trust-bar py-12 sm:py-16 lg:py-20">
-          <p className="mb-8 text-center font-script text-[1.7rem] leading-none text-rose-400 sm:mb-11 sm:text-[2rem]">
+        <div className="trust-bar py-9 sm:py-14 lg:py-16">
+          <p className="mb-7 text-center font-script text-[1.7rem] leading-none text-rose-400 sm:mb-10 sm:text-[2rem]">
             Con cariño, para cada tejedora
           </p>
 
-          <ul className="mx-auto flex max-w-4xl flex-wrap items-stretch justify-center gap-y-9 sm:flex-nowrap sm:gap-0">
+          <ul className="mx-auto flex max-w-4xl flex-wrap items-stretch justify-center gap-y-7 sm:flex-nowrap sm:gap-0">
             {stats.map((stat, i) => (
               <li
                 key={stat.label}

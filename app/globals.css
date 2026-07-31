@@ -603,10 +603,14 @@ html {
 /* ── Button system — boutique ── */
 @layer components {
 .btn-primary {
-  @apply inline-flex items-center justify-center text-center rounded-2xl bg-rose-500 px-8 py-3.5 sm:px-10 sm:py-4 text-sm font-semibold text-white transition-all duration-300 hover:bg-rose-600 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] tracking-[0.04em];
+  @apply inline-flex items-center justify-center text-center rounded-2xl bg-rose-500 px-8 py-3.5 sm:px-10 sm:py-4 text-sm font-semibold text-white hover:bg-rose-600 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] tracking-[0.04em];
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.32) inset,
     0 14px 32px -12px rgba(201, 77, 100, 0.48);
+  transition:
+    transform 0.35s var(--ease-out-expo),
+    background-color 0.3s ease,
+    box-shadow 0.35s var(--ease-out-expo);
 }
 
 .btn-primary:hover {
@@ -616,10 +620,14 @@ html {
 }
 
 .btn-nav {
-  @apply inline-flex items-center justify-center rounded-full bg-rose-500 px-4 py-2 text-[11px] font-semibold tracking-[0.05em] text-white transition-all duration-300 hover:bg-rose-600 hover:-translate-y-px active:scale-[0.99] xl:px-5 xl:py-2.5 xl:text-[12px];
+  @apply inline-flex items-center justify-center rounded-full bg-rose-500 px-4 py-2 text-[11px] font-semibold tracking-[0.05em] text-white hover:bg-rose-600 hover:-translate-y-px active:scale-[0.99] xl:px-5 xl:py-2.5 xl:text-[12px];
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.28) inset,
     0 10px 22px -10px rgba(201, 77, 100, 0.45);
+  transition:
+    transform 0.35s var(--ease-out-expo),
+    background-color 0.3s ease,
+    box-shadow 0.35s var(--ease-out-expo);
 }
 
 .btn-nav:hover {
@@ -629,8 +637,24 @@ html {
 }
 
 .btn-secondary {
-  @apply inline-flex items-center justify-center rounded-2xl border border-rose-300/80 bg-white/90 px-8 py-3.5 sm:px-10 sm:py-4 text-sm font-medium text-ink/75 transition-all duration-300 hover:border-rose-400 hover:bg-white hover:text-ink hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99];
+  @apply inline-flex items-center justify-center rounded-2xl border border-rose-300/80 bg-white/90 px-8 py-3.5 sm:px-10 sm:py-4 text-sm font-medium text-ink/75 hover:border-rose-400 hover:bg-white hover:text-ink hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99];
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.85) inset;
+  transition:
+    transform 0.35s var(--ease-out-expo),
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-primary:hover,
+  .btn-nav:hover,
+  .btn-secondary:hover,
+  .btn-primary:active,
+  .btn-nav:active,
+  .btn-secondary:active {
+    transform: none;
+  }
 }
 }
 
@@ -946,6 +970,28 @@ html {
   @apply text-rose-600;
 }
 
+/* Guarantee medallion — soft atelier seal */
+.guarantee-seal {
+  filter: drop-shadow(0 14px 26px rgba(201, 77, 100, 0.14));
+  line-height: 0;
+  transition: transform 0.45s var(--ease-out-expo), filter 0.45s var(--ease-out-expo);
+}
+
+@media (hover: hover) {
+  .guarantee-seal:hover {
+    transform: scale(1.03) rotate(-2deg);
+    filter: drop-shadow(0 18px 32px rgba(201, 77, 100, 0.2));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .guarantee-seal,
+  .guarantee-seal:hover {
+    transition: none;
+    transform: none;
+  }
+}
+
 /* ── Sticky mobile CTA (always on for shop/home/ads) ── */
 .sticky-mobile-cta__panel {
   position: relative;
@@ -994,7 +1040,7 @@ html {
 /* Clear footer content so the always-on bar doesn’t cover it */
 @media (max-width: 1023px) {
   html[data-sticky-cta="visible"] body {
-    padding-bottom: calc(5.35rem + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(6rem + env(safe-area-inset-bottom, 0px));
   }
 }
 
@@ -1051,7 +1097,7 @@ html {
 /* Park WhatsApp above the always-on sticky bar */
 @media (max-width: 1023px) {
   html[data-sticky-cta="visible"] .floating-whatsapp {
-    bottom: calc(5.65rem + env(safe-area-inset-bottom, 0px));
+    bottom: calc(5.85rem + env(safe-area-inset-bottom, 0px));
   }
 }
 

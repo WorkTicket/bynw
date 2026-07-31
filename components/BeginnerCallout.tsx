@@ -1,5 +1,4 @@
 import {
-  BookOpenIcon,
   PlayCircleIcon,
   ListIcon,
   MessageCircleIcon,
@@ -18,16 +17,14 @@ export default function BeginnerCallout() {
     <section className="section-pink section-padding">
       <div className="section">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-          <div className="relative overflow-hidden">
-            <div className="aspect-[4/3]">
-              <img
-                src="/images/imagen-19.webp"
-                alt="Aprende crochet desde cero"
-                loading="lazy"
-                decoding="async"
-                className="h-full w-full object-cover"
-              />
-            </div>
+          <div className="product-media relative aspect-[4/3] overflow-hidden">
+            <img
+              src="/images/imagen-19.webp"
+              alt="Aprende crochet desde cero"
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-cover"
+            />
           </div>
 
           <div>
@@ -41,19 +38,19 @@ export default function BeginnerCallout() {
               principiantes. En ellos repasamos abreviaturas y puntadas básicas para
               que puedas leer los patrones con confianza desde el primer día.
             </p>
-            <div className="mt-8 grid gap-6 sm:grid-cols-2">
+            <ul className="mt-8 grid gap-5 sm:grid-cols-2">
               {beginnerItems.map((item) => (
-                <div key={item.title} className="flex items-start gap-3.5">
-                  <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-rose-50 text-rose-500">
+                <li key={item.title} className="flex items-start gap-3">
+                  <span className="mt-1 text-rose-400" aria-hidden>
                     <item.icon size={18} />
                   </span>
                   <div>
                     <p className="text-sm font-medium text-ink">{item.title}</p>
-                    <p className="mt-0.5 text-xs text-muted">{item.desc}</p>
+                    <p className="mt-0.5 text-xs leading-relaxed text-muted">{item.desc}</p>
                   </div>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </div>
       </div>

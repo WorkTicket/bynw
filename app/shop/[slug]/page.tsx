@@ -119,7 +119,7 @@ export default async function ProductPage({ params }: Props) {
             <ScrollReveal>
               <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 items-start">
                 <div className="relative lg:order-2">
-                  <div className="relative overflow-hidden rounded-2xl bg-rose-50/40">
+                  <div className="product-media">
                     <ImageCarousel
                       images={localizedProduct.images}
                       interval={2000}
@@ -164,7 +164,7 @@ export default async function ProductPage({ params }: Props) {
 
                   <div className="mt-8 space-y-4 w-full max-w-md lg:max-w-none">
                     <HotmartBuyButton {...buyProps}>
-                      {localizedProduct.buyText}
+                      {`Comprar ahora — ${localizedProduct.price}`}
                     </HotmartBuyButton>
 
                     <p className="text-[11px] leading-relaxed tracking-wide text-muted/80 text-center lg:text-left">
@@ -172,7 +172,7 @@ export default async function ProductPage({ params }: Props) {
                       <span className="meta-sep" aria-hidden="true">✦</span>
                       Garantía 7 días
                       <span className="meta-sep" aria-hidden="true">✦</span>
-                      Soporte WhatsApp
+                      Pago 100% seguro
                     </p>
 
                     <div className="flex justify-center lg:justify-start">
@@ -353,7 +353,7 @@ export default async function ProductPage({ params }: Props) {
                 Acceso inmediato a la colección y a los bonos incluidos.
               </p>
               <HotmartBuyButton {...buyProps} className="mt-6">
-                {localizedProduct.buyText}
+                {`Comprar ahora — ${localizedProduct.price}`}
               </HotmartBuyButton>
               <p className="mt-4 text-[11px] tracking-wide text-muted/80">
                 Acceso inmediato
