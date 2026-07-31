@@ -138,17 +138,24 @@ export default function Header() {
         {announcementVisible && (
           <div className="site-header__announcement text-white">
             <div className="site-header__announcement-sheen" aria-hidden="true" />
-            <div className="section relative flex h-9 items-center justify-center px-5 pr-10 text-center sm:h-10 sm:pr-12">
-              <p className="truncate text-[10px] font-medium leading-none tracking-[0.14em] sm:text-[11px] sm:tracking-[0.18em]">
-                <span className="text-white/95">Patrones en PDF</span>
-                <span className="mx-2.5 text-white/45" aria-hidden="true">
+            <div className="section relative flex h-11 items-center justify-center gap-2 px-5 pr-11 text-center sm:h-12 sm:gap-2.5 sm:pr-12">
+              <p className="flex min-w-0 items-center justify-center gap-x-2 text-[12px] font-medium leading-none tracking-[0.08em] sm:gap-x-2.5 sm:text-[13px] sm:tracking-[0.12em]">
+                <span className="truncate text-white/95">Patrones en PDF</span>
+                <span className="shrink-0 text-white/45" aria-hidden="true">
                   ✦
                 </span>
-                <span className="text-white/90">Descarga al momento</span>
-                <span className="mx-2.5 hidden text-white/45 sm:inline" aria-hidden="true">
+                <span className="hidden shrink-0 text-white/90 sm:inline">Descarga al momento</span>
+                <span className="hidden shrink-0 text-white/45 sm:inline" aria-hidden="true">
                   ✦
                 </span>
-                <span className="hidden text-white/90 sm:inline">Acceso de por vida</span>
+                <span className="hidden shrink-0 text-white/90 md:inline">Acceso de por vida</span>
+                <span className="hidden shrink-0 text-white/45 md:inline" aria-hidden="true">
+                  ✦
+                </span>
+                <Link href="/#regalo-gratis" className="announcement-gift shrink-0 tracking-[0.06em]">
+                  <span aria-hidden="true">♡</span>
+                  Regalo gratis
+                </Link>
               </p>
               <button
                 type="button"

@@ -4,6 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import FooterSignature from "@/components/FooterSignature"
 import PetiteOrnament from "@/components/PetiteOrnament"
+import ScrollReveal from "@/components/ScrollReveal"
 
 const legalLinks = [
   { href: "/privacy-policy", label: "Privacidad" },
@@ -58,7 +59,8 @@ export default function Footer() {
         aria-hidden="true"
       />
       <div className="section relative pt-14 pb-10 sm:pt-20 sm:pb-14">
-        <div className="grid gap-14 sm:grid-cols-2 lg:grid-cols-12 lg:gap-10">
+        <ScrollReveal>
+          <div className="grid gap-14 sm:grid-cols-2 lg:grid-cols-12 lg:gap-10">
           <div className="space-y-6 lg:col-span-5">
             <div className="flex items-center gap-3.5">
               <div className="relative h-12 w-12 overflow-hidden rounded-full shadow-[0_0_0_1px_rgba(245,184,190,0.6),0_0_0_5px_rgba(255,249,248,0.95),0_0_0_6px_rgba(235,160,168,0.28)]">
@@ -171,46 +173,49 @@ export default function Footer() {
               </li>
             </ul>
           </div>
-        </div>
+          </div>
+        </ScrollReveal>
       </div>
 
       <div className="section relative pb-12 sm:pb-11">
-        <PetiteOrnament className="mb-8" />
+        <ScrollReveal delay={60} variant="fade">
+          <PetiteOrnament className="mb-8" />
 
-        <div className="mb-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-3 sm:gap-x-4">
-          {["Pago seguro Hotmart", "Descarga al momento", "Garantía 7 días", "Soporte WhatsApp"].map(
-            (label, i) => (
-              <span key={label} className="flex items-center gap-x-3 sm:gap-x-4">
-                {i > 0 && (
-                  <span className="text-[7px] text-rose-300/80" aria-hidden="true">
-                    ✦
+          <div className="mb-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-3 sm:gap-x-4">
+            {["Pago seguro Hotmart", "Descarga al momento", "Garantía 7 días", "Soporte WhatsApp"].map(
+              (label, i) => (
+                <span key={label} className="flex items-center gap-x-3 sm:gap-x-4">
+                  {i > 0 && (
+                    <span className="text-[7px] text-rose-300/80" aria-hidden="true">
+                      ✦
+                    </span>
+                  )}
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted">
+                    {label}
                   </span>
-                )}
-                <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted">
-                  {label}
                 </span>
-              </span>
-            )
-          )}
-        </div>
-
-        <div className="flex flex-col items-center justify-center gap-3 text-center">
-          <p className="text-[11px] text-muted/75">
-            &copy; {year} Manos Creativas Bynmw. Todos los derechos reservados.
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-muted sm:gap-x-5">
-            {legalLinks.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className="min-h-[2.5rem] inline-flex items-center transition-colors hover:text-rose-600"
-              >
-                {l.label}
-              </Link>
-            ))}
+              )
+            )}
           </div>
-          <FooterSignature />
-        </div>
+
+          <div className="flex flex-col items-center justify-center gap-3 text-center">
+            <p className="text-[11px] text-muted/75">
+              &copy; {year} Manos Creativas Bynmw. Todos los derechos reservados.
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-muted sm:gap-x-5">
+              {legalLinks.map((l) => (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  className="min-h-[2.5rem] inline-flex items-center transition-colors hover:text-rose-600"
+                >
+                  {l.label}
+                </Link>
+              ))}
+            </div>
+            <FooterSignature />
+          </div>
+        </ScrollReveal>
       </div>
     </footer>
   )

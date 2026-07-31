@@ -30,7 +30,8 @@ export default function FAQ() {
             const isOpen = openIdx === i
 
             return (
-              <div key={faq.q} className={isOpen ? "bg-rose-50/30" : ""}>
+              <ScrollReveal key={faq.q} delay={Math.min(i * 40, 200)} variant="fade">
+                <div className={isOpen ? "bg-rose-50/30" : ""}>
                   <button
                     id={buttonId}
                     type="button"
@@ -79,6 +80,7 @@ export default function FAQ() {
                     </p>
                   </div>
                 </div>
+              </ScrollReveal>
             )
           })}
         </div>

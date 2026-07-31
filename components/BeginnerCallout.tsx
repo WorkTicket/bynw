@@ -4,6 +4,7 @@ import {
   MessageCircleIcon,
   DownloadIcon,
 } from "@/lib/icons"
+import ScrollReveal from "@/components/ScrollReveal"
 
 const beginnerItems = [
   { icon: PlayCircleIcon, title: "Videos explicativos", desc: "Para cada técnica y puntada" },
@@ -17,38 +18,44 @@ export default function BeginnerCallout() {
     <section className="section-pink section-padding">
       <div className="section">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-          <div className="product-media relative aspect-[4/3] overflow-hidden">
-            <img
-              src="/images/imagen-19.webp"
-              alt="Aprende crochet desde cero"
-              loading="lazy"
-              decoding="async"
-              className="h-full w-full object-cover"
-            />
-          </div>
+          <ScrollReveal variant="scale">
+            <div className="product-media relative aspect-[4/3] overflow-hidden">
+              <img
+                src="/images/imagen-19.webp"
+                alt="Aprende crochet desde cero"
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-cover"
+              />
+            </div>
+          </ScrollReveal>
 
           <div>
-            <span className="eyebrow">Principiantes</span>
-            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl lg:text-5xl">
-              Aprende desde cero:{" "}
-              <span className="gradient-text-rose italic">ideal para principiantes</span>
-            </h2>
-            <p className="mt-5 text-base text-muted leading-relaxed sm:text-lg">
-              ¿Acabas de empezar? Cada paquete incluye vídeos teórico-prácticos para
-              principiantes. En ellos repasamos abreviaturas y puntadas básicas para
-              que puedas leer los patrones con confianza desde el primer día.
-            </p>
+            <ScrollReveal delay={40}>
+              <span className="eyebrow">Principiantes</span>
+              <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl lg:text-5xl">
+                Aprende desde cero:{" "}
+                <span className="gradient-text-rose italic">ideal para principiantes</span>
+              </h2>
+              <p className="mt-5 text-base text-muted leading-relaxed sm:text-lg">
+                ¿Acabas de empezar? Cada paquete incluye vídeos teórico-prácticos para
+                principiantes. En ellos repasamos abreviaturas y puntadas básicas para
+                que puedas leer los patrones con confianza desde el primer día.
+              </p>
+            </ScrollReveal>
             <ul className="mt-8 grid gap-5 sm:grid-cols-2">
-              {beginnerItems.map((item) => (
-                <li key={item.title} className="flex items-start gap-3">
-                  <span className="mt-1 text-rose-400" aria-hidden>
-                    <item.icon size={18} />
-                  </span>
-                  <div>
-                    <p className="text-sm font-medium text-ink">{item.title}</p>
-                    <p className="mt-0.5 text-xs leading-relaxed text-muted">{item.desc}</p>
-                  </div>
-                </li>
+              {beginnerItems.map((item, i) => (
+                <ScrollReveal key={item.title} delay={80 + i * 50}>
+                  <li className="flex items-start gap-3">
+                    <span className="mt-1 text-rose-400" aria-hidden>
+                      <item.icon size={18} />
+                    </span>
+                    <div>
+                      <p className="text-sm font-medium text-ink">{item.title}</p>
+                      <p className="mt-0.5 text-xs leading-relaxed text-muted">{item.desc}</p>
+                    </div>
+                  </li>
+                </ScrollReveal>
               ))}
             </ul>
           </div>

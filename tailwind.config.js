@@ -106,14 +106,14 @@ module.exports = {
           "radial-gradient(ellipse 70% 50% at 50% 0%, rgba(235,160,168,0.18) 0%, transparent 65%)",
       },
       animation: {
-        "fade-in-up": "fadeInUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+        "fade-in-up": "fadeInUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards",
         "hero-drift": "heroDrift 14s ease-in-out infinite",
         "petal-float": "petalFloat 7s ease-in-out infinite",
         "soft-pulse": "softPulse 3.2s ease-in-out infinite",
       },
       keyframes: {
         fadeInUp: {
-          "0%": { opacity: "0", transform: "translateY(28px)" },
+          "0%": { opacity: "0", transform: "translateY(16px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
         heroDrift: {

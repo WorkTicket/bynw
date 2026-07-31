@@ -51,7 +51,7 @@ export default function FeatureGrid() {
 
         <div className="grid gap-14 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-12 lg:gap-y-14">
           {features.map((f, i) => (
-            <ScrollReveal key={f.title} delay={i * 80}>
+            <ScrollReveal key={f.title} delay={i * 45} variant="scale">
               <div className="text-center sm:text-left">
                 <div className="icon-bloom mx-auto mb-6 sm:mx-0">
                   {f.icon("text-rose-500")}
