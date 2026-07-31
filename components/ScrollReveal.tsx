@@ -11,7 +11,7 @@ type Props = {
 
 export default function ScrollReveal({ children, className = "", delay = 0 }: Props) {
   const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: "-80px" })
+  const inView = useInView(ref, { once: true, margin: "-48px" })
   const [reducedMotion, setReducedMotion] = useState(false)
 
   useEffect(() => {
@@ -29,8 +29,8 @@ export default function ScrollReveal({ children, className = "", delay = 0 }: Pr
           ? undefined
           : {
               opacity: visible ? 1 : 0,
-              transform: visible ? "translateY(0) scale(1)" : "translateY(28px) scale(0.98)",
-              transition: `opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
+              transform: visible ? "translateY(0)" : "translateY(10px)",
+              transition: `opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform 0.55s cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
             }
       }
     >

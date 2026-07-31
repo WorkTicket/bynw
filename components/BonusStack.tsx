@@ -1,62 +1,57 @@
 "use client"
 
-import {
-  GiftIcon,
-  ScissorsIcon,
-  MessageCircleIcon,
-} from "@/lib/icons"
+import { GiftIcon, ScissorsIcon, MessageCircleIcon } from "@/lib/icons"
+import PetiteOrnament from "@/components/PetiteOrnament"
 import ScrollReveal from "@/components/ScrollReveal"
 
 const bonuses = [
   {
-    icon: (c: string) => <GiftIcon className={c} size={26} />,
-    title: "Patrón Sorpresa",
-    desc: "Patrón adicional sorpresa con cada compra",
+    icon: (c: string) => <GiftIcon className={c} size={20} />,
+    title: "Bonos exclusivos",
+    desc: "Patrones extra y colecciones de regalo incluidas en cada compra",
   },
   {
-    icon: (c: string) => <ScissorsIcon className={c} size={26} />,
-    title: "Guía de Materiales",
-    desc: "Guía completa de materiales recomendados",
+    icon: (c: string) => <ScissorsIcon className={c} size={20} />,
+    title: "Guías prácticas",
+    desc: "Abreviaturas, materiales y tips para tejer con más confianza",
   },
   {
-    icon: (c: string) => <MessageCircleIcon className={c} size={26} />,
-    title: "Soporte Ilimitado",
-    desc: "Soporte personalizado vía WhatsApp",
+    icon: (c: string) => <MessageCircleIcon className={c} size={20} />,
+    title: "Soporte WhatsApp",
+    desc: "Natalia te acompaña personalmente cuando lo necesites",
   },
 ]
 
 export default function BonusStack() {
   return (
-    <section className="section-alt section-padding overflow-hidden">
-      <div className="pointer-events-none absolute inset-0">
-        <GiftIcon className="absolute top-10 right-[6%] text-rose-200/20 animate-breathe hidden sm:block" size={34} style={{ animationDelay: "0.8s" }} />
-        <ScissorsIcon className="absolute bottom-12 left-[5%] text-rose-200/15 animate-sway hidden sm:block" size={28} style={{ animationDelay: "1.2s" }} />
-      </div>
-
-      <div className="section relative">
+    <section className="section-alt section-padding">
+      <div className="section">
         <ScrollReveal>
           <div className="section-header">
-            <span className="badge mb-3">Bonos incluidos</span>
+            <span className="eyebrow">Bonos incluidos</span>
+            <PetiteOrnament className="mb-5 mt-1" />
             <h2>
               Todo incluido en tu{" "}
               <span className="gradient-text-rose italic">compra</span>
             </h2>
             <p>
-              Cada colección incluye estos bonos sin coste extra. Todo lo que necesitas para empezar a tejer.
+              Cada colección incluye estos bonos sin coste extra. Todo lo que
+              necesitas para empezar a tejer.
             </p>
-            <div className="section-divider mt-6" />
           </div>
         </ScrollReveal>
 
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto grid max-w-4xl gap-12 sm:grid-cols-3 sm:gap-8">
           {bonuses.map((b, i) => (
             <ScrollReveal key={b.title} delay={i * 80}>
-              <div className="cute-card-static group h-full p-6 text-center transition-all duration-300 hover:-translate-y-1 cursor-default">
-              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-rose-400 to-pink-500 text-white shadow-lg transition-transform duration-300 group-hover:scale-110">
-                {b.icon("text-white")}
-              </div>
-              <h3 className="mb-1.5 font-display text-base font-semibold text-ink">{b.title}</h3>
-              <p className="text-sm text-muted">{b.desc}</p>
+              <div className="text-center">
+                <div className="icon-bloom mx-auto mb-5 bg-white">
+                  {b.icon("text-rose-500")}
+                </div>
+                <h3 className="mb-2 font-display text-xl font-semibold tracking-tight text-ink">
+                  {b.title}
+                </h3>
+                <p className="text-sm leading-[1.7] text-muted">{b.desc}</p>
               </div>
             </ScrollReveal>
           ))}

@@ -4,20 +4,6 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
-function getSecondsUntilEndOfDay(): number {
-  const now = new Date()
-  const end = new Date(now)
-  end.setHours(23, 59, 59, 999)
-  return Math.max(0, Math.floor((end.getTime() - now.getTime()) / 1000))
-}
-
-function formatTime(s: number): string {
-  const h = Math.floor(s / 3600)
-  const m = Math.floor((s % 3600) / 60)
-  const sec = s % 60
-  return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}:${sec.toString().padStart(2, "0")}`
-}
-
 const links = [
   { href: "/", label: "Inicio" },
   { href: "/shop", label: "Colecciones" },
@@ -33,10 +19,10 @@ function isActive(pathname: string, href: string) {
 
 export default function Header() {
   const pathname = usePathname()
+  const isAds = pathname.startsWith("/ads")
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [announcementVisible, setAnnouncementVisible] = useState(true)
-  const [seconds, setSeconds] = useState<number | null>(null)
 
   useEffect(() => {
     if (sessionStorage.getItem("announcement-dismissed") === "true") {
@@ -45,75 +31,132 @@ export default function Header() {
   }, [])
 
   useEffect(() => {
-    document.documentElement.dataset.announcement = announcementVisible ? "visible" : "hidden"
+    if (isAds) {
+      document.documentElement.dataset.announcement = "hidden"
+      return () => {
+        delete document.documentElement.dataset.announcement
+      }
+    }
+    document.documentElement.dataset.announcement = announcementVisible
+      ? "visible"
+      : "hidden"
     return () => {
       delete document.documentElement.dataset.announcement
     }
-  }, [announcementVisible])
+  }, [announcementVisible, isAds])
 
   useEffect(() => {
-    setSeconds(getSecondsUntilEndOfDay())
-    const t = setInterval(() => setSeconds(getSecondsUntilEndOfDay()), 1000)
-    return () => clearInterval(t)
-  }, [])
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
+    const onScroll = () => setScrolled(window.scrollY > 12)
+    onScroll()
     window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : ""
-    return () => { document.body.style.overflow = "" }
+    document.documentElement.dataset.navOpen = open ? "true" : "false"
+    return () => {
+      document.body.style.overflow = ""
+      delete document.documentElement.dataset.navOpen
+    }
   }, [open])
 
   useEffect(() => {
     setOpen(false)
   }, [pathname])
 
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false)
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [open])
+
   function dismissAnnouncement() {
     setAnnouncementVisible(false)
     sessionStorage.setItem("announcement-dismissed", "true")
   }
 
+  // Paid landers: no organic nav — logo + on-page buy so attention stays on the offer.
+  if (isAds) {
+    const isAdsProduct = /^\/ads\/[^/]+\/?$/.test(pathname)
+    return (
+      <>
+        <div className="ios-status-bar" aria-hidden="true" />
+        <div className="site-header">
+          <header className={`site-header__nav ${scrolled ? "is-scrolled" : ""}`}>
+            <div className="section grid h-[3.75rem] grid-cols-[1fr_auto] items-center gap-3 sm:h-16">
+              <Link href="/ads" className="group flex min-w-0 items-center gap-2.5 justify-self-start sm:gap-3.5">
+                <div className="site-header__mark relative h-9 w-9 shrink-0 sm:h-10 sm:w-10">
+                  <img
+                    src="/images/logo.webp"
+                    alt="Manos Creativas Bynmw"
+                    fetchPriority="high"
+                    width="40"
+                    height="40"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <div className="min-w-0">
+                  <span className="block truncate font-display text-[15px] font-semibold leading-none tracking-[-0.02em] text-ink sm:text-[17px]">
+                    Manos Creativas
+                  </span>
+                  <p className="mt-0.5 truncate font-script text-[15px] leading-none text-rose-500 sm:mt-1 sm:text-[17px]">
+                    Bynmw
+                  </p>
+                </div>
+              </Link>
+              {isAdsProduct ? (
+                <a
+                  href="#oferta"
+                  className="btn-nav justify-self-end whitespace-nowrap text-[11px] sm:text-xs"
+                >
+                  Comprar
+                </a>
+              ) : (
+                <a
+                  href="#colecciones"
+                  className="btn-nav justify-self-end whitespace-nowrap text-[11px] sm:text-xs"
+                >
+                  Ver ofertas
+                </a>
+              )}
+            </div>
+          </header>
+        </div>
+      </>
+    )
+  }
+
   return (
     <>
-      {open && (
-        <div
-          className="fixed inset-0 z-40 bg-ink/20 backdrop-blur-[2px] md:hidden"
-          onClick={() => setOpen(false)}
-          aria-hidden="true"
-        />
-      )}
-
       <div className="ios-status-bar" aria-hidden="true" />
 
-      <div className="site-header">
+      <div className={`site-header ${open ? "is-menu-open" : ""}`}>
         {announcementVisible && (
           <div className="site-header__announcement text-white">
-            <div className="section relative flex min-h-10 items-center justify-center px-5 py-2 pr-11 text-center sm:min-h-11 sm:pr-12">
-              <p className="flex max-w-full flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5 text-[11px] font-medium leading-snug tracking-wide sm:text-xs">
-                <span className="font-semibold text-rose-200">Oferta activa</span>
-                <span className="font-mono font-bold tabular-nums text-amber-300">
-                  {seconds !== null ? formatTime(seconds) : "--:--:--"}
+            <div className="site-header__announcement-sheen" aria-hidden="true" />
+            <div className="section relative flex h-9 items-center justify-center px-5 pr-10 text-center sm:h-10 sm:pr-12">
+              <p className="truncate text-[10px] font-medium leading-none tracking-[0.14em] sm:text-[11px] sm:tracking-[0.18em]">
+                <span className="text-white/95">Patrones en PDF</span>
+                <span className="mx-2.5 text-white/45" aria-hidden="true">
+                  ✦
                 </span>
-                <span className="hidden text-white/40 sm:inline" aria-hidden="true">·</span>
-                <span className="hidden sm:inline">Hasta un 70% de descuento.</span>
-                <span className="sm:hidden">70% dto.</span>
-                <Link
-                  href="/shop"
-                  className="hidden font-semibold text-rose-200 underline-offset-2 transition hover:text-white hover:underline sm:inline"
-                >
-                  Ver colecciones
-                </Link>
+                <span className="text-white/90">Descarga al momento</span>
+                <span className="mx-2.5 hidden text-white/45 sm:inline" aria-hidden="true">
+                  ✦
+                </span>
+                <span className="hidden text-white/90 sm:inline">Acceso de por vida</span>
               </p>
               <button
+                type="button"
                 onClick={dismissAnnouncement}
-                className="absolute right-2.5 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full text-white/50 transition hover:bg-white/10 hover:text-white sm:right-3"
+                className="absolute right-1.5 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-white/70 transition hover:bg-white/15 hover:text-white sm:right-2"
                 aria-label="Cerrar aviso"
               >
-                <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <svg className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
@@ -121,100 +164,166 @@ export default function Header() {
           </div>
         )}
 
-        <header
-          className={`site-header__nav transition-[border-color,box-shadow,background-color] duration-300 ${
-            scrolled ? "is-scrolled" : ""
-          }`}
-        >
-          <div className="section flex h-14 items-center justify-between gap-4 sm:h-16">
-            <Link href="/" className="flex min-w-0 items-center gap-2 group sm:gap-2.5">
-              <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full ring-2 ring-rose-200 transition-all duration-300 group-hover:ring-rose-400 shadow-sm sm:h-9 sm:w-9">
+        <header className={`site-header__nav ${scrolled ? "is-scrolled" : ""}`}>
+          <div className="section grid h-[3.75rem] grid-cols-[minmax(0,1fr)_auto] items-center gap-3 sm:h-16 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-6">
+            <Link
+              href="/"
+              className="group flex min-w-0 items-center gap-2.5 justify-self-start sm:gap-3.5"
+              onClick={() => setOpen(false)}
+            >
+              <div className="site-header__mark relative h-9 w-9 shrink-0 sm:h-10 sm:w-10">
                 <img
                   src="/images/logo.webp"
                   alt="Manos Creativas Bynmw"
                   fetchPriority="high"
-                  width="36"
-                  height="36"
+                  width="40"
+                  height="40"
                   className="h-full w-full object-cover"
                 />
               </div>
               <div className="min-w-0">
-                <span className="block truncate font-display text-sm font-semibold gradient-text-rose leading-none tracking-tight sm:text-lg">
+                <span className="block truncate font-display text-[15px] font-semibold leading-none tracking-[-0.02em] text-ink transition-colors duration-300 group-hover:text-rose-700 sm:text-[17px]">
                   Manos Creativas
                 </span>
-                <p className="-mt-0.5 truncate font-script text-[11px] text-rose-500 leading-none sm:text-sm">
+                <p className="mt-0.5 truncate font-script text-[15px] leading-none text-rose-500 transition-transform duration-500 group-hover:translate-x-0.5 sm:mt-1 sm:text-[17px]">
                   Bynmw
                 </p>
               </div>
             </Link>
 
-            <nav className="hidden items-center gap-0.5 md:flex lg:gap-1" aria-label="Principal">
-              {links.map((l) => (
-                <Link
-                  key={l.href}
-                  href={l.href}
-                  className={`nav-link ${isActive(pathname, l.href) ? "nav-link-active" : ""}`}
-                >
-                  {l.label}
-                </Link>
-              ))}
+            <nav
+              className="hidden items-center justify-center lg:flex"
+              aria-label="Principal"
+            >
+              <div className="site-header__desktop-links">
+                {links.map((l) => (
+                  <Link
+                    key={l.href}
+                    href={l.href}
+                    className={`nav-link ${isActive(pathname, l.href) ? "nav-link-active" : ""}`}
+                  >
+                    <span>{l.label}</span>
+                  </Link>
+                ))}
+              </div>
             </nav>
 
-            <div className="flex items-center">
-              <Link
-                href="/shop"
-                className="btn-primary hidden text-xs px-5 py-2.5 shadow-soft lg:inline-flex"
-              >
-                Ver Colecciones
+            <div className="flex items-center justify-self-end gap-2.5 sm:gap-3">
+              <Link href="/shop" className="btn-nav group hidden whitespace-nowrap lg:inline-flex">
+                <span>Ver Colecciones</span>
+                <svg
+                  className="ml-1.5 h-3 w-3 opacity-80 transition-transform duration-300 group-hover:translate-x-0.5"
+                  viewBox="0 0 12 12"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M2.5 6h7M6.5 3l3 3-3 3"
+                    stroke="currentColor"
+                    strokeWidth="1.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
               </Link>
 
               <button
-                onClick={() => setOpen(!open)}
-                className="relative ml-2 flex h-10 w-10 items-center justify-center rounded-xl border border-rose-100 bg-white text-ink transition-all hover:border-rose-200 hover:bg-rose-50 md:hidden"
+                type="button"
+                onClick={() => setOpen((v) => !v)}
+                className={`site-header__burger lg:hidden ${open ? "is-open" : ""}`}
                 aria-label={open ? "Cerrar menú" : "Abrir menú"}
                 aria-expanded={open}
                 aria-controls="mobile-nav"
               >
-                <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.75} viewBox="0 0 24 24">
-                  {open ? (
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                  ) : (
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 7h16M4 12h16M4 17h16" />
-                  )}
-                </svg>
+                <span className="burger-line burger-line--top" />
+                <span className="burger-line burger-line--mid" />
+                <span className="burger-line burger-line--bot" />
               </button>
             </div>
           </div>
+        </header>
+      </div>
 
-          <div
-            id="mobile-nav"
-            className={`overflow-hidden border-t border-rose-100/60 bg-white transition-all duration-300 ease-out md:hidden ${
-              open
-                ? "max-h-[24rem] opacity-100"
-                : "max-h-0 border-transparent opacity-0"
-            }`}
-          >
-            <nav className="section flex flex-col py-2" aria-label="Móvil">
-              {links.map((l) => (
+      <div
+        id="mobile-nav"
+        className={`site-header__panel lg:hidden ${open ? "is-open" : ""}`}
+        aria-hidden={!open}
+      >
+        <div className="site-header__panel-veil" aria-hidden="true">
+          <span className="site-header__panel-petal site-header__panel-petal--a" />
+          <span className="site-header__panel-petal site-header__panel-petal--b" />
+          <span className="site-header__panel-petal site-header__panel-petal--c" />
+        </div>
+        <nav className="site-header__panel-nav" aria-label="Móvil">
+          <div className="site-header__panel-intro">
+            <p className="font-script text-[1.85rem] leading-none text-rose-500 sm:text-[2.1rem]">
+              Manos Creativas
+            </p>
+            <p className="mt-2 text-[10px] font-medium uppercase tracking-[0.28em] text-rose-400/90">
+              Explora el atelier
+            </p>
+          </div>
+
+          <ul className="site-header__panel-list">
+            {links.map((l, i) => (
+              <li
+                key={l.href}
+                style={{ ["--i" as string]: i }}
+                className="site-header__panel-item"
+              >
                 <Link
-                  key={l.href}
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className={`flex min-h-[3rem] items-center border-b border-rose-50 px-1 py-3 text-[15px] font-medium transition last:border-b-0 ${
-                    isActive(pathname, l.href)
-                      ? "text-rose-700 font-semibold"
-                      : "text-ink/80 hover:text-rose-600"
+                  className={`site-header__panel-link ${
+                    isActive(pathname, l.href) ? "is-active" : ""
                   }`}
+                  tabIndex={open ? 0 : -1}
                 >
-                  {l.label}
-                  {isActive(pathname, l.href) && (
-                    <span className="ml-auto h-1.5 w-1.5 rounded-full bg-rose-500" aria-hidden="true" />
-                  )}
+                  <span className="site-header__panel-label">{l.label}</span>
+                  <span className="site-header__panel-heart" aria-hidden="true">
+                    <svg viewBox="0 0 28 28" width="14" height="14" fill="none">
+                      <path
+                        d="M14 24 C7 18 3 13 3 8.5 C3 5 5.5 2.5 9 2.5 C11.5 2.5 13.5 4.5 14 5.5 C14.5 4.5 16.5 2.5 19 2.5 C22.5 2.5 25 5 25 8.5 C25 13 21 18 14 24Z"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
                 </Link>
-              ))}
-            </nav>
+              </li>
+            ))}
+          </ul>
+
+          <div className="site-header__panel-footer">
+            <div className="site-header__panel-ornament" aria-hidden="true">
+              <span />
+              <svg viewBox="0 0 28 28" width="18" height="18" fill="none">
+                <path
+                  d="M14 24 C7 18 3 13 3 8.5 C3 5 5.5 2.5 9 2.5 C11.5 2.5 13.5 4.5 14 5.5 C14.5 4.5 16.5 2.5 19 2.5 C22.5 2.5 25 5 25 8.5 C25 13 21 18 14 24Z"
+                  stroke="currentColor"
+                  strokeWidth="1.35"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <circle cx="14" cy="11" r="1.2" fill="currentColor" opacity="0.45" />
+              </svg>
+              <span />
+            </div>
+            <Link
+              href="/shop"
+              onClick={() => setOpen(false)}
+              className="btn-primary mt-7 w-full py-3.5 text-[13px]"
+              tabIndex={open ? 0 : -1}
+            >
+              Ver Colecciones
+            </Link>
+            <p className="mt-6 text-center font-script text-[1.35rem] text-rose-400/85">
+              Hecho con amor
+            </p>
           </div>
-        </header>
+        </nav>
       </div>
     </>
   )

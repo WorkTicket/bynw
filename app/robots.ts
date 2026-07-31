@@ -1,4 +1,5 @@
 import { MetadataRoute } from "next"
+import { SITE_URL } from "@/lib/site"
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -6,13 +7,18 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/_next/", "/cdn-cgi/"],
+        disallow: ["/api/", "/_next/", "/cdn-cgi/", "/ads/"],
       },
       {
         userAgent: "GPTBot",
         disallow: "/",
       },
+      {
+        userAgent: "Google-Extended",
+        disallow: "/",
+      },
     ],
-    sitemap: "https://bynmwcreative.com/sitemap.xml",
+    sitemap: `${SITE_URL}/sitemap.xml`,
+    host: SITE_URL,
   }
 }

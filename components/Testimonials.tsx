@@ -1,93 +1,139 @@
 "use client"
 
 import Link from "next/link"
-import { QuoteIcon, StarIcon } from "@/lib/icons"
-import ScrollReveal from "@/components/ScrollReveal"
+import { usePathname } from "next/navigation"
+import { useEffect, useMemo, useState } from "react"
+import { StarIcon } from "@/lib/icons"
+import ReviewForm from "@/components/ReviewForm"
+import PetiteOrnament from "@/components/PetiteOrnament"
+import { reviewImageSrc, type Review } from "@/lib/testimonials-data"
 
-const testimonials = [
-  {
-    name: "María García",
-    avatar: "imagen-18-2.webp",
-    text: "Los patrones son súper claros y fáciles de seguir. Mi primer amigurumi quedó hermoso gracias a las instrucciones paso a paso.",
-    rating: 5,
-  },
-  {
-    name: "Laura Fernández",
-    avatar: "imagen-18-1.webp",
-    text: "Compré la colección de Princesas Disney y me encanta. La calidad de los patrones es increíble, se nota el amor en cada detalle.",
-    rating: 5,
-  },
-  {
-    name: "Ana Martínez",
-    avatar: "imagen-18-3.webp",
-    text: "Las flores eternas son mi perdición. Los patrones son detallados y el resultado final es precioso. Recomendadísimo.",
-    rating: 5,
-  },
-]
+type Props = {
+  reviews: Review[]
+  /** Show the leave-a-review form under the list (home). */
+  showForm?: boolean
+  /** Cap how many quotes to show (home = 3, page = all). */
+  limit?: number
+  /** Override “Ver todos” link (ads landers hide it to keep focus). */
+  showMoreLink?: boolean
+}
 
-export default function Testimonials() {
+export default function Testimonials({
+  reviews: initialReviews,
+  showForm,
+  limit,
+  showMoreLink: showMoreLinkProp,
+}: Props) {
+  const pathname = usePathname()
+  const [reviews, setReviews] = useState(initialReviews)
+
+  useEffect(() => {
+    setReviews(initialReviews)
+  }, [initialReviews])
+
+  const onTestimonialsPage = pathname === "/testimonials"
+  const shouldShowForm = showForm ?? !onTestimonialsPage
+  const showMoreLink = showMoreLinkProp ?? !onTestimonialsPage
+
+  const visible = useMemo(() => {
+    const list = reviews
+    return typeof limit === "number" ? list.slice(0, limit) : list
+  }, [reviews, limit])
+
+  function handleSubmitted(review: Review) {
+    setReviews((prev) => {
+      if (prev.some((r) => r.id === review.id)) return prev
+      return [review, ...prev]
+    })
+  }
+
   return (
-    <section className="section-pink section-padding overflow-hidden pt-20 sm:pt-24">
-      <div className="pointer-events-none absolute inset-0">
-        <QuoteIcon className="absolute top-8 right-[8%] text-rose-300/15 animate-breathe hidden sm:block" size={40} style={{ animationDelay: "0.5s" }} />
-        <StarIcon className="absolute bottom-16 left-[6%] text-rose-300/15 animate-sway hidden sm:block" size={28} style={{ animationDelay: "1.5s" }} />
-      </div>
-
-      <div className="section relative">
-        <ScrollReveal>
-          <div className="section-header">
-            <span className="badge mb-3">Testimonios</span>
-            <h2>
-              Lo que dicen nuestras{" "}
-              <span className="gradient-text-rose italic">artesanas</span>
-            </h2>
-            <p>
-              Algunas clientas nos cuentan cómo les ha ido con los patrones.
-            </p>
-            <div className="section-divider mt-6" />
-          </div>
-        </ScrollReveal>
-
-        <div className="grid gap-6 sm:gap-8 md:grid-cols-3">
-          {testimonials.map((t, i) => (
-            <ScrollReveal key={t.name} delay={i * 100}>
-              <div className="cute-card-static group relative h-full overflow-hidden p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-              <div className="pointer-events-none absolute -top-8 -right-8 text-rose-100/25 transition-all duration-500 group-hover:text-rose-200/35 group-hover:scale-110">
-                <QuoteIcon size={56} />
-              </div>
-
-              <div className="mb-4 flex items-center gap-1">
-                {Array.from({ length: t.rating }).map((_, idx) => (
-                  <StarIcon key={idx} className="h-4 w-4 text-rose-400" size={16} />
-                ))}
-              </div>
-
-              <p className="relative z-10 mb-5 text-sm leading-relaxed text-muted">{t.text}</p>
-
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 overflow-hidden rounded-full ring-2 ring-rose-200">
-                  <img src={`/images/${t.avatar}`} alt={t.name} loading="lazy" decoding="async" width="40" height="40" className="h-full w-full object-cover" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-ink">{t.name}</p>
-                  <p className="text-[10px] text-rose-400">Cliente verificada ♡</p>
-                </div>
-              </div>
-              </div>
-            </ScrollReveal>
-          ))}
+    <section className="section-white section-padding">
+      <div className="section">
+        <div className="section-header">
+          <span className="eyebrow">Testimonios</span>
+          <PetiteOrnament className="mb-5 mt-1" />
+          <h2>
+            Lo que dicen nuestras{" "}
+            <span className="gradient-text-rose italic">artesanas</span>
+          </h2>
+          <p>Reseñas reales de clientas que ya tejen con nuestros patrones.</p>
         </div>
 
-        <ScrollReveal delay={300}>
-          <div className="mt-10 flex justify-center sm:mt-12">
+        <ul className="mx-auto max-w-3xl divide-y divide-rose-100/80">
+          {visible.map((t) => {
+            const photo = reviewImageSrc(t)
+            return (
+              <li key={t.id}>
+                <blockquote className="flex items-start gap-4 py-7 sm:gap-6 sm:py-8">
+                  {photo && (
+                    <div className="shrink-0">
+                      <div className="overflow-hidden rounded-2xl bg-rose-50/50 ring-1 ring-rose-100/70">
+                        <img
+                          src={photo}
+                          alt={`Trabajo terminado de ${t.name}`}
+                          loading="lazy"
+                          decoding="async"
+                          className="h-[5.5rem] w-[5.5rem] object-cover sm:h-[6.75rem] sm:w-[6.75rem]"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="min-w-0 flex-1 text-left">
+                    <cite className="not-italic">
+                      <p className="text-sm font-semibold tracking-wide text-ink">
+                        {t.name}
+                      </p>
+                      {t.location && (
+                        <p className="mt-0.5 text-[12px] text-muted">{t.location}</p>
+                      )}
+                    </cite>
+
+                    <div
+                      className="mt-2 flex items-center gap-0.5"
+                      aria-label={`${t.rating} de 5 estrellas`}
+                    >
+                      {Array.from({ length: 5 }).map((_, idx) => (
+                        <StarIcon
+                          key={idx}
+                          className={
+                            idx < t.rating ? "text-rose-400" : "text-rose-100"
+                          }
+                          size={13}
+                        />
+                      ))}
+                    </div>
+
+                    <p className="mt-3 text-[1.05rem] font-normal leading-[1.7] tracking-[-0.01em] text-ink/85 sm:text-[1.1rem]">
+                      <span className="font-script text-[1.65rem] leading-none text-rose-300/80 mr-1">
+                        “
+                      </span>
+                      {t.text}
+                    </p>
+                  </div>
+                </blockquote>
+              </li>
+            )
+          })}
+        </ul>
+
+        {shouldShowForm && (
+          <div className="mx-auto mt-12 max-w-xl sm:mt-14">
+            <ReviewForm variant="compact" onSubmitted={handleSubmitted} />
+          </div>
+        )}
+
+        {showMoreLink && (
+          <div className="mt-9 flex justify-center sm:mt-10">
             <Link
               href="/testimonials"
-              className="btn-secondary inline-flex items-center justify-center gap-2 px-8 py-4"
+              className="btn-secondary min-h-[3rem] px-8 py-3.5"
             >
               Ver todos los testimonios
             </Link>
           </div>
-        </ScrollReveal>
+        )}
       </div>
     </section>
   )

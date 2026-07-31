@@ -1,146 +1,127 @@
 import { Metadata } from "next"
 import ScrollReveal from "@/components/ScrollReveal"
+import { createPageMetadata } from "@/lib/seo"
 
-const TERMS_URL = "https://bynmwcreative.com/terms"
-
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Términos y Condiciones",
   description:
-    "Términos y condiciones de Manos Creativas Bynmw. Conoce nuestras políticas de uso del sitio web y compra de patrones de crochet en PDF.",
-  alternates: {
-    canonical: TERMS_URL,
-    languages: {
-      "es-MX": TERMS_URL,
-      "es-ES": TERMS_URL,
-      "x-default": TERMS_URL,
-    },
-  },
-  openGraph: {
-    title: "Términos y Condiciones | Manos Creativas Bynmw",
-    description:
-      "Términos y condiciones de uso del sitio web y compra de patrones de crochet.",
-    url: TERMS_URL,
-  },
-  robots: {
-    index: true,
-    follow: false,
-  },
-}
+    "Términos y condiciones de Manos Creativas Bynmw. Políticas de uso del sitio y compra de patrones de crochet en PDF.",
+  path: "/terms",
+})
 
 export default function TermsPage() {
   return (
-    <section className="relative overflow-hidden bg-rose-50 pt-32 pb-24">
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute top-0 right-0 h-64 w-64 rounded-full bg-wine-200/10 blur-3xl" />
-        <div className="absolute bottom-0 left-0 h-64 w-64 rounded-full bg-wine-100/10 blur-3xl" />
-      </div>
-
-      <div className="section relative z-10 max-w-3xl">
+    <section className="page-hero pb-20">
+      <div className="section relative z-10 max-w-3xl mx-auto">
         <ScrollReveal>
           <div className="text-center">
-            <span className="badge">Legal</span>
-            <h1 className="mt-4 font-display text-5xl font-bold text-ink sm:text-6xl lg:text-7xl">
-              T&eacute;rminos y Condiciones
+            <span className="eyebrow">Legal</span>
+            <h1 className="mt-3 font-display text-4xl font-semibold text-ink sm:text-5xl">
+              Términos y Condiciones
             </h1>
-            <p className="mt-3 text-sm text-ink/40">&Uacute;ltima actualizaci&oacute;n: Julio 2026</p>
-            <div className="section-divider mt-6" />
+            <p className="mt-3 text-sm text-muted">Última actualización: Julio 2026</p>
           </div>
         </ScrollReveal>
 
         <ScrollReveal delay={100}>
-          <div className="mt-12 space-y-6 text-ink/60 leading-relaxed">
-            <div className="glass-card p-6">
-              <h2 className="font-display text-xl font-bold text-ink">
-                1. Aceptaci&oacute;n de los t&eacute;rminos
+          <div className="prose-policy mt-12">
+            <div className="border-t border-rose-100/50 pt-6">
+              <h2 className="font-display text-xl font-semibold text-ink">
+                1. Aceptación de los términos
               </h2>
               <p className="mt-2">
                 Al acceder y utilizar este sitio web, aceptas cumplir con estos
-                t&eacute;rminos y condiciones. Si no est&aacute;s de acuerdo con alguna
-                parte de estos t&eacute;rminos, no debes utilizar nuestro sitio.
+                términos y condiciones. Si no estás de acuerdo con alguna
+                parte de estos términos, no debes utilizar nuestro sitio.
               </p>
             </div>
 
-            <div className="glass-card p-6">
-              <h2 className="font-display text-xl font-bold text-ink">
+            <div className="border-t border-rose-100/50 pt-6">
+              <h2 className="font-display text-xl font-semibold text-ink">
                 2. Productos digitales
               </h2>
               <p className="mt-2">
                 Todos los productos ofrecidos en Manos Creativas Bynmw son
                 archivos digitales en formato PDF. Una vez realizada la compra,
-                recibir&aacute;s un enlace de descarga por correo electr&oacute;nico.
+                recibirás un enlace de descarga por correo electrónico a través
+                de Hotmart.
               </p>
               <p className="mt-2">
-                Los patrones digitales est&aacute;n protegidos por derechos de autor.
-                No est&aacute; permitida la redistribuci&oacute;n, reventa o
-                reproducci&oacute;n masiva de los contenidos.
+                Los patrones digitales están protegidos por derechos de autor.
+                No está permitida la redistribución, reventa o
+                reproducción masiva de los contenidos. Puedes tejer y vender
+                las piezas terminadas que elabores a partir de los patrones.
               </p>
             </div>
 
-            <div className="glass-card p-6">
-              <h2 className="font-display text-xl font-bold text-ink">
+            <div className="border-t border-rose-100/50 pt-6">
+              <h2 className="font-display text-xl font-semibold text-ink">
                 3. Precios y pagos
               </h2>
               <p className="mt-2">
-                Los precios se muestran en euros (&euro;) e incluyen los impuestos
-                aplicables. Los pagos se procesan a trav&eacute;s de Hotmart, una
-                plataforma segura de pagos. No almacenamos informaci&oacute;n de
-                tarjetas de cr&eacute;dito ni datos bancarios.
+                Los precios se muestran en euros (€) e incluyen los impuestos
+                aplicables cuando corresponda. Los pagos se procesan a través de
+                Hotmart, una plataforma segura de pagos. No almacenamos
+                información de tarjetas de crédito ni datos bancarios en nuestro
+                sitio.
               </p>
             </div>
 
-            <div className="glass-card p-6">
-              <h2 className="font-display text-xl font-bold text-ink">
+            <div className="border-t border-rose-100/50 pt-6">
+              <h2 className="font-display text-xl font-semibold text-ink">
                 4. Propiedad intelectual
               </h2>
               <p className="mt-2">
                 Todo el contenido de este sitio web, incluyendo pero no limitado
-                a patrones, im&aacute;genes, textos y logotipos, es propiedad
-                exclusiva de Manos Creativas Bynmw y est&aacute; protegido por las
-                leyes de propiedad intelectual.
+                a patrones, imágenes, textos y logotipos, es propiedad
+                exclusiva de Manos Creativas Bynmw y está protegido por las
+                leyes de propiedad intelectual. Las referencias a personajes o
+                marcas de terceros se usan únicamente con fines descriptivos de
+                los patrones artesanales.
               </p>
             </div>
 
-            <div className="glass-card p-6">
-              <h2 className="font-display text-xl font-bold text-ink">
-                5. Limitaci&oacute;n de responsabilidad
+            <div className="border-t border-rose-100/50 pt-6">
+              <h2 className="font-display text-xl font-semibold text-ink">
+                5. Limitación de responsabilidad
               </h2>
               <p className="mt-2">
                 Manos Creativas Bynmw no se hace responsable de los resultados
-                obtenidos al utilizar nuestros patrones. La t&eacute;cnica de crochet
-                depende de la habilidad individual de cada artesana.
+                obtenidos al utilizar nuestros patrones. La técnica de crochet
+                depende de la habilidad individual de cada artesana. El acceso
+                a los archivos digitales es de por vida una vez confirmada la
+                compra, sujeto a la disponibilidad del servicio de Hotmart.
               </p>
             </div>
 
-            <div className="glass-card p-6">
-              <h2 className="font-display text-xl font-bold text-ink">
+            <div className="border-t border-rose-100/50 pt-6">
+              <h2 className="font-display text-xl font-semibold text-ink">
                 6. Modificaciones
               </h2>
               <p className="mt-2">
-                Nos reservamos el derecho de modificar estos t&eacute;rminos en
-                cualquier momento. Los cambios entrar&aacute;n en vigor inmediatamente
-                despu&eacute;s de su publicaci&oacute;n en el sitio.
+                Nos reservamos el derecho de modificar estos términos en
+                cualquier momento. Los cambios entrarán en vigor inmediatamente
+                después de su publicación en el sitio.
               </p>
             </div>
 
-            <div className="glass-card p-6">
-              <h2 className="font-display text-xl font-bold text-ink">7. Contacto</h2>
+            <div className="border-t border-rose-100/50 pt-6">
+              <h2 className="font-display text-xl font-semibold text-ink">7. Contacto</h2>
               <p className="mt-2">
-                Para cualquier consulta sobre estos t&eacute;rminos, puedes
-                contactarnos a trav&eacute;s de WhatsApp al{" "}
+                Para cualquier consulta sobre estos términos, puedes
+                contactarnos a través de WhatsApp al{" "}
                 <a
                   href="https://wa.me/573008504709"
-                  className="text-wine-600 hover:underline"
+                  className="text-rose-600 hover:underline"
                 >
                   +57 300 850 4709
+                </a>{" "}
+                o por correo a{" "}
+                <a href="mailto:bynw808@gmail.com" className="text-rose-600 hover:underline">
+                  bynw808@gmail.com
                 </a>
                 .
               </p>
-            </div>
-
-            <div className="rounded-2xl2 border border-wine-200 bg-wine-50 p-5 text-sm text-wine-800">
-              <strong>Nota legal:</strong> Estos t&eacute;rminos son un punto de
-              partida y deben ser revisados por un abogado antes del
-              lanzamiento oficial del sitio.
             </div>
           </div>
         </ScrollReveal>

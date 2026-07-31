@@ -1,133 +1,118 @@
 "use client"
 
 import Image from "next/image"
-import LeadMagnet from "./LeadMagnet"
-import { useCountry } from "./CountryProvider"
-import { ShoppingBagIcon, ScissorsIcon, FlowerIcon, CrochetHookIcon } from "@/lib/icons"
+import Link from "next/link"
+import { getCatalogFromPrice } from "@/lib/pricing"
 
 export default function Hero() {
-  const country = useCountry()
-  const heroPrice = country === "MX" ? "MX$173" : "8€"
+  const heroPrice = getCatalogFromPrice()
 
   return (
-    <section className="hero-cute relative min-h-[calc(100dvh-7rem)] overflow-hidden pt-8 pb-20 sm:pt-20 sm:pb-24 lg:pt-24">
-      <div className="pointer-events-none absolute inset-0 bg-dots-rose opacity-60" />
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-32 -right-32 h-80 w-80 rounded-full bg-rose-300/25 blur-3xl" />
-        <div className="absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-lavender-200/30 blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-pink-200/20 blur-3xl" />
+    <section className="hero-editorial relative min-h-[min(92svh,52rem)] overflow-hidden bg-[#fff9f8] sm:min-h-[min(94svh,54rem)]">
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 hero-image-drift origin-center scale-[1.04]">
+          <Image
+            src="/images/hero-editorial.webp"
+            alt="Amigurumi de princesa en crochet junto a un ramo de flores eternas tejidas"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-[68%_center] sm:object-[72%_center] lg:object-[78%_center]"
+          />
+        </div>
 
-        <ScissorsIcon className="absolute top-10 right-[10%] text-rose-300/30 animate-sway hidden sm:block" size={40} style={{ animationDelay: "0.3s" }} />
-        <FlowerIcon className="absolute top-16 left-[12%] text-rose-300/25 animate-float hidden lg:block" size={36} style={{ animationDelay: "1.7s" }} />
-        <CrochetHookIcon className="absolute top-24 left-[18%] text-rose-400/25 animate-drift hidden sm:block" size={34} style={{ animationDelay: "0.9s" }} />
-        <FlowerIcon className="absolute bottom-32 right-[15%] text-pink-300/30 animate-breathe hidden sm:block" size={28} style={{ animationDelay: "1.5s" }} />
+        {/* Mobile: soft pearl veil */}
+        <div
+          className="pointer-events-none absolute inset-0 lg:hidden"
+          style={{
+            background: `
+              linear-gradient(to top, #fff9f8 0%, rgba(255,249,248,0.96) 18%, rgba(255,249,248,0.55) 42%, transparent 68%),
+              linear-gradient(to bottom, rgba(255,249,248,0.88) 0%, transparent 28%)
+            `,
+          }}
+        />
+
+        {/* Desktop: solid pearl behind copy → fade into image */}
+        <div
+          className="pointer-events-none absolute inset-0 hidden lg:block"
+          style={{
+            background: `
+              linear-gradient(
+                92deg,
+                #fff9f8 0%,
+                #fff9f8 32%,
+                rgba(255,249,248,0.97) 40%,
+                rgba(255,249,248,0.82) 50%,
+                rgba(255,249,248,0.4) 62%,
+                rgba(255,249,248,0.1) 74%,
+                transparent 86%
+              )
+            `,
+          }}
+        />
       </div>
 
-      <div className="section relative z-10 flex flex-col gap-10 lg:grid lg:grid-cols-2 lg:items-center lg:gap-14 xl:gap-16">
-        {/* Copy — second on mobile, left on desktop */}
-        <div className="order-2 flex flex-col items-center text-center lg:order-1 lg:items-start lg:text-left animate-fade-in-up" style={{ animationDelay: "0.15s" }}>
-          <div className="inline-flex items-center gap-2 rounded-full border border-rose-200/60 bg-white/85 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-rose-600 shadow-sm backdrop-blur-sm mb-5 sm:mb-6">
-            <span className="flex h-2 w-2 rounded-full bg-rose-400 animate-pulse shadow-sm shadow-rose-400/50" />
-            +500 clientas satisfechas
-          </div>
+      {/* Soft floating petals — atmosphere only */}
+      <div className="pointer-events-none absolute inset-0 z-[1] hidden overflow-hidden lg:block" aria-hidden="true">
+        <span className="absolute left-[42%] top-[22%] h-2 w-2 rounded-full bg-rose-300/40 animate-petal-float" />
+        <span
+          className="absolute left-[48%] top-[58%] h-1.5 w-1.5 rounded-full bg-rose-400/30 animate-petal-float"
+          style={{ animationDelay: "1.4s" }}
+        />
+        <span
+          className="absolute left-[38%] top-[72%] h-2.5 w-2.5 rounded-full bg-rose-200/60 animate-petal-float"
+          style={{ animationDelay: "2.6s" }}
+        />
+      </div>
 
-          <h1 className="font-display text-[2rem] font-semibold leading-[1.1] text-ink sm:text-5xl lg:text-[3.25rem] xl:text-6xl tracking-tight max-w-xl">
+      <div className="section relative z-10 flex min-h-[min(92svh,52rem)] flex-col justify-end pb-14 pt-10 sm:min-h-[min(94svh,54rem)] sm:justify-center sm:pb-24 sm:pt-20 lg:pb-28">
+        <div className="max-w-xl animate-fade-in-up lg:max-w-[36rem]">
+          <p className="font-script text-[2.15rem] leading-[1.05] text-rose-500 sm:text-[2.75rem] lg:text-[3.1rem]">
+            Manos Creativas Bynmw
+          </p>
+
+          <h1 className="mt-5 font-display text-[2.35rem] font-semibold leading-[1.05] tracking-[-0.03em] text-ink sm:mt-7 sm:text-5xl lg:text-[3.55rem] xl:text-[3.85rem]">
             Patrones Digitales de{" "}
             <span className="gradient-text-candy italic">Crochet</span>
           </h1>
 
-          <p className="mt-4 max-w-md text-base text-muted leading-relaxed sm:mt-5 sm:text-lg lg:max-w-lg">
-            Patrones en PDF de{" "}
-            <span className="font-medium text-rose-600">Amigurumis</span>,{" "}
-            <span className="font-medium text-rose-600">Princesas Disney</span> y{" "}
-            <span className="font-medium text-rose-600">Flores Eternas</span>.
-            Tanto si empiezas como si ya llevas años tejiendo. <span className="text-rose-400">♡</span>
+          <p className="mt-5 max-w-md text-[15px] leading-[1.75] text-muted sm:mt-6 sm:text-base lg:text-lg">
+            Colecciones en PDF con fotos paso a paso. Descarga al momento,
+            acceso de por vida — listas para tejer o vender.
           </p>
 
-          <div className="mt-6 flex flex-wrap justify-center gap-x-4 gap-y-2 sm:gap-x-5 lg:justify-start">
-            {["Descarga al momento", "Pago seguro", "Ayuda por WhatsApp"].map((item) => (
-              <div key={item} className="flex items-center gap-2">
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-rose-100 to-pink-100 text-rose-500 shadow-sm">
-                  <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
-                </span>
-                <span className="text-sm text-muted">{item}</span>
-              </div>
-            ))}
+          <div className="mt-8 flex flex-col gap-3.5 sm:mt-11 sm:flex-row sm:items-center sm:gap-6">
+            <Link
+              href="/shop/princesas-disney"
+              className="btn-primary min-h-[3.25rem] px-9 py-3.5 text-sm sm:px-11"
+            >
+              Comprar Princesas
+            </Link>
+            <Link
+              href="/shop"
+              className="group inline-flex min-h-[2.75rem] items-center justify-center gap-2 px-1 py-2 text-sm font-medium text-ink/60 transition-colors hover:text-rose-600 sm:justify-start"
+            >
+              Ver todas
+              <svg
+                className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.75}
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
           </div>
 
-          <div className="mt-8 flex w-full max-w-sm flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center lg:justify-start">
-            <a href="/shop" className="btn-cute w-full sm:w-auto text-sm sm:text-base px-10 py-5 inline-flex items-center justify-center gap-2 shadow-xl shadow-rose-500/30 hover:shadow-2xl hover:shadow-rose-500/40 text-lg">
-              <ShoppingBagIcon className="text-white/90" size={20} />
-              Ver Colecciones
-            </a>
-            <a href="/about" className="btn-secondary w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4">
-              Conocer más
-            </a>
-          </div>
-          <p className="mt-3 text-xs text-muted/60 text-center lg:text-left">
-            Desde solo {heroPrice} — Acceso inmediato de por vida
+          <p className="mt-7 text-[11px] tracking-[0.06em] text-muted/65 sm:mt-8 sm:text-xs">
+            Desde {heroPrice}
+            <span className="meta-sep" aria-hidden="true">✦</span>
+            Descarga al momento
+            <span className="meta-sep" aria-hidden="true">✦</span>
+            Acceso de por vida
           </p>
-
-          <div className="mt-8 w-full max-w-lg rounded-2xl2 glass-rose border border-rose-100/80 p-6 shadow-soft sm:p-7 lg:max-w-xl">
-            <div className="mb-5 flex items-start gap-3">
-              <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-rose-400/20 to-pink-400/20 text-lg">
-                ✨
-              </span>
-              <p className="font-display text-base font-semibold leading-snug text-ink sm:text-lg">
-                Descarga gratis el patrón de las Guerreras K-POP{" "}
-                <span className="gradient-text-rose">y comprueba la calidad</span>
-              </p>
-            </div>
-            <LeadMagnet variant="hero" submitLabel="Quiero mi patrón gratis" />
-          </div>
-
-          <div className="mt-7 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
-            <div className="flex -space-x-2">
-              {["imagen-18.webp", "imagen-18-1.webp", "imagen-18-2.webp", "imagen-18-3.webp"].map((img) => (
-                <div key={img} className="h-9 w-9 overflow-hidden rounded-full border-2 border-white shadow-md ring-1 ring-rose-200/50 relative">
-                  <Image src={`/images/${img}`} alt="Cliente satisfecha" fill className="object-cover" sizes="36px" />
-                </div>
-              ))}
-              <div className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-rose-400 to-pink-500 text-[10px] font-bold text-white shadow-md ring-1 ring-rose-200/50">
-                +500
-              </div>
-            </div>
-            <span className="text-xs text-muted text-center sm:text-left">
-              Únete a +500 artesanas satisfechas <span className="text-rose-400">♡</span>
-            </span>
-          </div>
-        </div>
-
-        {/* Image — first on mobile, right on desktop */}
-        <div className="order-1 relative mx-auto w-full max-w-lg lg:order-2 lg:max-w-none animate-fade-in-up">
-          <div className="relative">
-            <div className="absolute -inset-3 rounded-4xl bg-gradient-to-br from-rose-200/50 via-pink-200/40 to-lavender-200/40 blur-xl opacity-70" />
-            <div className="relative overflow-hidden rounded-3xl2 bg-rose-50/50 shadow-premium ring-2 ring-white/80">
-              <Image
-                src="/images/imagen-1.webp"
-                alt="Colección Maestra de Patrones de Amigurumis y Flores en Crochet"
-                width={1200}
-                height={900}
-                priority
-                className="block h-auto w-full object-contain transition-transform duration-700 hover:scale-[1.02]"
-              />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-rose-900/10 via-transparent to-white/10" />
-            </div>
-
-            <div className="absolute -bottom-3 left-0 sm:left-4 sm:-bottom-4 animate-float rounded-2xl bg-white/95 px-4 py-3 shadow-premium border border-rose-100/80 backdrop-blur-sm z-10 text-left">
-              <p className="text-sm font-bold gradient-text-rose">+500 Patrones</p>
-              <p className="text-[10px] text-muted">en 3 colecciones</p>
-            </div>
-            <div className="absolute -top-3 right-4 sm:-top-4 animate-float rounded-2xl bg-white/95 px-4 py-3 shadow-premium border border-rose-200/60 backdrop-blur-sm z-10 text-center sm:text-left" style={{ animationDelay: "2s" }}>
-              <p className="text-sm font-bold gradient-text-rose">Desde {heroPrice}</p>
-              <p className="text-[10px] text-muted">Acceso vitalicio</p>
-            </div>
-
-            <ScissorsIcon className="absolute -top-2 -left-1 text-rose-400/40 animate-breathe hidden sm:block" size={20} />
-            <FlowerIcon className="absolute -bottom-1 -right-1 text-pink-400/45 animate-sway hidden sm:block" size={18} style={{ animationDelay: "1s" }} />
-          </div>
         </div>
       </div>
     </section>

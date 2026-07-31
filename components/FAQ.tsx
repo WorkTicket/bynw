@@ -1,80 +1,88 @@
 "use client"
 
-import { useState } from "react"
-import { HelpCircleIcon } from "@/lib/icons"
+import { useState, useId } from "react"
+import PetiteOrnament from "@/components/PetiteOrnament"
 import ScrollReveal from "@/components/ScrollReveal"
-
-const faqs = [
-  { q: "¿Necesito experiencia previa en crochet?", a: "No hace falta. Cada colección trae vídeos para principiantes donde repasamos abreviaturas y puntadas básicas. Con eso ya puedes seguir los patrones." },
-  { q: "¿Cómo recibo los patrones después de comprar?", a: "En cuanto se confirme el pago te llega un correo electrónico con el enlace para descargar todos los PDF. El acceso no caduca." },
-  { q: "¿Qué métodos de pago aceptáis?", a: "Los pagos pasan por Hotmart. Puedes pagar con tarjeta, PayPal y otros métodos según tu país." },
-  { q: "¿Puedo imprimir los patrones?", a: "Sí, están en PDF listos para imprimir. También puedes consultarlos en el móvil, la tablet o el ordenador." },
-  { q: "¿Hay garantía de satisfacción?", a: "Sí. Tienes 7 días para pedir la devolución si los patrones no encajan contigo." },
-  { q: "¿Tenéis soporte si tengo dudas?", a: "Sí. Natalia responde por WhatsApp si te atascas con algún patrón o técnica." },
-]
-
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": faqs.map((f) => ({
-    "@type": "Question",
-    name: f.q,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: f.a,
-    },
-  })),
-}
+import { faqs } from "@/lib/faqs"
 
 export default function FAQ() {
   const [openIdx, setOpenIdx] = useState<number | null>(null)
+  const baseId = useId()
 
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
-      <section className="section-white section-padding overflow-hidden">
-      <div className="pointer-events-none absolute inset-0">
-        <HelpCircleIcon className="absolute top-8 right-[8%] text-rose-200/20 animate-breathe hidden sm:block" size={36} style={{ animationDelay: "0.5s" }} />
-      </div>
-
-      <div className="section relative">
+    <section className="section-white section-padding">
+      <div className="section">
         <ScrollReveal>
           <div className="section-header">
-            <span className="badge mb-3">FAQ</span>
+            <span className="eyebrow">FAQ</span>
+            <PetiteOrnament className="mb-5 mt-1" />
             <h2>
-              Preguntas <span className="gradient-text-rose italic">Frecuentes</span>
+              Preguntas{" "}
+              <span className="gradient-text-rose italic">frecuentes</span>
             </h2>
-            <div className="section-divider mt-6" />
           </div>
         </ScrollReveal>
 
-        <div className="mx-auto max-w-2xl space-y-3">
-          {faqs.map((faq, i) => (
-            <ScrollReveal key={i} delay={i * 60}>
-              <div className="cute-card-static overflow-hidden">
-              <button
-                onClick={() => setOpenIdx(openIdx === i ? null : i)}
-                className="flex w-full items-center justify-between px-5 sm:px-6 py-4 sm:py-5 text-left transition-all duration-200 hover:bg-rose-50/30 min-h-[3.5rem]"
-              >
-                <span className="pr-4 text-sm font-medium text-ink leading-relaxed">{faq.q}</span>
-                <svg className={`h-4 w-4 shrink-0 text-rose-500 transition-transform duration-300 ${openIdx === i ? "rotate-180" : ""}`} fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              <div className={`overflow-hidden transition-all duration-300 ease-in-out ${openIdx === i ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
-                <div className="border-t border-rose-100/30 px-6 py-4">
-                  <p className="text-sm text-muted leading-relaxed">{faq.a}</p>
+        <div className="mx-auto max-w-2xl divide-y divide-rose-100/60 border-y border-rose-100/60">
+          {faqs.map((faq, i) => {
+            const panelId = `${baseId}-panel-${i}`
+            const buttonId = `${baseId}-button-${i}`
+            const isOpen = openIdx === i
+
+            return (
+              <div key={faq.q} className={isOpen ? "bg-rose-50/30" : ""}>
+                  <button
+                    id={buttonId}
+                    type="button"
+                    aria-expanded={isOpen}
+                    aria-controls={panelId}
+                    onClick={() => setOpenIdx(isOpen ? null : i)}
+                    className="flex w-full items-center justify-between py-5 text-left transition-colors hover:text-rose-600 min-h-[3.25rem] sm:py-6 sm:min-h-[3.5rem]"
+                  >
+                    <span className={`pr-5 font-display text-[1.05rem] font-medium tracking-tight leading-snug sm:pr-6 sm:text-xl ${isOpen ? "text-rose-700" : "text-ink"}`}>
+                      {faq.q}
+                    </span>
+                    <span
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors ${
+                        isOpen ? "bg-rose-100 text-rose-500" : "bg-rose-50/80 text-rose-400"
+                      }`}
+                    >
+                      <svg
+                        className={`h-3.5 w-3.5 transition-transform duration-300 ${
+                          isOpen ? "rotate-180" : ""
+                        }`}
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={1.75}
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                  <div
+                    id={panelId}
+                    role="region"
+                    aria-labelledby={buttonId}
+                    aria-hidden={!isOpen}
+                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                      isOpen ? "max-h-96 opacity-100 pb-5 sm:pb-6" : "max-h-0 opacity-0"
+                    }`}
+                  >
+                    <p className="max-w-xl text-[14px] leading-relaxed text-muted sm:text-[15px]">
+                      {faq.a}
+                    </p>
+                  </div>
                 </div>
-              </div>
-              </div>
-            </ScrollReveal>
-          ))}
+            )
+          })}
         </div>
       </div>
     </section>
-    </>
   )
 }

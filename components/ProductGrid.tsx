@@ -1,52 +1,40 @@
-"use client"
-
 import Link from "next/link"
 import ProductCard from "./ProductCard"
+import PetiteOrnament from "./PetiteOrnament"
 import ScrollReveal from "@/components/ScrollReveal"
-import { useCountry } from "./CountryProvider"
 import { products } from "@/lib/products"
-import { getLocalizedProduct } from "@/lib/pricing"
-import { ShoppingBagIcon } from "@/lib/icons"
 
 export default function ProductGrid() {
-  const country = useCountry()
-
   return (
-    <section className="section-pink section-padding overflow-hidden">
-      <div className="pointer-events-none absolute inset-0">
-        <ShoppingBagIcon className="absolute top-8 left-[10%] text-rose-300/20 animate-breathe hidden sm:block" size={34} style={{ animationDelay: "0.5s" }} />
-      </div>
-
-      <div className="section relative">
+    <section id="colecciones" className="section-pink section-padding scroll-mt-24">
+      <div className="section">
         <ScrollReveal>
           <div className="section-header">
-            <span className="badge mb-3">Colecciones</span>
+            <span className="eyebrow">Colecciones</span>
+            <PetiteOrnament className="mb-5 mt-1" />
             <h2>
               Elige tu colección{" "}
               <span className="gradient-text-rose italic">favorita</span>
             </h2>
             <p>
-              Cada colección incluye patrones detallados en PDF con fotos paso a paso.
+              Patrones en PDF con fotos paso a paso. Compra una vez, descarga al
+              momento y teje cuando quieras.
             </p>
-            <div className="section-divider mt-6" />
           </div>
         </ScrollReveal>
 
-        <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-10 sm:grid-cols-2 sm:gap-12 lg:grid-cols-3 lg:gap-14">
           {products.map((p, i) => (
-            <ScrollReveal key={p.slug} delay={i * 120}>
-              <ProductCard product={getLocalizedProduct(p, country)} />
+            <ScrollReveal key={p.slug} delay={i * 70}>
+              <ProductCard product={p} />
             </ScrollReveal>
           ))}
         </div>
 
-        <ScrollReveal delay={300}>
-          <div className="mt-10 flex justify-center sm:mt-12">
-            <Link
-              href="/shop"
-              className="btn-secondary inline-flex items-center justify-center gap-2 px-8 py-4"
-            >
-              Ver todas las colecciones
+        <ScrollReveal delay={180}>
+          <div className="mt-14 flex justify-center sm:mt-16">
+            <Link href="/shop" className="btn-secondary min-h-[3.15rem] px-9 py-3.5">
+              Explorar la tienda
             </Link>
           </div>
         </ScrollReveal>

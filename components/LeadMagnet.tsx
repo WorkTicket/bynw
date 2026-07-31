@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { GIFT_MAGNET } from "@/lib/gift-magnet"
 import { isIOSGiftDownload, openIOSGiftDrive, triggerGiftDownload } from "@/lib/download-gift"
+import { trackMetaStandard } from "@/components/Analytics"
 
 type Props = {
   variant?: "inline" | "hero" | "compact"
@@ -26,29 +27,29 @@ function LeadMagnetSuccess({ dark = false }: { dark?: boolean }) {
   }
 
   const buttonClass =
-    "mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-rose-400 to-pink-500 px-6 py-3.5 text-sm font-semibold tracking-wide text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-rose-glow active:scale-[0.98] disabled:cursor-wait disabled:opacity-80"
+    "mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-rose-500 px-6 py-3.5 text-sm font-semibold tracking-[0.03em] text-white transition-all duration-300 hover:bg-rose-600 hover:-translate-y-px active:scale-[0.99] disabled:cursor-wait disabled:opacity-80"
 
   return (
     <div
-      className={`rounded-2xl2 border overflow-hidden p-5 sm:p-6 text-left ${
+      className={`overflow-hidden rounded-2xl border p-5 sm:p-6 text-left ${
         dark
           ? "border-white/15 bg-white/10 backdrop-blur-sm"
-          : "border-rose-200 bg-rose-50/60"
+          : "border-rose-200/70 bg-rose-50/40"
       }`}
     >
-      <div className="mb-5 -mx-5 -mt-5 sm:-mx-6 sm:-mt-6">
+      <div className="mb-5 -mx-5 -mt-5 overflow-hidden rounded-t-2xl sm:-mx-6 sm:-mt-6">
         <img
           src="/images/kpop.webp"
           alt={GIFT_MAGNET.title}
           loading="lazy"
-          className="w-full h-44 sm:h-52 object-cover"
+          className="w-full h-44 sm:h-52 object-cover object-center"
         />
       </div>
 
       <div className="flex items-start gap-3">
         <div
           className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${
-            dark ? "bg-rose-400/25 text-rose-200" : "bg-rose-400/20 text-rose-500"
+            dark ? "bg-rose-400/25 text-rose-200" : "bg-rose-400/15 text-rose-500"
           }`}
         >
           <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
@@ -74,8 +75,8 @@ function LeadMagnetSuccess({ dark = false }: { dark?: boolean }) {
       >
         <div className="flex items-start gap-3">
           <div
-            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${
-              dark ? "bg-rose-500/20 text-rose-200" : "bg-gradient-to-br from-rose-100 to-pink-100 text-rose-500"
+            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
+              dark ? "bg-rose-500/20 text-rose-200" : "bg-rose-50 text-rose-500"
             }`}
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
@@ -161,6 +162,11 @@ export default function LeadMagnet({ variant = "inline", submitLabel, placeholde
       setStatus("success")
       setName("")
       setEmail("")
+      trackMetaStandard("Lead", {
+        content_name: GIFT_MAGNET.title,
+        content_category: "lead_magnet",
+        status: source,
+      })
       if (isIOSGiftDownload()) {
         openIOSGiftDrive()
       } else {
@@ -177,10 +183,10 @@ export default function LeadMagnet({ variant = "inline", submitLabel, placeholde
   const isCompact = variant === "compact"
 
   const inputClass = dark
-    ? "w-full rounded-xl border-2 border-white/20 bg-white/10 pl-11 pr-4 py-3 text-sm text-white placeholder:text-white/40 transition-all duration-200 focus:border-rose-300 focus:outline-none focus:ring-2 focus:ring-rose-300/25"
+    ? "w-full rounded-xl border border-white/20 bg-white/10 pl-11 pr-4 py-3.5 text-sm text-white placeholder:text-white/40 transition-all duration-200 focus:border-rose-300 focus:outline-none focus:ring-2 focus:ring-rose-300/20"
     : isHero
-    ? "w-full rounded-xl border-2 border-rose-200/70 bg-white pl-11 pr-4 py-3.5 text-base text-ink placeholder:text-muted/45 shadow-sm transition-all duration-200 focus:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-400/25"
-    : "w-full rounded-xl border-2 border-rose-200/60 bg-white pl-11 pr-4 py-3 text-sm text-ink placeholder:text-muted/40 transition-all duration-200 focus:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-400"
+    ? "w-full rounded-xl border border-rose-200/80 bg-white pl-11 pr-4 py-3.5 text-sm text-ink placeholder:text-muted/45 transition-all duration-200 focus:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-400/15"
+    : "w-full rounded-xl border border-rose-200/70 bg-white pl-11 pr-4 py-3.5 text-sm text-ink placeholder:text-muted/40 transition-all duration-200 focus:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-400/15"
 
   const iconClass = dark ? "text-white/40" : "text-muted/40"
 
@@ -222,10 +228,10 @@ export default function LeadMagnet({ variant = "inline", submitLabel, placeholde
         <button
           type="submit"
           disabled={status === "loading"}
-          className={`w-full rounded-xl font-semibold tracking-wider transition-all duration-300 ${
+          className={`w-full rounded-lg font-semibold tracking-[0.03em] transition-all duration-300 ${
             isHero
-              ? "bg-gradient-to-br from-rose-400 to-pink-500 px-8 py-3.5 text-sm text-white shadow-lg hover:scale-[1.02] hover:shadow-rose-glow active:scale-[0.98] sm:text-base"
-              : "shrink-0 bg-gradient-to-br from-rose-400 to-pink-500 px-6 py-3 text-xs text-white hover:scale-[1.02] hover:shadow-rose-glow active:scale-[0.98] sm:w-auto"
+              ? "btn-primary px-8 py-3.5 text-sm sm:text-base"
+              : "btn-primary shrink-0 px-6 py-3.5 text-sm sm:w-auto"
           }`}
         >
           {status === "loading" ? (
@@ -237,10 +243,10 @@ export default function LeadMagnet({ variant = "inline", submitLabel, placeholde
       </div>
       {status === "error" && <p className={`mt-3 text-xs ${dark ? "text-rose-300" : "text-rose-500"}`}>Algo salió mal. Inténtalo de nuevo.</p>}
       {status !== "error" && (
-        <p className={`mt-3 text-center text-xs ${dark ? "text-white/40" : isHero ? "text-muted/55" : "text-muted/40"} ${!isHero && !isCompact ? "sm:text-left" : ""}`}>
+        <p className={`mt-3 text-center text-xs ${dark ? "text-white/40" : isHero ? "text-muted/60" : "text-muted/50"} ${!isHero && !isCompact ? "sm:text-left" : ""}`}>
           {isIOSGiftDownload()
-            ? "En iPhone te llevamos a Google Drive para descargar el PDF. Sin spam. ♡"
-            : "Descarga al instante en la web. Sin spam. ♡"}
+            ? "En iPhone te llevamos a Google Drive para descargar el PDF. Sin spam."
+            : "Descarga al instante en la web. Sin spam."}
         </p>
       )}
     </form>

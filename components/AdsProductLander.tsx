@@ -1,0 +1,499 @@
+import dynamic from "next/dynamic"
+import ImageCarousel from "@/components/ImageCarousel"
+import ScrollReveal from "@/components/ScrollReveal"
+import HotmartBuyButton from "@/components/HotmartBuyButton"
+import PaymentLogos from "@/components/PaymentLogos"
+import MetaViewContent from "@/components/MetaViewContent"
+import { parsePriceValue } from "@/lib/pricing"
+import { StarIcon, CheckCircleIcon } from "@/lib/icons"
+import {
+  SITE_RATING,
+  SITE_RATING_DISPLAY,
+  type Review,
+} from "@/lib/testimonials-data"
+import type { Product } from "@/lib/products"
+
+const Testimonials = dynamic(() => import("@/components/Testimonials"))
+const Guarantee = dynamic(() => import("@/components/Guarantee"))
+const FAQ = dynamic(() => import("@/components/FAQ"))
+const BeginnerCallout = dynamic(() => import("@/components/BeginnerCallout"))
+
+type Props = {
+  product: Product
+  reviews: Review[]
+}
+
+const sectionHeading =
+  "font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-ink tracking-tight leading-normal overflow-visible pb-1"
+
+const TRUST_POINTS = [
+  { title: "Acceso inmediato", detail: "Por correo al pagar" },
+  { title: "Garantía 7 días", detail: "Compra sin riesgo" },
+  { title: "Pago seguro", detail: "Checkout Hotmart" },
+  { title: "Soporte WhatsApp", detail: "Te acompañamos" },
+] as const
+
+const STEPS = [
+  {
+    n: "01",
+    title: "Compras en 2 minutos",
+    detail: "Pago seguro con tarjeta, PayPal u otros métodos de tu país.",
+  },
+  {
+    n: "02",
+    title: "Recibes el acceso",
+    detail: "Te llega el enlace por correo. Descarga los PDF al instante.",
+  },
+  {
+    n: "03",
+    title: "Empiezas a tejer",
+    detail: "Patrones organizados, listos para imprimir o ver en el móvil.",
+  },
+] as const
+
+function formatSavings(price: string, originalPrice: string): string | null {
+  const saved = parsePriceValue(originalPrice) - parsePriceValue(price)
+  if (saved <= 0) return null
+  return `Ahorras ${Math.round(saved)}€`
+}
+
+function buildHeroBenefits(product: Product): string[] {
+  const giftCount = product.bonusItems.length + product.extraGiftItems.length
+  const patternMatch =
+    product.title.match(/más de (\d+)/i) ||
+    product.description.match(/más de (\d+)/i)
+  const stackLead = patternMatch
+    ? giftCount > 0
+      ? `${patternMatch[1]}+ patrones + ${giftCount} bonos incluidos`
+      : `${patternMatch[1]}+ patrones en PDF`
+    : giftCount > 0
+      ? `${giftCount} bonos incluidos con tu compra`
+      : "Colección digital en PDF"
+
+  return [
+    stackLead,
+    "PDF con fotos paso a paso en español",
+    "Descarga al momento · acceso de por vida",
+    "Ideal para principiantes — vídeos y guía desde cero",
+  ]
+}
+
+function BuyBlock({
+  buyProps,
+  buyLabel,
+  align = "center",
+}: {
+  buyProps: {
+    href: string
+    contentId: string
+    contentName: string
+    price: string
+  }
+  buyLabel: string
+  align?: "center" | "start"
+}) {
+  const alignCls =
+    align === "start"
+      ? "items-stretch lg:items-start text-center lg:text-left"
+      : "items-stretch text-center"
+
+  return (
+    <div className={`flex w-full max-w-md flex-col gap-3.5 ${alignCls} lg:max-w-none`}>
+      <HotmartBuyButton {...buyProps}>{buyLabel}</HotmartBuyButton>
+      <p className="text-[11px] leading-relaxed tracking-wide text-muted/85">
+        Acceso inmediato
+        <span className="meta-sep" aria-hidden="true">
+          ✦
+        </span>
+        Garantía 7 días
+        <span className="meta-sep" aria-hidden="true">
+          ✦
+        </span>
+        Pago 100% seguro
+      </p>
+      <div
+        className={`flex ${align === "start" ? "justify-center lg:justify-start" : "justify-center"}`}
+      >
+        <PaymentLogos />
+      </div>
+    </div>
+  )
+}
+
+export default function AdsProductLander({ product, reviews }: Props) {
+  const priceNum = parsePriceValue(product.price)
+  const originalNum = parsePriceValue(product.originalPrice)
+  const discount =
+    originalNum > 0 ? Math.round((1 - priceNum / originalNum) * 100) : 0
+  const savingsLabel = formatSavings(product.price, product.originalPrice)
+  const heroBenefits = buildHeroBenefits(product)
+  const buyProps = {
+    href: product.buyUrl,
+    contentId: product.id,
+    contentName: product.seoTitle,
+    price: product.price,
+  }
+
+  const buyLabel =
+    discount >= 40
+      ? `Obtener acceso ahora — ${product.price}`
+      : product.buyText
+
+  const reviewCount = Math.max(SITE_RATING.reviewCount, reviews.length)
+
+  return (
+    <>
+      <MetaViewContent
+        contentId={product.id}
+        contentName={product.seoTitle}
+        price={product.price}
+      />
+
+      {/* ── Hero: one offer, one CTA ── */}
+      <section
+        id="oferta"
+        className="relative scroll-mt-[var(--site-header-offset)] overflow-x-clip bg-[#fff9f8] pb-12 pt-6 sm:pb-16 sm:pt-10"
+      >
+        <div
+          className="pointer-events-none absolute inset-0 opacity-80"
+          aria-hidden="true"
+          style={{
+            background:
+              "radial-gradient(ellipse 80% 50% at 70% 0%, rgba(251,207,214,0.4), transparent 55%), radial-gradient(ellipse 55% 40% at 8% 90%, rgba(255,228,230,0.55), transparent 50%)",
+          }}
+        />
+        <div className="section relative z-10">
+          <div className="mx-auto grid max-w-6xl items-center gap-8 lg:grid-cols-2 lg:gap-14">
+            <div className="relative order-1 lg:order-2">
+              <div className="relative overflow-hidden rounded-2xl bg-rose-50/40 ring-1 ring-rose-100/60">
+                <ImageCarousel
+                  images={product.images}
+                  interval={2500}
+                  alt={product.shortTitle}
+                />
+              </div>
+              {product.caption && (
+                <p className="mt-3 text-center text-xs text-muted sm:text-sm">
+                  {product.caption}
+                </p>
+              )}
+            </div>
+
+            <div className="order-2 flex flex-col items-center text-center lg:order-1 lg:items-start lg:text-left">
+              <p className="font-script text-[1.75rem] leading-none text-rose-500 sm:text-[2.05rem]">
+                Manos Creativas Bynmw
+              </p>
+
+              <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-rose-500/90">
+                Colección digital en PDF
+              </p>
+
+              <h1 className="mt-2.5 font-display text-[2rem] font-semibold leading-[1.06] tracking-tight text-ink sm:text-4xl lg:text-[2.85rem]">
+                {product.shortTitle}
+              </h1>
+
+              <p className="mt-3.5 max-w-md text-[15px] leading-[1.7] text-muted sm:text-base">
+                {product.description}
+              </p>
+
+              {/* Social proof near CTA */}
+              <div className="mt-5 flex flex-wrap items-center justify-center gap-2 lg:justify-start">
+                <div
+                  className="flex items-center gap-0.5"
+                  aria-label={`${SITE_RATING_DISPLAY} de 5 estrellas`}
+                >
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <StarIcon key={i} className="text-rose-400" size={14} />
+                  ))}
+                </div>
+                <span className="text-sm font-semibold text-ink">
+                  {SITE_RATING_DISPLAY}
+                </span>
+                <span className="text-sm text-muted">
+                  · {reviewCount}+ reseñas de artesanas
+                </span>
+              </div>
+
+              <ul className="mt-5 w-full max-w-md space-y-2.5 text-left lg:max-w-none">
+                {heroBenefits.map((b) => (
+                  <li
+                    key={b}
+                    className="flex items-start gap-2.5 text-sm text-ink/80 sm:text-[15px]"
+                  >
+                    <CheckCircleIcon
+                      className="mt-0.5 shrink-0 text-rose-500"
+                      size={18}
+                    />
+                    <span>{b}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-6 flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 lg:justify-start">
+                <span className="text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+                  {product.price}
+                </span>
+                {originalNum > priceNum && (
+                  <span className="text-lg text-muted/40 line-through">
+                    {product.originalPrice}
+                  </span>
+                )}
+                {discount >= 40 && (
+                  <span className="rounded-full bg-rose-100/80 px-2.5 py-0.5 text-xs font-semibold text-rose-700">
+                    −{discount}%
+                  </span>
+                )}
+              </div>
+              {savingsLabel && (
+                <p className="mt-1.5 text-xs font-medium text-rose-700/90">
+                  {savingsLabel}
+                  <span className="font-normal text-muted">
+                    {" "}
+                    · antes {product.originalPrice}
+                  </span>
+                </p>
+              )}
+
+              <div className="mt-7 w-full">
+                <BuyBlock
+                  buyProps={buyProps}
+                  buyLabel={buyLabel}
+                  align="start"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Trust strip */}
+      <section className="border-y border-rose-100/70 bg-white">
+        <div className="section py-5 sm:py-6">
+          <ul className="mx-auto grid max-w-5xl grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6">
+            {TRUST_POINTS.map((t) => (
+              <li key={t.title} className="text-center">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink sm:text-xs">
+                  {t.title}
+                </p>
+                <p className="mt-1 text-[11px] text-muted sm:text-xs">{t.detail}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* Value stack */}
+      {(product.bonusItems.length > 0 || product.extraGiftItems.length > 0) && (
+        <section className="section-white section-padding">
+          <div className="section">
+            <ScrollReveal>
+              <div className="mx-auto max-w-4xl">
+                <div className="text-center">
+                  <span className="eyebrow">Qué incluye</span>
+                  <h2 className={`mt-3 ${sectionHeading}`}>
+                    Todo el valor que{" "}
+                    <span className="gradient-text-rose italic">recibes</span>
+                  </h2>
+                  <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-muted sm:text-base">
+                    {product.title}
+                  </p>
+                </div>
+
+                {product.bonusItems.length > 0 && (
+                  <div className="mt-10 grid items-center gap-10 sm:grid-cols-2">
+                    {product.bonusImage && (
+                      <div className="overflow-hidden rounded-2xl bg-rose-50/40 ring-1 ring-rose-100/50">
+                        <img
+                          src={`/images/${product.bonusImage}`}
+                          alt={`Bonos incluidos con ${product.seoTitle}`}
+                          loading="lazy"
+                          decoding="async"
+                          className="block h-auto w-full object-contain"
+                        />
+                      </div>
+                    )}
+                    <div>
+                      <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-rose-500">
+                        Bonos incluidos
+                      </p>
+                      <ul className="space-y-3">
+                        {product.bonusItems.map((item, i) => (
+                          <li
+                            key={i}
+                            className="flex items-start gap-2.5 text-sm text-muted sm:text-base"
+                          >
+                            <CheckCircleIcon
+                              className="mt-0.5 shrink-0 text-rose-400"
+                              size={17}
+                            />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                )}
+
+                {product.extraGiftItems.length > 0 && (
+                  <div className="mt-12 rounded-2xl bg-[var(--surface-blush)]/80 px-5 py-8 sm:px-8 sm:py-10">
+                    <h3 className="text-center font-display text-xl font-semibold text-ink sm:text-2xl">
+                      {product.extraGiftTitle}
+                    </h3>
+                    <ul className="mx-auto mt-6 max-w-xl space-y-3">
+                      {product.extraGiftItems.map((item, i) => (
+                        <li
+                          key={i}
+                          className="flex items-start gap-2.5 text-sm text-muted sm:text-base"
+                        >
+                          <CheckCircleIcon
+                            className="mt-0.5 shrink-0 text-rose-400"
+                            size={17}
+                          />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                <div className="mx-auto mt-12 flex max-w-md flex-col items-center">
+                  <BuyBlock buyProps={buyProps} buyLabel={buyLabel} />
+                </div>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+      )}
+
+      {/* How it works + delivery proof */}
+      <section className="section-padding bg-[var(--surface-blush)]/50">
+        <div className="section">
+          <ScrollReveal>
+            <div className="mx-auto max-w-5xl">
+              <div className="text-center">
+                <span className="eyebrow">Así de fácil</span>
+                <h2 className={`mt-3 ${sectionHeading}`}>
+                  De la compra al{" "}
+                  <span className="gradient-text-rose italic">primer punto</span>
+                </h2>
+              </div>
+
+              <ol className="mx-auto mt-10 grid max-w-4xl gap-8 text-left sm:grid-cols-3 sm:gap-6">
+                {STEPS.map((s) => (
+                  <li key={s.n}>
+                    <p className="font-script text-[1.65rem] leading-none text-rose-400">
+                      {s.n}
+                    </p>
+                    <h3 className="mt-2 font-display text-lg font-semibold text-ink">
+                      {s.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted">
+                      {s.detail}
+                    </p>
+                  </li>
+                ))}
+              </ol>
+
+              {product.deliveryImages.length > 0 && (
+                <div className="mt-14 grid items-center gap-10 lg:grid-cols-5 lg:gap-14">
+                  <div className="relative order-1 mx-auto w-full max-w-[220px] sm:max-w-[260px] lg:col-span-2 lg:max-w-none">
+                    <ImageCarousel
+                      images={product.deliveryImages}
+                      aspect="aspect-[9/16]"
+                      interval={2000}
+                      alt={`Entrega digital de ${product.seoTitle}`}
+                    />
+                  </div>
+                  <div className="order-2 flex flex-col gap-4 text-center lg:col-span-3 lg:text-left">
+                    <h3 className="font-display text-xl font-semibold text-ink sm:text-2xl">
+                      Así recibes tu colección
+                    </h3>
+                    <p className="text-sm leading-relaxed text-muted sm:text-base">
+                      Cuando completes la compra te llega un correo con acceso
+                      inmediato a todos los patrones.
+                    </p>
+                    <p className="text-sm leading-relaxed text-muted sm:text-base">
+                      Todo va organizado en carpetas con nombre, como ves en la
+                      imagen. Solo abres el patrón que quieras tejer.
+                    </p>
+                    <p className="text-sm leading-relaxed text-muted sm:text-base">
+                      Puedes guardarlos en el móvil, la tablet o el ordenador, e
+                      imprimirlos si te resulta más cómodo.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* Quality proof */}
+      {product.qualityImages.length > 0 && (
+        <section className="section-white section-padding">
+          <div className="section">
+            <ScrollReveal>
+              <div className="mx-auto max-w-3xl text-center">
+                <span className="eyebrow">Calidad</span>
+                <h2 className={`mt-3 ${sectionHeading}`}>
+                  Mira cómo se ven los{" "}
+                  <span className="gradient-text-rose italic">patrones</span>
+                </h2>
+                <p className="mx-auto mt-4 max-w-lg text-sm text-muted sm:text-base">
+                  Instrucciones claras y fotos en cada paso, pensadas para tejer
+                  con tranquilidad.
+                </p>
+              </div>
+            </ScrollReveal>
+            <ScrollReveal delay={80}>
+              <div className="mx-auto mt-10 max-w-lg">
+                <ImageCarousel
+                  images={product.qualityImages}
+                  interval={2200}
+                  alt={`Calidad de ${product.seoTitle}`}
+                />
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+      )}
+
+      <BeginnerCallout />
+
+      <Testimonials
+        reviews={reviews}
+        limit={3}
+        showForm={false}
+        showMoreLink={false}
+      />
+      <Guarantee />
+      <FAQ />
+
+      {/* Final close */}
+      <section className="section-premium-dark section-padding">
+        <div className="section">
+          <ScrollReveal>
+            <div className="mx-auto flex max-w-lg flex-col items-center text-center">
+              <p className="font-script text-[1.85rem] leading-none text-rose-400 sm:text-[2.1rem]">
+                Manos Creativas Bynmw
+              </p>
+              <h2 className={`mt-5 ${sectionHeading}`}>
+                Empieza a tejer{" "}
+                <span className="gradient-text-rose italic">hoy</span>
+              </h2>
+              <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted">
+                {product.shortTitle} · {product.price}
+                {discount >= 40 ? ` (−${discount}%)` : ""}
+                {savingsLabel ? ` · ${savingsLabel}` : ""} · acceso inmediato ·
+                garantía 7 días
+              </p>
+              <div className="mt-8 w-full">
+                <BuyBlock buyProps={buyProps} buyLabel={buyLabel} />
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+    </>
+  )
+}

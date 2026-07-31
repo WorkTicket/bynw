@@ -7,3 +7,8 @@ node_modules
 .env
 .env*.local
 .DS_Store
+public/images/*.orig.webp
+public/images/og-default-ai.webp
+
+.image-backups/
+.data/

@@ -2,38 +2,55 @@ import type { Metadata } from "next"
 import dynamic from "next/dynamic"
 import Hero from "@/components/Hero"
 import TrustBar from "@/components/TrustBar"
-
-const SITE_URL = "https://bynmwcreative.com"
+import { BRAND_NAME, DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE } from "@/lib/site"
+import { createPageMetadata, buildReviewsJsonLd } from "@/lib/seo"
+import { faqJsonLd } from "@/lib/faqs"
+import { listFeaturedReviews, listPublishedReviews } from "@/lib/reviews"
 
 export const metadata: Metadata = {
-  alternates: {
-    canonical: SITE_URL,
-    languages: {
-      "es-MX": SITE_URL,
-      "es-ES": SITE_URL,
-      "x-default": SITE_URL,
-    },
-  },
+  ...createPageMetadata({
+    title: { absolute: `${BRAND_NAME} ⋆ Patrones de Crochet en PDF` },
+    description: DEFAULT_DESCRIPTION,
+    path: "/",
+    images: [DEFAULT_OG_IMAGE],
+  }),
 }
 
-const Testimonials = dynamic(() => import("@/components/Testimonials"))
-const FeatureGrid = dynamic(() => import("@/components/FeatureGrid"))
-const BonusStack = dynamic(() => import("@/components/BonusStack"))
 const ProductGrid = dynamic(() => import("@/components/ProductGrid"))
+const FeatureGrid = dynamic(() => import("@/components/FeatureGrid"))
+const BeginnerCallout = dynamic(() => import("@/components/BeginnerCallout"))
+const Testimonials = dynamic(() => import("@/components/Testimonials"))
+const BonusStack = dynamic(() => import("@/components/BonusStack"))
 const Guarantee = dynamic(() => import("@/components/Guarantee"))
 const WhatsAppSupport = dynamic(() => import("@/components/WhatsAppSupport"))
 const FAQ = dynamic(() => import("@/components/FAQ"))
 const LeadMagnetSection = dynamic(() => import("@/components/LeadMagnetSection"))
 const UrgencyCTA = dynamic(() => import("@/components/UrgencyCTA"))
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [featured, allReviews] = await Promise.all([
+    listFeaturedReviews(3),
+    listPublishedReviews(),
+  ])
+  const reviewsJsonLd = buildReviewsJsonLd(allReviews)
+
   return (
     <div className="page-sections">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewsJsonLd) }}
+      />
       <Hero />
       <TrustBar />
-      <FeatureGrid />
+      {/* Products early — paid traffic should see offers within one scroll */}
       <ProductGrid />
-      <Testimonials />
+      <FeatureGrid />
+      <BeginnerCallout />
+      <Testimonials reviews={featured} limit={3} showForm />
       <BonusStack />
       <Guarantee />
       <WhatsAppSupport />

@@ -1,12 +1,26 @@
 import { notFound } from "next/navigation"
 import { Metadata } from "next"
+import dynamic from "next/dynamic"
 import ImageCarousel from "@/components/ImageCarousel"
 import ScrollReveal from "@/components/ScrollReveal"
 import HotmartBuyButton from "@/components/HotmartBuyButton"
 import PaymentLogos from "@/components/PaymentLogos"
+import MetaViewContent from "@/components/MetaViewContent"
 import { products, getProductBySlug } from "@/lib/products"
-import { getLocalizedProduct } from "@/lib/pricing"
-import { getCountry } from "@/lib/country"
+import { parsePriceValue } from "@/lib/pricing"
+import { DEFAULT_OG_IMAGE } from "@/lib/site"
+import {
+  createPageMetadata,
+  buildProductJsonLd,
+  buildBreadcrumbJsonLd,
+} from "@/lib/seo"
+import { listFeaturedReviews } from "@/lib/reviews"
+import { faqJsonLd } from "@/lib/faqs"
+
+const Testimonials = dynamic(() => import("@/components/Testimonials"))
+const Guarantee = dynamic(() => import("@/components/Guarantee"))
+const FAQ = dynamic(() => import("@/components/FAQ"))
+const BeginnerCallout = dynamic(() => import("@/components/BeginnerCallout"))
 
 type Props = { params: { slug: string } }
 
@@ -17,65 +31,39 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = getProductBySlug(params.slug)
   if (!product) return {}
-  const url = `https://bynmwcreative.com/shop/${params.slug}`
   const desc = product.description.slice(0, 160)
-  return {
-    title: product.title,
+  const ogImages = product.images.slice(0, 3).map((img) => ({
+    url: `/images/${img}`,
+    width: 1200,
+    height: 630,
+    alt: product.seoTitle,
+  }))
+  return createPageMetadata({
+    title: product.seoTitle,
     description: desc,
-    alternates: {
-      canonical: url,
-      languages: {
-        "es-MX": url,
-        "es-ES": url,
-        "x-default": url,
-      },
-    },
-    openGraph: {
-      title: `${product.title} | Manos Creativas Bynmw`,
-      description: desc,
-      url,
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `${product.title} | Manos Creativas Bynmw`,
-      description: desc,
-    },
-    robots: {
-      index: true,
-      follow: true,
-      "max-image-preview": "large",
-    },
-  }
+    path: `/shop/${params.slug}`,
+    images: ogImages.length ? ogImages : [DEFAULT_OG_IMAGE],
+  })
 }
 
 const sectionHeading = "font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-ink tracking-tight leading-normal overflow-visible pb-1"
 
-export default function ProductPage({ params }: Props) {
-  const country = getCountry()
+export default async function ProductPage({ params }: Props) {
   const product = getProductBySlug(params.slug)
   if (!product) notFound()
 
-  const localizedProduct = getLocalizedProduct(product, country)
-  const priceNum = parseFloat(localizedProduct.price.replace(/[^0-9.,]/g, "").replace(",", "."))
-  const originalNum = parseFloat(localizedProduct.originalPrice.replace(/[^0-9.,]/g, "").replace(",", "."))
-  const savings = originalNum - priceNum
-  const savingsFormatted = localizedProduct.price.includes("MX$") ? `MX$${Math.round(savings)}` : `${savings}€`
+  const localizedProduct = product
+  const priceNum = parsePriceValue(localizedProduct.price)
+  const originalNum = parsePriceValue(localizedProduct.originalPrice)
   const discount = originalNum > 0 ? Math.round((1 - priceNum / originalNum) * 100) : 0
+  const featuredReviews = await listFeaturedReviews(3)
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: localizedProduct.title,
-    description: localizedProduct.description,
-    offers: {
-      "@type": "Offer",
-      price: localizedProduct.price.replace(/[^0-9.]/g, ""),
-      priceCurrency: country === "MX" ? "MXN" : "EUR",
-      url: localizedProduct.buyUrl,
-      availability: "https://schema.org/InStock",
-    },
-  }
+  const productJsonLd = buildProductJsonLd(product)
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+    { name: "Inicio", path: "/" },
+    { name: "Colecciones", path: "/shop" },
+    { name: product.seoTitle, path: `/shop/${product.slug}` },
+  ])
 
   function renderSpecs(text: string) {
     const lines = text.split("\n")
@@ -89,7 +77,7 @@ export default function ProductPage({ params }: Props) {
       }
       elements.push(
         <div key={i} className="flex items-start gap-2 text-sm text-muted">
-          <span className="mt-0.5 text-wine-400 shrink-0">•</span>
+          <span className="mt-0.5 text-rose-400 shrink-0">•</span>
           <span>{t}</span>
         </div>
       )
@@ -97,84 +85,116 @@ export default function ProductPage({ params }: Props) {
     return elements
   }
 
+  const buyProps = {
+    href: localizedProduct.buyUrl,
+    contentId: localizedProduct.id,
+    contentName: localizedProduct.seoTitle,
+    price: localizedProduct.price,
+  }
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
-      <section className="relative overflow-x-clip bg-gradient-to-b from-white via-rose-50/20 to-white pb-24 sm:pb-28">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-40 -right-40 h-[30rem] w-[30rem] rounded-full bg-wine-100/20 blur-3xl" />
-          <div className="absolute -bottom-40 -left-40 h-[30rem] w-[30rem] rounded-full bg-rose-100/20 blur-3xl" />
-          <div className="absolute top-1/3 left-1/4 h-64 w-64 rounded-full bg-wine-50/30 blur-3xl" />
-        </div>
+      <MetaViewContent
+        contentId={localizedProduct.id}
+        contentName={localizedProduct.seoTitle}
+        price={localizedProduct.price}
+      />
 
+      <section className="relative overflow-x-clip bg-white pb-24 sm:pb-28 pt-10 sm:pt-14">
         <div className="section relative z-10">
-          <div className="mx-auto max-w-5xl">
+          <div className="mx-auto max-w-6xl">
             <ScrollReveal>
-              <div className="grid gap-10 lg:grid-cols-2 lg:gap-14 items-center">
+              <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 items-start">
                 <div className="relative lg:order-2">
-                  <div className="absolute -inset-3 rounded-3xl2 bg-wine-gradient opacity-5 blur-xl" />
-                  <div className="relative overflow-hidden rounded-2xl2 shadow-2xl ring-1 ring-white/10">
-                    <ImageCarousel images={localizedProduct.images} interval={2500} alt={localizedProduct.title} />
+                  <div className="relative overflow-hidden rounded-2xl bg-rose-50/40">
+                    <ImageCarousel images={localizedProduct.images} interval={2000} alt={localizedProduct.shortTitle} />
                   </div>
+                  {localizedProduct.caption && (
+                    <p className="mt-3 text-center text-xs text-muted sm:text-sm">
+                      {localizedProduct.caption}
+                    </p>
+                  )}
                 </div>
-                <div className="flex flex-col items-center text-center lg:items-start lg:text-left lg:order-1">
-                  <span className="badge">Colección</span>
-                  <h1 className="mt-4 font-display text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-semibold text-ink tracking-tight leading-snug">
-                    {localizedProduct.title}
+                <div className="flex flex-col items-center text-center lg:items-start lg:text-left lg:order-1 lg:sticky lg:top-[calc(var(--site-header-offset)+1.5rem)]">
+                  <span className="eyebrow">Colección</span>
+                  <h1 className="mt-3 font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-ink tracking-tight leading-[1.1]">
+                    {localizedProduct.shortTitle}
                   </h1>
+                  <p className="mt-3 max-w-lg text-sm leading-relaxed text-muted">
+                    {localizedProduct.title}
+                  </p>
 
-                  <div className="mt-6 flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4">
-                    <span className="text-3xl sm:text-4xl font-bold gradient-text">
+                  <div className="mt-6 flex flex-wrap items-baseline justify-center lg:justify-start gap-3">
+                    <span className="text-3xl sm:text-4xl font-semibold text-ink">
                       {localizedProduct.price}
                     </span>
-                    <span className="text-lg sm:text-xl text-muted/40 line-through">
-                      {localizedProduct.originalPrice}
-                    </span>
-                    <span className="inline-flex items-center gap-1 rounded-full bg-rose-50 text-rose-700 px-3 py-1 text-sm font-bold border border-rose-200">
-                      <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                      Ahorras {savingsFormatted} ({discount}%)
-                    </span>
+                    {originalNum > priceNum && (
+                      <span className="text-lg text-muted/40 line-through">
+                        {localizedProduct.originalPrice}
+                      </span>
+                    )}
+                    {discount >= 50 && (
+                      <span className="text-sm font-medium text-rose-600">
+                        −{discount}%
+                      </span>
+                    )}
                   </div>
 
                   <p className="mt-5 text-base sm:text-lg text-muted leading-relaxed">
                     {localizedProduct.description}
                   </p>
 
-                  <div className="mt-8 space-y-4 w-full">
-                    <HotmartBuyButton href={localizedProduct.buyUrl}>
+                  <div className="mt-8 space-y-4 w-full max-w-md lg:max-w-none">
+                    <HotmartBuyButton {...buyProps}>
                       {localizedProduct.buyText}
                     </HotmartBuyButton>
 
-                    <div className="flex justify-center">
+                    <p className="text-[11px] leading-relaxed tracking-wide text-muted/80 text-center lg:text-left">
+                      Acceso inmediato
+                      <span className="meta-sep" aria-hidden="true">✦</span>
+                      Garantía 7 días
+                      <span className="meta-sep" aria-hidden="true">✦</span>
+                      Soporte WhatsApp
+                    </p>
+
+                    <div className="flex justify-center lg:justify-start">
                       <PaymentLogos />
                     </div>
 
-                    <div className="trust-badge text-center lg:text-left text-xs">
+                    <p className="text-xs text-muted text-center lg:text-left">
                       Pago 100% seguro. Socio oficial: Hotmart.
-                    </div>
+                    </p>
                   </div>
                 </div>
               </div>
             </ScrollReveal>
 
             <ScrollReveal>
-              <div className="mx-auto mt-20 sm:mt-28 max-w-4xl">
-                <span className="badge">Descripción</span>
-                <h2 className={`mt-4 ${sectionHeading}`}>
+              <div className="mx-auto mt-20 sm:mt-28 max-w-3xl">
+                <span className="eyebrow">Descripción</span>
+                <h2 className={`mt-3 ${sectionHeading}`}>
                   Descripción{" "}
-                  <span className="gradient-text italic">General</span>
+                  <span className="gradient-text-rose italic">general</span>
                 </h2>
-                <div className="section-divider mt-4" />
                 <p className="mt-6 text-base sm:text-lg text-muted leading-relaxed">
                   {localizedProduct.description}
                 </p>
-                <div className="mt-6 rounded-2xl2 bg-wine-50/40 border border-wine-100/30 p-5 sm:p-6">
-                  <h3 className="font-display text-lg font-semibold text-ink mb-4">
-                    Especificaciones Técnicas
+                <div className="mt-8 border-t border-rose-100/60 pt-8">
+                  <h3 className="font-display text-xl font-semibold text-ink mb-4">
+                    Especificaciones técnicas
                   </h3>
                   <div className="space-y-1.5">
                     {renderSpecs(product.specs)}
@@ -183,113 +203,92 @@ export default function ProductPage({ params }: Props) {
               </div>
             </ScrollReveal>
 
-            <div className="mt-20 sm:mt-28">
-              <ScrollReveal>
-                <div className="mx-auto max-w-4xl">
-                  <div className="rounded-2xl2 bg-wine-50/40 border border-wine-100/30 p-6 sm:p-8 lg:p-10">
-                    <h2 className={`${sectionHeading} text-center`}>
-                      Bonos de regalo incluidos con tu compra
-                    </h2>
-                    <div className="mt-8 grid items-center gap-8 sm:grid-cols-2">
-                      <div className="overflow-hidden rounded-xl shadow-md ring-1 ring-white/10 bg-wine-50/40">
-                        <img
-                          src={`/images/${product.bonusImage}`}
-                          alt="Bonos incluidos"
-                          loading="lazy"
-                          decoding="async"
-                          className="block h-auto w-full object-contain"
-                        />
-                      </div>
-                      <div>
-                        <ul className="space-y-3">
-                          {product.bonusItems.map((item, i) => (
-                            <li key={i} className="flex items-start gap-2 text-sm sm:text-base text-muted">
-                              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-rose-100 text-rose-600">
-                                <svg className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                                </svg>
-                              </span>
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </ScrollReveal>
-            </div>
-
-            {product.extraGiftItems.length > 0 && (
-              <div className="mt-10">
+            {product.bonusItems.length > 0 && (
+              <div className="mt-20 sm:mt-28">
                 <ScrollReveal>
                   <div className="mx-auto max-w-4xl">
-                    <div className="rounded-2xl2 bg-rose-50/40 border border-rose-200/30 p-6 sm:p-8 lg:p-10">
-                      <h2 className={`${sectionHeading} text-center`}>
-                        {product.extraGiftTitle}
-                      </h2>
-                      <div className="mt-8 grid items-center gap-8 sm:grid-cols-2">
-                        <div className="overflow-hidden rounded-xl shadow-md ring-1 ring-white/10 bg-rose-50/40">
+                    <h2 className={`${sectionHeading} text-center`}>
+                      Bonos de regalo exclusivos por tu compra
+                    </h2>
+                    <div className="mt-10 grid items-center gap-10 sm:grid-cols-2">
+                      {product.bonusImage && (
+                        <div className="overflow-hidden rounded-2xl bg-rose-50/40 ring-1 ring-rose-100/50">
                           <img
-                            src={`/images/imagen-4.webp`}
-                            alt="Obsequios adicionales"
+                            src={`/images/${product.bonusImage}`}
+                            alt={`Bonos incluidos con ${product.seoTitle}`}
                             loading="lazy"
                             decoding="async"
                             className="block h-auto w-full object-contain"
                           />
                         </div>
-                        <div>
-                          <ul className="space-y-3">
-                            {product.extraGiftItems.map((item, i) => (
-                              <li key={i} className="flex items-start gap-2 text-sm sm:text-base text-muted">
-                                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-wine-100 text-wine-600">
-                                  <svg className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                                  </svg>
-                                </span>
-                                {item}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
+                      )}
+                      <ul className="space-y-3">
+                        {product.bonusItems.map((item, i) => (
+                          <li key={i} className="flex items-start gap-3 text-sm sm:text-base text-muted">
+                            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-rose-400" />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
                 </ScrollReveal>
               </div>
             )}
 
-            <div className="mt-20 sm:mt-28 relative">
-              <div className="pointer-events-none absolute inset-0">
-                <div className="absolute top-1/2 -left-20 h-48 w-12 -translate-y-1/2 rounded-full bg-wine-100/20 blur-2xl" />
-                <div className="absolute top-1/2 -right-20 h-48 w-12 -translate-y-1/2 rounded-full bg-rose-100/20 blur-2xl" />
+            {product.extraGiftItems.length > 0 && (
+              <div className="mt-16">
+                <ScrollReveal>
+                  <div className="mx-auto max-w-4xl">
+                    <h2 className={`${sectionHeading} text-center`}>
+                      {product.extraGiftTitle}
+                    </h2>
+                    <div className="mt-10 grid items-center gap-10 sm:grid-cols-2">
+                      <div className="overflow-hidden rounded-2xl bg-rose-50/40 ring-1 ring-rose-100/50">
+                        <img
+                          src={`/images/imagen-4.webp`}
+                          alt={`Obsequios adicionales con ${product.seoTitle}`}
+                          loading="lazy"
+                          decoding="async"
+                          className="block h-auto w-full object-contain"
+                        />
+                      </div>
+                      <ul className="space-y-3">
+                        {product.extraGiftItems.map((item, i) => (
+                          <li key={i} className="flex items-start gap-3 text-sm sm:text-base text-muted">
+                            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-rose-400" />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </ScrollReveal>
               </div>
+            )}
 
+            <div className="mt-20 sm:mt-28">
               <ScrollReveal>
                 <div className="mx-auto max-w-5xl">
                   <div className="text-center">
-                    <span className="badge">Entrega</span>
-                    <h2 className={`mt-4 ${sectionHeading}`}>
+                    <span className="eyebrow">Entrega</span>
+                    <h2 className={`mt-3 ${sectionHeading}`}>
                       Así de fácil recibes tu{" "}
-                      <span className="gradient-text italic">colección</span>
+                      <span className="gradient-text-rose italic">colección</span>
                     </h2>
-                    <div className="section-divider mt-4" />
                   </div>
 
-                  <div className="mt-8 sm:mt-10 grid gap-8 lg:grid-cols-5 lg:gap-12 items-center">
-                    <div className="relative order-1 mx-auto w-full max-w-[200px] sm:max-w-[240px] lg:col-span-3 lg:max-w-[280px] xl:max-w-xs">
-                      <div className="absolute -inset-2 rounded-2xl2 bg-rose-100/20 blur-xl" />
-                      <div className="relative overflow-hidden rounded-2xl2 shadow-xl ring-1 ring-white/10">
-                        <ImageCarousel
-                          images={product.deliveryImages}
-                          aspect="aspect-[9/16]"
-                          interval={3500}
-                          alt={`Entrega de ${product.title}`}
-                        />
-                      </div>
+                  <div className="mt-10 grid gap-10 lg:grid-cols-5 lg:gap-14 items-center">
+                    <div className="relative order-1 mx-auto w-full max-w-[220px] sm:max-w-[260px] lg:col-span-2 lg:max-w-none">
+                      <ImageCarousel
+                        images={product.deliveryImages}
+                        aspect="aspect-[9/16]"
+                        interval={2000}
+                        alt={`Entrega digital de ${product.seoTitle}`}
+                      />
                     </div>
 
-                    <div className="order-2 flex flex-col gap-4 text-center lg:text-left lg:col-span-2">
+                    <div className="order-2 flex flex-col gap-4 text-center lg:text-left lg:col-span-3">
                       <p className="text-sm sm:text-base text-muted leading-relaxed">
                         Nada de procesos raros. Cuando completes la compra, te llegará un correo electrónico con acceso inmediato a todos los patrones.
                       </p>
@@ -308,55 +307,62 @@ export default function ProductPage({ params }: Props) {
             <div className="mt-20 sm:mt-28">
               <ScrollReveal>
                 <div className="mx-auto max-w-3xl text-center">
-                  <span className="badge">Calidad</span>
-                  <h2 className={`mt-4 ${sectionHeading}`}>
+                  <span className="eyebrow">Calidad</span>
+                  <h2 className={`mt-3 ${sectionHeading}`}>
                     Echa un vistazo a la calidad de{" "}
-                    <span className="gradient-text italic">nuestros patrones</span>
+                    <span className="gradient-text-rose italic">nuestros patrones</span>
                   </h2>
-                  <p className="mt-6 text-sm sm:text-base text-muted leading-relaxed max-w-xl mx-auto">
-                    Patrones detallados, con fotos en cada paso, pensados para que tejes con tranquilidad.
+                  <p className="mt-5 text-sm sm:text-base text-muted leading-relaxed max-w-xl mx-auto">
+                    Patrones detallados, con fotos en cada paso, pensados para que tejas con tranquilidad.
                   </p>
-                  <div className="section-divider mt-4" />
                 </div>
               </ScrollReveal>
 
               <ScrollReveal delay={100}>
-                <div className="mt-8 sm:mt-10 max-w-lg mx-auto">
-                  <div className="relative">
-                    <div className="absolute -inset-2 rounded-2xl2 bg-wine-100/10 blur-xl" />
-                    <div className="relative overflow-hidden rounded-2xl2 shadow-xl ring-1 ring-white/10">
-                      <ImageCarousel images={product.qualityImages} alt={`Calidad de ${product.title}`} />
-                    </div>
-                  </div>
+                <div className="mt-10 max-w-lg mx-auto">
+                  <ImageCarousel
+                    images={product.qualityImages}
+                    interval={2000}
+                    alt={`Calidad de ${product.seoTitle}`}
+                  />
                 </div>
               </ScrollReveal>
             </div>
-
-            <ScrollReveal>
-              <div className="mt-20 sm:mt-28 text-center">
-                <div className="relative mx-auto max-w-lg">
-                  <div className="absolute -inset-6 rounded-3xl2 bg-wine-gradient opacity-5 blur-2xl" />
-                    <div className="relative rounded-2xl2 bg-white border border-wine-100/30 p-6 sm:p-8 shadow-card">
-                    <h2 className={`${sectionHeading}`}>
-                      ¿Lista para empezar?
-                    </h2>
-                    <p className="mt-3 text-sm text-muted">
-                      Acceso inmediato a la colección y a los bonos incluidos.
-                    </p>
-                    <HotmartBuyButton href={localizedProduct.buyUrl} className="mt-6">
-                      {localizedProduct.buyText}
-                    </HotmartBuyButton>
-                    <div className="mt-3 flex justify-center">
-                      <PaymentLogos />
-                    </div>
-                    <div className="mt-3 trust-badge text-center text-xs">
-                      Pago 100% seguro. Socio oficial: Hotmart.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </ScrollReveal>
           </div>
+        </div>
+      </section>
+
+      <BeginnerCallout />
+      <Testimonials reviews={featuredReviews} limit={3} showForm={false} />
+      <Guarantee />
+      <FAQ />
+
+      <section className="section-white section-padding">
+        <div className="section">
+          <ScrollReveal>
+            <div className="mx-auto max-w-md text-center border-t border-rose-100/60 pt-4">
+              <h2 className={sectionHeading}>
+                ¿Lista para empezar?
+              </h2>
+              <p className="mt-3 text-sm text-muted">
+                Acceso inmediato a la colección y a los bonos incluidos.
+              </p>
+              <HotmartBuyButton {...buyProps} className="mt-6">
+                {localizedProduct.buyText}
+              </HotmartBuyButton>
+              <p className="mt-4 text-[11px] tracking-wide text-muted/80">
+                Acceso inmediato
+                <span className="meta-sep" aria-hidden="true">✦</span>
+                Garantía 7 días
+              </p>
+              <div className="mt-3 flex justify-center">
+                <PaymentLogos />
+              </div>
+              <p className="mt-3 text-xs text-muted">
+                Pago 100% seguro. Socio oficial: Hotmart.
+              </p>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
     </>

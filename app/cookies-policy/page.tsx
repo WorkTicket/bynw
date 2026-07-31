@@ -1,117 +1,85 @@
 import { Metadata } from "next"
 import ScrollReveal from "@/components/ScrollReveal"
+import { createPageMetadata } from "@/lib/seo"
 
-const COOKIES_URL = "https://bynmwcreative.com/cookies-policy"
-
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Política de Cookies",
   description:
-    "Política de cookies de Manos Creativas Bynmw. Información sobre las cookies que utilizamos en nuestro sitio web y cómo gestionarlas.",
-  alternates: {
-    canonical: COOKIES_URL,
-    languages: {
-      "es-MX": COOKIES_URL,
-      "es-ES": COOKIES_URL,
-      "x-default": COOKIES_URL,
-    },
-  },
-  openGraph: {
-    title: "Política de Cookies | Manos Creativas Bynmw",
-    description:
-      "Información sobre las cookies que utilizamos y cómo gestionarlas.",
-    url: COOKIES_URL,
-  },
-  robots: {
-    index: true,
-    follow: false,
-  },
-}
+    "Política de cookies de Manos Creativas Bynmw. Cookies que usamos y cómo gestionarlas.",
+  path: "/cookies-policy",
+})
 
 export default function CookiesPolicyPage() {
   return (
-    <section className="relative overflow-hidden bg-rose-50 pt-32 pb-24">
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute top-0 right-0 h-64 w-64 rounded-full bg-wine-200/10 blur-3xl" />
-      </div>
-
-      <div className="section relative z-10 max-w-3xl">
+    <section className="page-hero pb-20">
+      <div className="section relative z-10 max-w-3xl mx-auto">
         <ScrollReveal>
           <div className="text-center">
-            <span className="badge">Legal</span>
-            <h1 className="mt-4 font-display text-5xl font-bold text-ink sm:text-6xl lg:text-7xl">
-              Pol&iacute;tica de Cookies
+            <span className="eyebrow">Legal</span>
+            <h1 className="mt-3 font-display text-4xl font-semibold text-ink sm:text-5xl">
+              Política de Cookies
             </h1>
-            <div className="section-divider mt-6" />
+            <p className="mt-3 text-sm text-muted">Última actualización: Julio 2026</p>
           </div>
         </ScrollReveal>
 
         <ScrollReveal delay={100}>
-          <div className="mt-12 space-y-6 text-ink/60 leading-relaxed">
+          <div className="prose-policy mt-12">
             <p>
-              Esta Pol&iacute;tica de Cookies explica qu&eacute; son las cookies y c&oacute;mo las
-              utilizamos en Manos Creativas Bynmw. Al utilizar nuestro sitio web,
-              aceptas el uso de cookies de acuerdo con esta pol&iacute;tica.
+              Esta Política de Cookies explica qué son las cookies y cómo las
+              utilizamos en Manos Creativas Bynmw. Al continuar navegando,
+              aceptas el uso de cookies de acuerdo con esta política.
             </p>
 
-            <div className="glass-card p-6">
-              <h2 className="font-display text-xl font-bold text-ink">
-                &iquest;Qu&eacute; son las cookies?
+            <div className="border-t border-rose-100/50 pt-6">
+              <h2 className="font-display text-xl font-semibold text-ink">
+                ¿Qué son las cookies?
               </h2>
               <p className="mt-2">
-                Las cookies son peque&ntilde;os archivos de texto que se almacenan en tu
+                Las cookies son pequeños archivos de texto que se almacenan en tu
                 dispositivo cuando visitas un sitio web. Se utilizan ampliamente para
-                hacer que los sitios web funcionen de manera m&aacute;s eficiente y
-                proporcionar informaci&oacute;n a los propietarios del sitio.
+                hacer que los sitios web funcionen de manera más eficiente y
+                proporcionar información a los propietarios del sitio.
               </p>
             </div>
 
-            <div className="glass-card p-6">
-              <h2 className="font-display text-xl font-bold text-ink">
-                C&oacute;mo utilizamos las cookies
-              </h2>
-              <p className="mt-2">
-                Usamos cookies para que la web funcione bien y para entender
-                qué páginas se visitan más. No recogemos datos personales sin
-                tu permiso.
-              </p>
-            </div>
-
-            <div className="glass-card p-6">
-              <h2 className="font-display text-xl font-bold text-ink">
-                Tipos de cookies que utilizamos
+            <div className="border-t border-rose-100/50 pt-6">
+              <h2 className="font-display text-xl font-semibold text-ink">
+                Cookies que utilizamos
               </h2>
               <ul className="mt-3 list-disc pl-6 space-y-2">
                 <li>
-                  <strong>Cookies esenciales:</strong> Necesarias para el
-                  funcionamiento b&aacute;sico del sitio.
+                  <strong>Analítica — Google Analytics (GA4):</strong> mide
+                  visitas, páginas vistas y eventos (por ejemplo, clics en compra).
                 </li>
                 <li>
-                  <strong>Cookies de rendimiento:</strong> Nos ayudan a entender
-                  c&oacute;mo los visitantes interact&uacute;an con el sitio.
+                  <strong>Publicidad — Meta Pixel (Facebook):</strong> mide
+                  PageView, ViewContent, InitiateCheckout, Lead y Contact para
+                  optimizar anuncios. Hotmart también puede usar el mismo pixel
+                  para el evento Purchase tras el pago.
                 </li>
                 <li>
-                  <strong>Cookies de funcionalidad:</strong> Permiten recordar
-                  tus preferencias.
+                  <strong>Almacenamiento de sesión:</strong> parámetros UTM y{" "}
+                  <code className="text-sm">fbclid</code> en sessionStorage para
+                  atribuir el origen del tráfico al checkout de Hotmart.
                 </li>
               </ul>
             </div>
 
-            <div className="glass-card p-6">
-              <h2 className="font-display text-xl font-bold text-ink">
+            <div className="border-t border-rose-100/50 pt-6">
+              <h2 className="font-display text-xl font-semibold text-ink">
                 Control de cookies
               </h2>
               <p className="mt-2">
-                Puedes controlar y/o eliminar las cookies seg&uacute;n tu voluntad.
-                Puedes eliminar todas las cookies que ya est&aacute;n en tu
-                dispositivo y configurar la mayor&iacute;a de los navegadores para
-                evitar que se coloquen.
+                Puedes controlar o eliminar las cookies desde la configuración de
+                tu navegador. Si bloqueas cookies de terceros, algunas funciones
+                de medición y publicidad dejarán de funcionar correctamente. Más
+                información en{" "}
+                <a href="/privacy-policy" className="text-rose-600 hover:underline">
+                  nuestra política de privacidad
+                </a>
+                .
               </p>
-            </div>
-
-            <div className="rounded-2xl2 border border-wine-200 bg-wine-50 p-5 text-sm text-wine-800">
-              <strong>Nota legal:</strong> Esta pol&iacute;tica es un punto de
-              partida y debe ser revisada por un abogado antes del lanzamiento
-              oficial del sitio.
             </div>
           </div>
         </ScrollReveal>
