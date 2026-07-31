@@ -9,12 +9,15 @@ type Props = {
   /** Base path for the product link. Ads catalog uses `/ads`. */
   hrefBase?: "/shop" | "/ads"
   ctaLabel?: string
+  /** LCP hint for above-the-fold cards */
+  priority?: boolean
 }
 
 export default function ProductCard({
   product,
   hrefBase = "/shop",
   ctaLabel = "Ver y comprar",
+  priority = false,
 }: Props) {
   const priceNum = parsePriceValue(product.price)
   const originalNum = parsePriceValue(product.originalPrice)
@@ -41,6 +44,7 @@ export default function ProductCard({
             alt={product.shortTitle}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            priority={priority}
             className="object-cover transition-transform duration-[1000ms] ease-out group-hover:scale-[1.045]"
           />
           <div

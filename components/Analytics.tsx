@@ -1,6 +1,5 @@
 "use client"
 
-import Script from "next/script"
 import { usePathname, useSearchParams } from "next/navigation"
 import { useEffect, useRef } from "react"
 import { captureAndPersistFromLocation } from "@/lib/ad-attribution"
@@ -48,7 +47,8 @@ function trackPageViewWhenReady(url: string, onDone: () => void) {
   }
 
   let attempts = 0
-  const maxAttempts = 40 // ~8s at 200ms
+  // Idle/interaction deferred load — allow ~20s so first PageView isn't dropped
+  const maxAttempts = 100
   const id = window.setInterval(() => {
     attempts += 1
     if (trackPageView(url) || attempts >= maxAttempts) {
@@ -133,10 +133,110 @@ function commerceFromEl(el: HTMLElement): Record<string, unknown> {
   return payload
 }
 
+function injectGa() {
+  if (!GA_ID || typeof window === "undefined") return
+  if (typeof window.gtag === "function") return
+
+  window.dataLayer = window.dataLayer || []
+  // Match gtag's Arguments object shape used by GA
+  window.gtag = function gtag() {
+    // eslint-disable-next-line prefer-rest-params
+    window.dataLayer?.push(arguments)
+  }
+  window.gtag("js", new Date())
+  window.gtag("config", GA_ID, { send_page_view: false })
+
+  if (document.querySelector(`script[src*="googletagmanager.com/gtag/js"]`)) return
+  const s = document.createElement("script")
+  s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`
+  s.async = true
+  document.head.appendChild(s)
+}
+
+function injectFb() {
+  if (!FB_PIXEL_ID || typeof window === "undefined") return
+  if (typeof window.fbq === "function") return
+
+  // Standard Meta pixel bootstrap — queues calls until fbevents.js loads
+  type FbqFn = ((...args: unknown[]) => void) & {
+    callMethod?: (...args: unknown[]) => void
+    queue: unknown[]
+    loaded: boolean
+    version: string
+    push: (...args: unknown[]) => void
+  }
+
+  const n = function (...args: unknown[]) {
+    if (n.callMethod) n.callMethod(...args)
+    else n.queue.push(args)
+  } as FbqFn
+
+  window.fbq = n
+  if (!window._fbq) window._fbq = n
+  n.push = n
+  n.loaded = true
+  n.version = "2.0"
+  n.queue = []
+
+  if (!document.querySelector('script[src*="connect.facebook.net"]')) {
+    const t = document.createElement("script")
+    t.async = true
+    t.src = "https://connect.facebook.net/en_US/fbevents.js"
+    const first = document.getElementsByTagName("script")[0]
+    first?.parentNode?.insertBefore(t, first)
+  }
+  window.fbq("init", FB_PIXEL_ID)
+}
+
+/** Load tags after LCP: idle (max ~2.5s) or first user gesture — keeps attribution intact. */
+function scheduleAnalyticsLoad(load: () => void) {
+  let done = false
+  const events = ["pointerdown", "keydown", "touchstart", "scroll"] as const
+  const opts: AddEventListenerOptions = { once: true, passive: true, capture: true }
+
+  let idleId: number | undefined
+  let timer: number | undefined
+
+  const cleanup = () => {
+    for (const ev of events) window.removeEventListener(ev, onInteract, opts)
+    if (idleId != null && typeof window.cancelIdleCallback === "function") {
+      window.cancelIdleCallback(idleId)
+    }
+    if (timer != null) window.clearTimeout(timer)
+  }
+
+  const run = () => {
+    if (done) return
+    done = true
+    cleanup()
+    load()
+  }
+
+  const onInteract = () => run()
+
+  for (const ev of events) window.addEventListener(ev, onInteract, opts)
+
+  if (typeof window.requestIdleCallback === "function") {
+    idleId = window.requestIdleCallback(() => run(), { timeout: 2500 })
+  } else {
+    timer = window.setTimeout(run, 2000)
+  }
+
+  return cleanup
+}
+
 export default function Analytics() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const tracked = useRef<string | null>(null)
+
+  useEffect(() => {
+    if (!GA_ID && !FB_PIXEL_ID) return
+    return scheduleAnalyticsLoad(() => {
+      injectGa()
+      injectFb()
+    })
+  }, [])
 
   useEffect(() => {
     // Persist UTM/fbclid on first landing so Hotmart checkout can inherit them.
@@ -181,38 +281,5 @@ export default function Analytics() {
     return () => document.removeEventListener("click", handler)
   }, [])
 
-  if (!GA_ID && !FB_PIXEL_ID) return null
-
-  return (
-    <>
-      {GA_ID && (
-        <>
-          <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
-          <Script id="ga-init" strategy="afterInteractive">
-            {`
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${GA_ID}', { send_page_view: false });
-            `}
-          </Script>
-        </>
-      )}
-      {FB_PIXEL_ID && (
-        <Script id="fb-pixel" strategy="afterInteractive">
-          {`
-            !function(f,b,e,v,n,t,s)
-            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-            n.queue=[];t=b.createElement(e);t.async=!0;
-            t.src=v;s=b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t,s)}(window, document,'script',
-            'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', '${FB_PIXEL_ID}');
-          `}
-        </Script>
-      )}
-    </>
-  )
+  return null
 }

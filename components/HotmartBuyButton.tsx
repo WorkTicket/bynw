@@ -1,12 +1,17 @@
-'use client'
+"use client"
 
-import { useEffect, useRef, useState } from 'react'
-import { getPriceCurrency } from '@/lib/tracking'
-import { parsePriceValue } from '@/lib/pricing'
+import { useEffect, useRef, useState } from "react"
+import { getPriceCurrency } from "@/lib/tracking"
+import { parsePriceValue } from "@/lib/pricing"
 import {
   appendAttributionToHotmartUrl,
   captureAndPersistFromLocation,
-} from '@/lib/ad-attribution'
+} from "@/lib/ad-attribution"
+import {
+  bindHotmartCheckout,
+  isMobileCheckout,
+  loadHotmartAssets,
+} from "@/lib/hotmart"
 
 type Props = {
   href: string
@@ -19,69 +24,44 @@ type Props = {
   price?: string
 }
 
-declare global {
-  interface Window {
-    jQuery?: (element: HTMLElement) => {
-      fancybox: (options: Record<string, unknown>) => void
+function whenNearOrInteract(
+  el: HTMLElement,
+  start: () => void
+): () => void {
+  let started = false
+  const run = () => {
+    if (started) return
+    started = true
+    start()
+  }
+
+  const onInteract = () => run()
+  el.addEventListener("pointerdown", onInteract, { once: true, passive: true })
+  el.addEventListener("focusin", onInteract, { once: true })
+
+  let observer: IntersectionObserver | undefined
+  if (typeof IntersectionObserver !== "undefined") {
+    observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) run()
+      },
+      { rootMargin: "200px 0px", threshold: 0.01 }
+    )
+    observer.observe(el)
+  } else {
+    // Fallback: idle then load so checkout still works without IO.
+    const ric = window.requestIdleCallback?.bind(window)
+    if (ric) {
+      ric(() => run(), { timeout: 4000 })
+    } else {
+      window.setTimeout(run, 2500)
     }
   }
-}
 
-function loadHotmartCSS() {
-  if (document.querySelector('link[href*="hotmart-fb"]')) return
-  const link = document.createElement('link')
-  link.rel = 'stylesheet'
-  link.href = 'https://static.hotmart.com/css/hotmart-fb.min.css'
-  document.head.appendChild(link)
-}
-
-function loadHotmartJS(): Promise<void> {
-  if (window.jQuery) return Promise.resolve()
-  return new Promise((resolve, reject) => {
-    const existing = document.querySelector<HTMLScriptElement>(
-      'script[src*="hotmart.com/checkout/widget"]'
-    )
-    if (existing) {
-      existing.addEventListener('load', () => resolve(), { once: true })
-      existing.addEventListener('error', () => reject(new Error('Hotmart widget failed')), {
-        once: true,
-      })
-      return
-    }
-    const script = document.createElement('script')
-    script.src = 'https://static.hotmart.com/checkout/widget.min.js'
-    script.async = true
-    script.onload = () => resolve()
-    script.onerror = () => reject(new Error('Hotmart widget failed'))
-    document.body.appendChild(script)
-  })
-}
-
-function isMobileCheckout() {
-  if (typeof window === 'undefined') return false
-  return (
-    window.innerWidth <= 600 ||
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(navigator.userAgent)
-  )
-}
-
-function bindHotmartCheckout(anchor: HTMLAnchorElement) {
-  const $ = window.jQuery
-  if (!$) return false
-
-  try {
-    $(anchor).fancybox({
-      type: 'iframe',
-      toolbar: false,
-      smallBtn: true,
-      iframe: {
-        css: { width: '600px' },
-        attr: { allowpaymentrequest: 'true' },
-      },
-    })
-    return true
-  } catch {
-    return false
+  return () => {
+    el.removeEventListener("pointerdown", onInteract)
+    el.removeEventListener("focusin", onInteract)
+    observer?.disconnect()
   }
 }
 
@@ -93,6 +73,7 @@ export default function HotmartBuyButton({
   contentName,
   price,
 }: Props) {
+  const rootRef = useRef<HTMLSpanElement>(null)
   const anchorRef = useRef<HTMLAnchorElement>(null)
   const [widgetReady, setWidgetReady] = useState(false)
   const [checkoutHref, setCheckoutHref] = useState(href)
@@ -103,41 +84,49 @@ export default function HotmartBuyButton({
   }, [href])
 
   useEffect(() => {
+    const root = rootRef.current
+    if (!root) return
+
     let cancelled = false
     let interval: number | undefined
     let timeout: number | undefined
+    let stopWatch: (() => void) | undefined
 
-    loadHotmartCSS()
-    loadHotmartJS()
-      .then(() => {
-        if (cancelled) return
-        const anchor = anchorRef.current
-        if (!anchor) return
+    const bindWhenReady = () => {
+      loadHotmartAssets()
+        .then(() => {
+          if (cancelled) return
+          const anchor = anchorRef.current
+          if (!anchor) return
 
-        const tryBind = () => {
-          if (bindHotmartCheckout(anchor)) {
-            if (!cancelled) setWidgetReady(true)
-            return true
+          const tryBind = () => {
+            if (bindHotmartCheckout(anchor)) {
+              if (!cancelled) setWidgetReady(true)
+              return true
+            }
+            return false
           }
-          return false
-        }
 
-        if (tryBind()) return
+          if (tryBind()) return
 
-        interval = window.setInterval(() => {
-          if (tryBind() && interval) window.clearInterval(interval)
-        }, 200)
+          interval = window.setInterval(() => {
+            if (tryBind() && interval) window.clearInterval(interval)
+          }, 200)
 
-        timeout = window.setTimeout(() => {
-          if (interval) window.clearInterval(interval)
-        }, 15000)
-      })
-      .catch(() => {
-        // Fall through to plain checkout link navigation.
-      })
+          timeout = window.setTimeout(() => {
+            if (interval) window.clearInterval(interval)
+          }, 15000)
+        })
+        .catch(() => {
+          // Fall through to plain checkout link navigation.
+        })
+    }
+
+    stopWatch = whenNearOrInteract(root, bindWhenReady)
 
     return () => {
       cancelled = true
+      stopWatch?.()
       if (interval) window.clearInterval(interval)
       if (timeout) window.clearTimeout(timeout)
     }
@@ -147,7 +136,7 @@ export default function HotmartBuyButton({
   const currency = price ? getPriceCurrency(price) : undefined
 
   return (
-    <span className={`relative inline-flex w-full ${className ?? ''}`}>
+    <span ref={rootRef} className={`relative inline-flex w-full ${className ?? ""}`}>
       <a
         ref={anchorRef}
         href={checkoutHref}

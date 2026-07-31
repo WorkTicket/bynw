@@ -120,7 +120,12 @@ export default async function ProductPage({ params }: Props) {
               <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 items-start">
                 <div className="relative lg:order-2">
                   <div className="relative overflow-hidden rounded-2xl bg-rose-50/40">
-                    <ImageCarousel images={localizedProduct.images} interval={2000} alt={localizedProduct.shortTitle} />
+                    <ImageCarousel
+                      images={localizedProduct.images}
+                      interval={2000}
+                      alt={localizedProduct.shortTitle}
+                      priority
+                    />
                   </div>
                   {localizedProduct.caption && (
                     <p className="mt-3 text-center text-xs text-muted sm:text-sm">

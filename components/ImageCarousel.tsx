@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import Image from "next/image"
+import { useState, useEffect, useCallback, useRef } from "react"
 import { LayersIcon } from "@/lib/icons"
 
 type Props = {
@@ -11,38 +12,78 @@ type Props = {
   /** Tailwind aspect class (e.g. aspect-video). Defaults to aspect-square. */
   aspect?: string
   alt?: string
+  /** First slide is above the fold (product LCP). */
+  priority?: boolean
 }
 
-export default function ImageCarousel({ images, interval = 2000, className = "", noAutoplay, aspect, alt = "Imagen del producto" }: Props) {
+export default function ImageCarousel({
+  images,
+  interval = 2000,
+  className = "",
+  noAutoplay,
+  aspect,
+  alt = "Imagen del producto",
+  priority = false,
+}: Props) {
   const [idx, setIdx] = useState(0)
-  const next = useCallback(() => setIdx((i) => (i + 1) % images.length), [images.length])
-  const prev = useCallback(() => setIdx((i) => (i - 1 + images.length) % images.length), [images.length])
+  const [inView, setInView] = useState(false)
+  const rootRef = useRef<HTMLDivElement>(null)
+  const next = useCallback(
+    () => setIdx((i) => (i + 1) % images.length),
+    [images.length]
+  )
+  const prev = useCallback(
+    () => setIdx((i) => (i - 1 + images.length) % images.length),
+    [images.length]
+  )
 
   useEffect(() => {
-    if (noAutoplay) return
+    const el = rootRef.current
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setInView(true)
+      return
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setInView(true)
+          io.disconnect()
+        }
+      },
+      { rootMargin: "120px 0px", threshold: 0.05 }
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (noAutoplay || !inView || images.length < 2) return
     const t = setInterval(next, interval)
     return () => clearInterval(t)
-  }, [next, interval, noAutoplay])
+  }, [next, interval, noAutoplay, inView, images.length])
 
   if (images.length === 0) return null
 
   const frame = aspect ?? "aspect-square"
 
   return (
-    <div className={`group relative ${className}`}>
-      <div className={`overflow-hidden rounded-2xl bg-rose-50/30 ${frame}`}>
-        <div className="flex h-full w-full items-center justify-center">
-          <img
-            src={`/images/${images[idx]}`}
-            alt={alt}
-            className="max-h-full max-w-full object-contain transition-opacity duration-500 ease-out"
-          />
-        </div>
+    <div ref={rootRef} className={`group relative ${className}`}>
+      <div className={`relative overflow-hidden rounded-2xl bg-rose-50/30 ${frame}`}>
+        <Image
+          src={`/images/${images[idx]}`}
+          alt={alt}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 55vw, 640px"
+          priority={priority && idx === 0}
+          loading={priority && idx === 0 ? undefined : "lazy"}
+          className="object-contain transition-opacity duration-500 ease-out"
+        />
       </div>
 
       {images.length > 1 && (
         <>
           <button
+            type="button"
             onClick={prev}
             className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-ink/70 shadow-soft opacity-70 sm:opacity-0 transition-opacity duration-300 group-hover:opacity-100 hover:text-rose-600"
             aria-label="Anterior"
@@ -52,6 +93,7 @@ export default function ImageCarousel({ images, interval = 2000, className = "",
             </svg>
           </button>
           <button
+            type="button"
             onClick={next}
             className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-ink/70 shadow-soft opacity-70 sm:opacity-0 transition-opacity duration-300 group-hover:opacity-100 hover:text-rose-600"
             aria-label="Siguiente"
@@ -64,6 +106,7 @@ export default function ImageCarousel({ images, interval = 2000, className = "",
           <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5">
             {images.map((_, i) => (
               <button
+                type="button"
                 key={i}
                 onClick={() => setIdx(i)}
                 className={`h-1 rounded-full transition-all duration-300 ${

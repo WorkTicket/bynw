@@ -21,17 +21,18 @@ import { buildOrganizationJsonLd, buildWebsiteJsonLd } from "@/lib/seo"
 
 const sans = Outfit({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600"],
   variable: "--font-sans",
   display: "swap",
 })
 
 const display = Bodoni_Moda({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["600"],
   style: ["normal", "italic"],
   variable: "--font-display",
   display: "swap",
+  // next/font has no size-adjust metrics for Bodoni Moda
   adjustFontFallback: false,
 })
 
@@ -135,16 +136,9 @@ export default async function RootLayout({
       className={`${sans.variable} ${display.variable} ${script.variable}`}
     >
       <head>
-        <link rel="preconnect" href="https://static.hotmart.com" />
-        <link rel="dns-prefetch" href="https://checkout.hotmart.com" />
-        <link rel="dns-prefetch" href="https://api.hotmart.com" />
+        {/* Analytics hosts only — Hotmart hints inject when a buy CTA is near */}
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://connect.facebook.net" />
-        <link
-          rel="preload"
-          as="image"
-          href="/images/hero-editorial.webp"
-          fetchPriority="high"
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}

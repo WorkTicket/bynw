@@ -91,11 +91,11 @@ export default function Header() {
               <Link href="/ads" className="group flex min-w-0 items-center gap-2.5 justify-self-start sm:gap-3.5">
                 <div className="site-header__mark relative h-9 w-9 shrink-0 sm:h-10 sm:w-10">
                   <img
-                    src="/images/logo.webp"
+                    src="/images/logo-64.webp"
                     alt="Manos Creativas Bynmw"
-                    fetchPriority="high"
                     width="40"
                     height="40"
+                    decoding="async"
                     className="h-full w-full object-cover"
                   />
                 </div>
@@ -173,11 +173,11 @@ export default function Header() {
             >
               <div className="site-header__mark relative h-9 w-9 shrink-0 sm:h-10 sm:w-10">
                 <img
-                  src="/images/logo.webp"
+                  src="/images/logo-64.webp"
                   alt="Manos Creativas Bynmw"
-                  fetchPriority="high"
                   width="40"
                   height="40"
+                  decoding="async"
                   className="h-full w-full object-cover"
                 />
               </div>

@@ -2,6 +2,7 @@
 const nextConfig = {
   poweredByHeader: false,
   compress: true,
+  reactStrictMode: true,
   images: {
     // Optimized via Cloudflare Images binding (see wrangler.toml [images])
     // https://opennext.js.org/cloudflare/howtos/image
@@ -28,6 +29,12 @@ const nextConfig = {
       },
       {
         source: "/:path*.{woff,woff2,ttf,otf}",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+      {
+        source: "/_next/static/:path*",
         headers: [
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
         ],

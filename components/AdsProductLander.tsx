@@ -323,6 +323,7 @@ export default function AdsProductLander({ product, reviews }: Props) {
                     images={product.images}
                     interval={2500}
                     alt={product.shortTitle}
+                    priority
                   />
                 </div>
               </div>

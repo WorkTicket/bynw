@@ -1,5 +1,3 @@
-"use client"
-
 import { GiftIcon, ScissorsIcon, MessageCircleIcon } from "@/lib/icons"
 import PetiteOrnament from "@/components/PetiteOrnament"
 import ScrollReveal from "@/components/ScrollReveal"
