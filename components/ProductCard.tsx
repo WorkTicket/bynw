@@ -82,21 +82,24 @@ export default function ProductCard({
             {product.description}
           </p>
 
-          <span className="mt-5 inline-flex min-h-[2.75rem] items-center gap-2.5 text-sm font-medium tracking-[0.02em] text-rose-500 transition-colors group-hover:text-rose-600">
-            {ctaLabel}
-            <svg
-              className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={1.75}
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
+          <span className="btn-primary btn-primary--lg mt-6 w-full">
+            <span className="btn-label">
+              {ctaLabel}
+              <svg
+                className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.75}
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
+              </svg>
+            </span>
           </span>
         </div>
       </article>

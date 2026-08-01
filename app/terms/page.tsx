@@ -9,7 +9,6 @@ import {
   LEGAL_TRADE_NAME,
   getLegalAddress,
 } from "@/lib/business"
-import { formatPromoEndLabel, isPromoActive } from "@/lib/offer"
 
 export const metadata: Metadata = createPageMetadata({
   title: "Términos y Condiciones",
@@ -20,8 +19,6 @@ export const metadata: Metadata = createPageMetadata({
 
 export default function TermsPage() {
   const address = getLegalAddress()
-  const promoActive = isPromoActive()
-  const promoEnd = formatPromoEndLabel()
 
   return (
     <section className="page-hero pb-20">
@@ -77,12 +74,9 @@ export default function TermsPage() {
               <p className="mt-2">
                 Los precios se muestran en euros (€) e incluyen los impuestos
                 aplicables cuando corresponda. El precio tachado es el precio de
-                referencia del catálogo antes de la promoción vigente
-                {promoActive
-                  ? ` (válida hasta el ${promoEnd}, hora de Madrid)`
-                  : ""}
-                . Los pagos se procesan a través de {LEGAL_PAYMENT_PROCESSOR}.
-                No almacenamos información de tarjetas de crédito ni datos
+                referencia del catálogo antes de la promoción vigente. Los
+                pagos se procesan a través de {LEGAL_PAYMENT_PROCESSOR}. No
+                almacenamos información de tarjetas de crédito ni datos
                 bancarios en nuestro sitio.
               </p>
             </div>

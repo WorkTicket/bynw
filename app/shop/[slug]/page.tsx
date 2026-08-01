@@ -9,7 +9,6 @@ import MetaViewContent from "@/components/MetaViewContent"
 import ProductFinalCTA from "@/components/ProductFinalCTA"
 import { products, getProductBySlug } from "@/lib/products"
 import { parsePriceValue } from "@/lib/pricing"
-import { formatPromoEndLabel, isPromoActive } from "@/lib/offer"
 import { DEFAULT_OG_IMAGE } from "@/lib/site"
 import {
   createPageMetadata,
@@ -147,9 +146,6 @@ export default async function ProductPage({ params }: Props) {
                     {discount >= 40 && (
                       <span className="text-sm font-medium text-rose-600">
                         {`−${discount}%`}
-                        {isPromoActive()
-                          ? ` · hasta ${formatPromoEndLabel()}`
-                          : ""}
                       </span>
                     )}
                   </div>
