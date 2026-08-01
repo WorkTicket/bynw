@@ -147,7 +147,7 @@ export default function Testimonials({
         {showMoreLink && (
           <ScrollReveal delay={160}>
             <div className="mt-9 flex justify-center sm:mt-10">
-              <SecondaryCTA href="/testimonials" className="min-h-[3rem] px-8">
+              <SecondaryCTA href="/testimonials">
                 Ver todos los testimonios
               </SecondaryCTA>
             </div>

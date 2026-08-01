@@ -130,8 +130,8 @@ function BuyBlock({
 }) {
   const alignCls =
     align === "start"
-      ? "items-stretch lg:items-start text-center lg:text-left"
-      : "items-stretch text-center"
+      ? "items-center lg:items-start text-center lg:text-left"
+      : "items-center text-center"
 
   return (
     <div

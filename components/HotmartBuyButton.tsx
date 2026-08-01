@@ -150,7 +150,7 @@ export default function HotmartBuyButton({
   return (
     <span
       ref={rootRef}
-      className={`relative inline-flex w-full justify-center ${className ?? ""}`}
+      className={`relative inline-flex w-auto max-w-full justify-center ${className ?? ""}`}
     >
       <a
         ref={anchorRef}

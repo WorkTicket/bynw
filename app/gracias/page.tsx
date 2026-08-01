@@ -53,12 +53,11 @@ export default function GraciasPage() {
               href={WHATSAPP_POST_PURCHASE_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto"
               data-track-whatsapp-click="gracias_support"
             >
               Confirmar acceso por WhatsApp
             </PrimaryCTA>
-            <SecondaryCTA href="/testimonials#dejar-resena" className="w-full sm:w-auto">
+            <SecondaryCTA href="/testimonials#dejar-resena">
               Dejar reseña con foto
             </SecondaryCTA>
             <Link

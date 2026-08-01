@@ -152,7 +152,6 @@ export default function AboutPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   data-track-whatsapp-click="about_cta"
-                  className="min-h-[3.15rem] px-9 text-sm"
                 >
                   Escribir por WhatsApp
                 </SecondaryCTA>

@@ -23,7 +23,7 @@ export default function NotFound() {
           La página que buscas no existe o ha sido movida. Puedes volver al inicio
           o explorar nuestras colecciones de patrones.
         </p>
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
+        <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <PrimaryCTA href="/">Volver al inicio</PrimaryCTA>
           <SecondaryCTA href="/shop">Ver colecciones</SecondaryCTA>
         </div>

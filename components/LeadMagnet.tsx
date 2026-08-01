@@ -28,7 +28,7 @@ function LeadMagnetSuccess({ dark = false }: { dark?: boolean }) {
   }
 
   const buttonClass =
-    "mt-4 w-full min-h-[3rem] gap-2 px-6 py-3.5 text-sm disabled:cursor-wait disabled:opacity-80"
+    "mt-4 gap-2 disabled:cursor-wait disabled:opacity-80"
 
   return (
     <div
@@ -229,11 +229,7 @@ export default function LeadMagnet({ variant = "inline", submitLabel, placeholde
         <PrimaryCTA
           type="submit"
           disabled={status === "loading"}
-          className={
-            isHero
-              ? "w-full px-8 py-3.5 text-sm sm:text-base"
-              : "w-full shrink-0 px-6 py-3.5 text-sm sm:w-auto"
-          }
+          className={isHero ? "w-full" : "w-full shrink-0 sm:w-auto"}
         >
           {status === "loading" ? (
             <span className="flex items-center justify-center gap-2">

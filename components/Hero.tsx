@@ -89,8 +89,8 @@ export default function Hero() {
             Descarga al momento, acceso de por vida.
           </p>
 
-          <div className="mt-8 flex flex-col gap-3.5 sm:mt-11 sm:flex-row sm:items-center sm:gap-6">
-            <PrimaryCTA href="/#colecciones" size="lg" className="w-full sm:w-auto">
+          <div className="mt-8 flex flex-col items-start gap-3.5 sm:mt-11 sm:flex-row sm:items-center sm:gap-6">
+            <PrimaryCTA href="/#colecciones" size="lg">
               Ver colecciones
             </PrimaryCTA>
             <Link

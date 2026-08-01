@@ -26,7 +26,7 @@ export default function UrgencyCTA() {
             </p>
 
             <div className="mt-10 flex flex-col items-center gap-4 sm:mt-11">
-              <PrimaryCTA href="/#colecciones" className="w-full sm:w-auto">
+              <PrimaryCTA href="/#colecciones">
                 Ver colecciones
               </PrimaryCTA>
               <Link

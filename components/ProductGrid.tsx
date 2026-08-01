@@ -33,7 +33,7 @@ export default function ProductGrid() {
 
         <ScrollReveal delay={180}>
           <div className="mt-14 flex justify-center sm:mt-16">
-            <SecondaryCTA href="/shop" className="min-h-[3.15rem] px-9">
+            <SecondaryCTA href="/shop">
               Explorar la tienda
             </SecondaryCTA>
           </div>

@@ -131,7 +131,7 @@ export default function ReviewForm({ variant = "compact", onSubmitted }: Props) 
         <SecondaryCTA
           type="button"
           onClick={() => setDone(false)}
-          className="mt-7 min-h-[2.75rem] px-6 text-sm"
+          className="mt-7"
         >
           Escribir otra reseña
         </SecondaryCTA>
@@ -351,7 +351,7 @@ export default function ReviewForm({ variant = "compact", onSubmitted }: Props) 
         <PrimaryCTA
           type="submit"
           disabled={submitting}
-          className="w-full min-h-[3rem] disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
+          className="disabled:cursor-not-allowed disabled:opacity-70"
         >
           {submitting ? "Publicando…" : "Publicar reseña"}
         </PrimaryCTA>

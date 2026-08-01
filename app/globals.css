@@ -1153,11 +1153,11 @@ body::before {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  min-height: 3rem;
-  padding: 0.85rem 2.15rem;
-  border-radius: var(--btn-radius);
+  min-height: 2.5rem;
+  padding: 0.55rem 1.25rem;
+  border-radius: 0.85rem;
   border: 1px solid rgba(255, 255, 255, 0.45);
-  font-size: 0.9rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   letter-spacing: 0.03em;
   line-height: 1.2;
@@ -1180,6 +1180,15 @@ body::before {
     background-color 0.35s ease,
     box-shadow 0.4s var(--ease-out-expo),
     border-color 0.35s ease;
+}
+
+@media (min-width: 640px) {
+  .btn-primary {
+    min-height: 2.75rem;
+    padding: 0.7rem 1.75rem;
+    border-radius: var(--btn-radius);
+    font-size: 0.875rem;
+  }
 }
 
 .btn-primary:hover,
@@ -1207,20 +1216,38 @@ body::before {
 }
 
 .btn-primary--sm {
-  min-height: 2.55rem;
-  padding: 0.55rem 1.25rem;
-  font-size: 0.78rem;
+  min-height: 2.25rem;
+  padding: 0.4rem 1rem;
+  font-size: 0.75rem;
   letter-spacing: 0.025em;
-  border-radius: 0.85rem;
+  border-radius: 0.75rem;
 }
 
 .btn-primary--lg {
-  min-height: 3.25rem;
-  padding: 0.95rem 2.5rem;
-  font-size: 0.95rem;
-  letter-spacing: 0.035em;
-  min-width: 14rem;
-  border-radius: 1.1rem;
+  min-height: 2.625rem;
+  padding: 0.6rem 1.35rem;
+  font-size: 0.8125rem;
+  letter-spacing: 0.03em;
+  min-width: 0;
+  border-radius: 0.9rem;
+}
+
+@media (min-width: 640px) {
+  .btn-primary--sm {
+    min-height: 2.4rem;
+    padding: 0.5rem 1.15rem;
+    font-size: 0.78rem;
+    border-radius: 0.85rem;
+  }
+
+  .btn-primary--lg {
+    min-height: 3rem;
+    padding: 0.8rem 2.15rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.035em;
+    min-width: 12.5rem;
+    border-radius: 1.05rem;
+  }
 }
 
 /* Nav — compact blush chrome (matches CTA family) */
@@ -1265,9 +1292,9 @@ body::before {
 
 /* Secondary — pearl + blush outline */
 .btn-secondary {
-  @apply inline-flex items-center justify-center gap-2 px-7 py-2.5 sm:px-8 sm:py-3 text-[0.8125rem] sm:text-[0.875rem] font-medium hover:-translate-y-px active:translate-y-0 active:scale-[0.985] tracking-[0.03em];
-  min-height: 2.875rem;
-  border-radius: var(--btn-radius);
+  @apply inline-flex items-center justify-center gap-2 px-5 py-2 sm:px-7 sm:py-2.5 text-[0.8125rem] sm:text-[0.875rem] font-medium hover:-translate-y-px active:translate-y-0 active:scale-[0.985] tracking-[0.03em];
+  min-height: 2.5rem;
+  border-radius: 0.85rem;
   border: 1.5px solid rgba(229, 154, 170, 0.65);
   color: #b84a5e;
   -webkit-text-fill-color: #b84a5e;
@@ -1282,6 +1309,13 @@ body::before {
     border-color 0.3s ease,
     color 0.3s ease,
     box-shadow 0.4s var(--ease-out-expo);
+}
+
+@media (min-width: 640px) {
+  .btn-secondary {
+    min-height: 2.75rem;
+    border-radius: var(--btn-radius);
+  }
 }
 
 .btn-secondary:hover,
@@ -1527,17 +1561,17 @@ body::before {
   align-items: center !important;
   justify-content: center !important;
   width: auto !important;
-  min-width: 12.5rem !important;
+  min-width: 0 !important;
   max-width: 100% !important;
-  min-height: 3rem !important;
+  min-height: 2.5rem !important;
   height: auto !important;
-  padding: 0.85rem 2.15rem !important;
+  padding: 0.55rem 1.25rem !important;
   border: 1px solid rgba(255, 255, 255, 0.45) !important;
   outline: none !important;
-  border-radius: var(--btn-radius) !important;
+  border-radius: 0.85rem !important;
   font-family: inherit !important;
   font-weight: 500 !important;
-  font-size: 0.9rem !important;
+  font-size: 0.8125rem !important;
   letter-spacing: 0.03em !important;
   line-height: 1.2 !important;
   text-align: center !important;
@@ -1616,21 +1650,21 @@ body::before {
 .hotmart-fb.hotmart__button-checkout.btn-collection-buy.btn-collection-buy--compact {
   width: auto !important;
   min-width: 0 !important;
-  min-height: 2.55rem !important;
-  padding: 0.55rem 1.25rem !important;
-  font-size: 0.78rem !important;
+  min-height: 2.25rem !important;
+  padding: 0.4rem 1rem !important;
+  font-size: 0.75rem !important;
   letter-spacing: 0.025em !important;
-  border-radius: 0.85rem !important;
+  border-radius: 0.75rem !important;
   animation: none !important;
 }
 
 .hotmart-fb.hotmart__button-checkout.btn-collection-buy.btn-collection-buy--lg {
-  min-width: 14rem !important;
-  min-height: 3.25rem !important;
-  padding: 0.95rem 2.5rem !important;
-  font-size: 0.95rem !important;
-  letter-spacing: 0.035em !important;
-  border-radius: 1.1rem !important;
+  min-width: 0 !important;
+  min-height: 2.625rem !important;
+  padding: 0.6rem 1.35rem !important;
+  font-size: 0.8125rem !important;
+  letter-spacing: 0.03em !important;
+  border-radius: 0.9rem !important;
 }
 
 @keyframes buyGlowBreathe {
@@ -1651,30 +1685,34 @@ body::before {
 
 @media (min-width: 640px) {
   .hotmart-fb.hotmart__button-checkout.btn-collection-buy {
-    min-width: 13.5rem !important;
-    min-height: 3rem !important;
-    font-size: 0.9rem !important;
-    padding: 0.85rem 2.15rem !important;
+    min-width: 11.5rem !important;
+    min-height: 2.75rem !important;
+    font-size: 0.875rem !important;
+    padding: 0.7rem 1.75rem !important;
+    border-radius: var(--btn-radius) !important;
   }
 
   .hotmart-fb.hotmart__button-checkout.btn-collection-buy.btn-collection-buy--compact {
-    min-height: 2.6rem !important;
-    font-size: 0.8125rem !important;
-    padding: 0.6rem 1.35rem !important;
+    min-height: 2.4rem !important;
+    font-size: 0.78rem !important;
+    padding: 0.5rem 1.15rem !important;
+    border-radius: 0.85rem !important;
   }
 
   .hotmart-fb.hotmart__button-checkout.btn-collection-buy.btn-collection-buy--lg {
-    min-width: 15rem !important;
-    min-height: 3.25rem !important;
-    font-size: 0.95rem !important;
-    padding: 0.95rem 2.5rem !important;
+    min-width: 12.5rem !important;
+    min-height: 3rem !important;
+    font-size: 0.9rem !important;
+    padding: 0.8rem 2.15rem !important;
+    border-radius: 1.05rem !important;
   }
 }
 
 @media (max-width: 639px) {
   .hotmart-fb.hotmart__button-checkout.btn-collection-buy:not(.btn-collection-buy--compact) {
-    width: 100% !important;
+    width: auto !important;
     min-width: 0 !important;
+    align-self: center;
   }
 }
 
