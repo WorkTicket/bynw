@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation"
 import FooterSignature from "@/components/FooterSignature"
 import PetiteOrnament from "@/components/PetiteOrnament"
 import ScrollReveal from "@/components/ScrollReveal"
+import { openConsentPrefs } from "@/lib/consent"
 
 const legalLinks = [
   { href: "/privacy-policy", label: "Privacidad" },
@@ -12,6 +13,24 @@ const legalLinks = [
   { href: "/cookies-policy", label: "Cookies" },
   { href: "/refund-policy", label: "Reembolsos" },
 ]
+
+const legalLinkClass =
+  "min-h-[2.5rem] inline-flex items-center transition-colors hover:text-rose-600"
+
+function LegalNav() {
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-muted sm:gap-x-5">
+      {legalLinks.map((l) => (
+        <Link key={l.href} href={l.href} className={legalLinkClass}>
+          {l.label}
+        </Link>
+      ))}
+      <button type="button" onClick={openConsentPrefs} className={legalLinkClass}>
+        Preferencias
+      </button>
+    </div>
+  )
+}
 
 export default function Footer() {
   const pathname = usePathname()
@@ -26,17 +45,7 @@ export default function Footer() {
             <p className="text-[11px] tracking-[0.02em] text-muted/75">
               &copy; {year} Manos Creativas Bynmw
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-muted sm:gap-x-5">
-              {legalLinks.map((l) => (
-                <Link
-                  key={l.href}
-                  href={l.href}
-                  className="min-h-[2.5rem] inline-flex items-center transition-colors hover:text-rose-600"
-                >
-                  {l.label}
-                </Link>
-              ))}
-            </div>
+            <LegalNav />
             <a
               href="https://wa.me/573008504709"
               target="_blank"
@@ -202,17 +211,7 @@ export default function Footer() {
             <p className="text-[11px] text-muted/75">
               &copy; {year} Manos Creativas Bynmw. Todos los derechos reservados.
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-muted sm:gap-x-5">
-              {legalLinks.map((l) => (
-                <Link
-                  key={l.href}
-                  href={l.href}
-                  className="min-h-[2.5rem] inline-flex items-center transition-colors hover:text-rose-600"
-                >
-                  {l.label}
-                </Link>
-              ))}
-            </div>
+            <LegalNav />
             <FooterSignature />
           </div>
         </ScrollReveal>

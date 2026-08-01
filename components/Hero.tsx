@@ -95,13 +95,13 @@ export default function Hero() {
             Descarga al momento, acceso de por vida.
           </p>
 
-          <div className="mt-8 flex flex-col items-start gap-3.5 sm:mt-11 sm:flex-row sm:items-center sm:gap-6">
+          <div className="mt-8 flex flex-row flex-wrap items-center gap-x-5 gap-y-3 sm:mt-11 sm:gap-x-6">
             <PrimaryCTA href="/#colecciones" size="lg">
               Ver colecciones
             </PrimaryCTA>
             <Link
               href="/shop"
-              className="group inline-flex min-h-[2.75rem] items-center justify-center gap-2 px-1 py-2 text-sm font-medium text-ink/75 transition-colors hover:text-rose-600 sm:justify-start lg:text-ink/60"
+              className="group inline-flex min-h-12 items-center gap-2 text-[0.9rem] font-medium tracking-[0.03em] text-ink/70 transition-colors hover:text-rose-600 lg:text-ink/60"
             >
               Explorar la tienda
               <svg

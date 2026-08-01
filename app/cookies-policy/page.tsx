@@ -34,7 +34,7 @@ export default function CookiesPolicyPage() {
               usa {LEGAL_TRADE_NAME}. Las cookies no esenciales (analítica y
               publicidad) solo se activan si das tu consentimiento explícito
               mediante el banner de cookies. Puedes cambiar tu elección en
-              cualquier momento con el botón «Cookies» de la esquina inferior.
+              cualquier momento desde «Preferencias» en el pie de página.
             </p>
 
             <div className="border-t border-rose-100/50 pt-6">
@@ -87,9 +87,10 @@ export default function CookiesPolicyPage() {
               </h2>
               <p className="mt-2">
                 Usa el banner al llegar al sitio (Aceptar todas / Rechazar /
-                Preferencias) o el botón «Cookies» en cualquier momento. También
-                puedes bloquear cookies de terceros desde tu navegador. Si
-                rechazas analítica o publicidad, esas herramientas no se cargan.
+                Preferencias) o el enlace «Preferencias» del pie de página.
+                También puedes bloquear cookies de terceros desde tu navegador.
+                Si rechazas analítica o publicidad, esas herramientas no se
+                cargan.
                 Más información en{" "}
                 <a href="/privacy-policy" className="text-rose-600 hover:underline">
                   nuestra política de privacidad

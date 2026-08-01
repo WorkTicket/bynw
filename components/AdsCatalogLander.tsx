@@ -121,13 +121,13 @@ export default function AdsCatalogLander({ reviews }: Props) {
               </span>
             </div>
 
-            <div className="mt-8 flex flex-col gap-3.5 sm:flex-row sm:items-center sm:gap-5">
+            <div className="mt-8 flex flex-row flex-wrap items-center gap-x-5 gap-y-3">
               <PrimaryCTA href="#colecciones" size="lg">
                 Ver colecciones
               </PrimaryCTA>
               <Link
                 href={`/ads/${featured.slug}`}
-                className="text-sm font-medium text-ink/55 transition-colors hover:text-rose-600"
+                className="inline-flex min-h-12 items-center text-[0.9rem] font-medium tracking-[0.03em] text-ink/55 transition-colors hover:text-rose-600"
               >
                 Más vendida: {featured.shortTitle} →
               </Link>

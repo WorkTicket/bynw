@@ -2,6 +2,13 @@
 
 export const CONSENT_STORAGE_KEY = "cookie_consent_v1"
 export const CONSENT_UPDATED_EVENT = "cookie-consent-updated"
+/** Open the preferences panel (footer “Preferencias de cookies”). */
+export const OPEN_CONSENT_PREFS_EVENT = "cookie-consent-open-prefs"
+
+export function openConsentPrefs(): void {
+  if (typeof window === "undefined") return
+  window.dispatchEvent(new Event(OPEN_CONSENT_PREFS_EVENT))
+}
 
 export type ConsentChoice = {
   /** Always true — required for the site to function. */

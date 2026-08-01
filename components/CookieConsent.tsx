@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import {
+  OPEN_CONSENT_PREFS_EVENT,
   consentAll,
   defaultConsentDenied,
   readConsent,
@@ -26,6 +27,17 @@ export default function CookieConsent() {
     setView("banner")
   }, [])
 
+  useEffect(() => {
+    const openPrefs = () => {
+      const current = readConsent()
+      setAnalytics(current?.analytics ?? false)
+      setMarketing(current?.marketing ?? false)
+      setView("prefs")
+    }
+    window.addEventListener(OPEN_CONSENT_PREFS_EVENT, openPrefs)
+    return () => window.removeEventListener(OPEN_CONSENT_PREFS_EVENT, openPrefs)
+  }, [])
+
   const persist = (choice: ConsentChoice) => {
     writeConsent(choice)
     setView("hidden")
@@ -41,23 +53,7 @@ export default function CookieConsent() {
       updatedAt: new Date().toISOString(),
     })
 
-  if (view === "hidden") {
-    return (
-      <button
-        type="button"
-        onClick={() => {
-          const current = readConsent()
-          setAnalytics(current?.analytics ?? false)
-          setMarketing(current?.marketing ?? false)
-          setView("prefs")
-        }}
-        className="cookie-consent-manage"
-        aria-label="Gestionar cookies"
-      >
-        Cookies
-      </button>
-    )
-  }
+  if (view === "hidden") return null
 
   return (
     <div
