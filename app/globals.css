@@ -562,7 +562,6 @@ html[data-nav-open="true"] .floating-whatsapp {
   color: #8f3649;
   border-color: rgba(184, 74, 94, 0.45);
   background: rgba(255, 250, 248, 0.95);
-  transform: scale(1.03);
 }
 
 .site-header__burger:active {
