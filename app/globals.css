@@ -1844,8 +1844,8 @@ body::before {
 }
 
 @keyframes heroDrift {
-  0%, 100% { transform: scale(1.02) translateY(0); }
-  50% { transform: scale(1.055) translateY(-1.8%); }
+  0%, 100% { transform: scale(1.01) translateY(0); }
+  50% { transform: scale(1.03) translateY(-1.2%); }
 }
 
 /* Mobile: translate-only — scale drift softens the already-cropped hero */

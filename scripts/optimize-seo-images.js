@@ -36,12 +36,12 @@ async function main() {
   const heroBuf = await sharp(source)
     .rotate()
     .resize({
-      width: 1600,
-      height: 1067,
+      width: 1920,
+      height: 1280,
       fit: "inside",
       withoutEnlargement: true,
     })
-    .webp({ quality: 78, effort: 6, smartSubsample: true })
+    .webp({ quality: 90, effort: 6, smartSubsample: false })
     .toBuffer()
   fs.writeFileSync(heroOut, heroBuf)
   const heroMeta = await sharp(heroBuf).metadata()
