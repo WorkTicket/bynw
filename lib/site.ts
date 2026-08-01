@@ -5,6 +5,12 @@ export const BRAND_NAME = "Manos Creativas Bynmw"
 export const CONTACT_EMAIL = "bynw808@gmail.com"
 export const CONTACT_PHONE = "+57-300-850-4709"
 export const WHATSAPP_URL = "https://wa.me/573008504709"
+/** Post-purchase support ask (Hotmart thank-you → /gracias). */
+export const WHATSAPP_POST_PURCHASE_URL =
+  "https://wa.me/573008504709?text=" +
+  encodeURIComponent(
+    "Hola Natalia, acabo de comprar una colección y quiero confirmar el acceso a los PDF 🙂"
+  )
 export const SUPPORT_SLA = "Respuesta en menos de 24h"
 export const SOCIAL_LINKS = [
   "https://www.tiktok.com/@bynmw8",

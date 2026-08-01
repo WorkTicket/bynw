@@ -2,12 +2,12 @@
 
 import { useLayoutEffect } from "react"
 import { usePathname } from "next/navigation"
-import { getCatalogFromPrice, getLocalizedProduct } from "@/lib/pricing"
+import { getLocalizedProduct } from "@/lib/pricing"
 import { getProductBySlug } from "@/lib/products"
 import HotmartBuyButton from "./HotmartBuyButton"
+import PrimaryCTA from "./PrimaryCTA"
 
 const STICKY_ATTR = "data-sticky-cta"
-const BESTSELLER_SLUG = "princesas-disney"
 
 export default function StickyMobileCTA() {
   const pathname = usePathname()
@@ -20,19 +20,7 @@ export default function StickyMobileCTA() {
   const product = slugMatch ? getProductBySlug(slugMatch[1]) : undefined
   const localized = product ? getLocalizedProduct(product) : null
   const isAdsCatalog = pathname === "/ads"
-  const featured = getLocalizedProduct(getProductBySlug(BESTSELLER_SLUG)!)
-  const fromPrice = getCatalogFromPrice()
-
-  const title = localized
-    ? localized.shortTitle
-    : isAdsCatalog
-      ? "Manos Creativas"
-      : featured.shortTitle
-  const priceLabel = localized
-    ? localized.price
-    : isAdsCatalog
-      ? `Desde ${fromPrice}`
-      : featured.price
+  const isHomeOrShopCatalog = pathname === "/" || pathname === "/shop"
 
   useLayoutEffect(() => {
     if (enabled) {
@@ -47,6 +35,18 @@ export default function StickyMobileCTA() {
 
   if (!enabled) return null
 
+  const title = localized
+    ? localized.shortTitle
+    : isAdsCatalog || isHomeOrShopCatalog
+      ? "Manos Creativas"
+      : "Colecciones"
+
+  const priceLabel = localized
+    ? localized.price
+    : isAdsCatalog || isHomeOrShopCatalog
+      ? "PDF al momento"
+      : "Ver ofertas"
+
   return (
     <div
       className="sticky-mobile-cta fixed bottom-0 left-0 right-0 z-50 lg:hidden"
@@ -59,42 +59,45 @@ export default function StickyMobileCTA() {
               {title}
             </p>
             <p className="mt-1.5 flex min-w-0 items-baseline gap-1.5 truncate text-[11px] tracking-[0.04em] text-muted">
-              <span className="font-semibold tabular-nums text-ink/85">
-                {priceLabel}
-              </span>
-              <span className="text-rose-300/90" aria-hidden>
-                ·
-              </span>
-              <span className="truncate">PDF al momento</span>
+              {localized ? (
+                <>
+                  <span className="font-semibold tabular-nums text-ink/85">
+                    {priceLabel}
+                  </span>
+                  <span className="text-rose-300/90" aria-hidden>
+                    ·
+                  </span>
+                  <span className="truncate">PDF al momento</span>
+                </>
+              ) : (
+                <span className="truncate">{priceLabel}</span>
+              )}
             </p>
           </div>
+
           {localized ? (
             <HotmartBuyButton
               href={localized.buyUrl}
               contentId={localized.id}
               contentName={localized.seoTitle}
               price={localized.price}
-              className="!w-auto shrink-0 [&_a]:min-h-[2.625rem] [&_a]:rounded-full [&_a]:px-5 [&_a]:py-2.5 [&_a]:text-[11px] [&_a]:tracking-[0.06em] [&_a]:whitespace-nowrap"
+              size="compact"
+              className="!w-auto shrink-0"
             >
-              {pathname.startsWith("/ads/") ? "Comprar ahora" : "Comprar"}
+              Comprar ahora
             </HotmartBuyButton>
-          ) : pathname === "/ads" ? (
-            <a
-              href="#colecciones"
-              className="btn-nav shrink-0 min-h-[2.625rem] px-5 py-2.5 text-[11px] tracking-[0.06em]"
+          ) : (
+            <PrimaryCTA
+              href={
+                isAdsCatalog || pathname === "/shop"
+                  ? "#colecciones"
+                  : "/#colecciones"
+              }
+              size="sm"
+              className="shrink-0"
             >
               Ver colecciones
-            </a>
-          ) : (
-            <HotmartBuyButton
-              href={featured.buyUrl}
-              contentId={featured.id}
-              contentName={featured.seoTitle}
-              price={featured.price}
-              className="!w-auto shrink-0 [&_a]:min-h-[2.625rem] [&_a]:rounded-full [&_a]:px-5 [&_a]:py-2.5 [&_a]:text-[11px] [&_a]:tracking-[0.06em] [&_a]:whitespace-nowrap"
-            >
-              Comprar
-            </HotmartBuyButton>
+            </PrimaryCTA>
           )}
         </div>
       </div>

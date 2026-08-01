@@ -104,12 +104,15 @@ module.exports = {
         "lead-gradient-deep": "linear-gradient(160deg, #f3e4e2 0%, #e8b4b8 42%, #b84a5e 100%)",
         "atelier-veil":
           "radial-gradient(ellipse 70% 50% at 50% 0%, rgba(232,180,184,0.16) 0%, transparent 65%)",
+        "site-canvas": "var(--grad-site-canvas)",
+        "site-atmosphere": "var(--grad-site-atmosphere)",
       },
       animation: {
         "fade-in-up": "fadeInUp 0.7s cubic-bezier(0.34, 1.4, 0.64, 1) forwards",
         "hero-drift": "heroDrift 14s ease-in-out infinite",
         "petal-float": "petalFloat 7s ease-in-out infinite",
         "soft-pulse": "softPulse 3.2s ease-in-out infinite",
+        "site-canvas-drift": "siteCanvasDrift 36s cubic-bezier(0.16, 1, 0.3, 1) infinite alternate",
       },
       keyframes: {
         fadeInUp: {

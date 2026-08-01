@@ -13,15 +13,25 @@ import {
   loadHotmartAssets,
 } from "@/lib/hotmart"
 
+type Size = "default" | "compact" | "lg"
+
 type Props = {
   href: string
   children: React.ReactNode
   className?: string
+  /** Visual size — maps to CSS modifiers on the checkout anchor */
+  size?: Size
   /** Product id for Meta InitiateCheckout */
   contentId?: string
   contentName?: string
   /** Display price string e.g. "15€" */
   price?: string
+}
+
+const sizeClass: Record<Size, string> = {
+  default: "",
+  compact: "btn-collection-buy--compact",
+  lg: "btn-collection-buy--lg",
 }
 
 function whenNearOrInteract(
@@ -49,7 +59,6 @@ function whenNearOrInteract(
     )
     observer.observe(el)
   } else {
-    // Fallback: idle then load so checkout still works without IO.
     const ric = window.requestIdleCallback?.bind(window)
     if (ric) {
       ric(() => run(), { timeout: 4000 })
@@ -65,10 +74,12 @@ function whenNearOrInteract(
   }
 }
 
+/** Hotmart checkout CTA — same silk primary language as PrimaryCTA. */
 export default function HotmartBuyButton({
   href,
   children,
   className,
+  size = "default",
   contentId,
   contentName,
   price,
@@ -134,9 +145,13 @@ export default function HotmartBuyButton({
 
   const value = price ? String(parsePriceValue(price)) : undefined
   const currency = price ? getPriceCurrency(price) : undefined
+  const sizeMod = sizeClass[size]
 
   return (
-    <span ref={rootRef} className={`relative inline-flex w-full ${className ?? ""}`}>
+    <span
+      ref={rootRef}
+      className={`relative inline-flex w-full justify-center ${className ?? ""}`}
+    >
       <a
         ref={anchorRef}
         href={checkoutHref}
@@ -145,19 +160,17 @@ export default function HotmartBuyButton({
         data-content-name={contentName}
         data-value={value}
         data-currency={currency}
-        className="hotmart-fb hotmart__button-checkout btn-collection-buy relative z-10 w-full text-xs py-3 sm:text-sm sm:py-3.5 tracking-wide"
+        className={`hotmart-fb hotmart__button-checkout btn-collection-buy${sizeMod ? ` ${sizeMod}` : ""}`}
         onClick={(e) => {
-          // Refresh attribution at click so late-arriving UTMs still attach.
           const enriched = appendAttributionToHotmartUrl(href)
           if (anchorRef.current && enriched !== anchorRef.current.href) {
             anchorRef.current.href = enriched
             setCheckoutHref(enriched)
           }
-          // Only intercept when the Fancybox widget is bound; otherwise navigate.
           if (!isMobileCheckout() && widgetReady) e.preventDefault()
         }}
       >
-        {children}
+        <span className="btn-label">{children}</span>
       </a>
     </span>
   )

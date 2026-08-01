@@ -1,9 +1,11 @@
 import { Metadata } from "next"
+import PrimaryCTA from "@/components/PrimaryCTA"
+import SecondaryCTA from "@/components/SecondaryCTA"
 import ScrollReveal from "@/components/ScrollReveal"
 import ProductCard from "@/components/ProductCard"
 import LeadMagnet from "@/components/LeadMagnet"
 import { products } from "@/lib/products"
-import { DEFAULT_OG_IMAGE, absoluteUrl } from "@/lib/site"
+import { DEFAULT_OG_IMAGE, WHATSAPP_URL, absoluteUrl } from "@/lib/site"
 import { createPageMetadata, buildBreadcrumbJsonLd } from "@/lib/seo"
 import { listFeaturedReviews } from "@/lib/reviews"
 import { reviewImageSrc } from "@/lib/testimonials-data"
@@ -95,7 +97,10 @@ export default async function ShopPage() {
         </div>
       </section>
 
-      <section className="section-white section-padding">
+      <section
+        id="colecciones"
+        className="section-white section-padding scroll-mt-24"
+      >
         <div className="section">
           <ScrollReveal>
             <div className="section-header">
@@ -219,14 +224,15 @@ export default async function ShopPage() {
                   Soy Natalia, de Manos Creativas. Escríbeme y te guiaré en cada
                   paso del proceso de compra.
                 </p>
-                <a
-                  href="https://wa.me/573008504709"
+                <PrimaryCTA
+                  href={WHATSAPP_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-primary mt-7 inline-flex"
+                  className="mt-7 inline-flex"
+                  data-track-whatsapp-click="shop_support"
                 >
                   Escribir a Natalia
-                </a>
+                </PrimaryCTA>
               </div>
               <div className="order-1 mx-auto md:order-2">
                 <div className="h-28 w-28 overflow-hidden rounded-full shadow-[0_0_0_1px_rgba(242,179,182,0.55),0_0_0_5px_rgba(255,248,246,0.95),0_0_0_6px_rgba(237,145,150,0.28)] sm:h-36 sm:w-36">
@@ -284,14 +290,15 @@ export default async function ShopPage() {
               <p className="mt-3 text-sm text-muted">
                 Estamos aquí para ayudarte. Respuesta en menos de 24h.
               </p>
-              <a
-                href="https://wa.me/573008504709"
+              <SecondaryCTA
+                href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-secondary mt-8 inline-flex"
+                className="mt-8"
+                data-track-whatsapp-click="shop_contact"
               >
                 Escribir por WhatsApp
-              </a>
+              </SecondaryCTA>
             </div>
           </ScrollReveal>
         </div>

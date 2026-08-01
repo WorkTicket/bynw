@@ -198,20 +198,44 @@ export async function getAggregateRating(): Promise<AggregateRating> {
   return computeAggregate(reviews)
 }
 
+function interleavePhotoAndText(reviews: Review[], limit: number): Review[] {
+  const withPhoto = reviews.filter((r) => Boolean(r.image || r.productImages?.[0]))
+  const textOnly = reviews.filter((r) => !r.image && !r.productImages?.[0])
+  const out: Review[] = []
+  let p = 0
+  let t = 0
+  while (out.length < limit && (p < withPhoto.length || t < textOnly.length)) {
+    if (p < withPhoto.length && out.length < limit) out.push(withPhoto[p++])
+    if (t < textOnly.length && out.length < limit) out.push(textOnly[t++])
+  }
+  return out
+}
+
 export async function listFeaturedReviews(limit = 3): Promise<Review[]> {
   const reviews = await listPublishedReviews()
   const site = reviews.filter((r) => r.source === "site")
   const seeds = reviews.filter((r) => r.source === "seed")
   const pool = [...site, ...seeds]
-  // Prefer photo reviews for ads/social proof; keep site reviews ahead of seeds.
-  const withPhoto = pool.filter((r) => Boolean(r.image))
-  const withoutPhoto = pool.filter((r) => !r.image)
-  const featured = [...withPhoto, ...withoutPhoto].slice(0, limit)
+  const featured = interleavePhotoAndText(pool, limit)
   if (featured.length > 0) return featured
-  const seedPool = [...SEED_REVIEWS]
-  const seedPhotos = seedPool.filter((r) => Boolean(r.image))
-  const seedText = seedPool.filter((r) => !r.image)
-  return [...seedPhotos, ...seedText].slice(0, limit)
+  return interleavePhotoAndText([...SEED_REVIEWS], limit)
+}
+
+/**
+ * Ads landers: prefer real site photo reviews, then site text, then seed photos.
+ * Stronger trust for Meta traffic and less reliance on editorial seeds.
+ */
+export async function listAdsFeaturedReviews(limit = 3): Promise<Review[]> {
+  const reviews = await listPublishedReviews()
+  const hasPhoto = (r: Review) => Boolean(r.image || r.productImages?.[0])
+  const sitePhoto = reviews.filter((r) => r.source === "site" && hasPhoto(r))
+  const siteText = reviews.filter((r) => r.source === "site" && !hasPhoto(r))
+  const seedPhoto = reviews.filter((r) => r.source === "seed" && hasPhoto(r))
+  const seedText = reviews.filter((r) => r.source === "seed" && !hasPhoto(r))
+  const pool = [...sitePhoto, ...siteText, ...seedPhoto, ...seedText]
+  if (pool.length >= limit) return pool.slice(0, limit)
+  if (pool.length > 0) return pool
+  return interleavePhotoAndText([...SEED_REVIEWS], limit)
 }
 
 function clientKey(ip: string) {

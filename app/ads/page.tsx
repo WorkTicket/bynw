@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import AdsCatalogLander from "@/components/AdsCatalogLander"
 import { DEFAULT_OG_IMAGE } from "@/lib/site"
 import { createPageMetadata } from "@/lib/seo"
-import { listFeaturedReviews } from "@/lib/reviews"
+import { listAdsFeaturedReviews } from "@/lib/reviews"
 
 export const metadata: Metadata = {
   ...createPageMetadata({
@@ -17,6 +17,6 @@ export const metadata: Metadata = {
 }
 
 export default async function AdsCatalogPage() {
-  const reviews = await listFeaturedReviews(3)
+  const reviews = await listAdsFeaturedReviews(3)
   return <AdsCatalogLander reviews={reviews} />
 }

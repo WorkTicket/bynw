@@ -1,6 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import dynamic from "next/dynamic"
+import PrimaryCTA from "@/components/PrimaryCTA"
 import ProductCard from "@/components/ProductCard"
 import PetiteOrnament from "@/components/PetiteOrnament"
 import ScrollReveal from "@/components/ScrollReveal"
@@ -109,9 +110,9 @@ export default function AdsCatalogLander({ reviews }: Props) {
             </div>
 
             <div className="mt-8 flex flex-col gap-3.5 sm:flex-row sm:items-center sm:gap-5">
-              <a href="#colecciones" className="btn-primary min-h-[3.15rem] px-9 text-sm">
+              <PrimaryCTA href="#colecciones" size="lg">
                 Ver colecciones
-              </a>
+              </PrimaryCTA>
               <Link
                 href={`/ads/${featured.slug}`}
                 className="text-sm font-medium text-ink/55 transition-colors hover:text-rose-600"
@@ -231,9 +232,9 @@ export default function AdsCatalogLander({ reviews }: Props) {
                 Desde {fromPrice} · PDF al momento · Garantía 7 días
               </p>
               <div className="mt-8 flex flex-col items-center gap-4">
-                <a href="#colecciones" className="btn-primary min-h-[3.15rem] px-10 text-sm">
+                <PrimaryCTA href="#colecciones" size="lg">
                   Ver colecciones
-                </a>
+                </PrimaryCTA>
                 <Link
                   href={`/ads/${featured.slug}`}
                   className="text-sm font-medium text-ink/50 transition-colors hover:text-rose-600"

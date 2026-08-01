@@ -75,7 +75,8 @@ export default function ProductFinalCTA({
             <div className="mt-9 sm:mt-10">
               <HotmartBuyButton
                 {...buyProps}
-                className="mx-auto max-w-sm [&_a]:min-h-[3.5rem] [&_a]:px-12 [&_a]:text-base [&_a]:font-semibold [&_a]:tracking-wide sm:[&_a]:min-h-[3.75rem] sm:[&_a]:px-14 sm:[&_a]:py-5 sm:[&_a]:text-lg"
+                size="lg"
+                className="mx-auto max-w-sm"
               >
                 Comprar ahora
               </HotmartBuyButton>

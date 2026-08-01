@@ -21,6 +21,7 @@ const FeatureGrid = dynamic(() => import("@/components/FeatureGrid"))
 const WhatsAppSupport = dynamic(() => import("@/components/WhatsAppSupport"))
 const Testimonials = dynamic(() => import("@/components/Testimonials"))
 const Guarantee = dynamic(() => import("@/components/Guarantee"))
+const UrgencyCTA = dynamic(() => import("@/components/UrgencyCTA"))
 const FAQ = dynamic(() => import("@/components/FAQ"))
 const LeadMagnetSection = dynamic(() => import("@/components/LeadMagnetSection"))
 
@@ -49,6 +50,7 @@ export default async function HomePage() {
       <WhatsAppSupport />
       <Testimonials reviews={featured} limit={3} showForm />
       <Guarantee />
+      <UrgencyCTA />
       <LeadMagnetSection />
       <FAQ />
     </div>

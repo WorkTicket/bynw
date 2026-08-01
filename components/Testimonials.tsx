@@ -1,12 +1,12 @@
 "use client"
 
-import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useMemo, useState } from "react"
 import { StarIcon } from "@/lib/icons"
 import ReviewForm from "@/components/ReviewForm"
 import PetiteOrnament from "@/components/PetiteOrnament"
 import ScrollReveal from "@/components/ScrollReveal"
+import SecondaryCTA from "@/components/SecondaryCTA"
 import { reviewImageSrc, type Review } from "@/lib/testimonials-data"
 
 type Props = {
@@ -37,12 +37,20 @@ export default function Testimonials({
   const showMoreLink = showMoreLinkProp ?? !onTestimonialsPage
 
   const visible = useMemo(() => {
-    // Photo reviews first so visitors see product images before scrolling away
-    const list = [...reviews].sort((a, b) => {
-      const aPhoto = reviewImageSrc(a) ? 1 : 0
-      const bPhoto = reviewImageSrc(b) ? 1 : 0
-      return bPhoto - aPhoto
-    })
+    // Keep chronological feel, but weave photo + text-only reviews together
+    const withPhoto = reviews.filter((r) => Boolean(reviewImageSrc(r)))
+    const textOnly = reviews.filter((r) => !reviewImageSrc(r))
+    const list: Review[] = []
+    let p = 0
+    let t = 0
+    while (p < withPhoto.length || t < textOnly.length) {
+      if (p < withPhoto.length) list.push(withPhoto[p++])
+      // Usually 1–2 text reviews between photos so it feels natural
+      const textBurst = p % 2 === 0 ? 2 : 1
+      for (let n = 0; n < textBurst && t < textOnly.length; n++) {
+        list.push(textOnly[t++])
+      }
+    }
     return typeof limit === "number" ? list.slice(0, limit) : list
   }, [reviews, limit])
 
@@ -139,12 +147,9 @@ export default function Testimonials({
         {showMoreLink && (
           <ScrollReveal delay={160}>
             <div className="mt-9 flex justify-center sm:mt-10">
-              <Link
-                href="/testimonials"
-                className="btn-secondary min-h-[3rem] px-8 py-3.5"
-              >
+              <SecondaryCTA href="/testimonials" className="min-h-[3rem] px-8">
                 Ver todos los testimonios
-              </Link>
+              </SecondaryCTA>
             </div>
           </ScrollReveal>
         )}

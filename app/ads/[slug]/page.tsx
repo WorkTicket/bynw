@@ -4,7 +4,7 @@ import AdsProductLander from "@/components/AdsProductLander"
 import { products, getProductBySlug } from "@/lib/products"
 import { DEFAULT_OG_IMAGE } from "@/lib/site"
 import { createPageMetadata } from "@/lib/seo"
-import { listFeaturedReviews } from "@/lib/reviews"
+import { listAdsFeaturedReviews } from "@/lib/reviews"
 
 type Props = { params: { slug: string } }
 
@@ -40,7 +40,7 @@ export default async function AdsProductPage({ params }: Props) {
   const product = getProductBySlug(params.slug)
   if (!product) notFound()
 
-  const featuredReviews = await listFeaturedReviews(3)
+  const featuredReviews = await listAdsFeaturedReviews(3)
 
   return (
     <AdsProductLander product={product} reviews={featuredReviews} />

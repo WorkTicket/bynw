@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import PrimaryCTA from "@/components/PrimaryCTA"
 import { GIFT_MAGNET } from "@/lib/gift-magnet"
 import { isIOSGiftDownload, openIOSGiftDrive, triggerGiftDownload } from "@/lib/download-gift"
 import { trackMetaStandard } from "@/components/Analytics"
@@ -27,7 +28,7 @@ function LeadMagnetSuccess({ dark = false }: { dark?: boolean }) {
   }
 
   const buttonClass =
-    "mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-rose-500 px-6 py-3.5 text-sm font-semibold tracking-[0.03em] text-white transition-all duration-300 hover:bg-rose-600 hover:-translate-y-px active:scale-[0.99] disabled:cursor-wait disabled:opacity-80"
+    "mt-4 w-full min-h-[3rem] gap-2 px-6 py-3.5 text-sm disabled:cursor-wait disabled:opacity-80"
 
   return (
     <div
@@ -112,14 +113,14 @@ function LeadMagnetSuccess({ dark = false }: { dark?: boolean }) {
       </div>
 
       {isIOS ? (
-        <a href={GIFT_MAGNET.iosDriveUrl} className={buttonClass}>
+        <PrimaryCTA href={GIFT_MAGNET.iosDriveUrl} className={buttonClass}>
           <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5M16.5 6L21 10.5M21 10.5H15.75M21 10.5v5.25" />
           </svg>
           Abrir patrón en Google Drive
-        </a>
+        </PrimaryCTA>
       ) : (
-        <button type="button" onClick={handleDownload} disabled={downloading} className={buttonClass}>
+        <PrimaryCTA type="button" onClick={handleDownload} disabled={downloading} className={buttonClass}>
           {downloading ? (
             <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
@@ -131,7 +132,7 @@ function LeadMagnetSuccess({ dark = false }: { dark?: boolean }) {
             </svg>
           )}
           {downloading ? "Descargando..." : "Descargar patrón PDF"}
-        </button>
+        </PrimaryCTA>
       )}
 
       <p className={`mt-3 text-center text-xs ${dark ? "text-white/35" : "text-muted/50"}`}>
@@ -225,21 +226,21 @@ export default function LeadMagnet({ variant = "inline", submitLabel, placeholde
             className={inputClass}
           />
         </div>
-        <button
+        <PrimaryCTA
           type="submit"
           disabled={status === "loading"}
-          className={`w-full rounded-lg font-semibold tracking-[0.03em] transition-all duration-300 ${
+          className={
             isHero
-              ? "btn-primary px-8 py-3.5 text-sm sm:text-base"
-              : "btn-primary shrink-0 px-6 py-3.5 text-sm sm:w-auto"
-          }`}
+              ? "w-full px-8 py-3.5 text-sm sm:text-base"
+              : "w-full shrink-0 px-6 py-3.5 text-sm sm:w-auto"
+          }
         >
           {status === "loading" ? (
             <span className="flex items-center justify-center gap-2">
               <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
             </span>
           ) : submitLabel || (isHero ? "Quiero mi patrón gratis" : "Descargar patrón gratis")}
-        </button>
+        </PrimaryCTA>
       </div>
       {status === "error" && <p className={`mt-3 text-xs ${dark ? "text-rose-300" : "text-rose-500"}`}>Algo salió mal. Inténtalo de nuevo.</p>}
       {status !== "error" && (

@@ -1,17 +1,11 @@
 import Image from "next/image"
 import Link from "next/link"
-import HotmartBuyButton from "@/components/HotmartBuyButton"
-import { getLocalizedProduct } from "@/lib/pricing"
-import { getProductBySlug } from "@/lib/products"
-
-const FEATURED_SLUG = "princesas-disney"
+import PrimaryCTA from "@/components/PrimaryCTA"
 
 export default function Hero() {
-  const featured = getLocalizedProduct(getProductBySlug(FEATURED_SLUG)!)
-
   return (
-    <section className="hero-editorial relative min-h-[min(92svh,52rem)] overflow-hidden bg-[#fffaf8] sm:min-h-[min(94svh,54rem)]">
-      <div className="absolute inset-0">
+    <section className="hero-editorial relative min-h-[min(92svh,52rem)] overflow-x-clip bg-[#fffaf8] sm:min-h-[min(94svh,54rem)]">
+      <div className="absolute inset-0 overflow-hidden">
         <div className="absolute inset-0 hero-image-drift">
           <div className="absolute inset-0 origin-[72%_42%] scale-[1.16] -translate-y-[9%] sm:origin-[74%_40%] sm:scale-[1.12] sm:-translate-y-[6%] lg:origin-center lg:scale-[1.04] lg:translate-y-0">
             <Image
@@ -96,20 +90,14 @@ export default function Hero() {
           </p>
 
           <div className="mt-8 flex flex-col gap-3.5 sm:mt-11 sm:flex-row sm:items-center sm:gap-6">
-            <HotmartBuyButton
-              href={featured.buyUrl}
-              contentId={featured.id}
-              contentName={featured.seoTitle}
-              price={featured.price}
-              className="w-full sm:w-auto [&_a]:min-h-[3.25rem] [&_a]:px-9 [&_a]:py-3.5 [&_a]:text-sm sm:[&_a]:px-11"
-            >
-              Comprar Princesas — {featured.price}
-            </HotmartBuyButton>
+            <PrimaryCTA href="/#colecciones" size="lg" className="w-full sm:w-auto">
+              Ver colecciones
+            </PrimaryCTA>
             <Link
-              href="/#colecciones"
+              href="/shop"
               className="group inline-flex min-h-[2.75rem] items-center justify-center gap-2 px-1 py-2 text-sm font-medium text-ink/75 transition-colors hover:text-rose-600 sm:justify-start lg:text-ink/60"
             >
-              Ver todas las Colecciones disponibles
+              Explorar la tienda
               <svg
                 className="h-3.5 w-3.5 shrink-0 transition-transform duration-300 group-hover:translate-x-0.5"
                 fill="none"
@@ -118,16 +106,10 @@ export default function Hero() {
                 viewBox="0 0 24 24"
                 aria-hidden="true"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
               </svg>
             </Link>
           </div>
-
-          <p className="mt-7 text-[11px] tracking-[0.06em] text-ink/55 sm:mt-8 sm:text-xs lg:text-muted/65">
-            Descarga al momento
-            <span className="meta-sep" aria-hidden="true">✦</span>
-            Acceso de por vida
-          </p>
         </div>
       </div>
     </section>

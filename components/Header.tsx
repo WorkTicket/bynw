@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import PrimaryCTA from "@/components/PrimaryCTA"
 
 const links = [
   { href: "/", label: "Inicio" },
@@ -294,14 +295,14 @@ export default function Header() {
               </svg>
               <span />
             </div>
-            <Link
+            <PrimaryCTA
               href="/shop"
               onClick={() => setOpen(false)}
-              className="btn-primary mt-8 w-full py-3.5 text-[13px]"
+              className="mt-8 w-full"
               tabIndex={open ? 0 : -1}
             >
               Ver Colecciones
-            </Link>
+            </PrimaryCTA>
             <p className="mt-7 text-center font-script text-[1.4rem] text-rose-400/80">
               Hecho con amor
             </p>

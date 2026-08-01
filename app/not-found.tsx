@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
-import Link from "next/link"
+import PrimaryCTA from "@/components/PrimaryCTA"
+import SecondaryCTA from "@/components/SecondaryCTA"
 
 export const metadata: Metadata = {
   title: "Página no encontrada",
@@ -23,12 +24,8 @@ export default function NotFound() {
           o explorar nuestras colecciones de patrones.
         </p>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
-          <Link href="/" className="btn-primary px-8 py-4">
-            Volver al inicio
-          </Link>
-          <Link href="/shop" className="btn-secondary px-8 py-4">
-            Ver colecciones
-          </Link>
+          <PrimaryCTA href="/">Volver al inicio</PrimaryCTA>
+          <SecondaryCTA href="/shop">Ver colecciones</SecondaryCTA>
         </div>
       </div>
     </section>

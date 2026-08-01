@@ -20,7 +20,7 @@ export default function Footer() {
 
   if (isAds) {
     return (
-      <footer className="relative border-t border-rose-100/70 bg-[var(--surface-blush)]">
+      <footer className="relative z-[1] border-t border-rose-100/70 bg-[linear-gradient(180deg,rgba(250,243,241,0.35)_0%,rgba(243,228,226,0.55)_100%)]">
         <div className="section relative py-8 pb-12 sm:py-10 sm:pb-12">
           <div className="flex flex-col items-center justify-center gap-3 text-center">
             <p className="text-[11px] tracking-[0.02em] text-muted/75">
@@ -53,7 +53,7 @@ export default function Footer() {
   }
 
   return (
-    <footer className="relative border-t border-rose-100/70 bg-[var(--surface-blush)]">
+    <footer className="relative z-[1] border-t border-rose-100/70 bg-[linear-gradient(180deg,rgba(250,243,241,0.28)_0%,rgba(243,228,226,0.5)_100%)]">
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-rose-300/55 to-transparent"
         aria-hidden="true"

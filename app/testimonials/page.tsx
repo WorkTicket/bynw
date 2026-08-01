@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import PrimaryCTA from "@/components/PrimaryCTA"
 import ScrollReveal from "@/components/ScrollReveal"
 import TestimonialsLive from "@/components/TestimonialsLive"
 import { createPageMetadata, buildReviewsJsonLd } from "@/lib/seo"
@@ -37,9 +38,9 @@ export default async function TestimonialsPage() {
             <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
               Historias reales de artesanas que ya tejen con nosotras. Lee las suyas y, si quieres, deja la tuya.
             </p>
-            <a href="#dejar-resena" className="btn-primary mt-8 inline-flex min-h-[3rem] px-8">
+            <PrimaryCTA href="#dejar-resena" className="mt-8 inline-flex min-h-[3rem] px-8">
               Dejar mi reseña
-            </a>
+            </PrimaryCTA>
           </ScrollReveal>
         </div>
       </section>

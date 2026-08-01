@@ -1,15 +1,9 @@
 import Link from "next/link"
+import PrimaryCTA from "@/components/PrimaryCTA"
 import PetiteOrnament from "@/components/PetiteOrnament"
-import HotmartBuyButton from "@/components/HotmartBuyButton"
 import ScrollReveal from "@/components/ScrollReveal"
-import { getLocalizedProduct } from "@/lib/pricing"
-import { getProductBySlug } from "@/lib/products"
-
-const FEATURED_SLUG = "princesas-disney"
 
 export default function UrgencyCTA() {
-  const featured = getLocalizedProduct(getProductBySlug(FEATURED_SLUG)!)
-
   return (
     <section className="section-premium-dark section-padding">
       <div className="section relative">
@@ -32,29 +26,23 @@ export default function UrgencyCTA() {
             </p>
 
             <div className="mt-10 flex flex-col items-center gap-4 sm:mt-11">
-              <HotmartBuyButton
-                href={featured.buyUrl}
-                contentId={featured.id}
-                contentName={featured.seoTitle}
-                price={featured.price}
-                className="w-full sm:w-auto [&_a]:min-h-[3.15rem] [&_a]:px-10 [&_a]:text-sm sm:[&_a]:px-14 sm:[&_a]:py-5"
-              >
-                Comprar Princesas — {featured.price}
-              </HotmartBuyButton>
+              <PrimaryCTA href="/#colecciones" className="w-full sm:w-auto">
+                Ver colecciones
+              </PrimaryCTA>
               <Link
                 href="/shop"
                 className="text-sm font-medium text-ink/50 transition-colors hover:text-rose-600"
               >
-                Ver todas las colecciones
+                Ir a la tienda
               </Link>
             </div>
 
             <p className="mt-7 text-[11px] tracking-[0.06em] text-ink/45">
-              {featured.shortTitle} {featured.price}
+              PDF al momento
               <span className="meta-sep" aria-hidden>
                 ✦
               </span>
-              PDF al momento
+              Acceso de por vida
               <span className="meta-sep" aria-hidden>
                 ✦
               </span>

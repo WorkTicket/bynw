@@ -9,7 +9,8 @@ const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID
 
 /** Meta standard events we optimize Facebook ads against.
  * Purchase is NOT fired on-site — Hotmart's Pixel must emit it with the same
- * NEXT_PUBLIC_FB_PIXEL_ID (see .env.example). If Purchase is undercounted, add CAPI.
+ * NEXT_PUBLIC_FB_PIXEL_ID (see .env.example checklist). Verify in Events Manager
+ * after a test checkout: Purchase with value + EUR. If undercounted, add CAPI.
  */
 const META_STANDARD = new Set([
   "PageView",

@@ -1,6 +1,8 @@
 "use client"
 
 import { FormEvent, useId, useState } from "react"
+import PrimaryCTA from "@/components/PrimaryCTA"
+import SecondaryCTA from "@/components/SecondaryCTA"
 import { StarIcon } from "@/lib/icons"
 import { moderateReviewText } from "@/lib/content-moderation"
 import { compressReviewImage } from "@/lib/review-image"
@@ -126,13 +128,13 @@ export default function ReviewForm({ variant = "compact", onSubmitted }: Props) 
         <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-muted">
           Otras artesanas podrán leerla en esta página. Si quieres, puedes dejar otra.
         </p>
-        <button
+        <SecondaryCTA
           type="button"
           onClick={() => setDone(false)}
-          className="btn-secondary mt-7 min-h-[2.75rem] px-6 py-2.5 text-sm"
+          className="mt-7 min-h-[2.75rem] px-6 text-sm"
         >
           Escribir otra reseña
-        </button>
+        </SecondaryCTA>
       </div>
     )
   }
@@ -346,13 +348,13 @@ export default function ReviewForm({ variant = "compact", onSubmitted }: Props) 
           </p>
         )}
 
-        <button
+        <PrimaryCTA
           type="submit"
           disabled={submitting}
-          className="btn-primary w-full min-h-[3rem] disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
+          className="w-full min-h-[3rem] disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
         >
           {submitting ? "Publicando…" : "Publicar reseña"}
-        </button>
+        </PrimaryCTA>
       </div>
     </form>
   )

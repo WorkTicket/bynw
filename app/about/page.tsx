@@ -1,5 +1,7 @@
 import { Metadata } from "next"
 import Link from "next/link"
+import PrimaryCTA from "@/components/PrimaryCTA"
+import SecondaryCTA from "@/components/SecondaryCTA"
 import ScrollReveal from "@/components/ScrollReveal"
 import { createPageMetadata } from "@/lib/seo"
 import {
@@ -142,18 +144,18 @@ export default function AboutPage() {
                 garantía de 7 días.
               </p>
               <div className="mt-8 flex flex-col items-center gap-3.5 sm:flex-row sm:justify-center">
-                <Link href="/shop" className="btn-primary min-h-[3.15rem] px-9 text-sm">
+                <PrimaryCTA href="/shop" size="lg">
                   Ver colecciones
-                </Link>
-                <a
+                </PrimaryCTA>
+                <SecondaryCTA
                   href={WHATSAPP_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   data-track-whatsapp-click="about_cta"
-                  className="btn-secondary min-h-[3.15rem] px-9 text-sm"
+                  className="min-h-[3.15rem] px-9 text-sm"
                 >
                   Escribir por WhatsApp
-                </a>
+                </SecondaryCTA>
               </div>
               <p className="mt-4 text-sm text-muted">{SUPPORT_SLA}</p>
             </div>

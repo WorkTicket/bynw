@@ -149,12 +149,12 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
       </head>
-      <body className="flex min-h-screen flex-col font-sans antialiased text-ink bg-[#fff1f0]">
+      <body className="flex min-h-screen flex-col font-sans antialiased text-ink">
         <Suspense>
           <Analytics />
         </Suspense>
         <Header />
-        <main className="flex-1 pt-[var(--site-header-offset)]">{children}</main>
+        <main className="relative z-[1] flex-1 pt-[var(--site-header-offset)]">{children}</main>
         <Footer />
         <FloatingWhatsApp />
         <StickyMobileCTA />

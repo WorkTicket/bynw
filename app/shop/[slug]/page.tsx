@@ -155,8 +155,12 @@ export default async function ProductPage({ params }: Props) {
                   </p>
 
                   <div className="mt-8 space-y-4 w-full max-w-md lg:max-w-none">
-                    <HotmartBuyButton {...buyProps}>
-                      {`Comprar ahora — ${localizedProduct.price}`}
+                    <HotmartBuyButton
+                      {...buyProps}
+                      size="lg"
+                      className="lg:justify-start"
+                    >
+                      Comprar ahora
                     </HotmartBuyButton>
 
                     <p className="text-[11px] leading-relaxed tracking-wide text-muted/80 text-center lg:text-left">
