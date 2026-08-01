@@ -7,7 +7,12 @@ import ReviewForm from "@/components/ReviewForm"
 import PetiteOrnament from "@/components/PetiteOrnament"
 import ScrollReveal from "@/components/ScrollReveal"
 import SecondaryCTA from "@/components/SecondaryCTA"
-import { reviewImageSrc, type Review } from "@/lib/testimonials-data"
+import {
+  dailyShuffleSeed,
+  interleaveReviews,
+  reviewImageSrc,
+  type Review,
+} from "@/lib/testimonials-data"
 
 type Props = {
   reviews: Review[]
@@ -37,20 +42,7 @@ export default function Testimonials({
   const showMoreLink = showMoreLinkProp ?? !onTestimonialsPage
 
   const visible = useMemo(() => {
-    // Keep chronological feel, but weave photo + text-only reviews together
-    const withPhoto = reviews.filter((r) => Boolean(reviewImageSrc(r)))
-    const textOnly = reviews.filter((r) => !reviewImageSrc(r))
-    const list: Review[] = []
-    let p = 0
-    let t = 0
-    while (p < withPhoto.length || t < textOnly.length) {
-      if (p < withPhoto.length) list.push(withPhoto[p++])
-      // Usually 1–2 text reviews between photos so it feels natural
-      const textBurst = p % 2 === 0 ? 2 : 1
-      for (let n = 0; n < textBurst && t < textOnly.length; n++) {
-        list.push(textOnly[t++])
-      }
-    }
+    const list = interleaveReviews(reviews, dailyShuffleSeed("testimonials-home"))
     return typeof limit === "number" ? list.slice(0, limit) : list
   }, [reviews, limit])
 

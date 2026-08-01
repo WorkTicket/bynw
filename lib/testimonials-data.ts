@@ -46,6 +46,49 @@ export function reviewImageSrc(review: Review): string | undefined {
   return `/images/${raw}`
 }
 
+/** Deterministic PRNG shuffle (SSR-safe when seed matches on client). */
+export function seededShuffle<T>(items: readonly T[], seed: string): T[] {
+  const arr = items.slice()
+  let s = 2166136261
+  for (let i = 0; i < seed.length; i++) {
+    s ^= seed.charCodeAt(i)
+    s = Math.imul(s, 16777619)
+  }
+  for (let i = arr.length - 1; i > 0; i--) {
+    s = (Math.imul(s, 1664525) + 1013904223) >>> 0
+    const j = s % (i + 1)
+    const tmp = arr[i]
+    arr[i] = arr[j]
+    arr[j] = tmp
+  }
+  return arr
+}
+
+/** Daily seed so photo order feels fresh without hydration mismatch. */
+export function dailyShuffleSeed(prefix = "testimonials") {
+  return `${prefix}-${new Date().toISOString().slice(0, 10)}`
+}
+
+/**
+ * Weave photo + text reviews; shuffle photo order so the gallery feels alive.
+ */
+export function interleaveReviews(reviews: readonly Review[], seed?: string): Review[] {
+  const withPhoto = reviews.filter((r) => Boolean(reviewImageSrc(r)))
+  const textOnly = reviews.filter((r) => !reviewImageSrc(r))
+  const photos = seed ? seededShuffle(withPhoto, seed) : withPhoto.slice()
+  const list: Review[] = []
+  let p = 0
+  let t = 0
+  while (p < photos.length || t < textOnly.length) {
+    if (p < photos.length) list.push(photos[p++])
+    const textBurst = p % 2 === 0 ? 2 : 1
+    for (let n = 0; n < textBurst && t < textOnly.length; n++) {
+      list.push(textOnly[t++])
+    }
+  }
+  return list
+}
+
 /**
  * Editorial seed reviews (Spain Spanish).
  * Varied voices/lengths; some include a single finished-product photo.
@@ -57,7 +100,7 @@ export const SEED_REVIEWS: Review[] = [
     text: "oye no pensaba que me saliera tan bien a la primera el patron de la blancanieves se entiende de verdad sin dar mil vueltas. mi hija se volvio loca cuando se la enseñe",
     rating: 5,
     location: "Madrid",
-    image: "n2-23-1.webp",
+    image: "n2-23-9.webp",
     createdAt: "2026-07-22T09:14:00.000Z",
     source: "seed",
   },
@@ -94,7 +137,7 @@ export const SEED_REVIEWS: Review[] = [
     text: "compre la coleccion de princesas para regalar y acabe tejiendolas yo jajaja. la bella me salio preciosa el vestido amarillo tiene un movimiento que flipas. mi hermana aun no sabe que es para ella",
     rating: 5,
     location: "Barcelona",
-    image: "n2-23-2.webp",
+    image: "n2-23-4.webp",
     createdAt: "2026-07-08T08:33:00.000Z",
     source: "seed",
   },
@@ -113,7 +156,7 @@ export const SEED_REVIEWS: Review[] = [
     text: "el conejito de chenille quedo blandito y mono lo teji en dos tardes viendo una serie. no es magia pero casi",
     rating: 5,
     location: "Bilbao",
-    image: "n2-23-5.webp",
+    image: "n2-23-11.webp",
     createdAt: "2026-06-28T14:55:00.000Z",
     source: "seed",
   },
@@ -141,7 +184,7 @@ export const SEED_REVIEWS: Review[] = [
     text: "Descarga inmediata PDFs ordenados y whatsapp que responde de verdad eso ya merece la pena. luego teji tres muñecas de graduacion para mis sobrinas y lloramos las cuatro un acierto",
     rating: 5,
     location: "Granada",
-    image: "n2-23-3.webp",
+    image: "n2-23-1.webp",
     createdAt: "2026-06-17T12:30:00.000Z",
     source: "seed",
   },
@@ -160,7 +203,7 @@ export const SEED_REVIEWS: Review[] = [
     text: "la rosita fresita que os voy a contar detalles por un tubo el sombrero la cestita hasta las fresas diminutas. tarde mas de lo previsto xq me entretenia mirandola merecio cada punto",
     rating: 5,
     location: "Pamplona",
-    image: "n2-23-10.webp",
+    image: "n2-23-6.webp",
     createdAt: "2026-06-08T20:05:00.000Z",
     source: "seed",
   },
@@ -197,7 +240,7 @@ export const SEED_REVIEWS: Review[] = [
     text: "hice el ramo de graduacion para una amiga que acababa la carrera el lazo las rosas la muñequita con birrete todo encaja. ella pensaba que lo habia encargado en una tienda cara mi orgullo de tejedora por las nubes",
     rating: 5,
     location: "Salamanca",
-    image: "n2-23-7.webp",
+    image: "n2-23.webp",
     createdAt: "2026-05-22T13:50:00.000Z",
     source: "seed",
   },
@@ -261,7 +304,7 @@ export const SEED_REVIEWS: Review[] = [
     text: "hice un ramo mixto para el dia de la madre y mi madre no se lo creia esto lo has hecho tu?? si mama con patron y mucha fe",
     rating: 5,
     location: "Jaén",
-    image: "n2-23-6.webp",
+    image: "n2-23-10.webp",
     createdAt: "2026-04-24T09:47:00.000Z",
     source: "seed",
   },
@@ -298,7 +341,7 @@ export const SEED_REVIEWS: Review[] = [
     text: "la coleccion de princesas es un pozo sin fondo en el buen sentido. empiezas por una y acabas eligiendo hilos pa la siguiente las explicaciones no dan nada por supuesto que se agradece cuando llevas tiempo sin agarrar el ganchillo",
     rating: 5,
     location: "Cádiz",
-    image: "n2-23-11.webp",
+    image: "n2-23-3.webp",
     createdAt: "2026-04-08T08:58:00.000Z",
     source: "seed",
   },
@@ -362,7 +405,7 @@ export const SEED_REVIEWS: Review[] = [
     text: "no soy religiosa pero teji la virgen pa mi abuela y bueno se le humedecieron los ojos. el patron respeta los detalles sin volverse imposible eso vale mas que cualquier reseña larga",
     rating: 5,
     location: "Ávila",
-    image: "n2-23.webp",
+    image: "n2-23-7.webp",
     createdAt: "2026-03-11T17:38:00.000Z",
     source: "seed",
   },
@@ -381,7 +424,7 @@ export const SEED_REVIEWS: Review[] = [
     text: "el ramo con lazo rosa lo use en una comunion. varias señoras pensaban que era de floristeria cuando dije que era crochet me miraron raro y luego me pidieron foto del patron victoria silenciosa",
     rating: 5,
     location: "Segovia",
-    image: "n2-23-8.webp",
+    image: "n2-23-2.webp",
     createdAt: "2026-03-03T19:55:00.000Z",
     source: "seed",
   },
@@ -436,7 +479,7 @@ export const SEED_REVIEWS: Review[] = [
     text: "la muñeca girasol la teji escuchando podcasts cuatro episodios y casi lista. el vestido con relieve da un trabajo rico de esos que entretienen sin frustrar la corona de flores es lo mas",
     rating: 5,
     location: "Albacete",
-    image: "n2-23-9.webp",
+    image: "n2-23-5.webp",
     createdAt: "2026-02-06T09:31:00.000Z",
     source: "seed",
   },
@@ -491,7 +534,7 @@ export const SEED_REVIEWS: Review[] = [
     text: "la fresita con delantal la hice pa una profesora detalle del sombrero impecable ella la tiene en la mesa del cole y los niños la tocan todo el dia patron resistente a manitas digamos",
     rating: 5,
     location: "Mérida",
-    image: "n2-23-4.webp",
+    image: "n2-23-8.webp",
     createdAt: "2026-01-12T11:05:00.000Z",
     source: "seed",
   },
@@ -511,6 +554,26 @@ export const SEED_REVIEWS: Review[] = [
     rating: 5,
     location: "Madrid",
     createdAt: "2026-01-04T09:16:00.000Z",
+    source: "seed",
+  },
+  {
+    id: "seed-51-lola-marquez",
+    name: "Lola Márquez",
+    text: "esta unicornio me ha tenido toda la tarde con una sonrisa tonta el cuerno las rosas el faldita a rayas pastel todo. el patron se sigue de verdad y el resultado parece de tienda mis sobrinas ya pelean por quien se la queda",
+    rating: 5,
+    location: "Málaga",
+    image: "n2-23-12.webp",
+    createdAt: "2026-07-29T16:20:00.000Z",
+    source: "seed",
+  },
+  {
+    id: "seed-52-celia-romano",
+    name: "Celia Romano",
+    text: "la rapunzel de chenille quedo soñadora ese pelo amarillo infinito y el vestido lila con volantes. tarde mas en el cabello que en el cuerpo pero merecio cada punto la tengo en la estanteria como si fuera de escaparate",
+    rating: 5,
+    location: "Valencia",
+    image: "n2-23-13.webp",
+    createdAt: "2026-07-30T11:05:00.000Z",
     source: "seed",
   },
 ]
