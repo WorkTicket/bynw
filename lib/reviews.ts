@@ -158,9 +158,10 @@ async function writeSiteReviews(reviews: Review[]) {
 }
 
 /** Drop leftover local/dev junk so it never shows beside editorial seeds. */
-function isJunkSiteReview(review: Review): boolean {
+export function isJunkSiteReview(review: Review): boolean {
   const name = review.name.trim().toLowerCase()
   if (name === "test" || name.startsWith("test ") || name.endsWith(" test")) return true
+  if (name === "t" || name === "tt" || name === "asdf") return true
   if (name === "lucia test" || name === "lucía test") return true
   if (name === "carmen ruiz") return true
 
@@ -171,6 +172,19 @@ function isJunkSiteReview(review: Review): boolean {
     text.includes("los patrones son claros y mi amigurumi") &&
     text.includes("precioso")
   ) {
+    return true
+  }
+  if (
+    text === "test" ||
+    text === "testing" ||
+    text.includes("testing the review") ||
+    text === "asdf" ||
+    text === "qwerty"
+  ) {
+    return true
+  }
+  const location = (review.location ?? "").trim().toLowerCase()
+  if (location === "test" && (text.includes("test") || name.includes("test"))) {
     return true
   }
   return false
@@ -404,6 +418,14 @@ export async function createReview(
       ok: false,
       error: "Has enviado demasiadas reseñas hoy. Inténtalo mañana.",
       status: 429,
+    }
+  }
+
+  if (isJunkSiteReview(review)) {
+    return {
+      ok: false,
+      error: "Esta reseña parece de prueba. Escribe una experiencia real.",
+      status: 400,
     }
   }
 
