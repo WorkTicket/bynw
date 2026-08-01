@@ -7,6 +7,11 @@ import PaymentLogos from "@/components/PaymentLogos"
 import MetaViewContent from "@/components/MetaViewContent"
 import ProductFinalCTA from "@/components/ProductFinalCTA"
 import { parsePriceValue } from "@/lib/pricing"
+import {
+  formatDiscountBadge,
+  getDiscountPercent,
+  promoUrgencyLine,
+} from "@/lib/offer"
 import { StarIcon, CheckCircleIcon } from "@/lib/icons"
 import {
   SITE_RATING,
@@ -89,13 +94,13 @@ function buildHeroSupport(product: Product): string {
   const priceBit = product.price.replace(/\s/g, "")
   switch (product.slug) {
     case "princesas-disney":
-      return `Fotos paso a paso · descarga al momento · hoy a ${priceBit}`
+      return `Fotos paso a paso · descarga al momento · ${priceBit}`
     case "flores-eternas":
-      return `Tulipanes, rosas y más · PDF al momento · hoy a ${priceBit}`
+      return `Tulipanes, rosas y más · PDF al momento · ${priceBit}`
     case "amigurumis-chenille":
       return `Amigurumis suaves en chenille · ideal principiantes · ${priceBit}`
     case "munecas-premium":
-      return `Muñecas premium con fotos claras · descarga ya · ${priceBit}`
+      return `Muñecas premium con fotos claras · descarga inmediata · ${priceBit}`
     case "santos-angeles":
       return `Santos y ángeles en PDF · acceso de por vida · ${priceBit}`
     case "navidad":
@@ -107,7 +112,7 @@ function buildHeroSupport(product: Product): string {
     case "profesiones":
       return `Patrones de profesiones · PDF al momento · ${priceBit}`
     default:
-      return `Descarga al momento · acceso de por vida · hoy a ${priceBit}`
+      return `Descarga al momento · acceso de por vida · ${priceBit}`
   }
 }
 
@@ -167,9 +172,10 @@ function BuyBlock({
 export default function AdsProductLander({ product, reviews }: Props) {
   const priceNum = parsePriceValue(product.price)
   const originalNum = parsePriceValue(product.originalPrice)
-  const discount =
-    originalNum > 0 ? Math.round((1 - priceNum / originalNum) * 100) : 0
+  const discount = getDiscountPercent(product.price, product.originalPrice)
+  const discountBadge = formatDiscountBadge(discount)
   const savingsLabel = formatSavings(product.price, product.originalPrice)
+  const promoLine = promoUrgencyLine()
   const heroBenefits = buildHeroBenefits(product)
   const heroSupport = buildHeroSupport(product)
   const buyProps = {
@@ -183,6 +189,12 @@ export default function AdsProductLander({ product, reviews }: Props) {
   const buyLabel = "Comprar ahora"
 
   const reviewCount = Math.max(SITE_RATING.reviewCount, reviews.length)
+  const proofReview = reviews.find((r) => r.text?.trim())
+  const proofQuote = proofReview
+    ? proofReview.text.trim().length > 110
+      ? `${proofReview.text.trim().slice(0, 107).trim()}…`
+      : proofReview.text.trim()
+    : null
 
   return (
     <>
@@ -195,7 +207,7 @@ export default function AdsProductLander({ product, reviews }: Props) {
       {/* ── Full-bleed hero: product image + one offer (buy stays in FB in-app fold) ── */}
       <section
         id="oferta"
-        className="hero-editorial relative min-h-[min(78svh,42rem)] scroll-mt-[var(--site-header-offset)] overflow-hidden bg-[#fffaf8] sm:min-h-[min(88svh,50rem)]"
+        className="hero-editorial relative min-h-[min(78svh,42rem)] scroll-mt-[var(--site-header-offset)] overflow-hidden sm:min-h-[min(88svh,50rem)]"
       >
         <div className="absolute inset-0">
           <div className="absolute inset-0 hero-image-drift origin-center scale-[1.04]">
@@ -213,8 +225,14 @@ export default function AdsProductLander({ product, reviews }: Props) {
             className="pointer-events-none absolute inset-0 lg:hidden"
             style={{
               background: `
-                linear-gradient(to top, #fffaf8 0%, rgba(255,250,248,0.97) 18%, rgba(255,250,248,0.62) 42%, transparent 68%),
-                linear-gradient(to bottom, rgba(255,250,248,0.88) 0%, transparent 22%)
+                linear-gradient(
+                  to top,
+                  rgba(250,243,241,0.92) 0%,
+                  rgba(255,250,248,0.94) 18%,
+                  rgba(255,250,248,0.62) 42%,
+                  transparent 68%
+                ),
+                linear-gradient(to bottom, rgba(255,250,248,0.85) 0%, transparent 22%)
               `,
             }}
           />
@@ -232,6 +250,12 @@ export default function AdsProductLander({ product, reviews }: Props) {
                   rgba(255,250,248,0.4) 60%,
                   rgba(255,250,248,0.1) 74%,
                   transparent 86%
+                ),
+                linear-gradient(
+                  180deg,
+                  transparent 72%,
+                  rgba(250,243,241,0.35) 88%,
+                  rgba(250,243,241,0.72) 100%
                 )
               `,
             }}
@@ -265,9 +289,20 @@ export default function AdsProductLander({ product, reviews }: Props) {
                 {SITE_RATING_DISPLAY}
               </span>
               <span className="text-xs text-muted sm:text-sm">
-                · {reviewCount}+ reseñas
+                · {reviewCount} reseñas
               </span>
             </div>
+
+            {proofQuote && proofReview ? (
+              <p className="mt-2 max-w-md text-[11px] leading-snug text-ink/55 sm:mt-3 sm:text-xs sm:leading-relaxed">
+                <span className="italic">“{proofQuote}”</span>
+                <span className="not-italic text-muted">
+                  {" "}
+                  — {proofReview.name}
+                  {proofReview.location ? `, ${proofReview.location}` : ""}
+                </span>
+              </p>
+            ) : null}
 
             <ul className="mt-2.5 w-full max-w-md space-y-1.5 sm:mt-5 sm:space-y-2.5">
               {heroBenefits.map((b) => (
@@ -293,9 +328,9 @@ export default function AdsProductLander({ product, reviews }: Props) {
                   {product.originalPrice}
                 </span>
               )}
-              {discount >= 40 && (
+              {discountBadge && (
                 <span className="rounded-full bg-rose-100/80 px-2 py-0.5 text-[11px] font-semibold text-rose-700 sm:px-2.5 sm:text-xs">
-                  −{discount}% hoy
+                  {discountBadge}
                 </span>
               )}
               {savingsLabel && (
@@ -303,6 +338,9 @@ export default function AdsProductLander({ product, reviews }: Props) {
                   {savingsLabel}
                 </span>
               )}
+              <span className="w-full text-[11px] text-muted/80 sm:text-xs">
+                {promoLine}
+              </span>
             </div>
 
             <div className="mt-3.5 w-full max-w-md sm:mt-7">
@@ -318,7 +356,7 @@ export default function AdsProductLander({ product, reviews }: Props) {
       </section>
 
       {/* Trust strip */}
-      <section className="border-y border-rose-100/70 bg-white">
+      <section className="section-trust">
         <div className="section py-5 sm:py-6">
           <ul className="mx-auto grid max-w-5xl grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6">
             {TRUST_POINTS.map((t) => (
@@ -449,7 +487,7 @@ export default function AdsProductLander({ product, reviews }: Props) {
       )}
 
       {/* How it works + delivery proof */}
-      <section className="section-padding bg-[var(--surface-blush)]/50">
+      <section className="section-alt section-padding">
         <div className="section">
           <ScrollReveal>
             <div className="mx-auto max-w-5xl">

@@ -2,8 +2,12 @@ import Link from "next/link"
 import PrimaryCTA from "@/components/PrimaryCTA"
 import PetiteOrnament from "@/components/PetiteOrnament"
 import ScrollReveal from "@/components/ScrollReveal"
+import { formatPromoEndLabel, isPromoActive, promoUrgencyLine } from "@/lib/offer"
 
 export default function UrgencyCTA() {
+  const promoActive = isPromoActive()
+  const endLabel = formatPromoEndLabel()
+
   return (
     <section className="section-premium-dark section-padding">
       <div className="section relative">
@@ -16,13 +20,21 @@ export default function UrgencyCTA() {
             <PetiteOrnament className="mt-5" tone="mid" />
 
             <h2 className="mt-6 font-display text-[2.1rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:mt-7 sm:text-[2.85rem] lg:text-[3.15rem]">
-              Elige hoy.{" "}
-              <span className="gradient-text-rose italic">Teje esta semana</span>
+              {promoActive ? (
+                <>
+                  Precio promo hasta el {endLabel}.{" "}
+                  <span className="gradient-text-rose italic">Teje esta semana</span>
+                </>
+              ) : (
+                <>
+                  Elige tu colección.{" "}
+                  <span className="gradient-text-rose italic">Teje esta semana</span>
+                </>
+              )}
             </h2>
 
             <p className="mx-auto mt-6 max-w-md text-[15px] leading-[1.75] text-ink/55 sm:text-lg">
-              Descarga al momento, acceso de por vida y garantía de 7 días.
-              Empieza tu próximo proyecto sin riesgo.
+              {promoUrgencyLine()}. Acceso de por vida y garantía de 7 días.
             </p>
 
             <div className="mt-10 flex flex-col items-center gap-4 sm:mt-11">

@@ -20,7 +20,7 @@ export default function Footer() {
 
   if (isAds) {
     return (
-      <footer className="relative z-[1] border-t border-rose-100/70 bg-[linear-gradient(180deg,rgba(250,243,241,0.35)_0%,rgba(243,228,226,0.55)_100%)]">
+      <footer className="relative z-[1] bg-[linear-gradient(180deg,transparent_0%,rgba(250,243,241,0.22)_28%,rgba(243,228,226,0.42)_100%)]">
         <div className="section relative py-8 pb-12 sm:py-10 sm:pb-12">
           <div className="flex flex-col items-center justify-center gap-3 text-center">
             <p className="text-[11px] tracking-[0.02em] text-muted/75">
@@ -53,9 +53,9 @@ export default function Footer() {
   }
 
   return (
-    <footer className="relative z-[1] border-t border-rose-100/70 bg-[linear-gradient(180deg,rgba(250,243,241,0.28)_0%,rgba(243,228,226,0.5)_100%)]">
+    <footer className="relative z-[1] bg-[linear-gradient(180deg,transparent_0%,rgba(250,243,241,0.2)_24%,rgba(243,228,226,0.4)_100%)]">
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-rose-300/55 to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-rose-300/35 to-transparent"
         aria-hidden="true"
       />
       <div className="section relative pt-14 pb-10 sm:pt-20 sm:pb-14">
@@ -82,7 +82,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-sm leading-relaxed text-muted max-w-sm">
-              Patrones de crochet o ganchillo en PDF: amigurumis, Princesas Disney y Flores Eternas.
+              Patrones de crochet o ganchillo en PDF: amigurumis, Princesas de Cuento y Flores Eternas.
               Instrucciones claras y acabados hermosos para crear con confianza.
             </p>
             <p className="font-script text-[1.65rem] text-rose-400">Decora · Diseña · Crea</p>
@@ -116,7 +116,7 @@ export default function Footer() {
             <ul className="space-y-3.5">
               {[
                 { href: "/shop/amigurumis-chenille", label: "Patrones de Amigurumis" },
-                { href: "/shop/princesas-disney", label: "Patrones de Princesas Disney" },
+                { href: "/shop/princesas-disney", label: "Patrones de Princesas de Cuento" },
                 { href: "/shop/flores-eternas", label: "Patrones de Flores Eternas" },
               ].map((l) => (
                 <li key={l.href}>

@@ -28,6 +28,8 @@ NEXT_PUBLIC_FB_PIXEL_ID = "1416058686641315"
 
 # Secrets (set via `wrangler secret put`):
 # MAILCHIMP_API_KEY, MAILCHIMP_AUDIENCE_ID
+# META_CAPI_ACCESS_TOKEN, HOTMART_HOTTOK
+# Optional: META_PIXEL_ID, META_CAPI_TEST_EVENT_CODE, NEXT_PUBLIC_LEGAL_ADDRESS
 
 # Customer reviews (published on-site)
 [[kv_namespaces]]

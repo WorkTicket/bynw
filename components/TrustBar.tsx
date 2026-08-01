@@ -1,4 +1,4 @@
-import { SITE_RATING_DISPLAY } from "@/lib/testimonials-data"
+import { SITE_RATING, SITE_RATING_DISPLAY } from "@/lib/testimonials-data"
 import { getAggregateRating } from "@/lib/reviews"
 import { products } from "@/lib/products"
 import { CrochetHeart } from "@/lib/crochet-graphics"
@@ -21,23 +21,14 @@ export default async function TrustBar() {
     { value: String(products.length), label: "Colecciones" },
     { value: ratingDisplay, label: "Valoración" },
     {
-      value: reviewCount > 0 ? String(reviewCount) : "50+",
+      value: String(reviewCount > 0 ? reviewCount : SITE_RATING.reviewCount),
       label: "Reseñas",
     },
     { value: "PDF", label: "Descarga al momento" },
   ]
 
   return (
-    <section className="trust-bar-section relative overflow-hidden bg-white">
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-24 sm:h-28"
-        style={{
-          background:
-            "linear-gradient(180deg, transparent 0%, rgba(250, 243, 241, 0.85) 100%)",
-        }}
-        aria-hidden="true"
-      />
-
+    <section className="trust-bar-section section-trust relative overflow-hidden">
       <div className="section relative">
         <TrustBarReveal>
           <div className="trust-bar py-9 sm:py-14 lg:py-16">

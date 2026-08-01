@@ -30,18 +30,18 @@ export const products: Product[] = [
     id: "princesas-disney",
     slug: "princesas-disney",
     title:
-      "Colección de más de 200 Patrones de Princesas Disney + 20 bonos y obsequios",
-    shortTitle: "Patrones de Princesas Disney",
-    seoTitle: "Patrones Princesas Disney en Crochet o Ganchillo PDF",
+      "Colección de más de 200 Patrones de Princesas de Cuento + 20 bonos y obsequios",
+    shortTitle: "Patrones de Princesas de Cuento",
+    seoTitle: "Patrones Princesas de Cuento en Crochet o Ganchillo PDF",
     category: "Patrones de crochet o ganchillo digitales",
     price: "15€",
     originalPrice: "30€",
     buyUrl: "https://pay.hotmart.com/L104751068L?checkoutMode=2&off=8o21yf1f",
     buyText: "Comprar ahora",
     description:
-      "Más de 200 patrones de princesas Disney en PDF, con instrucciones claras y fotos en cada paso. Para artesanas que buscan resultados bonitos y uniformes.",
+      "Más de 200 patrones de princesas de cuento en PDF, con instrucciones claras y fotos en cada paso. Ideal para principiantes que quieren muñecas con vestidos, peinados y detalles limpios.",
     specs:
-      "Contenido: más de 200 patrones de Princesas Disney.\nIdioma: español.\nFormato: PDF descargable e imprimible.\nGuía paso a paso con fotos en alta resolución.\nEntrega: acceso inmediato por correo electrónico (e-mail) en cuanto se confirme el pago.\nIncluye vídeos para principiantes (abreviaturas e interpretación de patrones).",
+      "Contenido: más de 200 patrones de princesas de cuento.\nIdioma: español.\nFormato: PDF descargable e imprimible.\nGuía paso a paso con fotos en alta resolución.\nEntrega: acceso inmediato por correo electrónico (e-mail) en cuanto se confirme el pago.\nIncluye vídeos para principiantes (abreviaturas e interpretación de patrones).",
     caption: "Y muchos diseños exclusivos más…",
     images: [
       "imagen-2.webp",
@@ -51,7 +51,7 @@ export const products: Product[] = [
     ],
     bonusImage: "imagen-3.webp",
     bonusDescription:
-      "9 bonos exclusivos + 11 obsequios (20 en total): Amigurumis bebés, Amigurumis, patrones día del niño, muñecos para abrazar, sonajero y mantas, bolsas, mantas, almohadones, animalitos + extras: muñecas reversibles, guía de empaque, guía de fotografía, 50 llaveros, Stitch y novia, Virgen del Carmen, Virgen de Guadalupe, guía de abreviaturas, 16 patrones de animalitos, 100 patrones amigurumis.",
+      "9 bonos exclusivos + 11 obsequios (20 en total): amigurumis bebés, amigurumis, patrones día del niño, muñecos para abrazar, sonajero y mantas, bolsas, mantas, almohadones, animalitos + extras: muñecas reversibles, guía de empaque, guía de fotografía, 50 llaveros, personaje alienígena azul, Virgen del Carmen, Virgen de Guadalupe, guía de abreviaturas, 16 patrones de animalitos, 100 patrones amigurumis.",
     bonusItems: [
       "Crochet o Ganchillo Amigurumis bebés",
       "Crochet o Ganchillo Amigurumis",
@@ -65,12 +65,12 @@ export const products: Product[] = [
     ],
     extraGiftTitle: "Obsequios incluidos con tu colección",
     extraGiftItems: [
-      "Muñecas Reversibles (Muñeca Rosa, Virgen de Guadalupe y Rapunzel)",
+      "Muñecas reversibles (muñeca rosa, Virgen de Guadalupe y princesa de torre)",
       "Guía para tejer desde cero",
       "Guía básica de empaque",
       "Guía básica de fotografía",
       "50 patrones de llaveros",
-      "Patrón de Stitch y su novia Ángel",
+      "Patrón de personaje alienígena azul y su pareja",
       "Patrón de Virgen del Carmen",
       "Patrón de Virgen de Guadalupe",
       "Guía de abreviaturas amigurumis",
@@ -110,7 +110,7 @@ export const products: Product[] = [
     buyUrl: "https://pay.hotmart.com/O106393812M?checkoutMode=2&off=nfyomffe",
     buyText: "Comprar ahora",
     description:
-      "Más de 200 patrones de flores en crochet o ganchillo: tulipanes, girasoles, rosas, cactus y muchas más. Con fotos paso a paso, listos para tejer o vender.",
+      "Más de 200 patrones de flores eternas: tulipanes, girasoles, rosas, cactus y ramos listos para regalar o vender. Fotos paso a paso y vídeo para montar con papel coreano.",
     specs:
       "Contenido: más de 200 patrones (tulipanes, girasoles, margaritas, rosas, cactus, azucenas, claveles, lirios, orquídeas, macetas y más).\nFormato: PDF descargable e imprimible.\nGuía visual paso a paso con fotos.\nIdioma: español.\nIncluye vídeo para montar ramos con papel coreano.\nIncluye vídeos para principiantes (abreviaturas e interpretación de patrones).",
     caption: "Y muchos diseños exclusivos más…",
@@ -121,18 +121,18 @@ export const products: Product[] = [
     ],
     bonusImage: "imagen-9.webp",
     bonusDescription:
-      "14 bonos exclusivos: Amigurumis religiosos, Mochi, Rosita Fresita, Harry Potter, Frozen, muñecas de flores reversibles, Chavo del 8, Caperucita Roja, Eva y Wall-e, Lilo y Stitch.",
+      "14 bonos exclusivos: amigurumis religiosos, mochi, muñeca frutilla, colección magia y hechizos, colección invierno nevado, muñecas de flores reversibles, colección vecindario clásico, Caperucita Roja, pareja robótica, dúo isla tropical.",
     bonusItems: [
       "Amigurumis religiosos",
       "Mochi",
-      "Rosita Fresita",
-      "Colección Harry Potter",
-      "Colección Frozen",
+      "Muñeca frutilla",
+      "Colección magia y hechizos",
+      "Colección invierno nevado",
       "Muñecas de flores reversibles",
-      "Colección Chavo del 8",
+      "Colección vecindario clásico",
       "Colección Caperucita Roja",
-      "Eva y Wall-e",
-      "Lilo y Stitch",
+      "Pareja robótica",
+      "Dúo isla tropical",
     ],
     extraGiftTitle: "Obsequios incluidos con tu colección",
     extraGiftItems: [],
@@ -169,7 +169,7 @@ export const products: Product[] = [
     buyUrl: "https://pay.hotmart.com/A104843589W?checkoutMode=2&off=a9plv7ym",
     buyText: "Comprar ahora",
     description:
-      "Más de 100 patrones de amigurumis en chenille, con acabados cuidados y explicaciones claras. Para tejer en casa o preparar piezas para vender.",
+      "Más de 100 amigurumis en chenille con textura suave y explicaciones claras. Perfectos para regalos rápidos o piezas para vender con acabado premium.",
     specs:
       "Contenido: más de 100 patrones únicos.\nFormato: PDF descargable e imprimible.\nGuía visual paso a paso con fotos.\nIdioma: español.\nIncluye vídeos para principiantes (abreviaturas e interpretación de patrones).",
     caption: "Y muchos diseños exclusivos más…",
@@ -179,18 +179,18 @@ export const products: Product[] = [
     ],
     bonusImage: "imagen-13.webp",
     bonusDescription:
-      "11+ bonos exclusivos: mini amigurumis, conejo orejas largas, 2 abejitas, Stitch en chenille, tulipán, 50 amigurumis adicionales, rosa Antonella, Piggy, guía de ejercicios, princesa Ariel.",
+      "11+ bonos exclusivos: mini amigurumis, conejo orejas largas, 2 abejitas, alienígena azul en chenille, tulipán, 50 amigurumis adicionales, rosa Antonella, cerdito, guía de ejercicios, princesa de mar.",
     bonusItems: [
       "Patrones de mini amigurumis",
       "Patrón de conejo orejas largas",
       "2 patrones de abejitas",
-      "Patrón de Stitch en chenille",
+      "Patrón de alienígena azul en chenille",
       "Patrón de tulipán",
       "50 patrones de amigurumis adicionales",
       "Patrón de rosa Antonella",
-      "Patrón Piggy",
+      "Patrón cerdito",
       "Guía de ejercicios para tejedoras",
-      "Patrón de la princesa Ariel",
+      "Patrón de princesa de mar",
     ],
     extraGiftTitle: "Obsequios incluidos con tu colección",
     extraGiftItems: [],
@@ -222,20 +222,20 @@ export const products: Product[] = [
     buyUrl: "https://pay.hotmart.com/C106728848V?checkoutMode=2&off=gksd63ag",
     buyText: "Comprar ahora",
     description:
-      "La Colección Maestra de Muñecas Premium es un compendio digital diseñado para artesanas que buscan elevar la calidad de sus creaciones en crochet o ganchillo. Con 25 patrones únicos, este material técnico proporciona instrucciones detalladas para la elaboración de personajes icónicos, garantizando acabados de alta gama y resultados consistentes.",
+      "25 muñecas premium con rostros, peinados y vestuario detallados. Guía visual de alta resolución para acabados de tienda, incluso si aún estás aprendiendo.",
     specs:
-      "Contenido: 25 patrones digitales de Muñecas Premium.\nIdioma: Español.\nFormato: Archivos PDF descargables e imprimibles.\nMetodología: Guía paso a paso con soporte visual de alta resolución, diseñada para facilitar la ejecución de cada punto y detalle.\nEntrega: Acceso inmediato a tu correo electrónico (e-mail) tras la confirmación de pago.\nIncluye vídeos para principiantes (abreviaturas e interpretación de patrones).",
+      "Contenido: 25 patrones digitales de Muñecas Premium.\nIdioma: Español.\nFormato: Archivos PDF descargables e imprimibles.\nMetodología: Guía paso a paso con soporte visual de alta resolución.\nEntrega: Acceso inmediato a tu correo electrónico (e-mail) tras la confirmación de pago.\nIncluye vídeos para principiantes (abreviaturas e interpretación de patrones).",
     caption: "Y muchos diseños exclusivos más…",
     images: ["n2-1.webp", "n2-1-2.webp", "n2-1-3.webp"],
     bonusImage: "n2-2.webp",
     bonusDescription:
-      "8 bonos exclusivos: Cuerpo base mini, Muñeca de Novia, Rosita Fresita, Gato Corazón, Colección Scooby doo, Muñecas de Quinceañera, Amigurumi de Policía, Amigurumi Globo aerostático con osito.",
+      "8 bonos exclusivos: cuerpo base mini, muñeca de novia, muñeca frutilla, gato corazón, colección detective canino, muñecas de quinceañera, amigurumi policía, globo aerostático con osito.",
     bonusItems: [
       "Bono 1: Cuerpo base mini",
       "Bono 2: Muñeca de Novia",
-      "Bono 3: Rosita Fresita",
+      "Bono 3: Muñeca frutilla",
       "Bono 4: Gato Corazón",
-      "Bono 5: Colección Scooby doo",
+      "Bono 5: Colección detective canino",
       "Bono 6: Muñecas de Quinceañera (15 años)",
       "Bono 7: Amigurumi de Policía",
       "Bono 8: Amigurumi Globo aerostático con osito",
@@ -264,21 +264,21 @@ export const products: Product[] = [
     buyUrl: "https://pay.hotmart.com/A106745099O?checkoutMode=2&off=lpyfmlhr",
     buyText: "Comprar ahora",
     description:
-      "La Colección Premium de Patrones de Santos y Ángeles en Crochet o Ganchillo es un compendio digital diseñado para artesanas que buscan elevar la calidad de sus creaciones en crochet o ganchillo. Con más de 18 patrones únicos, este material técnico proporciona instrucciones detalladas para la elaboración de personajes icónicos, garantizando acabados de alta gama y resultados consistentes.",
+      "Más de 18 patrones de santos y ángeles para regalo espiritual, altares o venta en temporada. Instrucciones claras y acabados delicados.",
     specs:
-      "Contenido: Más de 18 patrones digitales de Santos y Ángeles Premium en crochet o ganchillo.\nIdioma: Español.\nFormato: Archivos PDF descargables e imprimibles.\nMetodología: Guía paso a paso con soporte visual de alta resolución, diseñada para facilitar la ejecución de cada punto y detalle.\nEntrega: Acceso inmediato a tu correo electrónico (e-mail) tras la confirmación de pago.\nIncluye vídeos para principiantes (abreviaturas e interpretación de patrones).",
+      "Contenido: Más de 18 patrones digitales de Santos y Ángeles Premium en crochet o ganchillo.\nIdioma: Español.\nFormato: Archivos PDF descargables e imprimibles.\nMetodología: Guía paso a paso con soporte visual de alta resolución.\nEntrega: Acceso inmediato a tu correo electrónico (e-mail) tras la confirmación de pago.\nIncluye vídeos para principiantes (abreviaturas e interpretación de patrones).",
     caption: "Y muchos diseños exclusivos más…",
     images: ["n2-5.webp", "n2-5-1.webp"],
     bonusImage: "n2-6.webp",
     bonusDescription:
-      "6 bonos exclusivos: Cuerpo base, Amigurumis de Intensamente, Vaquita, Ovejita rosa, Maestra o Profesora, Snoopy.",
+      "6 bonos exclusivos: cuerpo base, amigurumis de emociones, vaquita, ovejita rosa, maestra o profesora, beagle clásico.",
     bonusItems: [
       "Bono 1: Cuerpo base",
-      "Bono 2: Amigurumis de Intensamente",
+      "Bono 2: Amigurumis de emociones",
       "Bono 3: Vaquita",
       "Bono 4: Ovejita rosa",
       "Bono 5: Maestra o Profesora",
-      "Bono 6: Snoopy",
+      "Bono 6: Beagle clásico",
     ],
     extraGiftTitle: "Obsequios incluidos con tu colección",
     extraGiftItems: [],
@@ -304,9 +304,9 @@ export const products: Product[] = [
     buyUrl: "https://pay.hotmart.com/K106843734P?checkoutMode=2&off=5q9idyvg",
     buyText: "Comprar ahora",
     description:
-      "La Colección Premium de Patrones de Navidad en Crochet o Ganchillo es un compendio digital diseñado para artesanas que buscan elevar la calidad de sus creaciones en crochet o ganchillo. Con más de 145 patrones únicos, este material técnico proporciona instrucciones detalladas para la elaboración de personajes icónicos, garantizando acabados de alta gama y resultados consistentes.",
+      "Más de 145 patrones navideños: adornos, personajes de temporada y regalos para tejer o vender en Navidad. PDF listos para imprimir.",
     specs:
-      "Contenido: Más de 145 patrones digitales de Navidad Premium en crochet o ganchillo.\nIdioma: Español.\nFormato: Archivos PDF descargables e imprimibles.\nMetodología: Guía paso a paso con soporte visual de alta resolución, diseñada para facilitar la ejecución de cada punto y detalle.\nEntrega: Acceso inmediato a tu correo electrónico (e-mail) tras la confirmación de pago.\nIncluye vídeos para principiantes (abreviaturas e interpretación de patrones).",
+      "Contenido: Más de 145 patrones digitales de Navidad Premium en crochet o ganchillo.\nIdioma: Español.\nFormato: Archivos PDF descargables e imprimibles.\nMetodología: Guía paso a paso con soporte visual de alta resolución.\nEntrega: Acceso inmediato a tu correo electrónico (e-mail) tras la confirmación de pago.\nIncluye vídeos para principiantes (abreviaturas e interpretación de patrones).",
     caption: "Y muchos diseños exclusivos más…",
     images: ["n2-9.webp", "n2-9-1.webp", "n2-9-2.webp"],
     bonusImage: "",
@@ -344,9 +344,9 @@ export const products: Product[] = [
     buyUrl: "https://pay.hotmart.com/Q106849178O?checkoutMode=2&off=qvysr7ub",
     buyText: "Comprar ahora",
     description:
-      "La Colección Premium de Patrones de Halloween en Crochet o Ganchillo es un compendio digital diseñado para artesanas que buscan elevar la calidad de sus creaciones en crochet o ganchillo. Con 98 patrones únicos, este material técnico proporciona instrucciones detalladas para la elaboración de personajes icónicos, garantizando acabados de alta gama y resultados consistentes.",
+      "98 patrones de Halloween fáciles y vendibles: calabazas, fantasmas, brujas y adornos de temporada con fotos paso a paso.",
     specs:
-      "Contenido: 98 patrones digitales de Halloween Premium en crochet o ganchillo.\nIdioma: Español.\nFormato: Archivos PDF descargables e imprimibles.\nMetodología: Guía paso a paso con soporte visual de alta resolución, diseñada para facilitar la ejecución de cada punto y detalle.\nEntrega: Acceso inmediato a tu correo electrónico (e-mail) tras la confirmación de pago.\nIncluye vídeos para principiantes (abreviaturas e interpretación de patrones).",
+      "Contenido: 98 patrones digitales de Halloween Premium en crochet o ganchillo.\nIdioma: Español.\nFormato: Archivos PDF descargables e imprimibles.\nMetodología: Guía paso a paso con soporte visual de alta resolución.\nEntrega: Acceso inmediato a tu correo electrónico (e-mail) tras la confirmación de pago.\nIncluye vídeos para principiantes (abreviaturas e interpretación de patrones).",
     caption: "Y muchos diseños exclusivos más…",
     images: ["n2-12.webp", "n2-12-1.webp", "n2-12-2.webp"],
     bonusImage: "",
@@ -375,20 +375,20 @@ export const products: Product[] = [
     buyUrl: "https://pay.hotmart.com/Y106877716H?checkoutMode=2&off=04lt0mna",
     buyText: "Comprar ahora",
     description:
-      "La Colección Maestra de Muñecas de Flores Reversibles Premium es un compendio digital diseñado para artesanas que buscan elevar la calidad de sus creaciones en crochet o ganchillo. Con 57 patrones únicos, este material técnico proporciona instrucciones detalladas para la elaboración de personajes icónicos, garantizando acabados de alta gama y resultados consistentes.",
+      "57 muñecas de flores reversibles: un lado flor, el otro muñeca. Piezas únicas para regalo, ferias o catálogo propio, con guía visual detallada.",
     specs:
-      "Contenido: 57 patrones digitales de Muñecas de Flores Reversibles Premium.\nIdioma: Español.\nFormato: Archivos PDF descargables e imprimibles.\nMetodología: Guía paso a paso con soporte visual de alta resolución, diseñada para facilitar la ejecución de cada punto y detalle.\nEntrega: Acceso inmediato a tu correo electrónico (e-mail) tras la confirmación de pago.\nIncluye vídeos para principiantes (abreviaturas e interpretación de patrones).",
+      "Contenido: 57 patrones digitales de Muñecas de Flores Reversibles Premium.\nIdioma: Español.\nFormato: Archivos PDF descargables e imprimibles.\nMetodología: Guía paso a paso con soporte visual de alta resolución.\nEntrega: Acceso inmediato a tu correo electrónico (e-mail) tras la confirmación de pago.\nIncluye vídeos para principiantes (abreviaturas e interpretación de patrones).",
     caption: "Y muchos diseños exclusivos más…",
     images: ["n2-15.webp", "n2-15-1.webp", "n2-15-2.webp"],
     bonusImage: "n2-18.webp",
     bonusDescription:
-      "5 bonos exclusivos: Jessy de Toy Story, Woody de Toy Story, Colección de princesas mini, Colección de BTS, Colección de la Princesa Tiana.",
+      "5 bonos exclusivos: vaquera del oeste, cowboy clásico, colección de princesas mini, colección idols K-pop, princesa del bayou.",
     bonusItems: [
-      "Bono 1: Patrón de Jessy de Toy Story",
-      "Bono 2: Patrón de Woody de Toy Story",
+      "Bono 1: Patrón de vaquera del oeste",
+      "Bono 2: Patrón de cowboy clásico",
       "Bono 3: Colección de princesas mini",
-      "Bono 4: Colección de BTS",
-      "Bono 5: Colección de la Princesa Tiana",
+      "Bono 4: Colección idols K-pop",
+      "Bono 5: Colección princesa del bayou",
     ],
     extraGiftTitle: "Obsequios incluidos con tu colección",
     extraGiftItems: [],
@@ -414,9 +414,9 @@ export const products: Product[] = [
     buyUrl: "https://pay.hotmart.com/H106878303R?checkoutMode=2&off=kad7djg6",
     buyText: "Comprar ahora",
     description:
-      "La Colección Premium de Patrones de Profesiones en Crochet o Ganchillo es un compendio digital diseñado para artesanas que buscan elevar la calidad de sus creaciones en crochet o ganchillo. Con más de 40 patrones únicos, este material técnico proporciona instrucciones detalladas para la elaboración de personajes icónicos, garantizando acabados de alta gama y resultados consistentes.",
+      "Más de 40 patrones de profesiones (doctora, maestra, chef y más) para regalos personalizados o venta temáticas. Claros, fotografiados y listos para tejer.",
     specs:
-      "Contenido: 40 patrones digitales de Profesiones Premium en crochet o ganchillo.\nIdioma: Español.\nFormato: Archivos PDF descargables e imprimibles.\nMetodología: Guía paso a paso con soporte visual de alta resolución, diseñada para facilitar la ejecución de cada punto y detalle.\nEntrega: Acceso inmediato a tu correo electrónico (e-mail) tras la confirmación de pago.\nIncluye vídeos para principiantes (abreviaturas e interpretación de patrones).",
+      "Contenido: 40 patrones digitales de Profesiones Premium en crochet o ganchillo.\nIdioma: Español.\nFormato: Archivos PDF descargables e imprimibles.\nMetodología: Guía paso a paso con soporte visual de alta resolución.\nEntrega: Acceso inmediato a tu correo electrónico (e-mail) tras la confirmación de pago.\nIncluye vídeos para principiantes (abreviaturas e interpretación de patrones).",
     caption: "Y muchos diseños exclusivos más…",
     images: ["n2-20.webp", "n2-20-1.webp"],
     bonusImage: "",

@@ -4,7 +4,7 @@ import PrimaryCTA from "@/components/PrimaryCTA"
 
 export default function Hero() {
   return (
-    <section className="hero-editorial relative min-h-[min(92svh,52rem)] overflow-x-clip bg-[#fffaf8] sm:min-h-[min(94svh,54rem)]">
+    <section className="hero-editorial relative min-h-[min(92svh,52rem)] overflow-x-clip sm:min-h-[min(94svh,54rem)]">
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute inset-0 hero-image-drift">
           <div className="absolute inset-0 origin-[72%_42%] scale-[1.16] -translate-y-[9%] sm:origin-[74%_40%] sm:scale-[1.12] sm:-translate-y-[6%] lg:origin-center lg:scale-[1.04] lg:translate-y-0">
@@ -13,29 +13,29 @@ export default function Hero() {
               alt="Amigurumi de princesa en crochet o ganchillo junto a un ramo de flores eternas tejidas"
               fill
               priority
-              unoptimized
               decoding="sync"
-              sizes="(max-width: 1023px) 1920px, 100vw"
+              sizes="100vw"
+              quality={75}
               className="object-cover object-[72%_52%] sm:object-[74%_48%] lg:object-[78%_center]"
             />
           </div>
         </div>
 
-        {/* Mobile: denser pearl veil behind copy for readability */}
+        {/* Mobile: pearl veil behind copy — bottom dissolves into the site canvas */}
         <div
           className="pointer-events-none absolute inset-0 lg:hidden"
           style={{
             background: `
               linear-gradient(
                 to top,
-                #fffaf8 0%,
-                #fffaf8 32%,
-                rgba(255,250,248,0.97) 48%,
-                rgba(255,250,248,0.82) 60%,
-                rgba(255,250,248,0.45) 72%,
+                rgba(250,243,241,0.92) 0%,
+                rgba(255,250,248,0.94) 22%,
+                rgba(255,250,248,0.88) 42%,
+                rgba(255,250,248,0.55) 58%,
+                rgba(255,250,248,0.22) 72%,
                 transparent 88%
               ),
-              linear-gradient(to bottom, rgba(255,250,248,0.92) 0%, transparent 24%)
+              linear-gradient(to bottom, rgba(255,250,248,0.88) 0%, transparent 22%)
             `,
           }}
         />
@@ -54,6 +54,12 @@ export default function Hero() {
                 rgba(255,250,248,0.4) 62%,
                 rgba(255,250,248,0.1) 74%,
                 transparent 86%
+              ),
+              linear-gradient(
+                180deg,
+                transparent 72%,
+                rgba(250,243,241,0.35) 88%,
+                rgba(250,243,241,0.72) 100%
               )
             `,
           }}

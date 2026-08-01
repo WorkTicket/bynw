@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react"
 import ReviewForm from "@/components/ReviewForm"
 import PetiteOrnament from "@/components/PetiteOrnament"
 import PrimaryCTA from "@/components/PrimaryCTA"
+import SecondaryCTA from "@/components/SecondaryCTA"
 import ScrollReveal from "@/components/ScrollReveal"
 import { StarIcon } from "@/lib/icons"
 import {
@@ -18,6 +19,12 @@ import {
 type Props = {
   initialReviews: Review[]
 }
+
+/** Initial + batch sizes — keep the page scannable, then expand on demand. */
+const PHOTOS_INITIAL = 8
+const PHOTOS_STEP = 8
+const REVIEWS_INITIAL = 6
+const REVIEWS_STEP = 6
 
 function RatingStars({
   value,
@@ -45,9 +52,11 @@ function RatingStars({
   )
 }
 
-/** Full testimonials page: live counts, photo wall, reviews, form. */
+/** Full testimonials page: live counts, form early, progressive photo/reviews. */
 export default function TestimonialsLive({ initialReviews }: Props) {
   const [reviews, setReviews] = useState(initialReviews)
+  const [photoVisibleCount, setPhotoVisibleCount] = useState(PHOTOS_INITIAL)
+  const [reviewVisibleCount, setReviewVisibleCount] = useState(REVIEWS_INITIAL)
   const shuffleSeed = dailyShuffleSeed("testimonials-page")
 
   useEffect(() => {
@@ -63,16 +72,24 @@ export default function TestimonialsLive({ initialReviews }: Props) {
       ),
     [reviews, shuffleSeed]
   )
-  const visible = useMemo(
+  const orderedReviews = useMemo(
     () => interleaveReviews(reviews, `${shuffleSeed}-list`),
     [reviews, shuffleSeed]
   )
+
+  const visiblePhotos = photoReviews.slice(0, photoVisibleCount)
+  const visibleReviews = orderedReviews.slice(0, reviewVisibleCount)
+  const hasMorePhotos = photoVisibleCount < photoReviews.length
+  const hasMoreReviews = reviewVisibleCount < orderedReviews.length
+  const remainingPhotos = photoReviews.length - photoVisibleCount
+  const remainingReviews = orderedReviews.length - reviewVisibleCount
 
   function handleSubmitted(review: Review) {
     setReviews((prev) => {
       if (prev.some((r) => r.id === review.id)) return prev
       return [review, ...prev]
     })
+    setReviewVisibleCount((n) => Math.max(n, REVIEWS_INITIAL))
     requestAnimationFrame(() => {
       document
         .getElementById("testimonios-lista")
@@ -112,12 +129,12 @@ export default function TestimonialsLive({ initialReviews }: Props) {
             </div>
 
             <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4">
-              <PrimaryCTA href="#testimonios-lista">Ver reseñas</PrimaryCTA>
+              <PrimaryCTA href="#dejar-resena">Dejar mi reseña</PrimaryCTA>
               <a
-                href="#dejar-resena"
+                href="#testimonios-lista"
                 className="text-sm font-medium text-ink/60 transition-colors hover:text-rose-600"
               >
-                Dejar mi reseña
+                Ver reseñas
               </a>
             </div>
           </ScrollReveal>
@@ -125,7 +142,7 @@ export default function TestimonialsLive({ initialReviews }: Props) {
       </section>
 
       {/* Trust strip — same live aggregate as hero */}
-      <section className="border-y border-rose-100/70 bg-[linear-gradient(180deg,#fffaf8_0%,#fff_100%)]">
+      <section className="section-trust">
         <div className="section flex flex-wrap items-center justify-center gap-x-10 gap-y-4 py-6 text-center sm:gap-x-14 sm:py-7">
           <div>
             <p
@@ -170,9 +187,32 @@ export default function TestimonialsLive({ initialReviews }: Props) {
         </div>
       </section>
 
-      {/* Customer photo wall */}
+      {/* Form early — conversion action before long social proof */}
+      <section className="section-white section-padding" id="dejar-resena">
+        <div className="section">
+          <ScrollReveal>
+            <div className="section-header mb-10">
+              <span className="eyebrow">Tu turno</span>
+              <PetiteOrnament className="mb-5 mt-1" />
+              <h2>
+                Comparte tu{" "}
+                <span className="gradient-text-rose italic">experiencia</span>
+              </h2>
+              <p>
+                Una foto de tu tejido ayuda a otras artesanas a decidirse. Se
+                publica al momento.
+              </p>
+            </div>
+          </ScrollReveal>
+          <div className="mx-auto max-w-xl">
+            <ReviewForm variant="full" onSubmitted={handleSubmitted} />
+          </div>
+        </div>
+      </section>
+
+      {/* Customer photo wall — capped, expand on demand */}
       {photoReviews.length > 0 && (
-        <section className="section-white section-padding !pb-10 sm:!pb-12">
+        <section className="section-alt section-padding !pb-10 sm:!pb-12">
           <div className="section">
             <ScrollReveal>
               <div className="section-header">
@@ -190,7 +230,7 @@ export default function TestimonialsLive({ initialReviews }: Props) {
             </ScrollReveal>
 
             <ul className="mt-2 columns-2 gap-3 sm:columns-3 sm:gap-4 lg:columns-4 lg:gap-5">
-              {photoReviews.map((t, i) => {
+              {visiblePhotos.map((t, i) => {
                 const photo = reviewImageSrc(t)
                 if (!photo) return null
                 const tall = i % 5 === 1 || i % 5 === 3
@@ -207,9 +247,7 @@ export default function TestimonialsLive({ initialReviews }: Props) {
                           loading={i < 6 ? "eager" : "lazy"}
                           decoding="async"
                           className={`w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] ${
-                            tall
-                              ? "aspect-[3/4]"
-                              : "aspect-square"
+                            tall ? "aspect-[3/4]" : "aspect-square"
                           }`}
                         />
                         <figcaption className="px-3 py-2.5 text-left sm:px-3.5 sm:py-3">
@@ -228,14 +266,35 @@ export default function TestimonialsLive({ initialReviews }: Props) {
                 )
               })}
             </ul>
+
+            {hasMorePhotos && (
+              <div className="mt-8 flex flex-col items-center gap-2 sm:mt-10">
+                <SecondaryCTA
+                  type="button"
+                  onClick={() =>
+                    setPhotoVisibleCount((n) =>
+                      Math.min(n + PHOTOS_STEP, photoReviews.length)
+                    )
+                  }
+                >
+                  Ver más fotos
+                </SecondaryCTA>
+                <p className="text-[12px] text-muted">
+                  Mostrando {visiblePhotos.length} de {photoReviews.length}
+                  {remainingPhotos > 0
+                    ? ` · ${Math.min(PHOTOS_STEP, remainingPhotos)} más`
+                    : ""}
+                </p>
+              </div>
+            )}
           </div>
         </section>
       )}
 
-      {/* Written reviews */}
+      {/* Written reviews — capped, expand on demand */}
       <section
         id="testimonios-lista"
-        className="section-alt section-padding !pt-10 sm:!pt-12"
+        className="section-white section-padding !pt-10 sm:!pt-12"
       >
         <div className="section">
           <ScrollReveal>
@@ -254,7 +313,7 @@ export default function TestimonialsLive({ initialReviews }: Props) {
           </ScrollReveal>
 
           <ul className="mx-auto mt-2 grid max-w-5xl gap-5 sm:grid-cols-2 sm:gap-6 lg:gap-7">
-            {visible.map((t, i) => {
+            {visibleReviews.map((t, i) => {
               const photo = reviewImageSrc(t)
               return (
                 <ScrollReveal key={t.id} delay={Math.min(i * 35, 240)} variant="fade">
@@ -319,33 +378,26 @@ export default function TestimonialsLive({ initialReviews }: Props) {
             })}
           </ul>
 
-          <ScrollReveal delay={120}>
-            <div className="mt-12 flex justify-center sm:mt-14">
-              <PrimaryCTA href="#dejar-resena">Dejar mi reseña</PrimaryCTA>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      <section className="section-white section-padding" id="dejar-resena">
-        <div className="section">
-          <ScrollReveal>
-            <div className="section-header mb-10">
-              <span className="eyebrow">Tu turno</span>
-              <PetiteOrnament className="mb-5 mt-1" />
-              <h2>
-                Comparte tu{" "}
-                <span className="gradient-text-rose italic">experiencia</span>
-              </h2>
-              <p>
-                Una foto de tu tejido ayuda a otras artesanas a decidirse. Se
-                publica al momento.
+          {hasMoreReviews && (
+            <div className="mt-10 flex flex-col items-center gap-2 sm:mt-12">
+              <SecondaryCTA
+                type="button"
+                onClick={() =>
+                  setReviewVisibleCount((n) =>
+                    Math.min(n + REVIEWS_STEP, orderedReviews.length)
+                  )
+                }
+              >
+                Ver más reseñas
+              </SecondaryCTA>
+              <p className="text-[12px] text-muted">
+                Mostrando {visibleReviews.length} de {orderedReviews.length}
+                {remainingReviews > 0
+                  ? ` · ${Math.min(REVIEWS_STEP, remainingReviews)} más`
+                  : ""}
               </p>
             </div>
-          </ScrollReveal>
-          <div className="mx-auto max-w-xl">
-            <ReviewForm variant="full" onSubmitted={handleSubmitted} />
-          </div>
+          )}
         </div>
       </section>
     </>

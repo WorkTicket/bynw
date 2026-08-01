@@ -37,66 +37,67 @@
 
   /*
    * Site canvas — one continuous silk atmosphere for every route.
+   * Soft, long washes (no hard bands) so section veils can dissolve into it.
    * Layers read top → bottom (first paint on top).
    */
   --grad-site-canvas:
     radial-gradient(
-      ellipse 120% 72% at 50% -20%,
-      rgba(212, 114, 126, 0.14) 0%,
-      rgba(232, 180, 184, 0.06) 42%,
-      transparent 68%
+      ellipse 130% 80% at 50% -18%,
+      rgba(212, 114, 126, 0.1) 0%,
+      rgba(232, 180, 184, 0.04) 46%,
+      transparent 72%
     ),
     radial-gradient(
-      ellipse 58% 52% at 102% 8%,
-      rgba(240, 214, 210, 0.58) 0%,
-      transparent 56%
+      ellipse 62% 56% at 104% 10%,
+      rgba(240, 214, 210, 0.42) 0%,
+      transparent 60%
     ),
     radial-gradient(
-      ellipse 52% 46% at -6% 28%,
-      rgba(232, 180, 184, 0.22) 0%,
-      transparent 54%
-    ),
-    radial-gradient(
-      ellipse 68% 48% at 72% 48%,
-      rgba(201, 107, 120, 0.07) 0%,
-      transparent 62%
-    ),
-    radial-gradient(
-      ellipse 64% 54% at 88% 92%,
-      rgba(243, 228, 226, 0.72) 0%,
+      ellipse 56% 50% at -8% 30%,
+      rgba(232, 180, 184, 0.16) 0%,
       transparent 58%
     ),
     radial-gradient(
-      ellipse 54% 42% at 8% 88%,
-      rgba(232, 180, 184, 0.18) 0%,
-      transparent 52%
+      ellipse 72% 52% at 70% 50%,
+      rgba(201, 107, 120, 0.05) 0%,
+      transparent 66%
+    ),
+    radial-gradient(
+      ellipse 68% 58% at 90% 94%,
+      rgba(243, 228, 226, 0.55) 0%,
+      transparent 62%
+    ),
+    radial-gradient(
+      ellipse 58% 46% at 6% 90%,
+      rgba(232, 180, 184, 0.12) 0%,
+      transparent 56%
     ),
     linear-gradient(
-      168deg,
+      172deg,
       #fffaf8 0%,
-      #fff7f5 16%,
-      #faf3f1 38%,
-      #f6ebe9 62%,
-      #f3e4e2 82%,
-      #f7eeec 100%
+      #fff8f6 18%,
+      #faf3f1 40%,
+      #f7eeec 62%,
+      #f3e4e2 84%,
+      #f6ebe9 100%
     );
 
   /* Fixed bloom veil — soft parallax atmosphere above the canvas */
   --grad-site-atmosphere:
     radial-gradient(
-      ellipse 46% 38% at 18% 22%,
-      rgba(255, 250, 248, 0.55) 0%,
+      ellipse 50% 42% at 18% 22%,
+      rgba(255, 250, 248, 0.42) 0%,
+      transparent 72%
+    ),
+    radial-gradient(
+      ellipse 46% 40% at 82% 40%,
+      rgba(240, 214, 210, 0.28) 0%,
       transparent 70%
     ),
     radial-gradient(
-      ellipse 42% 36% at 82% 38%,
-      rgba(240, 214, 210, 0.38) 0%,
-      transparent 68%
-    ),
-    radial-gradient(
-      ellipse 50% 40% at 48% 78%,
-      rgba(232, 180, 184, 0.16) 0%,
-      transparent 70%
+      ellipse 54% 44% at 48% 78%,
+      rgba(232, 180, 184, 0.12) 0%,
+      transparent 72%
     );
 }
 
@@ -1033,15 +1034,21 @@ body::before {
   background: #c96b78;
 }
 
-/* ── Uniform section backgrounds — veils over the site canvas ── */
+/*
+ * Uniform section backgrounds — translucent veils over the site canvas.
+ * Every veil fades to transparent at top + bottom so adjacent sections
+ * share one continuous atmosphere instead of hard banding.
+ */
 .section-white {
   position: relative;
-  background-color: rgba(255, 255, 255, 0.82);
+  background-color: transparent;
   background-image: linear-gradient(
     180deg,
-    rgba(255, 250, 248, 0.92) 0%,
-    rgba(255, 255, 255, 0.78) 45%,
-    rgba(255, 250, 248, 0.88) 100%
+    transparent 0%,
+    rgba(255, 250, 248, 0.42) 14%,
+    rgba(255, 255, 255, 0.5) 48%,
+    rgba(255, 250, 248, 0.4) 86%,
+    transparent 100%
   );
 }
 
@@ -1050,16 +1057,17 @@ body::before {
   background-color: transparent;
   background-image:
     radial-gradient(
-      ellipse 80% 60% at 50% 0%,
-      rgba(255, 250, 248, 0.55) 0%,
-      transparent 70%
+      ellipse 90% 55% at 50% 42%,
+      rgba(255, 250, 248, 0.28) 0%,
+      transparent 72%
     ),
     linear-gradient(
       180deg,
-      rgba(255, 250, 248, 0.42) 0%,
-      rgba(250, 243, 241, 0.28) 22%,
-      rgba(250, 243, 241, 0.18) 78%,
-      rgba(243, 228, 226, 0.32) 100%
+      transparent 0%,
+      rgba(250, 243, 241, 0.32) 16%,
+      rgba(250, 243, 241, 0.2) 50%,
+      rgba(243, 228, 226, 0.26) 84%,
+      transparent 100%
     );
 }
 
@@ -1068,15 +1076,17 @@ body::before {
   background-color: transparent;
   background-image:
     radial-gradient(
-      ellipse 70% 50% at 80% 20%,
-      rgba(240, 214, 210, 0.28) 0%,
-      transparent 65%
+      ellipse 75% 48% at 78% 48%,
+      rgba(240, 214, 210, 0.22) 0%,
+      transparent 70%
     ),
     linear-gradient(
       180deg,
-      rgba(250, 243, 241, 0.35) 0%,
-      rgba(243, 228, 226, 0.22) 48%,
-      rgba(250, 243, 241, 0.3) 100%
+      transparent 0%,
+      rgba(250, 243, 241, 0.28) 18%,
+      rgba(243, 228, 226, 0.2) 50%,
+      rgba(250, 243, 241, 0.26) 84%,
+      transparent 100%
     );
 }
 
@@ -1084,14 +1094,38 @@ body::before {
   @apply relative overflow-hidden text-ink;
   background-color: transparent;
   background-image:
-    radial-gradient(ellipse 70% 55% at 50% 0%, rgba(255, 250, 248, 0.55) 0%, transparent 65%),
-    radial-gradient(ellipse 40% 40% at 10% 80%, rgba(232, 180, 184, 0.18) 0%, transparent 55%),
-    linear-gradient(180deg, rgba(255, 250, 248, 0.28) 0%, transparent 36%),
+    radial-gradient(
+      ellipse 70% 50% at 50% 40%,
+      rgba(255, 250, 248, 0.32) 0%,
+      transparent 68%
+    ),
+    radial-gradient(
+      ellipse 42% 38% at 12% 70%,
+      rgba(232, 180, 184, 0.12) 0%,
+      transparent 58%
+    ),
     linear-gradient(
       180deg,
-      rgba(243, 228, 226, 0.45) 0%,
-      rgba(250, 243, 241, 0.22) 100%
+      transparent 0%,
+      rgba(243, 228, 226, 0.34) 18%,
+      rgba(250, 243, 241, 0.18) 52%,
+      rgba(243, 228, 226, 0.3) 84%,
+      transparent 100%
     );
+}
+
+/* Soft trust / stats strips — pearl lift that dissolves into neighbors */
+.section-trust {
+  position: relative;
+  background-color: transparent;
+  background-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(255, 250, 248, 0.55) 28%,
+    rgba(255, 255, 255, 0.48) 50%,
+    rgba(250, 243, 241, 0.4) 78%,
+    transparent 100%
+  );
 }
 
 .page-sections > section {
@@ -1104,22 +1138,24 @@ body::before {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: min(60%, 22rem);
+  width: min(52%, 18rem);
   height: 1px;
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(240, 214, 210, 0.65) 18%,
-    rgba(201, 107, 120, 0.4) 50%,
-    rgba(240, 214, 210, 0.65) 82%,
+    rgba(240, 214, 210, 0.4) 22%,
+    rgba(201, 107, 120, 0.22) 50%,
+    rgba(240, 214, 210, 0.4) 78%,
     transparent
   );
   pointer-events: none;
+  opacity: 0.7;
 }
 
 .page-sections > .section-premium-dark::before,
 .page-sections > .hero-editorial::before,
-.page-sections > .trust-bar-section::before {
+.page-sections > .trust-bar-section::before,
+.page-sections > .section-trust::before {
   display: none;
 }
 
@@ -1411,9 +1447,9 @@ body::before {
   letter-spacing: 0.03em;
 }
 
-/* Hero — full-bleed editorial */
+/* Hero — full-bleed editorial; canvas shows at edges / after image */
 .hero-editorial {
-  background-color: var(--surface-pearl);
+  background-color: transparent;
 }
 
 /* Avoid content-visibility — it breaks IntersectionObserver scroll reveals */
@@ -1508,18 +1544,25 @@ body::before {
   @apply flex items-center justify-center gap-2 text-sm font-medium text-muted;
 }
 
-/* Page hero for secondary routes — blends into the site canvas */
+/* Page hero for secondary routes — soft top bloom that dissolves into canvas */
 .page-hero {
   @apply relative overflow-hidden pt-14 pb-14 sm:pt-24 sm:pb-20;
   background-color: transparent;
   background-image:
-    radial-gradient(ellipse 75% 50% at 50% 0%, rgba(201, 107, 120, 0.14) 0%, transparent 65%),
-    radial-gradient(ellipse 40% 40% at 90% 20%, rgba(240, 214, 210, 0.38) 0%, transparent 55%),
-    radial-gradient(ellipse 35% 35% at 8% 60%, rgba(232, 180, 184, 0.14) 0%, transparent 50%),
+    radial-gradient(
+      ellipse 80% 55% at 50% 0%,
+      rgba(201, 107, 120, 0.1) 0%,
+      transparent 68%
+    ),
+    radial-gradient(
+      ellipse 42% 40% at 92% 28%,
+      rgba(240, 214, 210, 0.28) 0%,
+      transparent 60%
+    ),
     linear-gradient(
       180deg,
-      rgba(255, 250, 248, 0.55) 0%,
-      rgba(250, 243, 241, 0.2) 55%,
+      rgba(255, 250, 248, 0.42) 0%,
+      rgba(250, 243, 241, 0.14) 48%,
       transparent 100%
     );
 }
@@ -2133,5 +2176,120 @@ body::before {
   .floating-whatsapp:hover,
   .floating-whatsapp:active {
     transform: none;
+  }
+}
+
+/* ── Cookie consent (EU) ── */
+.cookie-consent {
+  position: fixed;
+  z-index: 80;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.75rem;
+  padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  pointer-events: none;
+}
+
+.cookie-consent__panel {
+  pointer-events: auto;
+  margin: 0 auto;
+  max-width: 36rem;
+  border: 1px solid rgba(232, 180, 184, 0.55);
+  border-radius: 1rem;
+  background: rgba(255, 250, 248, 0.97);
+  padding: 1rem 1.1rem 1.1rem;
+}
+
+.cookie-consent__title {
+  font-family: var(--font-display), serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.cookie-consent__text {
+  margin-top: 0.4rem;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.cookie-consent__link {
+  color: #b84a5e;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.cookie-consent__prefs {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.cookie-consent__check {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.8125rem;
+  color: var(--ink);
+}
+
+.cookie-consent__actions {
+  margin-top: 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.cookie-consent__btn {
+  min-height: 2.5rem;
+  border-radius: 999px;
+  padding: 0.45rem 0.95rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.cookie-consent__btn--primary {
+  background: #b84a5e;
+  color: #fff;
+}
+
+.cookie-consent__btn--primary:hover {
+  background: #9e3d4f;
+}
+
+.cookie-consent__btn--ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid rgba(184, 74, 94, 0.28);
+}
+
+.cookie-consent__btn--ghost:hover {
+  background: rgba(184, 74, 94, 0.06);
+}
+
+.cookie-consent-manage {
+  position: fixed;
+  z-index: 70;
+  left: 0.75rem;
+  bottom: calc(0.65rem + env(safe-area-inset-bottom, 0px));
+  min-height: 2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(232, 180, 184, 0.55);
+  background: rgba(255, 250, 248, 0.92);
+  padding: 0.3rem 0.7rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+@media (max-width: 1023px) {
+  .cookie-consent-manage {
+    bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
   }
 }

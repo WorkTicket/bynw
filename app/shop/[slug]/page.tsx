@@ -9,6 +9,7 @@ import MetaViewContent from "@/components/MetaViewContent"
 import ProductFinalCTA from "@/components/ProductFinalCTA"
 import { products, getProductBySlug } from "@/lib/products"
 import { parsePriceValue } from "@/lib/pricing"
+import { formatPromoEndLabel, isPromoActive } from "@/lib/offer"
 import { DEFAULT_OG_IMAGE } from "@/lib/site"
 import {
   createPageMetadata,
@@ -105,7 +106,7 @@ export default async function ProductPage({ params }: Props) {
         price={localizedProduct.price}
       />
 
-      <section className="relative overflow-x-clip bg-white pb-24 sm:pb-28 pt-10 sm:pt-14">
+      <section className="section-white relative overflow-x-clip pb-24 sm:pb-28 pt-10 sm:pt-14">
         <div className="section relative z-10">
           <div className="mx-auto max-w-6xl">
             <ScrollReveal>
@@ -143,9 +144,12 @@ export default async function ProductPage({ params }: Props) {
                         {localizedProduct.originalPrice}
                       </span>
                     )}
-                    {discount >= 50 && (
+                    {discount >= 40 && (
                       <span className="text-sm font-medium text-rose-600">
-                        −{discount}%
+                        {`−${discount}%`}
+                        {isPromoActive()
+                          ? ` · hasta ${formatPromoEndLabel()}`
+                          : ""}
                       </span>
                     )}
                   </div>

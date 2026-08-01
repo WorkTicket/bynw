@@ -2,6 +2,7 @@ import HotmartBuyButton from "@/components/HotmartBuyButton"
 import PaymentLogos from "@/components/PaymentLogos"
 import PetiteOrnament from "@/components/PetiteOrnament"
 import ScrollReveal from "@/components/ScrollReveal"
+import { formatDiscountBadge, promoUrgencyLine } from "@/lib/offer"
 
 type BuyProps = {
   href: string
@@ -29,20 +30,9 @@ export default function ProductFinalCTA({
   buyProps,
   discount = 0,
 }: Props) {
+  const discountBadge = formatDiscountBadge(discount)
   return (
     <section className="section-premium-dark section-padding relative overflow-hidden">
-      <div
-        className="pointer-events-none absolute inset-0"
-        aria-hidden="true"
-        style={{
-          background: `
-            radial-gradient(ellipse 55% 45% at 50% 0%, rgba(232, 180, 184, 0.22) 0%, transparent 60%),
-            radial-gradient(ellipse 40% 35% at 12% 85%, rgba(240, 214, 210, 0.35) 0%, transparent 55%),
-            radial-gradient(ellipse 35% 30% at 88% 70%, rgba(201, 107, 120, 0.1) 0%, transparent 50%)
-          `,
-        }}
-      />
-
       <div className="section relative">
         <ScrollReveal variant="scale">
           <div className="mx-auto max-w-xl text-center">
@@ -62,14 +52,14 @@ export default function ProductFinalCTA({
             </p>
             <p className="mx-auto mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
               {price}
-              {discount >= 40 ? (
+              {discountBadge ? (
                 <span className="ml-2 align-middle text-base font-medium text-rose-600 sm:text-lg">
-                  −{discount}%
+                  {discountBadge}
                 </span>
               ) : null}
             </p>
             <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-muted">
-              Acceso inmediato a la colección y a los bonos incluidos.
+              {promoUrgencyLine()}. Acceso inmediato a la colección y a los bonos.
             </p>
 
             <div className="mt-9 sm:mt-10">

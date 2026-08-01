@@ -1,6 +1,17 @@
 import { Metadata } from "next"
 import ScrollReveal from "@/components/ScrollReveal"
 import { createPageMetadata } from "@/lib/seo"
+import {
+  getLegalAddress,
+  getLegalIdentityLines,
+  LEGAL_CONTACT_EMAIL,
+  LEGAL_CONTACT_PHONE,
+  LEGAL_CONTROLLER_NAME,
+  LEGAL_COUNTRY,
+  LEGAL_HOSTING,
+  LEGAL_PAYMENT_PROCESSOR,
+  LEGAL_TRADE_NAME,
+} from "@/lib/business"
 
 export const metadata: Metadata = createPageMetadata({
   title: "Política de Privacidad",
@@ -10,6 +21,9 @@ export const metadata: Metadata = createPageMetadata({
 })
 
 export default function PrivacyPolicyPage() {
+  const address = getLegalAddress()
+  const identity = getLegalIdentityLines()
+
   return (
     <section className="page-hero pb-20">
       <div className="section relative z-10 max-w-3xl mx-auto">
@@ -26,9 +40,9 @@ export default function PrivacyPolicyPage() {
         <ScrollReveal delay={100}>
           <div className="prose-policy mt-12">
             <p>
-              En Manos Creativas Bynmw respetamos tu privacidad. Esta política
-              explica qué datos recopilamos, cómo los usamos y qué
-              derechos tienes al utilizar nuestro sitio web.
+              En {LEGAL_TRADE_NAME} respetamos tu privacidad. Esta política
+              explica qué datos recopilamos, cómo los usamos y qué derechos
+              tienes al utilizar nuestro sitio web.
             </p>
 
             <div className="border-t border-rose-100/50 pt-6">
@@ -36,12 +50,30 @@ export default function PrivacyPolicyPage() {
                 1. Responsable del tratamiento
               </h2>
               <p className="mt-2">
-                El responsable del tratamiento de tus datos es Manos Creativas Bynmw.
-                Puedes contactarnos en{" "}
-                <a href="mailto:bynw808@gmail.com" className="text-rose-600 hover:underline">
-                  bynw808@gmail.com
-                </a>{" "}
-                o por WhatsApp al +57 300 850 4709.
+                El responsable del tratamiento es {LEGAL_CONTROLLER_NAME}, que
+                opera bajo el nombre comercial {LEGAL_TRADE_NAME} ({LEGAL_COUNTRY}
+                ).
+              </p>
+              <ul className="mt-3 list-disc pl-6 space-y-1">
+                {identity.map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
+              {!address ? (
+                <p className="mt-3 text-sm text-muted">
+                  Para solicitar el domicilio postal completo con fines legales,
+                  escribe a{" "}
+                  <a
+                    href={`mailto:${LEGAL_CONTACT_EMAIL}`}
+                    className="text-rose-600 hover:underline"
+                  >
+                    {LEGAL_CONTACT_EMAIL}
+                  </a>
+                  .
+                </p>
+              ) : null}
+              <p className="mt-2">
+                WhatsApp: {LEGAL_CONTACT_PHONE}.
               </p>
             </div>
 
@@ -55,19 +87,20 @@ export default function PrivacyPolicyPage() {
                   electrónico (formulario de lead / Mailchimp).
                 </li>
                 <li>
-                  <strong>Compras:</strong> los datos de pago los gestiona Hotmart de
-                  forma segura; no almacenamos datos bancarios en nuestro sitio.
+                  <strong>Compras:</strong> los datos de pago los gestiona{" "}
+                  {LEGAL_PAYMENT_PROCESSOR}; no almacenamos datos bancarios en
+                  nuestro sitio.
                 </li>
                 <li>
                   <strong>Reseñas:</strong> nombre, ubicación opcional, valoración,
                   texto y foto opcional que envíes para publicar en el sitio.
                 </li>
                 <li>
-                  <strong>Navegación y publicidad:</strong> cookies y tecnologías
-                  similares de Google Analytics y Meta (Facebook) Pixel para
-                  medir visitas y optimizar anuncios; parámetros UTM /{" "}
-                  <code className="text-sm">fbclid</code> en la sesión del
-                  navegador para atribuir compras en Hotmart.
+                  <strong>Navegación y publicidad (solo con consentimiento):</strong>{" "}
+                  cookies de Google Analytics y Meta Pixel; parámetros UTM /{" "}
+                  <code className="text-sm">fbclid</code> en sessionStorage para
+                  atribuir compras en Hotmart; eventos de conversión enviados a
+                  Meta vía Pixel y Conversions API.
                 </li>
               </ul>
             </div>
@@ -79,8 +112,8 @@ export default function PrivacyPolicyPage() {
               <p className="mt-2">
                 Utilizamos tus datos para enviarte el patrón gratuito, gestionar
                 el boletín, publicar reseñas que envíes, medir el rendimiento del
-                sitio y de los anuncios, personalizar precios según país, mejorar
-                nuestros servicios y cumplir obligaciones legales derivadas de las
+                sitio y de los anuncios (con tu consentimiento), mejorar
+                nuestros servicios y cumplir obligaciones derivadas de las
                 compras.
               </p>
             </div>
@@ -89,13 +122,30 @@ export default function PrivacyPolicyPage() {
               <h2 className="font-display text-xl font-semibold text-ink">
                 4. Base legal y conservación
               </h2>
+              <ul className="mt-3 list-disc pl-6 space-y-2">
+                <li>
+                  <strong>Consentimiento:</strong> formularios, boletín, reseñas y
+                  cookies de analítica/publicidad.
+                </li>
+                <li>
+                  <strong>Ejecución de contrato:</strong> entrega de productos
+                  digitales y soporte de compra vía Hotmart.
+                </li>
+                <li>
+                  <strong>Interés legítimo:</strong> seguridad del sitio,
+                  prevención de abusos y operación técnica esencial (no incluye
+                  publicidad comportamental).
+                </li>
+              </ul>
               <p className="mt-2">
-                Tratamos tus datos con tu consentimiento al enviar un formulario,
-                suscribirte o publicar una reseña; por interés legítimo para
-                operar el sitio, prevenir abusos y medir audiencias; y para
-                cumplir contratos de compra a través de Hotmart. Conservamos los
-                datos mientras sea necesario para la finalidad indicada o mientras
-                no solicites su supresión.
+                Conservamos los datos mientras sea necesario para la finalidad
+                indicada o mientras no solicites su supresión, salvo plazos
+                legales de facturación. Las cookies se conservan según los plazos
+                descritos en la{" "}
+                <a href="/cookies-policy" className="text-rose-600 hover:underline">
+                  política de cookies
+                </a>
+                .
               </p>
             </div>
 
@@ -104,14 +154,18 @@ export default function PrivacyPolicyPage() {
                 5. Tus derechos
               </h2>
               <p className="mt-2">
-                Puedes acceder, rectificar, suprimir u oponerte al tratamiento de tus
-                datos, así como solicitar la limitación o portabilidad
+                Puedes acceder, rectificar, suprimir u oponerte al tratamiento de
+                tus datos, así como solicitar la limitación o portabilidad,
                 escribiéndonos a{" "}
-                <a href="mailto:bynw808@gmail.com" className="text-rose-600 hover:underline">
-                  bynw808@gmail.com
+                <a
+                  href={`mailto:${LEGAL_CONTACT_EMAIL}`}
+                  className="text-rose-600 hover:underline"
+                >
+                  {LEGAL_CONTACT_EMAIL}
                 </a>
-                . También puedes darte de baja del boletín en cualquier
-                momento desde el enlace incluido en nuestros correos electrónicos.
+                . También puedes retirar el consentimiento de cookies en
+                cualquier momento y darte de baja del boletín desde el enlace de
+                nuestros correos.
               </p>
             </div>
 
@@ -121,11 +175,23 @@ export default function PrivacyPolicyPage() {
               </h2>
               <p className="mt-2">
                 Compartimos datos con proveedores que nos ayudan a operar el
-                sitio: Mailchimp (boletín), Hotmart (pagos y entrega), Google
-                Analytics, Meta Platforms (pixel publicitario) y Cloudflare
-                (alojamiento y CDN). Cada uno aplica sus propias políticas de
-                privacidad. Aplicamos medidas razonables para proteger tu
-                información.
+                sitio: Mailchimp (boletín), {LEGAL_PAYMENT_PROCESSOR} (pagos y
+                entrega), Google Analytics, Meta Platforms (pixel y Conversions
+                API, solo con consentimiento) y {LEGAL_HOSTING} (alojamiento y
+                CDN). Cada uno aplica sus propias políticas. Aplicamos medidas
+                razonables para proteger tu información.
+              </p>
+            </div>
+
+            <div className="border-t border-rose-100/50 pt-6">
+              <h2 className="font-display text-xl font-semibold text-ink">
+                7. Legislación aplicable
+              </h2>
+              <p className="mt-2">
+                Esta política se interpreta conforme a la normativa aplicable de
+                protección de datos y comercio electrónico en {LEGAL_COUNTRY} y,
+                cuando corresponda, al Reglamento (UE) 2016/679 (RGPD) para
+                visitantes en el Espacio Económico Europeo.
               </p>
             </div>
           </div>

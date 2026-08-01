@@ -1,16 +1,22 @@
 "use client"
 
 import { usePathname, useSearchParams } from "next/navigation"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { captureAndPersistFromLocation } from "@/lib/ad-attribution"
+import {
+  CONSENT_UPDATED_EVENT,
+  hasAnalyticsConsent,
+  hasMarketingConsent,
+  readConsent,
+  type ConsentChoice,
+} from "@/lib/consent"
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID
 const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID
 
 /** Meta standard events we optimize Facebook ads against.
- * Purchase is NOT fired on-site — Hotmart's Pixel must emit it with the same
- * NEXT_PUBLIC_FB_PIXEL_ID (see .env.example checklist). Verify in Events Manager
- * after a test checkout: Purchase with value + EUR. If undercounted, add CAPI.
+ * Purchase: Hotmart Pixel + CAPI webhook (/api/webhooks/hotmart) + optional
+ * browser fire on /gracias with matching event_id (transaction).
  */
 const META_STANDARD = new Set([
   "PageView",
@@ -38,15 +44,25 @@ function isAdsPath(pathname: string | null) {
   return Boolean(pathname?.startsWith("/ads"))
 }
 
-function trackPageView(url: string) {
-  let gaOk = !GA_ID
-  let fbOk = !FB_PIXEL_ID
+function splitMetaParams(params?: Record<string, unknown>) {
+  if (!params) return { data: undefined as Record<string, unknown> | undefined, eventID: undefined as string | undefined }
+  const { eventID, event_id, ...rest } = params
+  const id =
+    (typeof eventID === "string" && eventID) ||
+    (typeof event_id === "string" && event_id) ||
+    undefined
+  return { data: rest, eventID: id }
+}
 
-  if (GA_ID && typeof window.gtag === "function") {
+function trackPageView(url: string, consent: ConsentChoice | null) {
+  let gaOk = !GA_ID || !hasAnalyticsConsent(consent)
+  let fbOk = !FB_PIXEL_ID || !hasMarketingConsent(consent)
+
+  if (hasAnalyticsConsent(consent) && GA_ID && typeof window.gtag === "function") {
     window.gtag("config", GA_ID, { page_path: url })
     gaOk = true
   }
-  if (FB_PIXEL_ID && typeof window.fbq === "function") {
+  if (hasMarketingConsent(consent) && FB_PIXEL_ID && typeof window.fbq === "function") {
     window.fbq("track", "PageView")
     fbOk = true
   }
@@ -54,18 +70,21 @@ function trackPageView(url: string) {
 }
 
 /** Retry until gtag/fbq are ready so the first landing PageView is never dropped. */
-function trackPageViewWhenReady(url: string, onDone: () => void) {
-  if (trackPageView(url)) {
+function trackPageViewWhenReady(
+  url: string,
+  consent: ConsentChoice | null,
+  onDone: () => void
+) {
+  if (trackPageView(url, consent)) {
     onDone()
     return () => {}
   }
 
   let attempts = 0
-  // Idle/interaction deferred load — allow ~20s so first PageView isn't dropped
   const maxAttempts = 100
   const id = window.setInterval(() => {
     attempts += 1
-    if (trackPageView(url) || attempts >= maxAttempts) {
+    if (trackPageView(url, consent) || attempts >= maxAttempts) {
       window.clearInterval(id)
       onDone()
     }
@@ -74,10 +93,6 @@ function trackPageViewWhenReady(url: string, onDone: () => void) {
   return () => window.clearInterval(id)
 }
 
-/**
- * Fire a Meta (+ optional GA) event once fbq/gtag are ready.
- * Critical for ViewContent on cold ad landings where the pixel may still be injecting.
- */
 function whenTrackersReady(
   fire: () => boolean,
   onDone?: () => void
@@ -100,16 +115,20 @@ function whenTrackersReady(
   return () => window.clearInterval(id)
 }
 
-/** GA + Meta (auto: standard track vs trackCustom). */
+/** GA + Meta (auto: standard track vs trackCustom). Respects consent. */
 export function trackEvent(name: string, params?: Record<string, unknown>) {
-  if (GA_ID && typeof window.gtag === "function") {
-    window.gtag("event", name, params)
+  const consent = readConsent()
+  const { data, eventID } = splitMetaParams(params)
+
+  if (hasAnalyticsConsent(consent) && GA_ID && typeof window.gtag === "function") {
+    window.gtag("event", name, data || params)
   }
-  if (FB_PIXEL_ID && typeof window.fbq === "function") {
+  if (hasMarketingConsent(consent) && FB_PIXEL_ID && typeof window.fbq === "function") {
     if (META_STANDARD.has(name)) {
-      window.fbq("track", name, params)
+      if (eventID) window.fbq("track", name, data, { eventID })
+      else window.fbq("track", name, data)
     } else {
-      window.fbq("trackCustom", name, params)
+      window.fbq("trackCustom", name, data || params)
     }
   }
 }
@@ -120,16 +139,22 @@ export function trackMetaStandard(
   params?: Record<string, unknown>
 ): () => void {
   const gaName = GA_EVENT_MAP[name] || name
+  const { data, eventID } = splitMetaParams(params)
   let gaSent = !GA_ID
   let fbSent = !FB_PIXEL_ID
 
   return whenTrackersReady(() => {
-    if (!gaSent && typeof window.gtag === "function") {
-      window.gtag("event", gaName, params)
+    const consent = readConsent()
+    if (!hasAnalyticsConsent(consent)) gaSent = true
+    if (!hasMarketingConsent(consent)) fbSent = true
+
+    if (!gaSent && hasAnalyticsConsent(consent) && typeof window.gtag === "function") {
+      window.gtag("event", gaName, data || params)
       gaSent = true
     }
-    if (!fbSent && typeof window.fbq === "function") {
-      window.fbq("track", name, params)
+    if (!fbSent && hasMarketingConsent(consent) && typeof window.fbq === "function") {
+      if (eventID) window.fbq("track", name, data, { eventID })
+      else window.fbq("track", name, data)
       fbSent = true
     }
     return gaSent && fbSent
@@ -147,11 +172,8 @@ declare global {
 
 type AttrBinding = {
   attr: string
-  /** Meta event name */
   meta: string
-  /** Optional GA event override */
   ga?: string
-  /** Read commerce fields from data-* on the element */
   commerce?: boolean
 }
 
@@ -182,13 +204,15 @@ function injectGa() {
   if (typeof window.gtag === "function") return
 
   window.dataLayer = window.dataLayer || []
-  // Match gtag's Arguments object shape used by GA
   window.gtag = function gtag() {
     // eslint-disable-next-line prefer-rest-params
     window.dataLayer?.push(arguments)
   }
   window.gtag("js", new Date())
-  window.gtag("config", GA_ID, { send_page_view: false })
+  window.gtag("config", GA_ID, {
+    send_page_view: false,
+    anonymize_ip: true,
+  })
 
   if (document.querySelector(`script[src*="googletagmanager.com/gtag/js"]`)) return
   const s = document.createElement("script")
@@ -201,7 +225,6 @@ function injectFb() {
   if (!FB_PIXEL_ID || typeof window === "undefined") return
   if (typeof window.fbq === "function") return
 
-  // Standard Meta pixel bootstrap — queues calls until fbevents.js loads
   type FbqFn = ((...args: unknown[]) => void) & {
     callMethod?: (...args: unknown[]) => void
     queue: unknown[]
@@ -234,8 +257,7 @@ function injectFb() {
 
 /**
  * Organic pages: load after LCP (idle ≤2.5s or first gesture).
- * Paid `/ads` landers: load immediately — Meta Test Events + cold traffic need
- * PageView/ViewContent before bounce.
+ * Paid `/ads` landers: load immediately once consent granted.
  */
 function scheduleAnalyticsLoad(load: () => void, eager: boolean) {
   if (eager) {
@@ -283,30 +305,45 @@ export default function Analytics() {
   const searchParams = useSearchParams()
   const tracked = useRef<string | null>(null)
   const eagerAds = isAdsPath(pathname)
+  const [consent, setConsent] = useState<ConsentChoice | null>(null)
 
   useEffect(() => {
-    if (!GA_ID && !FB_PIXEL_ID) return
+    setConsent(readConsent())
+    const onUpdate = (e: Event) => {
+      const detail = (e as CustomEvent<ConsentChoice>).detail
+      setConsent(detail || readConsent())
+      tracked.current = null
+    }
+    window.addEventListener(CONSENT_UPDATED_EVENT, onUpdate)
+    return () => window.removeEventListener(CONSENT_UPDATED_EVENT, onUpdate)
+  }, [])
+
+  useEffect(() => {
+    if (!consent) return
+    const wantGa = hasAnalyticsConsent(consent) && Boolean(GA_ID)
+    const wantFb = hasMarketingConsent(consent) && Boolean(FB_PIXEL_ID)
+    if (!wantGa && !wantFb) return
+
     return scheduleAnalyticsLoad(() => {
-      injectGa()
-      injectFb()
+      if (wantGa) injectGa()
+      if (wantFb) injectFb()
     }, eagerAds)
-  }, [eagerAds])
+  }, [eagerAds, consent])
 
   useEffect(() => {
-    // Persist UTM/fbclid on first landing so Hotmart checkout can inherit them.
     if (searchParams) {
       captureAndPersistFromLocation(searchParams)
     }
 
+    if (!consent) return
+    if (!hasAnalyticsConsent(consent) && !hasMarketingConsent(consent)) return
+
     const url = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : "")
     if (tracked.current === url) return
 
-    // Mark pending so SPA navigations don't double-fire while scripts load.
     tracked.current = url
-    return trackPageViewWhenReady(url, () => {
-      // Keep tracked.current = url (already set)
-    })
-  }, [pathname, searchParams])
+    return trackPageViewWhenReady(url, consent, () => {})
+  }, [pathname, searchParams, consent])
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -320,15 +357,9 @@ export default function Analytics() {
           : { event_label: label, event_category: "engagement" }
 
         if (META_STANDARD.has(binding.meta)) {
-          // Retries until fbq/gtag exist — critical on fast tap after ad click.
           trackMetaStandard(binding.meta, params)
         } else {
-          if (GA_ID && typeof window.gtag === "function") {
-            window.gtag("event", binding.ga || binding.meta, params)
-          }
-          if (FB_PIXEL_ID && typeof window.fbq === "function") {
-            window.fbq("trackCustom", binding.meta, params)
-          }
+          trackEvent(binding.meta, params)
         }
       }
     }

@@ -1,6 +1,15 @@
 import { Metadata } from "next"
 import ScrollReveal from "@/components/ScrollReveal"
 import { createPageMetadata } from "@/lib/seo"
+import {
+  LEGAL_CONTACT_EMAIL,
+  LEGAL_CONTROLLER_NAME,
+  LEGAL_COUNTRY,
+  LEGAL_PAYMENT_PROCESSOR,
+  LEGAL_TRADE_NAME,
+  getLegalAddress,
+} from "@/lib/business"
+import { formatPromoEndLabel, isPromoActive } from "@/lib/offer"
 
 export const metadata: Metadata = createPageMetadata({
   title: "Términos y Condiciones",
@@ -10,6 +19,10 @@ export const metadata: Metadata = createPageMetadata({
 })
 
 export default function TermsPage() {
+  const address = getLegalAddress()
+  const promoActive = isPromoActive()
+  const promoEnd = formatPromoEndLabel()
+
   return (
     <section className="page-hero pb-20">
       <div className="section relative z-10 max-w-3xl mx-auto">
@@ -33,6 +46,9 @@ export default function TermsPage() {
                 Al acceder y utilizar este sitio web, aceptas cumplir con estos
                 términos y condiciones. Si no estás de acuerdo con alguna
                 parte de estos términos, no debes utilizar nuestro sitio.
+                El responsable comercial es {LEGAL_CONTROLLER_NAME}, que opera
+                como {LEGAL_TRADE_NAME} ({LEGAL_COUNTRY}
+                {address ? `; ${address}` : ""}).
               </p>
             </div>
 
@@ -41,7 +57,7 @@ export default function TermsPage() {
                 2. Productos digitales
               </h2>
               <p className="mt-2">
-                Todos los productos ofrecidos en Manos Creativas Bynmw son
+                Todos los productos ofrecidos en {LEGAL_TRADE_NAME} son
                 archivos digitales en formato PDF. Una vez realizada la compra,
                 recibirás un enlace de descarga por correo electrónico (e-mail) a través
                 de Hotmart.
@@ -60,10 +76,14 @@ export default function TermsPage() {
               </h2>
               <p className="mt-2">
                 Los precios se muestran en euros (€) e incluyen los impuestos
-                aplicables cuando corresponda. Los pagos se procesan a través de
-                Hotmart, una plataforma segura de pagos. No almacenamos
-                información de tarjetas de crédito ni datos bancarios en nuestro
-                sitio.
+                aplicables cuando corresponda. El precio tachado es el precio de
+                referencia del catálogo antes de la promoción vigente
+                {promoActive
+                  ? ` (válida hasta el ${promoEnd}, hora de Madrid)`
+                  : ""}
+                . Los pagos se procesan a través de {LEGAL_PAYMENT_PROCESSOR}.
+                No almacenamos información de tarjetas de crédito ni datos
+                bancarios en nuestro sitio.
               </p>
             </div>
 
@@ -74,10 +94,11 @@ export default function TermsPage() {
               <p className="mt-2">
                 Todo el contenido de este sitio web, incluyendo pero no limitado
                 a patrones, imágenes, textos y logotipos, es propiedad
-                exclusiva de Manos Creativas Bynmw y está protegido por las
-                leyes de propiedad intelectual. Las referencias a personajes o
-                marcas de terceros se usan únicamente con fines descriptivos de
-                los patrones artesanales.
+                exclusiva de {LEGAL_TRADE_NAME} y está protegido por las
+                leyes de propiedad intelectual. Los nombres de las colecciones
+                son descriptivos genéricos (por ejemplo, «princesas de cuento»,
+                «flores eternas»). No reivindicamos afiliación, patrocinio ni
+                licencia de marcas de terceros.
               </p>
             </div>
 
@@ -86,7 +107,7 @@ export default function TermsPage() {
                 5. Limitación de responsabilidad
               </h2>
               <p className="mt-2">
-                Manos Creativas Bynmw no se hace responsable de los resultados
+                {LEGAL_TRADE_NAME} no se hace responsable de los resultados
                 obtenidos al utilizar nuestros patrones. La técnica de crochet o ganchillo
                 depende de la habilidad individual de cada artesana. El acceso
                 a los archivos digitales es de por vida una vez confirmada la
@@ -117,8 +138,8 @@ export default function TermsPage() {
                   +57 300 850 4709
                 </a>{" "}
                 o por correo a{" "}
-                <a href="mailto:bynw808@gmail.com" className="text-rose-600 hover:underline">
-                  bynw808@gmail.com
+                <a href={`mailto:${LEGAL_CONTACT_EMAIL}`} className="text-rose-600 hover:underline">
+                  {LEGAL_CONTACT_EMAIL}
                 </a>
                 .
               </p>

@@ -6,6 +6,7 @@ import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import FloatingWhatsApp from "@/components/FloatingWhatsApp"
 import Analytics from "@/components/Analytics"
+import CookieConsent from "@/components/CookieConsent"
 import StickyMobileCTA from "@/components/StickyMobileCTA"
 import {
   SITE_URL,
@@ -158,18 +159,7 @@ export default async function RootLayout({
         <Footer />
         <FloatingWhatsApp />
         <StickyMobileCTA />
-        {process.env.NEXT_PUBLIC_FB_PIXEL_ID ? (
-          <noscript>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              height={1}
-              width={1}
-              style={{ display: "none" }}
-              src={`https://www.facebook.com/tr?id=${process.env.NEXT_PUBLIC_FB_PIXEL_ID}&ev=PageView&noscript=1`}
-              alt=""
-            />
-          </noscript>
-        ) : null}
+        <CookieConsent />
       </body>
     </html>
   )

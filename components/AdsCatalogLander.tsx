@@ -39,7 +39,7 @@ export default function AdsCatalogLander({ reviews }: Props) {
 
   return (
     <>
-      <section className="hero-editorial relative min-h-[min(88svh,48rem)] overflow-hidden bg-[#fffaf8] sm:min-h-[min(90svh,50rem)]">
+      <section className="hero-editorial relative min-h-[min(88svh,48rem)] overflow-hidden sm:min-h-[min(90svh,50rem)]">
         <div className="absolute inset-0">
           <div className="absolute inset-0 hero-image-drift origin-center scale-[1.04]">
             <Image
@@ -56,8 +56,14 @@ export default function AdsCatalogLander({ reviews }: Props) {
             className="pointer-events-none absolute inset-0 lg:hidden"
             style={{
               background: `
-                linear-gradient(to top, #fffaf8 0%, rgba(255,250,248,0.96) 18%, rgba(255,250,248,0.55) 42%, transparent 68%),
-                linear-gradient(to bottom, rgba(255,250,248,0.88) 0%, transparent 28%)
+                linear-gradient(
+                  to top,
+                  rgba(250,243,241,0.92) 0%,
+                  rgba(255,250,248,0.9) 20%,
+                  rgba(255,250,248,0.55) 42%,
+                  transparent 68%
+                ),
+                linear-gradient(to bottom, rgba(255,250,248,0.85) 0%, transparent 26%)
               `,
             }}
           />
@@ -75,6 +81,12 @@ export default function AdsCatalogLander({ reviews }: Props) {
                   rgba(255,250,248,0.4) 62%,
                   rgba(255,250,248,0.1) 74%,
                   transparent 86%
+                ),
+                linear-gradient(
+                  180deg,
+                  transparent 72%,
+                  rgba(250,243,241,0.35) 88%,
+                  rgba(250,243,241,0.72) 100%
                 )
               `,
             }}
@@ -136,7 +148,7 @@ export default function AdsCatalogLander({ reviews }: Props) {
         </div>
       </section>
 
-      <section className="border-y border-rose-100/70 bg-white">
+      <section className="section-trust">
         <div className="section py-5 sm:py-6">
           <ul className="mx-auto flex max-w-4xl flex-wrap items-center justify-center gap-x-6 gap-y-3">
             {TRUST.map((t) => (

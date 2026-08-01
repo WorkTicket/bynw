@@ -1,6 +1,10 @@
 import { Metadata } from "next"
 import ScrollReveal from "@/components/ScrollReveal"
 import { createPageMetadata } from "@/lib/seo"
+import {
+  LEGAL_CONTACT_EMAIL,
+  LEGAL_TRADE_NAME,
+} from "@/lib/business"
 
 export const metadata: Metadata = createPageMetadata({
   title: "Política de Cookies",
@@ -26,9 +30,11 @@ export default function CookiesPolicyPage() {
         <ScrollReveal delay={100}>
           <div className="prose-policy mt-12">
             <p>
-              Esta Política de Cookies explica qué son las cookies y cómo las
-              utilizamos en Manos Creativas Bynmw. Al continuar navegando,
-              aceptas el uso de cookies de acuerdo con esta política.
+              Esta Política de Cookies explica qué cookies y tecnologías similares
+              usa {LEGAL_TRADE_NAME}. Las cookies no esenciales (analítica y
+              publicidad) solo se activan si das tu consentimiento explícito
+              mediante el banner de cookies. Puedes cambiar tu elección en
+              cualquier momento con el botón «Cookies» de la esquina inferior.
             </p>
 
             <div className="border-t border-rose-100/50 pt-6">
@@ -37,46 +43,63 @@ export default function CookiesPolicyPage() {
               </h2>
               <p className="mt-2">
                 Las cookies son pequeños archivos de texto que se almacenan en tu
-                dispositivo cuando visitas un sitio web. Se utilizan ampliamente para
-                hacer que los sitios web funcionen de manera más eficiente y
-                proporcionar información a los propietarios del sitio.
+                dispositivo cuando visitas un sitio web. Se utilizan para hacer
+                que el sitio funcione, recordar preferencias y —solo con tu
+                permiso— medir visitas y optimizar anuncios.
               </p>
             </div>
 
             <div className="border-t border-rose-100/50 pt-6">
               <h2 className="font-display text-xl font-semibold text-ink">
-                Cookies que utilizamos
+                Cookies y tecnologías que utilizamos
               </h2>
               <ul className="mt-3 list-disc pl-6 space-y-2">
                 <li>
+                  <strong>Necesarias:</strong> preferencia de consentimiento
+                  (`cookie_consent_v1` en localStorage, conservación ~12 meses) y
+                  funcionamiento básico del sitio. No requieren consentimiento.
+                </li>
+                <li>
                   <strong>Analítica — Google Analytics (GA4):</strong> mide
-                  visitas, páginas vistas y eventos (por ejemplo, clics en compra).
+                  visitas, páginas vistas y eventos. Solo con consentimiento de
+                  analítica. Conservación típica de cookies GA: hasta 24 meses
+                  (según configuración de Google).
                 </li>
                 <li>
                   <strong>Publicidad — Meta Pixel (Facebook):</strong> mide
-                  PageView, ViewContent, InitiateCheckout, Lead y Contact para
-                  optimizar anuncios. Hotmart también puede usar el mismo pixel
-                  para el evento Purchase tras el pago.
+                  PageView, ViewContent, InitiateCheckout, Lead, Contact y
+                  Purchase (también vía Hotmart y Conversions API) para optimizar
+                  anuncios. Solo con consentimiento de publicidad. Cookies Meta
+                  habituales: hasta 90 días (`_fbp` / `_fbc`).
                 </li>
                 <li>
-                  <strong>Almacenamiento de sesión:</strong> parámetros UTM y{" "}
-                  <code className="text-sm">fbclid</code> en sessionStorage para
-                  atribuir el origen del tráfico al checkout de Hotmart.
+                  <strong>Sesión de atribución:</strong> parámetros UTM y{" "}
+                  <code className="text-sm">fbclid</code> en sessionStorage
+                  (caduca al cerrar la pestaña) para atribuir el origen del
+                  tráfico al checkout de Hotmart. No es una cookie de terceros.
                 </li>
               </ul>
             </div>
 
             <div className="border-t border-rose-100/50 pt-6">
               <h2 className="font-display text-xl font-semibold text-ink">
-                Control de cookies
+                Cómo gestionar tu consentimiento
               </h2>
               <p className="mt-2">
-                Puedes controlar o eliminar las cookies desde la configuración de
-                tu navegador. Si bloqueas cookies de terceros, algunas funciones
-                de medición y publicidad dejarán de funcionar correctamente. Más
-                información en{" "}
+                Usa el banner al llegar al sitio (Aceptar todas / Rechazar /
+                Preferencias) o el botón «Cookies» en cualquier momento. También
+                puedes bloquear cookies de terceros desde tu navegador. Si
+                rechazas analítica o publicidad, esas herramientas no se cargan.
+                Más información en{" "}
                 <a href="/privacy-policy" className="text-rose-600 hover:underline">
                   nuestra política de privacidad
+                </a>
+                . Contacto:{" "}
+                <a
+                  href={`mailto:${LEGAL_CONTACT_EMAIL}`}
+                  className="text-rose-600 hover:underline"
+                >
+                  {LEGAL_CONTACT_EMAIL}
                 </a>
                 .
               </p>
