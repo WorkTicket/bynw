@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import ReviewForm from "@/components/ReviewForm"
 import PetiteOrnament from "@/components/PetiteOrnament"
 import PrimaryCTA from "@/components/PrimaryCTA"
@@ -19,10 +19,40 @@ type Props = {
   initialReviews: Review[]
 }
 
-/** Full testimonials page: photo wall + review list + leave-a-review form. */
+function RatingStars({
+  value,
+  size,
+  className,
+}: {
+  value: number
+  size: number
+  className?: string
+}) {
+  const filled = Math.round(value)
+  return (
+    <div
+      className={className}
+      aria-label={`${value.toFixed(1)} de 5 estrellas`}
+    >
+      {Array.from({ length: 5 }).map((_, idx) => (
+        <StarIcon
+          key={idx}
+          className={idx < filled ? "text-rose-400" : "text-rose-100"}
+          size={size}
+        />
+      ))}
+    </div>
+  )
+}
+
+/** Full testimonials page: live counts, photo wall, reviews, form. */
 export default function TestimonialsLive({ initialReviews }: Props) {
   const [reviews, setReviews] = useState(initialReviews)
   const shuffleSeed = dailyShuffleSeed("testimonials-page")
+
+  useEffect(() => {
+    setReviews(initialReviews)
+  }, [initialReviews])
 
   const aggregate = useMemo(() => computeAggregate(reviews), [reviews])
   const photoReviews = useMemo(
@@ -52,36 +82,73 @@ export default function TestimonialsLive({ initialReviews }: Props) {
 
   return (
     <>
-      {/* Trust strip */}
+      <section className="page-hero">
+        <div className="section relative z-10 text-center">
+          <ScrollReveal>
+            <p className="font-script text-[2rem] text-rose-500 sm:text-[2.25rem]">
+              Manos Creativas Bynmw
+            </p>
+            <span className="eyebrow mt-5">Testimonios</span>
+            <h1 className="mt-4">
+              Artesanas que{" "}
+              <span className="gradient-text-rose italic">tejen con nosotras</span>
+            </h1>
+            <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
+              Reseñas y fotos reales de clientas. Lee las suyas y, si quieres,
+              deja la tuya con una foto de tu tejido.
+            </p>
+
+            <div className="mx-auto mt-7 flex flex-col items-center gap-2">
+              <RatingStars
+                value={aggregate.ratingValue}
+                size={18}
+                className="flex items-center gap-1"
+              />
+              <p className="text-sm text-muted" aria-live="polite">
+                <span className="font-semibold text-ink">{aggregate.display}</span>
+                {" · "}
+                {aggregate.reviewCount} reseñas
+              </p>
+            </div>
+
+            <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4">
+              <PrimaryCTA href="#testimonios-lista">Ver reseñas</PrimaryCTA>
+              <a
+                href="#dejar-resena"
+                className="text-sm font-medium text-ink/60 transition-colors hover:text-rose-600"
+              >
+                Dejar mi reseña
+              </a>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* Trust strip — same live aggregate as hero */}
       <section className="border-y border-rose-100/70 bg-[linear-gradient(180deg,#fffaf8_0%,#fff_100%)]">
         <div className="section flex flex-wrap items-center justify-center gap-x-10 gap-y-4 py-6 text-center sm:gap-x-14 sm:py-7">
           <div>
-            <p className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+            <p
+              className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl"
+              aria-live="polite"
+            >
               {aggregate.display}
             </p>
-            <div
+            <RatingStars
+              value={aggregate.ratingValue}
+              size={14}
               className="mt-1.5 flex items-center justify-center gap-0.5"
-              aria-label={`${aggregate.display} de 5 estrellas`}
-            >
-              {Array.from({ length: 5 }).map((_, idx) => (
-                <StarIcon
-                  key={idx}
-                  className={
-                    idx < Math.round(aggregate.ratingValue)
-                      ? "text-rose-400"
-                      : "text-rose-100"
-                  }
-                  size={14}
-                />
-              ))}
-            </div>
+            />
             <p className="mt-1.5 text-[11px] uppercase tracking-[0.14em] text-muted">
               Valoración media
             </p>
           </div>
           <span className="hidden h-10 w-px bg-rose-200/70 sm:block" aria-hidden />
           <div>
-            <p className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+            <p
+              className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl"
+              aria-live="polite"
+            >
               {aggregate.reviewCount}
             </p>
             <p className="mt-1.5 text-[11px] uppercase tracking-[0.14em] text-muted">
@@ -90,7 +157,10 @@ export default function TestimonialsLive({ initialReviews }: Props) {
           </div>
           <span className="hidden h-10 w-px bg-rose-200/70 sm:block" aria-hidden />
           <div>
-            <p className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+            <p
+              className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl"
+              aria-live="polite"
+            >
               {photoReviews.length}
             </p>
             <p className="mt-1.5 text-[11px] uppercase tracking-[0.14em] text-muted">
