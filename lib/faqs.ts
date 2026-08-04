@@ -19,10 +19,6 @@ export const faqs = [
     q: "¿Hay garantía de satisfacción?",
     a: "Sí. Tienes 7 días para pedir la devolución si los patrones no encajan contigo.",
   },
-  {
-    q: "¿Tenéis soporte si tengo dudas?",
-    a: "Sí. Natalia responde por WhatsApp en menos de 24h si te atascas con algún patrón o técnica.",
-  },
 ] as const
 
 export const faqJsonLd = {

@@ -16,7 +16,7 @@ const bonuses = [
   {
     icon: (c: string) => <MessageCircleIcon className={c} size={20} />,
     title: "Soporte WhatsApp",
-    desc: "Natalia te acompaña personalmente cuando lo necesites",
+    desc: "Natalia te acompañara si tienes dudas o preguntas sobre tu acceso o proceso de compra",
   },
 ]
 

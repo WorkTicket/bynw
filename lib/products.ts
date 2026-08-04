@@ -41,7 +41,7 @@ export const products: Product[] = [
     description:
       "Más de 200 patrones de princesas de cuento en PDF, con instrucciones claras y fotos en cada paso. Ideal para principiantes que quieren muñecas con vestidos, peinados y detalles limpios.",
     specs:
-      "Contenido: más de 200 patrones de princesas de cuento.\nIdioma: español.\nFormato: PDF descargable e imprimible.\nGuía paso a paso con fotos en alta resolución.\nEntrega: acceso inmediato por correo electrónico (e-mail) en cuanto se confirme el pago.\nIncluye vídeos para principiantes (abreviaturas e interpretación de patrones).",
+      "Contenido: más de 200 patrones de princesas de cuento.\nIdioma: español.\nFormato: PDF descargable e imprimible.\nGuía paso a paso con fotos en alta resolución.\nEntrega: acceso inmediato por correo electrónico (e-mail) en cuanto se confirme el pago.\nIncluye vídeos para principiantes (aprenderás como leer abreviaturas en un tejido de crochet para que así puedas leer correctamente tus patrones)",
     caption: "Y muchos diseños exclusivos más…",
     images: [
       "imagen-2.webp",
@@ -112,7 +112,7 @@ export const products: Product[] = [
     description:
       "Más de 200 patrones de flores eternas: tulipanes, girasoles, rosas, cactus y ramos listos para regalar o vender. Fotos paso a paso y vídeo para montar con papel coreano.",
     specs:
-      "Contenido: más de 200 patrones (tulipanes, girasoles, margaritas, rosas, cactus, azucenas, claveles, lirios, orquídeas, macetas y más).\nFormato: PDF descargable e imprimible.\nGuía visual paso a paso con fotos.\nIdioma: español.\nIncluye vídeo para montar ramos con papel coreano.\nIncluye vídeos para principiantes (abreviaturas e interpretación de patrones).",
+      "Contenido: más de 200 patrones (tulipanes, girasoles, margaritas, rosas, cactus, azucenas, claveles, lirios, orquídeas, macetas y más).\nFormato: PDF descargable e imprimible.\nGuía visual paso a paso con fotos.\nIdioma: español.\nIncluye vídeo para montar ramos con papel coreano.\nIncluye vídeos para principiantes (aprenderás como leer abreviaturas en un tejido de crochet para que así puedas leer correctamente tus patrones)",
     caption: "Y muchos diseños exclusivos más…",
     images: [
       "imagen-8.webp",
@@ -171,7 +171,7 @@ export const products: Product[] = [
     description:
       "Más de 100 amigurumis en chenille con textura suave y explicaciones claras. Perfectos para regalos rápidos o piezas para vender con acabado premium.",
     specs:
-      "Contenido: más de 100 patrones únicos.\nFormato: PDF descargable e imprimible.\nGuía visual paso a paso con fotos.\nIdioma: español.\nIncluye vídeos para principiantes (abreviaturas e interpretación de patrones).",
+      "Contenido: más de 100 patrones únicos.\nFormato: PDF descargable e imprimible.\nGuía visual paso a paso con fotos.\nIdioma: español.\nIncluye vídeos para principiantes (aprenderás como leer abreviaturas en un tejido de crochet para que así puedas leer correctamente tus patrones)",
     caption: "Y muchos diseños exclusivos más…",
     images: [
       "imagen-12.webp",
@@ -224,7 +224,7 @@ export const products: Product[] = [
     description:
       "25 muñecas premium con rostros, peinados y vestuario detallados. Guía visual de alta resolución para acabados de tienda, incluso si aún estás aprendiendo.",
     specs:
-      "Contenido: 25 patrones digitales de Muñecas Premium.\nIdioma: Español.\nFormato: Archivos PDF descargables e imprimibles.\nMetodología: Guía paso a paso con soporte visual de alta resolución.\nEntrega: Acceso inmediato a tu correo electrónico (e-mail) tras la confirmación de pago.\nIncluye vídeos para principiantes (abreviaturas e interpretación de patrones).",
+      "Contenido: 25 patrones digitales de Muñecas Premium.\nIdioma: Español.\nFormato: Archivos PDF descargables e imprimibles.\nMetodología: Guía paso a paso con soporte visual de alta resolución.\nEntrega: Acceso inmediato a tu correo electrónico (e-mail) tras la confirmación de pago.\nIncluye vídeos para principiantes (aprenderás como leer abreviaturas en un tejido de crochet para que así puedas leer correctamente tus patrones)",
     caption: "Y muchos diseños exclusivos más…",
     images: ["n2-1.webp", "n2-1-2.webp", "n2-1-3.webp"],
     bonusImage: "n2-2.webp",
@@ -266,7 +266,7 @@ export const products: Product[] = [
     description:
       "Más de 18 patrones de santos y ángeles para regalo espiritual, altares o venta en temporada. Instrucciones claras y acabados delicados.",
     specs:
-      "Contenido: Más de 18 patrones digitales de Santos y Ángeles Premium en crochet o ganchillo.\nIdioma: Español.\nFormato: Archivos PDF descargables e imprimibles.\nMetodología: Guía paso a paso con soporte visual de alta resolución.\nEntrega: Acceso inmediato a tu correo electrónico (e-mail) tras la confirmación de pago.\nIncluye vídeos para principiantes (abreviaturas e interpretación de patrones).",
+      "Contenido: Más de 18 patrones digitales de Santos y Ángeles Premium en crochet o ganchillo.\nIdioma: Español.\nFormato: Archivos PDF descargables e imprimibles.\nMetodología: Guía paso a paso con soporte visual de alta resolución.\nEntrega: Acceso inmediato a tu correo electrónico (e-mail) tras la confirmación de pago.\nIncluye vídeos para principiantes (aprenderás como leer abreviaturas en un tejido de crochet para que así puedas leer correctamente tus patrones)",
     caption: "Y muchos diseños exclusivos más…",
     images: ["n2-5.webp", "n2-5-1.webp"],
     bonusImage: "n2-6.webp",
@@ -306,7 +306,7 @@ export const products: Product[] = [
     description:
       "Más de 145 patrones navideños: adornos, personajes de temporada y regalos para tejer o vender en Navidad. PDF listos para imprimir.",
     specs:
-      "Contenido: Más de 145 patrones digitales de Navidad Premium en crochet o ganchillo.\nIdioma: Español.\nFormato: Archivos PDF descargables e imprimibles.\nMetodología: Guía paso a paso con soporte visual de alta resolución.\nEntrega: Acceso inmediato a tu correo electrónico (e-mail) tras la confirmación de pago.\nIncluye vídeos para principiantes (abreviaturas e interpretación de patrones).",
+      "Contenido: Más de 145 patrones digitales de Navidad Premium en crochet o ganchillo.\nIdioma: Español.\nFormato: Archivos PDF descargables e imprimibles.\nMetodología: Guía paso a paso con soporte visual de alta resolución.\nEntrega: Acceso inmediato a tu correo electrónico (e-mail) tras la confirmación de pago.\nIncluye vídeos para principiantes (aprenderás como leer abreviaturas en un tejido de crochet para que así puedas leer correctamente tus patrones)",
     caption: "Y muchos diseños exclusivos más…",
     images: ["n2-9.webp", "n2-9-1.webp", "n2-9-2.webp"],
     bonusImage: "",
@@ -346,7 +346,7 @@ export const products: Product[] = [
     description:
       "98 patrones de Halloween fáciles y vendibles: calabazas, fantasmas, brujas y adornos de temporada con fotos paso a paso.",
     specs:
-      "Contenido: 98 patrones digitales de Halloween Premium en crochet o ganchillo.\nIdioma: Español.\nFormato: Archivos PDF descargables e imprimibles.\nMetodología: Guía paso a paso con soporte visual de alta resolución.\nEntrega: Acceso inmediato a tu correo electrónico (e-mail) tras la confirmación de pago.\nIncluye vídeos para principiantes (abreviaturas e interpretación de patrones).",
+      "Contenido: 98 patrones digitales de Halloween Premium en crochet o ganchillo.\nIdioma: Español.\nFormato: Archivos PDF descargables e imprimibles.\nMetodología: Guía paso a paso con soporte visual de alta resolución.\nEntrega: Acceso inmediato a tu correo electrónico (e-mail) tras la confirmación de pago.\nIncluye vídeos para principiantes (aprenderás como leer abreviaturas en un tejido de crochet para que así puedas leer correctamente tus patrones)",
     caption: "Y muchos diseños exclusivos más…",
     images: ["n2-12.webp", "n2-12-1.webp", "n2-12-2.webp"],
     bonusImage: "",
@@ -377,7 +377,7 @@ export const products: Product[] = [
     description:
       "57 muñecas de flores reversibles: un lado flor, el otro muñeca. Piezas únicas para regalo, ferias o catálogo propio, con guía visual detallada.",
     specs:
-      "Contenido: 57 patrones digitales de Muñecas de Flores Reversibles Premium.\nIdioma: Español.\nFormato: Archivos PDF descargables e imprimibles.\nMetodología: Guía paso a paso con soporte visual de alta resolución.\nEntrega: Acceso inmediato a tu correo electrónico (e-mail) tras la confirmación de pago.\nIncluye vídeos para principiantes (abreviaturas e interpretación de patrones).",
+      "Contenido: 57 patrones digitales de Muñecas de Flores Reversibles Premium.\nIdioma: Español.\nFormato: Archivos PDF descargables e imprimibles.\nMetodología: Guía paso a paso con soporte visual de alta resolución.\nEntrega: Acceso inmediato a tu correo electrónico (e-mail) tras la confirmación de pago.\nIncluye vídeos para principiantes (aprenderás como leer abreviaturas en un tejido de crochet para que así puedas leer correctamente tus patrones)",
     caption: "Y muchos diseños exclusivos más…",
     images: ["n2-15.webp", "n2-15-1.webp", "n2-15-2.webp"],
     bonusImage: "n2-18.webp",
@@ -416,7 +416,7 @@ export const products: Product[] = [
     description:
       "Más de 40 patrones de profesiones (doctora, maestra, chef y más) para regalos personalizados o venta temáticas. Claros, fotografiados y listos para tejer.",
     specs:
-      "Contenido: 40 patrones digitales de Profesiones Premium en crochet o ganchillo.\nIdioma: Español.\nFormato: Archivos PDF descargables e imprimibles.\nMetodología: Guía paso a paso con soporte visual de alta resolución.\nEntrega: Acceso inmediato a tu correo electrónico (e-mail) tras la confirmación de pago.\nIncluye vídeos para principiantes (abreviaturas e interpretación de patrones).",
+      "Contenido: 40 patrones digitales de Profesiones Premium en crochet o ganchillo.\nIdioma: Español.\nFormato: Archivos PDF descargables e imprimibles.\nMetodología: Guía paso a paso con soporte visual de alta resolución.\nEntrega: Acceso inmediato a tu correo electrónico (e-mail) tras la confirmación de pago.\nIncluye vídeos para principiantes (aprenderás como leer abreviaturas en un tejido de crochet para que así puedas leer correctamente tus patrones)",
     caption: "Y muchos diseños exclusivos más…",
     images: ["n2-20.webp", "n2-20-1.webp"],
     bonusImage: "",

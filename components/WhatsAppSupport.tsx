@@ -15,7 +15,7 @@ export default function WhatsAppSupport() {
               </h2>
               <p className="mt-5 max-w-lg text-base leading-relaxed text-muted mx-auto md:mx-0 sm:text-lg">
                 Soy Natalia, de Manos Creativas. Escríbeme por WhatsApp y te
-                ayudo con la compra o con cualquier duda.
+                ayudo con tu acceso a tus patrones o con el proceso de compra
               </p>
               <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row md:justify-start justify-center">
                 <PrimaryCTA
