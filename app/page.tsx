@@ -49,9 +49,8 @@ export default async function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewsJsonLd) }}
       />
       <Hero />
-      {/* Products immediately after hero — paid home traffic must see offers fast */}
-      <ProductGrid />
       <TrustBar />
+      <ProductGrid />
       <FeatureGrid />
       <WhatsAppSupport />
       <Testimonials reviews={featured} limit={3} showForm />

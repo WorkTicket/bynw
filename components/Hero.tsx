@@ -12,7 +12,7 @@ export default function Hero() {
   const priceLabel = Number.isFinite(fromPrice) ? `desde ${fromPrice}€` : null
 
   return (
-    <section className="hero-editorial relative min-h-[min(72svh,38rem)] overflow-x-clip sm:min-h-[min(78svh,44rem)]">
+    <section className="hero-editorial relative flex min-h-[100svh] flex-col overflow-x-clip">
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute inset-0">
           <Image
@@ -72,7 +72,7 @@ export default function Hero() {
         />
       </div>
 
-      <div className="section relative z-10 flex min-h-[min(72svh,38rem)] flex-col justify-end pb-10 pt-8 sm:min-h-[min(78svh,44rem)] sm:justify-center sm:pb-16 sm:pt-16 lg:pb-20">
+      <div className="section relative z-10 flex min-h-[100svh] flex-1 flex-col justify-end pb-10 pt-[calc(var(--site-header-offset)+1.5rem)] sm:justify-center sm:pb-16 sm:pt-[calc(var(--site-header-offset)+2rem)] lg:pb-20">
         <div className="max-w-xl lg:max-w-[36rem]">
           <p className="font-script text-[2.25rem] leading-[1.05] text-rose-600 sm:text-[2.85rem] lg:text-[3.25rem] lg:text-rose-500">
             Manos Creativas Bynmw

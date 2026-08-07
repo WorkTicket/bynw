@@ -262,9 +262,6 @@ export default function Header() {
                   }`}
                   tabIndex={open ? 0 : -1}
                 >
-                  <span className="site-header__panel-index" aria-hidden="true">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
                   <span className="site-header__panel-label">{l.label}</span>
                   <span className="site-header__panel-heart" aria-hidden="true">
                     <svg viewBox="0 0 28 28" width="12" height="12" fill="none">
