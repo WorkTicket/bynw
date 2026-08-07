@@ -18,5 +18,15 @@ export const metadata: Metadata = {
 
 export default async function AdsCatalogPage() {
   const reviews = await listAdsFeaturedReviews(3)
-  return <AdsCatalogLander reviews={reviews} />
+  return (
+    <>
+      <link
+        rel="preload"
+        as="image"
+        href="/images/hero-editorial.webp"
+        fetchPriority="high"
+      />
+      <AdsCatalogLander reviews={reviews} />
+    </>
+  )
 }

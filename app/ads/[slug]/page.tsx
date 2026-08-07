@@ -41,8 +41,19 @@ export default async function AdsProductPage({ params }: Props) {
   if (!product) notFound()
 
   const featuredReviews = await listAdsFeaturedReviews(3)
+  const lcpImage = product.images[0]
 
   return (
-    <AdsProductLander product={product} reviews={featuredReviews} />
+    <>
+      {lcpImage ? (
+        <link
+          rel="preload"
+          as="image"
+          href={`/images/${lcpImage}`}
+          fetchPriority="high"
+        />
+      ) : null}
+      <AdsProductLander product={product} reviews={featuredReviews} />
+    </>
   )
 }

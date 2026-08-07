@@ -34,6 +34,12 @@ export default async function HomePage() {
 
   return (
     <div className="page-sections">
+      <link
+        rel="preload"
+        as="image"
+        href="/images/hero-editorial.webp"
+        fetchPriority="high"
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}

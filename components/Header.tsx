@@ -77,11 +77,12 @@ export default function Header() {
   }, [announcementVisible, isAds])
 
   useEffect(() => {
+    if (isAds) return
     const onScroll = () => setScrolled(window.scrollY > 12)
     onScroll()
     window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
-  }, [])
+  }, [isAds])
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : ""

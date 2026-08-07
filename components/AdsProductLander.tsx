@@ -210,13 +210,17 @@ export default function AdsProductLander({ product, reviews }: Props) {
         className="hero-editorial relative min-h-[min(78svh,42rem)] scroll-mt-[var(--site-header-offset)] overflow-hidden sm:min-h-[min(88svh,50rem)]"
       >
         <div className="absolute inset-0">
-          <div className="absolute inset-0 hero-image-drift origin-center scale-[1.04]">
+          <div className="absolute inset-0 origin-center">
             <Image
               src={`/images/${product.images[0]}`}
               alt={product.shortTitle}
               fill
               priority
+              fetchPriority="high"
+              quality={70}
               sizes="100vw"
+              // Already resized/compressed sources — skip optimizer RTT on LCP
+              unoptimized
               className="object-cover object-[68%_center] sm:object-[72%_center] lg:object-[78%_center]"
             />
           </div>
@@ -263,8 +267,8 @@ export default function AdsProductLander({ product, reviews }: Props) {
         </div>
 
         <div className="section relative z-10 flex min-h-[min(78svh,42rem)] flex-col justify-end pb-6 pt-6 sm:min-h-[min(88svh,50rem)] sm:justify-center sm:pb-16 sm:pt-14 lg:pb-24">
-          <div className="max-w-xl animate-fade-in-up lg:max-w-[36rem]">
-            <p className="font-script text-[1.45rem] leading-none text-rose-500 sm:text-[2.25rem]">
+          <div className="max-w-xl lg:max-w-[36rem]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-rose-500 sm:text-xs">
               Manos Creativas Bynmw
             </p>
 
@@ -391,10 +395,9 @@ export default function AdsProductLander({ product, reviews }: Props) {
                 </div>
                 <div className="mt-8 overflow-hidden rounded-2xl bg-rose-50/40 ring-1 ring-rose-100/60">
                   <ImageCarousel
-                    images={product.images}
-                    interval={2500}
+                    images={product.images.slice(1)}
+                    interval={4500}
                     alt={product.shortTitle}
-                    priority
                   />
                 </div>
               </div>
@@ -423,13 +426,14 @@ export default function AdsProductLander({ product, reviews }: Props) {
                 {product.bonusItems.length > 0 && (
                   <div className="mt-10 grid items-center gap-10 sm:grid-cols-2">
                     {product.bonusImage && (
-                      <div className="overflow-hidden rounded-2xl bg-rose-50/40 ring-1 ring-rose-100/50">
-                        <img
+                      <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-rose-50/40 ring-1 ring-rose-100/50">
+                        <Image
                           src={`/images/${product.bonusImage}`}
                           alt={`Bonos incluidos con ${product.seoTitle}`}
-                          loading="lazy"
-                          decoding="async"
-                          className="block h-auto w-full object-contain"
+                          fill
+                          sizes="(max-width: 640px) 100vw, 420px"
+                          quality={70}
+                          className="object-contain"
                         />
                       </div>
                     )}
@@ -521,7 +525,7 @@ export default function AdsProductLander({ product, reviews }: Props) {
                     <ImageCarousel
                       images={product.deliveryImages}
                       aspect="aspect-[9/16]"
-                      interval={2000}
+                      interval={4500}
                       alt={`Entrega digital de ${product.seoTitle}`}
                     />
                   </div>
@@ -570,7 +574,7 @@ export default function AdsProductLander({ product, reviews }: Props) {
               <div className="mx-auto mt-10 max-w-lg">
                 <ImageCarousel
                   images={product.qualityImages}
-                  interval={2200}
+                  interval={4500}
                   alt={`Calidad de ${product.seoTitle}`}
                 />
               </div>

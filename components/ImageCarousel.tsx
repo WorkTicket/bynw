@@ -18,7 +18,7 @@ type Props = {
 
 export default function ImageCarousel({
   images,
-  interval = 2000,
+  interval = 4000,
   className = "",
   noAutoplay,
   aspect,
@@ -27,6 +27,7 @@ export default function ImageCarousel({
 }: Props) {
   const [idx, setIdx] = useState(0)
   const [inView, setInView] = useState(false)
+  const [tabVisible, setTabVisible] = useState(true)
   const rootRef = useRef<HTMLDivElement>(null)
   const next = useCallback(
     () => setIdx((i) => (i + 1) % images.length),
@@ -57,10 +58,17 @@ export default function ImageCarousel({
   }, [])
 
   useEffect(() => {
-    if (noAutoplay || !inView || images.length < 2) return
+    const onVis = () => setTabVisible(document.visibilityState === "visible")
+    onVis()
+    document.addEventListener("visibilitychange", onVis)
+    return () => document.removeEventListener("visibilitychange", onVis)
+  }, [])
+
+  useEffect(() => {
+    if (noAutoplay || !inView || !tabVisible || images.length < 2) return
     const t = setInterval(next, interval)
     return () => clearInterval(t)
-  }, [next, interval, noAutoplay, inView, images.length])
+  }, [next, interval, noAutoplay, inView, tabVisible, images.length])
 
   if (images.length === 0) return null
 
@@ -74,7 +82,9 @@ export default function ImageCarousel({
           alt={alt}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1280px) 55vw, 640px"
+          quality={70}
           priority={priority && idx === 0}
+          unoptimized={priority && idx === 0}
           loading={priority && idx === 0 ? undefined : "lazy"}
           className="object-contain transition-opacity duration-500 ease-out"
         />

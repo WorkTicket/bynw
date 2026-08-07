@@ -73,10 +73,10 @@ function trackPageView(url: string, consent: ConsentChoice | null) {
 function trackPageViewWhenReady(
   url: string,
   consent: ConsentChoice | null,
-  onDone: () => void
+  onDone: (ok: boolean) => void
 ) {
   if (trackPageView(url, consent)) {
-    onDone()
+    onDone(true)
     return () => {}
   }
 
@@ -84,9 +84,14 @@ function trackPageViewWhenReady(
   const maxAttempts = 100
   const id = window.setInterval(() => {
     attempts += 1
-    if (trackPageView(url, consent) || attempts >= maxAttempts) {
+    if (trackPageView(url, consent)) {
       window.clearInterval(id)
-      onDone()
+      onDone(true)
+      return
+    }
+    if (attempts >= maxAttempts) {
+      window.clearInterval(id)
+      onDone(false)
     }
   }, 200)
 
@@ -257,12 +262,27 @@ function injectFb() {
 
 /**
  * Organic pages: load after LCP (idle ≤2.5s or first gesture).
- * Paid `/ads` landers: load immediately once consent granted.
+ * Paid `/ads` landers: inject on the next frame so Meta PageView /
+ * ViewContent / InitiateCheckout are ready before a fast “Comprar” tap
+ * navigates away to Hotmart (critical for FB ad attribution).
  */
 function scheduleAnalyticsLoad(load: () => void, eager: boolean) {
   if (eager) {
-    load()
-    return () => {}
+    let cancelled = false
+    let timer: number | undefined
+    const run = () => {
+      if (cancelled) return
+      load()
+    }
+    // Yield one paint frame, then load immediately — do not wait on idle.
+    requestAnimationFrame(() => {
+      if (cancelled) return
+      timer = window.setTimeout(run, 50)
+    })
+    return () => {
+      cancelled = true
+      if (timer != null) window.clearTimeout(timer)
+    }
   }
 
   let done = false
@@ -341,8 +361,9 @@ export default function Analytics() {
     const url = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : "")
     if (tracked.current === url) return
 
-    tracked.current = url
-    return trackPageViewWhenReady(url, consent, () => {})
+    return trackPageViewWhenReady(url, consent, (ok) => {
+      if (ok) tracked.current = url
+    })
   }, [pathname, searchParams, consent])
 
   useEffect(() => {
@@ -351,6 +372,24 @@ export default function Analytics() {
       for (const binding of CLICK_BINDINGS) {
         const el = target.closest(`[${binding.attr}]`) as HTMLElement | null
         if (!el) continue
+
+        // Checkout navigates off-site (esp. mobile). Ensure the Meta stub +
+        // script start synchronously so InitiateCheckout can queue before unload.
+        if (
+          binding.attr === "data-track-hotmart-click" &&
+          hasMarketingConsent(readConsent()) &&
+          FB_PIXEL_ID
+        ) {
+          injectFb()
+        }
+        if (
+          binding.attr === "data-track-hotmart-click" &&
+          hasAnalyticsConsent(readConsent()) &&
+          GA_ID
+        ) {
+          injectGa()
+        }
+
         const label = el.getAttribute(binding.attr) || ""
         const params = binding.commerce
           ? { ...commerceFromEl(el), event_label: label }

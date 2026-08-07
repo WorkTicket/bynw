@@ -48,59 +48,62 @@ export default function StickyMobileCTA() {
       : "Ver ofertas"
 
   return (
-    <div
-      className="sticky-mobile-cta fixed bottom-0 left-0 right-0 z-50 lg:hidden"
-      style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
-    >
-      <div className="sticky-mobile-cta__panel">
-        <div className="mx-auto flex max-w-lg items-center gap-3.5 px-4 py-3.5 sm:gap-4 sm:px-5">
-          <div className="min-w-0 flex-1">
-            <p className="truncate font-script text-[1.22rem] leading-[1.25] text-rose-500 sm:text-[1.32rem] sticky-title-cute">
-              {title}
-            </p>
-            <p className="mt-1.5 flex min-w-0 items-baseline gap-1.5 truncate text-[11px] tracking-[0.04em] text-muted">
-              {localized ? (
-                <>
-                  <span className="font-semibold tabular-nums text-ink/85">
-                    {priceLabel}
-                  </span>
-                  <span className="text-rose-300/90" aria-hidden>
-                    ·
-                  </span>
-                  <span className="truncate">PDF al momento</span>
-                </>
-              ) : (
-                <span className="truncate">{priceLabel}</span>
-              )}
-            </p>
-          </div>
+    <>
+      {/* In-flow spacer so bottom padding exists in SSR HTML (no CLS on hydrate) */}
+      <div className="sticky-mobile-cta-spacer lg:hidden" aria-hidden="true" />
+      <div
+        className="sticky-mobile-cta fixed bottom-0 left-0 right-0 z-50 lg:hidden"
+        style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+      >
+        <div className="sticky-mobile-cta__panel">
+          <div className="mx-auto flex max-w-lg items-center gap-3.5 px-4 py-3.5 sm:gap-4 sm:px-5">
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-semibold leading-tight tracking-tight text-ink sm:text-[0.95rem]">
+                {title}
+              </p>
+              <p className="mt-1.5 flex min-w-0 items-baseline gap-1.5 truncate text-[11px] tracking-[0.04em] text-muted">
+                {localized ? (
+                  <>
+                    <span className="font-semibold tabular-nums text-ink/85">
+                      {priceLabel}
+                    </span>
+                    <span className="text-rose-300/90" aria-hidden>
+                      ·
+                    </span>
+                    <span className="truncate">PDF al momento</span>
+                  </>
+                ) : (
+                  <span className="truncate">{priceLabel}</span>
+                )}
+              </p>
+            </div>
 
-          {localized ? (
-            <HotmartBuyButton
-              href={localized.buyUrl}
-              contentId={localized.id}
-              contentName={localized.seoTitle}
-              price={localized.price}
-              size="compact"
-              className="!w-auto shrink-0"
-            >
-              Comprar ahora
-            </HotmartBuyButton>
-          ) : (
-            <PrimaryCTA
-              href={
-                isAdsCatalog || pathname === "/shop"
-                  ? "#colecciones"
-                  : "/#colecciones"
-              }
-              size="sm"
-              className="shrink-0"
-            >
-              Ver colecciones
-            </PrimaryCTA>
-          )}
+            {localized ? (
+              <HotmartBuyButton
+                href={localized.buyUrl}
+                contentId={localized.id}
+                contentName={localized.seoTitle}
+                price={localized.price}
+                className="!w-auto shrink-0 sticky-mobile-cta__buy"
+              >
+                Comprar ahora
+              </HotmartBuyButton>
+            ) : (
+              <PrimaryCTA
+                href={
+                  isAdsCatalog || pathname === "/shop"
+                    ? "#colecciones"
+                    : "/#colecciones"
+                }
+                size="sm"
+                className="shrink-0"
+              >
+                Ver colecciones
+              </PrimaryCTA>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }

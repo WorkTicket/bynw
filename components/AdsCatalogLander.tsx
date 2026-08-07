@@ -41,12 +41,14 @@ export default function AdsCatalogLander({ reviews }: Props) {
     <>
       <section className="hero-editorial relative min-h-[min(88svh,48rem)] overflow-hidden sm:min-h-[min(90svh,50rem)]">
         <div className="absolute inset-0">
-          <div className="absolute inset-0 hero-image-drift origin-center scale-[1.04]">
+          <div className="absolute inset-0 origin-center">
             <Image
               src="/images/hero-editorial.webp"
               alt="Amigurumi de princesa en crochet o ganchillo junto a un ramo de flores eternas tejidas"
               fill
               priority
+              fetchPriority="high"
+              unoptimized
               sizes="100vw"
               className="object-cover object-[68%_center] sm:object-[72%_center] lg:object-[78%_center]"
             />
@@ -94,8 +96,8 @@ export default function AdsCatalogLander({ reviews }: Props) {
         </div>
 
         <div className="section relative z-10 flex min-h-[min(88svh,48rem)] flex-col justify-end pb-12 pt-10 sm:min-h-[min(90svh,50rem)] sm:justify-center sm:pb-20 sm:pt-16 lg:pb-24">
-          <div className="max-w-xl animate-fade-in-up lg:max-w-[36rem]">
-            <p className="font-script text-[2.35rem] leading-none text-rose-500 sm:text-[2.75rem]">
+          <div className="max-w-xl lg:max-w-[36rem]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-rose-500 sm:text-xs">
               Manos Creativas Bynmw
             </p>
             <h1 className="mt-6 font-display text-[2.15rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.85rem] lg:text-[3.15rem]">

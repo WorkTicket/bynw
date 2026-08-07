@@ -6,20 +6,17 @@ export default function Hero() {
   return (
     <section className="hero-editorial relative min-h-[min(92svh,52rem)] overflow-x-clip sm:min-h-[min(94svh,54rem)]">
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute inset-0 hero-image-drift">
-          <div className="absolute inset-0 origin-[72%_42%] scale-[1.08] -translate-y-[6%] sm:origin-[74%_40%] sm:scale-[1.05] sm:-translate-y-[4%] lg:origin-center lg:scale-[1.02] lg:translate-y-0">
-            <Image
-              src="/images/hero-editorial.webp"
-              alt="Amigurumi de princesa en crochet o ganchillo junto a un ramo de flores eternas tejidas"
-              fill
-              priority
-              fetchPriority="high"
-              decoding="sync"
-              unoptimized
-              sizes="100vw"
-              className="object-cover object-[72%_52%] sm:object-[74%_48%] lg:object-[78%_center]"
-            />
-          </div>
+        <div className="absolute inset-0">
+          <Image
+            src="/images/hero-editorial.webp"
+            alt="Amigurumi de princesa en crochet o ganchillo junto a un ramo de flores eternas tejidas"
+            fill
+            priority
+            fetchPriority="high"
+            unoptimized
+            sizes="100vw"
+            className="object-cover object-[72%_52%] sm:object-[74%_48%] lg:object-[78%_center]"
+          />
         </div>
 
         {/* Mobile: pearl veil behind copy — bottom dissolves into the site canvas */}
@@ -81,7 +78,7 @@ export default function Hero() {
       </div>
 
       <div className="section relative z-10 flex min-h-[min(92svh,52rem)] flex-col justify-end pb-14 pt-10 sm:min-h-[min(94svh,54rem)] sm:justify-center sm:pb-24 sm:pt-20 lg:pb-28">
-        <div className="max-w-xl animate-fade-in-up lg:max-w-[36rem]">
+        <div className="max-w-xl lg:max-w-[36rem]">
           <p className="font-script text-[2.45rem] leading-[1.05] text-rose-600 sm:text-[3.05rem] lg:text-[3.45rem] lg:text-rose-500">
             Manos Creativas Bynmw
           </p>

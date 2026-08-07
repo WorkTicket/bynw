@@ -12,3 +12,5 @@ public/images/og-default-ai.webp
 
 .image-backups/
 .data/
+.lh-*.json
+.lighthouse-*.json

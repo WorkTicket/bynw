@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import PrimaryCTA from "@/components/PrimaryCTA"
 import { GIFT_MAGNET } from "@/lib/gift-magnet"
 import { isIOSGiftDownload, openIOSGiftDrive, triggerGiftDownload } from "@/lib/download-gift"
@@ -39,11 +40,13 @@ function LeadMagnetSuccess({ dark = false }: { dark?: boolean }) {
       }`}
     >
       <div className="mb-5 -mx-5 -mt-5 overflow-hidden rounded-t-2xl sm:-mx-6 sm:-mt-6">
-        <img
+        <Image
           src="/images/kpop.webp"
           alt={GIFT_MAGNET.title}
-          loading="lazy"
-          className="w-full h-44 sm:h-52 object-cover object-center"
+          width={900}
+          height={520}
+          sizes="(max-width: 640px) 100vw, 420px"
+          className="h-44 w-full object-cover object-center sm:h-52"
         />
       </div>
 

@@ -114,7 +114,7 @@ export default async function ProductPage({ params }: Props) {
                   <div className="product-media">
                     <ImageCarousel
                       images={localizedProduct.images}
-                      interval={2000}
+                      interval={4500}
                       alt={localizedProduct.shortTitle}
                       priority
                     />
@@ -276,7 +276,7 @@ export default async function ProductPage({ params }: Props) {
                       <ImageCarousel
                         images={product.deliveryImages}
                         aspect="aspect-[9/16]"
-                        interval={2000}
+                        interval={4500}
                         alt={`Entrega digital de ${product.seoTitle}`}
                       />
                     </div>
@@ -315,7 +315,7 @@ export default async function ProductPage({ params }: Props) {
                 <div className="mt-10 max-w-lg mx-auto">
                   <ImageCarousel
                     images={product.qualityImages}
-                    interval={2000}
+                    interval={4500}
                     alt={`Calidad de ${product.seoTitle}`}
                   />
                 </div>

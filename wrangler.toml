@@ -21,7 +21,7 @@ binding = "IMAGES"
 [vars]
 NEXT_PUBLIC_SITE_URL = "https://bynmwcreative.com"
 NEXT_PUBLIC_GA_ID = "G-5764X8K11B"
-NEXT_PUBLIC_FB_PIXEL_ID = "1416058686641315"
+NEXT_PUBLIC_FB_PIXEL_ID = "1937320463558405"
 # Optional: real GSC meta token only (not the .html filename).
 # HTML-file verification is already at /googleb0de3a7eb0c354a5.html
 # NEXT_PUBLIC_GSC_VERIFICATION = ""

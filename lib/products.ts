@@ -36,7 +36,7 @@ export const products: Product[] = [
     category: "Patrones de crochet o ganchillo digitales",
     price: "15€",
     originalPrice: "30€",
-    buyUrl: "https://pay.hotmart.com/L104751068L?checkoutMode=2&off=8o21yf1f",
+    buyUrl: "https://pay.hotmart.com/L104751068L?off=8o21yf1f",
     buyText: "Comprar ahora",
     description:
       "Más de 200 patrones de princesas de cuento en PDF, con instrucciones claras y fotos en cada paso. Ideal para principiantes que quieren muñecas con vestidos, peinados y detalles limpios.",
@@ -107,7 +107,7 @@ export const products: Product[] = [
     category: "Patrones de crochet o ganchillo digitales",
     price: "15€",
     originalPrice: "30€",
-    buyUrl: "https://pay.hotmart.com/O106393812M?checkoutMode=2&off=nfyomffe",
+    buyUrl: "https://pay.hotmart.com/O106393812M?off=nfyomffe",
     buyText: "Comprar ahora",
     description:
       "Más de 200 patrones de flores eternas: tulipanes, girasoles, rosas, cactus y ramos listos para regalar o vender. Fotos paso a paso y vídeo para montar con papel coreano.",
@@ -166,7 +166,7 @@ export const products: Product[] = [
     category: "Patrones de crochet o ganchillo digitales",
     price: "8€",
     originalPrice: "16€",
-    buyUrl: "https://pay.hotmart.com/A104843589W?checkoutMode=2&off=a9plv7ym",
+    buyUrl: "https://pay.hotmart.com/A104843589W?off=a9plv7ym",
     buyText: "Comprar ahora",
     description:
       "Más de 100 amigurumis en chenille con textura suave y explicaciones claras. Perfectos para regalos rápidos o piezas para vender con acabado premium.",
@@ -219,7 +219,7 @@ export const products: Product[] = [
     category: "Patrones de crochet o ganchillo digitales",
     price: "5€",
     originalPrice: "10€",
-    buyUrl: "https://pay.hotmart.com/C106728848V?checkoutMode=2&off=gksd63ag",
+    buyUrl: "https://pay.hotmart.com/C106728848V?off=gksd63ag",
     buyText: "Comprar ahora",
     description:
       "25 muñecas premium con rostros, peinados y vestuario detallados. Guía visual de alta resolución para acabados de tienda, incluso si aún estás aprendiendo.",
@@ -261,7 +261,7 @@ export const products: Product[] = [
     category: "Patrones de crochet o ganchillo digitales",
     price: "4€",
     originalPrice: "8€",
-    buyUrl: "https://pay.hotmart.com/A106745099O?checkoutMode=2&off=lpyfmlhr",
+    buyUrl: "https://pay.hotmart.com/A106745099O?off=lpyfmlhr",
     buyText: "Comprar ahora",
     description:
       "Más de 18 patrones de santos y ángeles para regalo espiritual, altares o venta en temporada. Instrucciones claras y acabados delicados.",
@@ -301,7 +301,7 @@ export const products: Product[] = [
     category: "Patrones de crochet o ganchillo digitales",
     price: "10€",
     originalPrice: "20€",
-    buyUrl: "https://pay.hotmart.com/K106843734P?checkoutMode=2&off=5q9idyvg",
+    buyUrl: "https://pay.hotmart.com/K106843734P?off=5q9idyvg",
     buyText: "Comprar ahora",
     description:
       "Más de 145 patrones navideños: adornos, personajes de temporada y regalos para tejer o vender en Navidad. PDF listos para imprimir.",
@@ -341,7 +341,7 @@ export const products: Product[] = [
     category: "Patrones de crochet o ganchillo digitales",
     price: "7€",
     originalPrice: "14€",
-    buyUrl: "https://pay.hotmart.com/Q106849178O?checkoutMode=2&off=qvysr7ub",
+    buyUrl: "https://pay.hotmart.com/Q106849178O?off=qvysr7ub",
     buyText: "Comprar ahora",
     description:
       "98 patrones de Halloween fáciles y vendibles: calabazas, fantasmas, brujas y adornos de temporada con fotos paso a paso.",
@@ -372,7 +372,7 @@ export const products: Product[] = [
     category: "Patrones de crochet o ganchillo digitales",
     price: "9€",
     originalPrice: "18€",
-    buyUrl: "https://pay.hotmart.com/Y106877716H?checkoutMode=2&off=04lt0mna",
+    buyUrl: "https://pay.hotmart.com/Y106877716H?off=04lt0mna",
     buyText: "Comprar ahora",
     description:
       "57 muñecas de flores reversibles: un lado flor, el otro muñeca. Piezas únicas para regalo, ferias o catálogo propio, con guía visual detallada.",
@@ -411,7 +411,7 @@ export const products: Product[] = [
     category: "Patrones de crochet o ganchillo digitales",
     price: "5€",
     originalPrice: "10€",
-    buyUrl: "https://pay.hotmart.com/H106878303R?checkoutMode=2&off=kad7djg6",
+    buyUrl: "https://pay.hotmart.com/H106878303R?off=kad7djg6",
     buyText: "Comprar ahora",
     description:
       "Más de 40 patrones de profesiones (doctora, maestra, chef y más) para regalos personalizados o venta temáticas. Claros, fotografiados y listos para tejer.",

@@ -22,9 +22,10 @@ import { buildOrganizationJsonLd, buildWebsiteJsonLd } from "@/lib/seo"
 
 const sans = Outfit({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500"],
   variable: "--font-sans",
   display: "swap",
+  adjustFontFallback: true,
 })
 
 const display = Bodoni_Moda({
@@ -33,8 +34,7 @@ const display = Bodoni_Moda({
   style: ["normal", "italic"],
   variable: "--font-display",
   display: "swap",
-  // next/font has no size-adjust metrics for Bodoni Moda
-  adjustFontFallback: false,
+  adjustFontFallback: true,
 })
 
 const script = Great_Vibes({
@@ -42,7 +42,8 @@ const script = Great_Vibes({
   weight: ["400"],
   variable: "--font-script",
   display: "swap",
-  adjustFontFallback: false,
+  preload: false,
+  adjustFontFallback: true,
 })
 
 export const viewport: Viewport = {
@@ -107,7 +108,10 @@ export function generateMetadata(): Metadata {
       images: [DEFAULT_OG_IMAGE],
     },
     icons: {
-      icon: "/images/logo-64.png",
+      icon: [
+        { url: "/images/logo-64.webp", type: "image/webp" },
+        { url: "/images/logo-64.png", type: "image/png" },
+      ],
       apple: "/images/logo-64.png",
     },
     manifest: "/manifest.webmanifest",

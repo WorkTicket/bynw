@@ -44,8 +44,9 @@ export default function ProductCard({
             alt={product.shortTitle}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            quality={75}
             priority={priority}
-            className="object-cover transition-transform duration-[1000ms] ease-out group-hover:scale-[1.045]"
+            className="object-cover transition-transform duration-[1000ms] ease-out motion-safe:group-hover:scale-[1.045]"
           />
           <div
             className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#3a2428]/[0.08] via-transparent to-transparent opacity-70 transition-opacity duration-500 group-hover:opacity-40"

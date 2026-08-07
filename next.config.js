@@ -7,7 +7,7 @@ const nextConfig = {
     // Optimized via Cloudflare Images binding (see wrangler.toml [images])
     // https://opennext.js.org/cloudflare/howtos/image
     // CF Images only accepts configured qualities (include 90 for sharp heroes).
-    qualities: [75, 90],
+    qualities: [70, 75, 90],
     formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],

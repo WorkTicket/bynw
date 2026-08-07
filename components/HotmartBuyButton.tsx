@@ -11,6 +11,8 @@ import {
   bindHotmartCheckout,
   isMobileCheckout,
   loadHotmartAssets,
+  toFullPageCheckoutUrl,
+  toLightboxCheckoutUrl,
 } from "@/lib/hotmart"
 
 type Size = "default" | "compact" | "lg"
@@ -32,6 +34,14 @@ const sizeClass: Record<Size, string> = {
   default: "",
   compact: "btn-collection-buy--compact",
   lg: "btn-collection-buy--lg",
+}
+
+function enrichCheckoutHref(href: string): string {
+  const withAttribution = appendAttributionToHotmartUrl(href)
+  // Default buyUrls are full-page (no checkoutMode). Desktop Fancybox needs mode=2.
+  return isMobileCheckout()
+    ? toFullPageCheckoutUrl(withAttribution)
+    : toLightboxCheckoutUrl(withAttribution)
 }
 
 function whenNearOrInteract(
@@ -88,13 +98,22 @@ export default function HotmartBuyButton({
   const anchorRef = useRef<HTMLAnchorElement>(null)
   const [widgetReady, setWidgetReady] = useState(false)
   const [checkoutHref, setCheckoutHref] = useState(href)
+  const [allowLightboxClass, setAllowLightboxClass] = useState(false)
+  const navigatingRef = useRef(false)
 
   useEffect(() => {
     captureAndPersistFromLocation(window.location.search)
-    setCheckoutHref(appendAttributionToHotmartUrl(href))
+    setCheckoutHref(enrichCheckoutHref(href))
+    setAllowLightboxClass(!isMobileCheckout())
   }, [href])
 
   useEffect(() => {
+    // Mobile / FB in-app: full-page checkout only — never bind the 600px Fancybox.
+    if (isMobileCheckout()) {
+      setWidgetReady(false)
+      return
+    }
+
     const root = rootRef.current
     if (!root) return
 
@@ -102,6 +121,8 @@ export default function HotmartBuyButton({
     let interval: number | undefined
     let timeout: number | undefined
     let stopWatch: (() => void) | undefined
+
+    setWidgetReady(false)
 
     const bindWhenReady = () => {
       loadHotmartAssets()
@@ -137,6 +158,7 @@ export default function HotmartBuyButton({
 
     return () => {
       cancelled = true
+      setWidgetReady(false)
       stopWatch?.()
       if (interval) window.clearInterval(interval)
       if (timeout) window.clearTimeout(timeout)
@@ -160,14 +182,32 @@ export default function HotmartBuyButton({
         data-content-name={contentName}
         data-value={value}
         data-currency={currency}
-        className={`hotmart-fb hotmart__button-checkout btn-collection-buy${sizeMod ? ` ${sizeMod}` : ""}`}
+        className={`${allowLightboxClass ? "hotmart-fb hotmart__button-checkout " : ""}btn-collection-buy${sizeMod ? ` ${sizeMod}` : ""}`}
         onClick={(e) => {
-          const enriched = appendAttributionToHotmartUrl(href)
+          const enriched = enrichCheckoutHref(href)
           if (anchorRef.current && enriched !== anchorRef.current.href) {
             anchorRef.current.href = enriched
             setCheckoutHref(enriched)
           }
-          if (!isMobileCheckout() && widgetReady) e.preventDefault()
+
+          // Mobile full-page: briefly hold navigation so Meta InitiateCheckout
+          // can queue before unload (FB in-app → Hotmart).
+          if (isMobileCheckout()) {
+            if (navigatingRef.current) {
+              e.preventDefault()
+              return
+            }
+            const url = enriched
+            e.preventDefault()
+            navigatingRef.current = true
+            window.setTimeout(() => {
+              window.location.assign(url)
+            }, 180)
+            return
+          }
+
+          // Desktop lightbox: Fancybox owns the click once bound.
+          if (widgetReady) e.preventDefault()
         }}
       >
         <span className="btn-label">{children}</span>

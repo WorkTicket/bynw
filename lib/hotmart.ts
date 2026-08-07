@@ -2,8 +2,11 @@
 
 declare global {
   interface Window {
-    jQuery?: (element: HTMLElement) => {
+    jQuery?: ((element: HTMLElement) => {
       fancybox: (options: Record<string, unknown>) => void
+      off?: (events: string) => unknown
+    }) & {
+      fn?: unknown
     }
   }
 }
@@ -54,16 +57,27 @@ export function loadHotmartJS(): Promise<void> {
       'script[src*="hotmart.com/checkout/widget"]'
     )
     if (existing) {
+      const done = () => {
+        if (window.jQuery) resolve()
+      }
       if (window.jQuery) {
         resolve()
         return
       }
-      existing.addEventListener("load", () => resolve(), { once: true })
+      existing.addEventListener("load", done, { once: true })
       existing.addEventListener(
         "error",
-        () => reject(new Error("Hotmart widget failed")),
+        () => {
+          jsPromise = null
+          reject(new Error("Hotmart widget failed"))
+        },
         { once: true }
       )
+      // Script may already be complete (load already fired).
+      queueMicrotask(done)
+      window.setTimeout(() => {
+        if (window.jQuery) resolve()
+      }, 0)
       return
     }
     const script = document.createElement("script")
@@ -85,17 +99,77 @@ export function loadHotmartAssets(): Promise<void> {
   return loadHotmartJS()
 }
 
+/**
+ * Strip Hotmart lightbox mode (`checkoutMode=2`) so checkout opens as a
+ * full-page mobile-friendly flow instead of a cramped iframe widget.
+ */
+export function toFullPageCheckoutUrl(href: string): string {
+  try {
+    const url = new URL(href)
+    if (url.searchParams.get("checkoutMode") === "2") {
+      url.searchParams.delete("checkoutMode")
+    }
+    return url.toString()
+  } catch {
+    return href
+      .replace(/([?&])checkoutMode=2(&)?/g, (_, sep: string, amp?: string) =>
+        amp ? sep : ""
+      )
+      .replace(/\?$/, "")
+  }
+}
+
+/** Desktop Fancybox needs checkoutMode=2; product buyUrls omit it for SSR/mobile. */
+export function toLightboxCheckoutUrl(href: string): string {
+  try {
+    const url = new URL(href)
+    url.searchParams.set("checkoutMode", "2")
+    return url.toString()
+  } catch {
+    if (/[?&]checkoutMode=/.test(href)) return href
+    return href.includes("?")
+      ? `${href}&checkoutMode=2`
+      : `${href}?checkoutMode=2`
+  }
+}
+
+export function isMobileCheckout() {
+  if (typeof window === "undefined") return false
+  return (
+    window.innerWidth <= 768 ||
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone|FBAN|FBAV|Instagram/i.test(
+      navigator.userAgent
+    )
+  )
+}
+
+/** Desktop: Fancybox lightbox. Mobile / in-app browsers: never bind. */
 export function bindHotmartCheckout(anchor: HTMLAnchorElement) {
+  if (isMobileCheckout()) return false
+
   const $ = window.jQuery
   if (!$) return false
 
   try {
-    $(anchor).fancybox({
+    // Avoid stacking Fancybox handlers when rebinding after href updates.
+    const api = $(anchor) as {
+      fancybox: (options: Record<string, unknown>) => void
+      off?: (events: string) => unknown
+    }
+    api.off?.(".fb")
+    // Ensure lightbox mode is on the href Fancybox will iframe.
+    const lightbox = toLightboxCheckoutUrl(anchor.href)
+    if (lightbox !== anchor.href) anchor.href = lightbox
+    api.fancybox({
       type: "iframe",
       toolbar: false,
       smallBtn: true,
       iframe: {
-        css: { width: "600px" },
+        css: {
+          width: "min(600px, 96vw)",
+          maxWidth: "100%",
+          height: "min(860px, 92vh)",
+        },
         attr: { allowpaymentrequest: "true" },
       },
     })
@@ -103,14 +177,4 @@ export function bindHotmartCheckout(anchor: HTMLAnchorElement) {
   } catch {
     return false
   }
-}
-
-export function isMobileCheckout() {
-  if (typeof window === "undefined") return false
-  return (
-    window.innerWidth <= 600 ||
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(
-      navigator.userAgent
-    )
-  )
 }
