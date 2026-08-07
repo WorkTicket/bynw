@@ -28,6 +28,7 @@ export default function ImageCarousel({
   const [idx, setIdx] = useState(0)
   const [inView, setInView] = useState(false)
   const [tabVisible, setTabVisible] = useState(true)
+  const [autoplayReady, setAutoplayReady] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
   const next = useCallback(
     () => setIdx((i) => (i + 1) % images.length),
@@ -64,11 +65,30 @@ export default function ImageCarousel({
     return () => document.removeEventListener("visibilitychange", onVis)
   }, [])
 
+  // Defer autoplay until after LCP / idle so the first frame stays stable.
   useEffect(() => {
-    if (noAutoplay || !inView || !tabVisible || images.length < 2) return
+    if (noAutoplay || images.length < 2) return
+    let idleId: number | undefined
+    let timer: number | undefined
+    const start = () => setAutoplayReady(true)
+    if (typeof window.requestIdleCallback === "function") {
+      idleId = window.requestIdleCallback(start, { timeout: 3500 })
+    } else {
+      timer = window.setTimeout(start, 2500)
+    }
+    return () => {
+      if (idleId != null && typeof window.cancelIdleCallback === "function") {
+        window.cancelIdleCallback(idleId)
+      }
+      if (timer != null) window.clearTimeout(timer)
+    }
+  }, [noAutoplay, images.length])
+
+  useEffect(() => {
+    if (!autoplayReady || !inView || !tabVisible || images.length < 2) return
     const t = setInterval(next, interval)
     return () => clearInterval(t)
-  }, [next, interval, noAutoplay, inView, tabVisible, images.length])
+  }, [next, interval, autoplayReady, inView, tabVisible, images.length])
 
   if (images.length === 0) return null
 
@@ -77,17 +97,28 @@ export default function ImageCarousel({
   return (
     <div ref={rootRef} className={`group relative ${className}`}>
       <div className={`corner-accents relative overflow-hidden rounded-2xl bg-rose-50/30 ring-1 ring-rose-100/60 ${frame}`}>
-        <Image
-          src={`/images/${images[idx]}`}
-          alt={alt}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 55vw, 640px"
-          quality={70}
-          priority={priority && idx === 0}
-          unoptimized={priority && idx === 0}
-          loading={priority && idx === 0 ? undefined : "lazy"}
-          className="object-contain transition-opacity duration-500 ease-out"
-        />
+        {/* Keep all slides mounted so LCP image is never torn down on advance */}
+        {images.map((src, i) => {
+          const active = i === idx
+          const isLcp = priority && i === 0
+          return (
+            <Image
+              key={src}
+              src={`/images/${src}`}
+              alt={active ? alt : ""}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 55vw, 640px"
+              quality={70}
+              priority={isLcp}
+              unoptimized={isLcp}
+              loading={isLcp ? undefined : "lazy"}
+              aria-hidden={!active}
+              className={`object-contain transition-opacity duration-500 ease-out ${
+                active ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          )
+        })}
       </div>
 
       {images.length > 1 && (

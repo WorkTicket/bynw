@@ -887,8 +887,8 @@ body {
 
 @media (min-width: 1024px) {
   body {
-    background-attachment: fixed;
-    background-size: cover;
+    background-attachment: scroll;
+    background-size: 100% 100%;
   }
 }
 
@@ -896,6 +896,7 @@ body {
  * Soft champagne / petal blooms — sit above the canvas paint,
  * below in-flow content (negative z inside body's isolation).
  */
+/* Static bloom veil — no continuous animation (PageSpeed paint cost). */
 body::after {
   content: "";
   position: fixed;
@@ -905,41 +906,12 @@ body::after {
   background-image: var(--grad-site-atmosphere);
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  opacity: 0.9;
-  will-change: transform, opacity;
-  animation: siteCanvasDrift 36s var(--ease-out-expo) infinite alternate;
-}
-
-/* Fine film grain — desktop only, above content, non-interactive */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 40;
-  opacity: 0.02;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.88;
 }
 
 @media (max-width: 1023px) {
-  body::before,
   body::after {
     display: none;
-  }
-}
-
-@keyframes siteCanvasDrift {
-  0% {
-    opacity: 0.72;
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: translate3d(-1.2%, 0.6%, 0) scale(1.035);
-  }
-  100% {
-    opacity: 0.85;
-    transform: translate3d(1%, -0.8%, 0) scale(1.02);
   }
 }
 
@@ -951,13 +923,6 @@ body::before {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-
-  body::after {
-    animation: none !important;
-    opacity: 0.88;
-    transform: none;
-    will-change: auto;
   }
 
   .scroll-reveal,
@@ -987,26 +952,8 @@ body::before {
 
 /* Sitewide reveal — springy pop that plays on scroll into view */
 .scroll-reveal {
-  opacity: 0;
-  transform: translate3d(0, 36px, 0) scale(0.96);
-  transition:
-    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
-    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
-  will-change: opacity, transform;
-}
-
-.scroll-reveal[data-variant="fade"] {
-  transform: translate3d(0, 20px, 0);
-}
-
-.scroll-reveal[data-variant="scale"] {
-  transform: translate3d(0, 28px, 0) scale(0.88) rotate(-1.5deg);
-}
-
-.scroll-reveal.is-visible {
   opacity: 1;
   transform: none;
-  will-change: auto;
 }
 
 .page-enter {
@@ -1772,9 +1719,18 @@ body::before {
 }
 
 /* ── Trust bar ── */
+/* Visible by default after 1s even without .is-inview (IO / hydration failsafe) */
+@keyframes trustBarFailsafe {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .trust-bar-reveal .trust-script {
   opacity: 0;
   transform: translateY(10px);
+  animation: trustBarFailsafe 0.01s linear 1.1s forwards;
 }
 
 .trust-bar-reveal.is-inview .trust-script {
@@ -1789,11 +1745,13 @@ body::before {
 .trust-bar-reveal .trust-stat {
   opacity: 0;
   transform: translateY(14px) scale(0.97);
+  animation: trustBarFailsafe 0.01s linear 1.1s forwards;
 }
 
 .trust-bar-reveal.is-inview .trust-stat {
   opacity: 1;
   transform: translateY(0) scale(1);
+  animation: none;
   transition:
     opacity 0.4s var(--ease-out-expo) calc(var(--i, 0) * 70ms),
     transform 0.4s var(--ease-out-expo) calc(var(--i, 0) * 70ms);
@@ -2247,6 +2205,23 @@ main:has([data-ads-lander]) {
 
 /* ── Performance gates (mobile + paid landers) ── */
 
+body:has([data-ads-lander]) .floating-whatsapp {
+  display: none !important;
+}
+
+/* Dual footers: CSS toggle avoids client pathname JS */
+.site-footer--ads {
+  display: none;
+}
+
+body:has([data-ads-lander]) .site-footer--organic {
+  display: none;
+}
+
+body:has([data-ads-lander]) .site-footer--ads {
+  display: block;
+}
+
 /* Never animate the LCP hero image */
 .hero-image-drift {
   animation: none;
@@ -2279,13 +2254,6 @@ main:has([data-ads-lander]) {
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
   }
-
-  .scroll-reveal {
-    opacity: 1;
-    transform: none;
-    will-change: auto;
-    transition: none;
-  }
 }
 
 /* Paid landers: kill continuous paint / composite work */
@@ -2309,13 +2277,6 @@ main:has([data-ads-lander]) {
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
   background: var(--surface-pearl);
-}
-
-[data-ads-lander] .scroll-reveal {
-  opacity: 1;
-  transform: none;
-  will-change: auto;
-  transition: none;
 }
 
 [data-ads-lander] {

@@ -49,7 +49,7 @@ export default function GraciasCrossSell({ excludeSlug }: Props) {
                         alt={product.shortTitle}
                         fill
                         sizes="176px"
-                        className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                        className="object-contain p-1.5 transition-transform duration-500 group-hover:scale-[1.03]"
                       />
                     ) : null}
                   </div>

@@ -97,7 +97,7 @@ export default function AdsCatalogLander({ reviews }: Props) {
 
         <div className="section relative z-10 flex min-h-[min(88svh,48rem)] flex-col justify-end pb-12 pt-10 sm:min-h-[min(90svh,50rem)] sm:justify-center sm:pb-20 sm:pt-16 lg:pb-24">
           <div className="max-w-xl lg:max-w-[36rem]">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-rose-500 sm:text-xs">
+            <p className="font-script h-[2.35rem] text-[2.35rem] leading-none text-rose-500 sm:h-[2.75rem] sm:text-[2.75rem]">
               Manos Creativas Bynmw
             </p>
             <h1 className="mt-6 font-display text-[2.15rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.85rem] lg:text-[3.15rem]">

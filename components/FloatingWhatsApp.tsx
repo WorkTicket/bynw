@@ -1,12 +1,26 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
+import { isMetaPaidTraffic } from "@/lib/paid-traffic"
 import { WHATSAPP_URL } from "@/lib/site"
 
 export default function FloatingWhatsApp() {
   const pathname = usePathname()
-  // Paid landers keep one primary thumb action (sticky buy).
-  if (pathname.startsWith("/ads")) {
+  const [hideForPaidHome, setHideForPaidHome] = useState(false)
+
+  useEffect(() => {
+    if (pathname !== "/") {
+      setHideForPaidHome(false)
+      return
+    }
+    setHideForPaidHome(
+      isMetaPaidTraffic(new URLSearchParams(window.location.search))
+    )
+  }, [pathname])
+
+  // Paid landers + paid home: one primary thumb action (sticky buy).
+  if (pathname.startsWith("/ads") || hideForPaidHome) {
     return null
   }
 

@@ -37,13 +37,15 @@ const display = Bodoni_Moda({
   adjustFontFallback: true,
 })
 
+// Above-fold brand script on hero / ads — preload to avoid FOFT/CLS on LCP text.
 const script = Great_Vibes({
   subsets: ["latin"],
   weight: ["400"],
   variable: "--font-script",
   display: "swap",
-  preload: false,
+  preload: true,
   adjustFontFallback: true,
+  fallback: ["cursive", "serif"],
 })
 
 export const viewport: Viewport = {
@@ -121,19 +123,13 @@ export function generateMetadata(): Metadata {
 
 const websiteJsonLd = buildWebsiteJsonLd()
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  let organizationJsonLd = buildOrganizationJsonLd()
-  try {
-    const { getAggregateRating } = await import("@/lib/reviews")
-    const aggregate = await getAggregateRating()
-    organizationJsonLd = buildOrganizationJsonLd(aggregate)
-  } catch {
-    // Seed aggregate fallback
-  }
+  // Seed aggregate only — avoid KV round-trip on every HTML document (TTFB).
+  const organizationJsonLd = buildOrganizationJsonLd()
 
   return (
     <html
@@ -162,8 +158,12 @@ export default async function RootLayout({
         <main className="relative z-[1] flex-1 pt-[var(--site-header-offset)]">{children}</main>
         <Footer />
         <FloatingWhatsApp />
-        <StickyMobileCTA />
-        <CookieConsent />
+        <Suspense fallback={null}>
+          <StickyMobileCTA />
+        </Suspense>
+        <Suspense fallback={null}>
+          <CookieConsent />
+        </Suspense>
       </body>
     </html>
   )

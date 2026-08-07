@@ -10,6 +10,7 @@ import {
   readConsent,
   type ConsentChoice,
 } from "@/lib/consent"
+import { isMetaPaidTraffic } from "@/lib/paid-traffic"
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID
 const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID
@@ -42,6 +43,23 @@ const GA_EVENT_MAP: Record<string, string> = {
 
 function isAdsPath(pathname: string | null) {
   return Boolean(pathname?.startsWith("/ads"))
+}
+
+function isPaidDestinationPath(pathname: string | null) {
+  return pathname === "/" || isAdsPath(pathname)
+}
+
+/** Home + /ads get eager pixel only when Meta paid params are present.
+ * Cold lab runs (no utm/fbclid) stay deferred — attribution still fires on
+ * real paid clicks and on first interaction / idle.
+ */
+function shouldEagerLoadAnalytics(
+  pathname: string | null,
+  searchParams: URLSearchParams | { get(name: string): string | null } | null
+) {
+  if (!isPaidDestinationPath(pathname)) return false
+  if (!searchParams) return false
+  return isMetaPaidTraffic(searchParams)
 }
 
 function splitMetaParams(params?: Record<string, unknown>) {
@@ -261,10 +279,9 @@ function injectFb() {
 }
 
 /**
- * Organic pages: load after LCP (idle ≤2.5s or first gesture).
- * Paid `/ads` landers: inject on the next frame so Meta PageView /
- * ViewContent / InitiateCheckout are ready before a fast “Comprar” tap
- * navigates away to Hotmart (critical for FB ad attribution).
+ * Organic / cold lab: load after LCP (idle ≤2.5s or first gesture).
+ * Paid Meta landings with campaign params: inject on the next frame so
+ * PageView / InitiateCheckout are ready before a fast “Comprar” tap.
  */
 function scheduleAnalyticsLoad(load: () => void, eager: boolean) {
   if (eager) {
@@ -324,7 +341,7 @@ export default function Analytics() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const tracked = useRef<string | null>(null)
-  const eagerAds = isAdsPath(pathname)
+  const eagerAds = shouldEagerLoadAnalytics(pathname, searchParams)
   const [consent, setConsent] = useState<ConsentChoice | null>(null)
 
   useEffect(() => {

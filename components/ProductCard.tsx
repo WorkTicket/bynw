@@ -8,6 +8,8 @@ type Props = {
   product: Product
   /** Base path for the product link. Ads catalog uses `/ads`. */
   hrefBase?: "/shop" | "/ads"
+  /** Preserve UTM/fbclid when routing paid home → /ads landers. */
+  hrefQuery?: string
   ctaLabel?: string
   /** LCP hint for above-the-fold cards */
   priority?: boolean
@@ -16,6 +18,7 @@ type Props = {
 export default function ProductCard({
   product,
   hrefBase = "/shop",
+  hrefQuery,
   ctaLabel = "Ver y comprar",
   priority = false,
 }: Props) {
@@ -23,10 +26,13 @@ export default function ProductCard({
   const originalNum = parsePriceValue(product.originalPrice)
   const discount =
     originalNum > 0 ? Math.round((1 - priceNum / originalNum) * 100) : 0
+  const href = hrefQuery
+    ? `${hrefBase}/${product.slug}?${hrefQuery}`
+    : `${hrefBase}/${product.slug}`
 
   return (
     <Link
-      href={`${hrefBase}/${product.slug}`}
+      href={href}
       className="group block h-full"
       data-track-shop-view={product.id}
       data-content-id={product.id}
@@ -38,7 +44,7 @@ export default function ProductCard({
         data-product-card={product.id}
         className="relative flex h-full flex-col"
       >
-        <div className="product-media aspect-[4/5]">
+        <div className="product-media aspect-square">
           <Image
             src={`/images/${product.images[0]}`}
             alt={product.shortTitle}
@@ -46,7 +52,7 @@ export default function ProductCard({
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             quality={75}
             priority={priority}
-            className="object-cover transition-transform duration-[1000ms] ease-out motion-safe:group-hover:scale-[1.045]"
+            className="object-contain p-2 transition-transform duration-[1000ms] ease-out motion-safe:group-hover:scale-[1.03] sm:p-2.5"
           />
           <div
             className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#3a2428]/[0.08] via-transparent to-transparent opacity-70 transition-opacity duration-500 group-hover:opacity-40"

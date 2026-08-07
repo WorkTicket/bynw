@@ -1,43 +1,26 @@
-"use client"
-
-import { useInView } from "@/lib/use-in-view"
-import { useRef, useEffect, useState, type ReactNode, type CSSProperties } from "react"
+import type { ReactNode, CSSProperties } from "react"
 
 type Variant = "up" | "fade" | "scale"
 
 type Props = {
   children: ReactNode
   className?: string
-  /** Stagger delay in ms (kept short for snappy feel). */
+  /** Stagger delay in ms (kept for API compat; no JS reveal). */
   delay?: number
   variant?: Variant
 }
 
+/**
+ * Zero-JS reveal wrapper. Mobile/ads already forced visible via CSS;
+ * keeping a client IntersectionObserver site-wide cost more than the
+ * desktop motion was worth for PageSpeed.
+ */
 export default function ScrollReveal({
   children,
   className = "",
   delay = 0,
   variant = "up",
 }: Props) {
-  const ref = useRef<HTMLDivElement>(null)
-  // Trigger when ~12% visible, with a bottom inset so the reveal plays
-  // while the user is still scrolling — not after the block is fully on screen.
-  const inView = useInView(ref, {
-    once: true,
-    margin: "0px 0px -10% 0px",
-    threshold: 0.08,
-  })
-  const [reducedMotion, setReducedMotion] = useState(false)
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
-    setReducedMotion(mq.matches)
-    const onChange = () => setReducedMotion(mq.matches)
-    mq.addEventListener("change", onChange)
-    return () => mq.removeEventListener("change", onChange)
-  }, [])
-
-  const visible = reducedMotion || inView
   const style =
     delay > 0
       ? ({ ["--reveal-delay" as string]: `${delay}ms` } as CSSProperties)
@@ -45,9 +28,8 @@ export default function ScrollReveal({
 
   return (
     <div
-      ref={ref}
       data-variant={variant}
-      className={`scroll-reveal${visible ? " is-visible" : ""}${className ? ` ${className}` : ""}`}
+      className={`scroll-reveal is-visible${className ? ` ${className}` : ""}`}
       style={style}
     >
       {children}

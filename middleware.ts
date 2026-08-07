@@ -8,21 +8,10 @@ import {
   shouldRedirectPaidOrganicPath,
 } from "@/lib/paid-traffic"
 
-const STATIC_EXT =
-  /\.(?:svg|png|jpg|jpeg|gif|webp|ico|txt|xml|json|woff2?|ttf|otf|map)$/i
-
-function isStaticAsset(pathname: string) {
-  return (
-    pathname.startsWith("/images/") ||
-    pathname.startsWith("/gift/") ||
-    STATIC_EXT.test(pathname)
-  )
-}
-
 export function middleware(request: NextRequest) {
   const host = request.headers.get("host")?.toLowerCase() ?? ""
 
-  // Consolidate www → apex for a single canonical host (including /images).
+  // Consolidate www → apex for a single canonical host.
   if (host === "www.bynmwcreative.com") {
     const url = request.nextUrl.clone()
     url.host = "bynmwcreative.com"
@@ -32,12 +21,8 @@ export function middleware(request: NextRequest) {
 
   const { pathname, searchParams } = request.nextUrl
 
-  // Skip paid-traffic logic on static assets (www redirect already handled).
-  if (isStaticAsset(pathname)) {
-    return NextResponse.next()
-  }
-
-  // Safety net: Meta paid hits on / or /shop* → conversion lander /ads/{slug}
+  // Safety net: Meta paid hits on /shop* → conversion lander /ads/{slug}
+  // Home (`/`) is an intentional paid destination — do not redirect.
   if (
     shouldRedirectPaidOrganicPath(pathname) &&
     isMetaPaidTraffic(searchParams)
@@ -53,6 +38,14 @@ export function middleware(request: NextRequest) {
   return NextResponse.next()
 }
 
+// Only run where work is needed: www host consolidation + /shop paid redirects.
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    {
+      source: "/:path*",
+      has: [{ type: "host", value: "www.bynmwcreative.com" }],
+    },
+    "/shop",
+    "/shop/:path*",
+  ],
 }

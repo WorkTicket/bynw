@@ -1,14 +1,14 @@
 /**
- * Meta paid-traffic helpers: detect cold ad landings on organic routes
- * and map campaigns → /ads/{slug} product landers.
+ * Meta paid-traffic helpers for Ads Manager + attribution.
  *
- * Ops: cold ads must land on /ads/{slug} (see .env.example).
- * This module is the safety net when Ads Manager still points at / or /shop.
+ * Ops: cold ads may land on `/` (home catalog) or `/ads/{slug}`.
+ * Safety net: paid hits on `/shop*` still bounce to `/ads/{slug}`.
+ * Do NOT redirect `/` — home is an intentional paid destination.
  */
 
 import { getProductBySlug, products } from "@/lib/products"
 
-/** Default cold-traffic product when campaign cannot be mapped. */
+/** Default featured / sticky product when campaign cannot be mapped. */
 export const DEFAULT_COLD_ADS_SLUG = "princesas-disney"
 
 const META_SOURCES = new Set([
@@ -110,9 +110,11 @@ export function resolveColdAdsSlug(options: {
   return DEFAULT_COLD_ADS_SLUG
 }
 
-/** Paths that should bounce Meta paid traffic onto /ads landers. */
+/** Paths that should bounce Meta paid traffic onto /ads landers.
+ * Home (`/`) is intentionally excluded — ads may land on the catalog.
+ */
 export function shouldRedirectPaidOrganicPath(pathname: string): boolean {
-  if (pathname === "/" || pathname === "/shop") return true
+  if (pathname === "/shop") return true
   return /^\/shop\/[^/]+\/?$/.test(pathname)
 }
 
@@ -133,7 +135,12 @@ export function buildPaidAdsRedirectUrl(
   return target
 }
 
-/** Canonical cold-ad URL template for Ads Manager (ops copy-paste). */
+/** Canonical home cold-ad URL for Ads Manager (ops copy-paste). */
+export function coldHomeAdsUrlTemplate(): string {
+  return `https://bynmwcreative.com/?utm_source=facebook&utm_medium=paid&utm_campaign=es_home_cold&utm_content=v1`
+}
+
+/** Canonical product lander URL template for Ads Manager (ops copy-paste). */
 export function coldAdsUrlTemplate(slug = DEFAULT_COLD_ADS_SLUG): string {
   return `https://bynmwcreative.com/ads/${slug}?utm_source=facebook&utm_medium=paid&utm_campaign=es_${slug.replace(/-/g, "_")}_cold&utm_content=v1`
 }

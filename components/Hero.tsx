@@ -1,10 +1,18 @@
 import Image from "next/image"
-import Link from "next/link"
-import PrimaryCTA from "@/components/PrimaryCTA"
+import HeroCtas from "@/components/HeroCtas"
+import { SITE_RATING_DISPLAY } from "@/lib/testimonials-data"
+import { products } from "@/lib/products"
+
+const fromPrice = products.reduce((min, p) => {
+  const n = parseFloat(p.price.replace(/[^\d.,]/g, "").replace(",", "."))
+  return Number.isFinite(n) && n < min ? n : min
+}, Infinity)
 
 export default function Hero() {
+  const priceLabel = Number.isFinite(fromPrice) ? `desde ${fromPrice}€` : null
+
   return (
-    <section className="hero-editorial relative min-h-[min(92svh,52rem)] overflow-x-clip sm:min-h-[min(94svh,54rem)]">
+    <section className="hero-editorial relative min-h-[min(72svh,38rem)] overflow-x-clip sm:min-h-[min(78svh,44rem)]">
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute inset-0">
           <Image
@@ -64,56 +72,27 @@ export default function Hero() {
         />
       </div>
 
-      {/* Soft floating petals — atmosphere only */}
-      <div className="pointer-events-none absolute inset-0 z-[1] hidden overflow-hidden lg:block" aria-hidden="true">
-        <span className="absolute left-[42%] top-[22%] h-2 w-2 rounded-full bg-rose-300/40 animate-petal-float" />
-        <span
-          className="absolute left-[48%] top-[58%] h-1.5 w-1.5 rounded-full bg-rose-400/30 animate-petal-float"
-          style={{ animationDelay: "1.4s" }}
-        />
-        <span
-          className="absolute left-[38%] top-[72%] h-2.5 w-2.5 rounded-full bg-rose-200/60 animate-petal-float"
-          style={{ animationDelay: "2.6s" }}
-        />
-      </div>
-
-      <div className="section relative z-10 flex min-h-[min(92svh,52rem)] flex-col justify-end pb-14 pt-10 sm:min-h-[min(94svh,54rem)] sm:justify-center sm:pb-24 sm:pt-20 lg:pb-28">
+      <div className="section relative z-10 flex min-h-[min(72svh,38rem)] flex-col justify-end pb-10 pt-8 sm:min-h-[min(78svh,44rem)] sm:justify-center sm:pb-16 sm:pt-16 lg:pb-20">
         <div className="max-w-xl lg:max-w-[36rem]">
-          <p className="font-script text-[2.45rem] leading-[1.05] text-rose-600 sm:text-[3.05rem] lg:text-[3.45rem] lg:text-rose-500">
+          <p className="font-script text-[2.25rem] leading-[1.05] text-rose-600 sm:text-[2.85rem] lg:text-[3.25rem] lg:text-rose-500">
             Manos Creativas Bynmw
           </p>
 
-          <h1 className="mt-5 font-display text-[2.15rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:mt-7 sm:text-[2.85rem] lg:text-[3.25rem] xl:text-[3.45rem]">
+          <h1 className="mt-4 font-display text-[1.95rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:mt-5 sm:text-[2.65rem] lg:text-[3.05rem]">
             Patrones Digitales de{" "}
             <span className="gradient-text-candy italic">Crochet o Ganchillo</span>
           </h1>
 
-          <p className="mt-5 max-w-md text-[15px] leading-[1.75] text-ink/70 sm:mt-6 sm:text-base lg:text-lg lg:text-muted">
-            Colecciones de patrones con fotos paso a paso. Instrucciones claras,
-            Descarga al momento, acceso de por vida.
+          <p className="mt-4 max-w-md text-[15px] leading-[1.65] text-ink/70 sm:mt-5 sm:text-base lg:text-muted">
+            PDFs con fotos paso a paso. Descarga al momento
+            {priceLabel ? ` · ${priceLabel}` : ""}.
           </p>
 
-          <div className="mt-8 flex flex-row flex-wrap items-center gap-x-5 gap-y-3 sm:mt-11 sm:gap-x-6">
-            <PrimaryCTA href="/#colecciones" size="lg">
-              Ver colecciones
-            </PrimaryCTA>
-            <Link
-              href="/shop"
-              className="group inline-flex min-h-12 items-center gap-2 text-[0.9rem] font-medium tracking-[0.03em] text-ink/70 transition-colors hover:text-rose-600 lg:text-ink/60"
-            >
-              Explorar la tienda
-              <svg
-                className="h-3.5 w-3.5 shrink-0 transition-transform duration-300 group-hover:translate-x-0.5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={1.75}
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-              </svg>
-            </Link>
-          </div>
+          <p className="mt-3 text-[12px] font-medium tracking-[0.04em] text-rose-600/90 sm:text-[13px]">
+            {SITE_RATING_DISPLAY} ★ · descarga inmediata · acceso de por vida
+          </p>
+
+          <HeroCtas />
         </div>
       </div>
     </section>

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation"
 import { Metadata } from "next"
 import dynamic from "next/dynamic"
+import ProductMedia from "@/components/ProductMedia"
 import ImageCarousel from "@/components/ImageCarousel"
 import ScrollReveal from "@/components/ScrollReveal"
 import HotmartBuyButton from "@/components/HotmartBuyButton"
@@ -111,14 +112,11 @@ export default async function ProductPage({ params }: Props) {
             <ScrollReveal>
               <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 items-start">
                 <div className="relative lg:order-2">
-                  <div className="product-media">
-                    <ImageCarousel
-                      images={localizedProduct.images}
-                      interval={4500}
-                      alt={localizedProduct.shortTitle}
-                      priority
-                    />
-                  </div>
+                  <ProductMedia
+                    images={localizedProduct.images}
+                    interval={4500}
+                    alt={localizedProduct.shortTitle}
+                  />
                   {localizedProduct.caption && (
                     <p className="mt-3 text-center text-xs text-muted sm:text-sm">
                       {localizedProduct.caption}

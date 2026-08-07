@@ -1,9 +1,14 @@
 "use client"
 
-import { useLayoutEffect } from "react"
-import { usePathname } from "next/navigation"
+import { useLayoutEffect, useMemo } from "react"
+import { usePathname, useSearchParams } from "next/navigation"
 import { getLocalizedProduct } from "@/lib/pricing"
 import { getProductBySlug } from "@/lib/products"
+import {
+  DEFAULT_COLD_ADS_SLUG,
+  isMetaPaidTraffic,
+  resolveColdAdsSlug,
+} from "@/lib/paid-traffic"
 import HotmartBuyButton from "./HotmartBuyButton"
 import PrimaryCTA from "./PrimaryCTA"
 
@@ -11,16 +16,35 @@ const STICKY_ATTR = "data-sticky-cta"
 
 export default function StickyMobileCTA() {
   const pathname = usePathname()
+  const searchParams = useSearchParams()
   const enabled =
     pathname === "/" ||
     pathname.startsWith("/shop") ||
     pathname.startsWith("/ads")
 
   const slugMatch = pathname.match(/^\/(?:shop|ads)\/([^/]+)\/?$/)
-  const product = slugMatch ? getProductBySlug(slugMatch[1]) : undefined
-  const localized = product ? getLocalizedProduct(product) : null
+  const pathProduct = slugMatch ? getProductBySlug(slugMatch[1]) : undefined
+
   const isAdsCatalog = pathname === "/ads"
-  const isHomeOrShopCatalog = pathname === "/" || pathname === "/shop"
+  const isHome = pathname === "/"
+  const isShopCatalog = pathname === "/shop"
+  const paidHome = useMemo(
+    () => isHome && isMetaPaidTraffic(searchParams),
+    [isHome, searchParams]
+  )
+
+  // Home ads: sticky Hotmart for campaign product (or default bestseller)
+  const featuredSlug = useMemo(() => {
+    if (!isHome) return null
+    if (paidHome) {
+      return resolveColdAdsSlug({ searchParams })
+    }
+    return DEFAULT_COLD_ADS_SLUG
+  }, [isHome, paidHome, searchParams])
+
+  const featured = featuredSlug ? getProductBySlug(featuredSlug) : undefined
+  const product = pathProduct ?? (isHome ? featured : undefined)
+  const localized = product ? getLocalizedProduct(product) : null
 
   useLayoutEffect(() => {
     if (enabled) {
@@ -37,13 +61,13 @@ export default function StickyMobileCTA() {
 
   const title = localized
     ? localized.shortTitle
-    : isAdsCatalog || isHomeOrShopCatalog
+    : isAdsCatalog || isShopCatalog
       ? "Manos Creativas"
       : "Colecciones"
 
   const priceLabel = localized
     ? localized.price
-    : isAdsCatalog || isHomeOrShopCatalog
+    : isAdsCatalog || isShopCatalog
       ? "PDF al momento"
       : "Ver ofertas"
 
@@ -58,7 +82,7 @@ export default function StickyMobileCTA() {
         <div className="sticky-mobile-cta__panel">
           <div className="mx-auto flex max-w-lg items-center gap-3.5 px-4 py-3.5 sm:gap-4 sm:px-5">
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-semibold leading-tight tracking-tight text-ink sm:text-[0.95rem]">
+              <p className="truncate font-display text-[0.95rem] font-semibold leading-[1.25] text-rose-600 sm:text-[1.05rem]">
                 {title}
               </p>
               <p className="mt-1.5 flex min-w-0 items-baseline gap-1.5 truncate text-[11px] tracking-[0.04em] text-muted">
@@ -91,9 +115,7 @@ export default function StickyMobileCTA() {
             ) : (
               <PrimaryCTA
                 href={
-                  isAdsCatalog || pathname === "/shop"
-                    ? "#colecciones"
-                    : "/#colecciones"
+                  isAdsCatalog || isShopCatalog ? "#colecciones" : "/#colecciones"
                 }
                 size="sm"
                 className="shrink-0"

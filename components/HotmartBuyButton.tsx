@@ -202,7 +202,7 @@ export default function HotmartBuyButton({
             navigatingRef.current = true
             window.setTimeout(() => {
               window.location.assign(url)
-            }, 180)
+            }, 50)
             return
           }
 

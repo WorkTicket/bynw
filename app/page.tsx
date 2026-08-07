@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import dynamic from "next/dynamic"
 import Hero from "@/components/Hero"
 import TrustBar from "@/components/TrustBar"
+import ProductGrid from "@/components/ProductGrid"
 import { BRAND_NAME, DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE } from "@/lib/site"
 import { createPageMetadata, buildReviewsJsonLd } from "@/lib/seo"
 import { faqJsonLd } from "@/lib/faqs"
@@ -16,7 +17,6 @@ export const metadata: Metadata = {
   }),
 }
 
-const ProductGrid = dynamic(() => import("@/components/ProductGrid"))
 const FeatureGrid = dynamic(() => import("@/components/FeatureGrid"))
 const WhatsAppSupport = dynamic(() => import("@/components/WhatsAppSupport"))
 const Testimonials = dynamic(() => import("@/components/Testimonials"))
@@ -49,9 +49,9 @@ export default async function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewsJsonLd) }}
       />
       <Hero />
-      <TrustBar />
-      {/* Products early — paid traffic should see offers within one scroll */}
+      {/* Products immediately after hero — paid home traffic must see offers fast */}
       <ProductGrid />
+      <TrustBar />
       <FeatureGrid />
       <WhatsAppSupport />
       <Testimonials reviews={featured} limit={3} showForm />

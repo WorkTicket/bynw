@@ -209,7 +209,7 @@ export default function AdsProductLander({ product, reviews }: Props) {
         id="oferta"
         className="hero-editorial relative min-h-[min(78svh,42rem)] scroll-mt-[var(--site-header-offset)] overflow-hidden sm:min-h-[min(88svh,50rem)]"
       >
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-[#fffaf8]">
           <div className="absolute inset-0 origin-center">
             <Image
               src={`/images/${product.images[0]}`}
@@ -221,7 +221,7 @@ export default function AdsProductLander({ product, reviews }: Props) {
               sizes="100vw"
               // Already resized/compressed sources — skip optimizer RTT on LCP
               unoptimized
-              className="object-cover object-[68%_center] sm:object-[72%_center] lg:object-[78%_center]"
+              className="object-contain object-center p-5 sm:object-cover sm:object-[58%_center] sm:p-0 lg:object-[62%_center]"
             />
           </div>
 
@@ -268,7 +268,7 @@ export default function AdsProductLander({ product, reviews }: Props) {
 
         <div className="section relative z-10 flex min-h-[min(78svh,42rem)] flex-col justify-end pb-6 pt-6 sm:min-h-[min(88svh,50rem)] sm:justify-center sm:pb-16 sm:pt-14 lg:pb-24">
           <div className="max-w-xl lg:max-w-[36rem]">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-rose-500 sm:text-xs">
+            <p className="font-script h-[2.15rem] text-[2.15rem] leading-none text-rose-500 sm:h-[2.65rem] sm:text-[2.65rem]">
               Manos Creativas Bynmw
             </p>
 

@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import {
   OPEN_CONSENT_PREFS_EVENT,
@@ -11,11 +11,13 @@ import {
   writeConsent,
   type ConsentChoice,
 } from "@/lib/consent"
+import { isMetaPaidTraffic } from "@/lib/paid-traffic"
 
 type View = "hidden" | "banner" | "prefs"
 
 export default function CookieConsent() {
   const pathname = usePathname()
+  const searchParams = useSearchParams()
   const [view, setView] = useState<View>("hidden")
   const [analytics, setAnalytics] = useState(false)
   const [marketing, setMarketing] = useState(false)
@@ -26,12 +28,13 @@ export default function CookieConsent() {
       setView("hidden")
       return
     }
-    // Paid landers: show almost immediately so Meta can load before “Comprar”.
-    // Organic: short defer so the banner doesn’t steal first paint / CLS.
-    const delay = pathname?.startsWith("/ads") ? 200 : 1200
+    // Paid Meta (home + landers): show fast so pixel can load before Comprar.
+    // Organic: defer so the banner doesn’t steal first paint / CLS.
+    const paid = isMetaPaidTraffic(searchParams)
+    const delay = paid ? 250 : 2800
     const t = window.setTimeout(() => setView("banner"), delay)
     return () => window.clearTimeout(t)
-  }, [pathname])
+  }, [pathname, searchParams])
 
   useEffect(() => {
     const openPrefs = () => {

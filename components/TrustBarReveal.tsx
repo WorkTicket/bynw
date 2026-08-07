@@ -1,18 +1,28 @@
 "use client"
 
 import { useInView } from "@/lib/use-in-view"
-import { useRef, type ReactNode } from "react"
+import { useEffect, useRef, useState, type ReactNode } from "react"
 
 export default function TrustBarReveal({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null)
+  const [fallback, setFallback] = useState(false)
   const inView = useInView(ref, {
     once: true,
-    margin: "0px 0px -8% 0px",
-    threshold: 0.15,
+    // Expand the root so near-fold content reveals reliably after the tall hero
+    margin: "120px 0px 120px 0px",
+    threshold: 0,
   })
 
+  // Failsafe: never leave the trust bar permanently invisible if IO misses
+  useEffect(() => {
+    const t = window.setTimeout(() => setFallback(true), 900)
+    return () => window.clearTimeout(t)
+  }, [])
+
+  const visible = inView || fallback
+
   return (
-    <div ref={ref} className={`trust-bar-reveal${inView ? " is-inview" : ""}`}>
+    <div ref={ref} className={`trust-bar-reveal${visible ? " is-inview" : ""}`}>
       {children}
     </div>
   )

@@ -10,7 +10,8 @@
     "cf:build": "opennextjs-cloudflare build",
     "cf:preview": "opennextjs-cloudflare build && wrangler dev",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
-    "optimize:images": "node scripts/optimize-seo-images.js"
+    "optimize:images": "node scripts/optimize-seo-images.js",
+    "optimize:product-images": "node scripts/optimize-product-images.js"
   },
   "dependencies": {
     "next": "14.2.35",
