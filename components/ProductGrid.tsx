@@ -43,7 +43,7 @@ function ProductGridInner() {
                 product={p}
                 hrefBase={hrefBase}
                 hrefQuery={hrefQuery || undefined}
-                ctaLabel="Comprar ahora"
+                dualCtas
                 priority={i < 2}
               />
             </ScrollReveal>
@@ -85,7 +85,7 @@ export default function ProductGrid() {
                 <ProductCard
                   key={p.slug}
                   product={p}
-                  ctaLabel="Comprar ahora"
+                  dualCtas
                 />
               ))}
             </div>
