@@ -119,7 +119,7 @@ export default async function ShopPage() {
           <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
             {products.map((p, i) => (
               <ScrollReveal key={p.id} delay={i * 120}>
-                <ProductCard product={p} dualCtas />
+                <ProductCard product={p} />
               </ScrollReveal>
             ))}
           </div>

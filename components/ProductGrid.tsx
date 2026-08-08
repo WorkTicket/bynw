@@ -43,7 +43,6 @@ function ProductGridInner() {
                 product={p}
                 hrefBase={hrefBase}
                 hrefQuery={hrefQuery || undefined}
-                dualCtas
                 priority={i < 2}
               />
             </ScrollReveal>
@@ -82,11 +81,7 @@ export default function ProductGrid() {
             </div>
             <div className="grid gap-10 sm:grid-cols-2 sm:gap-12 lg:grid-cols-3 lg:gap-14">
               {products.map((p) => (
-                <ProductCard
-                  key={p.slug}
-                  product={p}
-                  dualCtas
-                />
+                <ProductCard key={p.slug} product={p} />
               ))}
             </div>
           </div>

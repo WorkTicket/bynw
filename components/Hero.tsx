@@ -1,16 +1,8 @@
 import Image from "next/image"
 import HeroCtas from "@/components/HeroCtas"
 import { SITE_RATING_DISPLAY } from "@/lib/testimonials-data"
-import { products } from "@/lib/products"
-
-const fromPrice = products.reduce((min, p) => {
-  const n = parseFloat(p.price.replace(/[^\d.,]/g, "").replace(",", "."))
-  return Number.isFinite(n) && n < min ? n : min
-}, Infinity)
 
 export default function Hero() {
-  const priceLabel = Number.isFinite(fromPrice) ? `desde ${fromPrice}€` : null
-
   return (
     <section className="hero-editorial relative flex min-h-[100svh] flex-col overflow-x-clip">
       <div className="absolute inset-0 overflow-hidden">
@@ -73,7 +65,7 @@ export default function Hero() {
       </div>
 
       <div className="section relative z-10 flex min-h-[100svh] flex-1 flex-col justify-end pb-10 pt-[calc(var(--site-header-offset)+1.5rem)] sm:justify-center sm:pb-16 sm:pt-[calc(var(--site-header-offset)+2rem)] lg:pb-20">
-        <div className="max-w-xl lg:max-w-[36rem]">
+        <div className="mx-auto w-full max-w-xl text-center lg:mx-0 lg:max-w-[36rem] lg:text-left">
           <p className="font-script text-[2.25rem] leading-[1.05] text-rose-600 sm:text-[2.85rem] lg:text-[3.25rem] lg:text-rose-500">
             Manos Creativas Bynmw
           </p>
@@ -83,9 +75,9 @@ export default function Hero() {
             <span className="gradient-text-candy italic">Crochet o Ganchillo</span>
           </h1>
 
-          <p className="mt-4 max-w-md text-[15px] leading-[1.65] text-ink/70 sm:mt-5 sm:text-base lg:text-muted">
-            PDFs con fotos paso a paso. Descarga al momento
-            {priceLabel ? ` · ${priceLabel}` : ""}.
+          <p className="mx-auto mt-4 max-w-md text-[15px] leading-[1.65] text-ink/70 sm:mt-5 sm:text-base lg:mx-0 lg:text-muted">
+            Colecciones de patrones con fotos paso a paso, instrucciones claras,
+            descarga al momento, acceso de por vida.
           </p>
 
           <p className="mt-3 text-[12px] font-medium tracking-[0.04em] text-rose-600/90 sm:text-[13px]">

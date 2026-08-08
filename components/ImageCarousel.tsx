@@ -108,7 +108,7 @@ export default function ImageCarousel({
               alt={active ? alt : ""}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1280px) 55vw, 640px"
-              quality={70}
+              quality={90}
               priority={isLcp}
               unoptimized={isLcp}
               loading={isLcp ? undefined : "lazy"}

@@ -1,14 +1,9 @@
 "use client"
 
-import { useLayoutEffect, useMemo } from "react"
-import { usePathname, useSearchParams } from "next/navigation"
+import { useLayoutEffect } from "react"
+import { usePathname } from "next/navigation"
 import { getLocalizedProduct } from "@/lib/pricing"
 import { getProductBySlug } from "@/lib/products"
-import {
-  DEFAULT_COLD_ADS_SLUG,
-  isMetaPaidTraffic,
-  resolveColdAdsSlug,
-} from "@/lib/paid-traffic"
 import HotmartBuyButton from "./HotmartBuyButton"
 import PrimaryCTA from "./PrimaryCTA"
 
@@ -16,7 +11,6 @@ const STICKY_ATTR = "data-sticky-cta"
 
 export default function StickyMobileCTA() {
   const pathname = usePathname()
-  const searchParams = useSearchParams()
   const enabled =
     pathname === "/" ||
     pathname.startsWith("/shop") ||
@@ -28,22 +22,9 @@ export default function StickyMobileCTA() {
   const isAdsCatalog = pathname === "/ads"
   const isHome = pathname === "/"
   const isShopCatalog = pathname === "/shop"
-  const paidHome = useMemo(
-    () => isHome && isMetaPaidTraffic(searchParams),
-    [isHome, searchParams]
-  )
 
-  // Home ads: sticky Hotmart for campaign product (or default bestseller)
-  const featuredSlug = useMemo(() => {
-    if (!isHome) return null
-    if (paidHome) {
-      return resolveColdAdsSlug({ searchParams })
-    }
-    return DEFAULT_COLD_ADS_SLUG
-  }, [isHome, paidHome, searchParams])
-
-  const featured = featuredSlug ? getProductBySlug(featuredSlug) : undefined
-  const product = pathProduct ?? (isHome ? featured : undefined)
+  // Home sticky always points to collections (not a direct princesas buy).
+  const product = isHome ? undefined : pathProduct
   const localized = product ? getLocalizedProduct(product) : null
 
   useLayoutEffect(() => {
@@ -61,13 +42,13 @@ export default function StickyMobileCTA() {
 
   const title = localized
     ? localized.shortTitle
-    : isAdsCatalog || isShopCatalog
+    : isAdsCatalog || isShopCatalog || isHome
       ? "Manos Creativas"
       : "Colecciones"
 
   const priceLabel = localized
     ? localized.price
-    : isAdsCatalog || isShopCatalog
+    : isAdsCatalog || isShopCatalog || isHome
       ? "PDF al momento"
       : "Ver ofertas"
 

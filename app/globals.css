@@ -1963,27 +1963,6 @@ body::after {
   animation: none !important;
 }
 
-/* Home collection cards — full-width dual CTAs */
-.product-card-ctas {
-  width: 100%;
-}
-
-.product-card-ctas > span {
-  width: 100%;
-  max-width: 100%;
-}
-
-.product-card-ctas .btn-collection-buy,
-.product-card-ctas .hotmart-fb.hotmart__button-checkout.btn-collection-buy {
-  width: 100% !important;
-  min-width: 0 !important;
-  animation: none !important;
-}
-
-.product-card-ctas .btn-secondary {
-  width: 100%;
-}
-
 .sticky-mobile-cta__panel::before {
   content: "";
   position: absolute;
