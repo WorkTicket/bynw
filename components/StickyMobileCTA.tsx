@@ -1,9 +1,13 @@
 "use client"
 
 import { useLayoutEffect } from "react"
-import { usePathname } from "next/navigation"
+import { usePathname, useSearchParams } from "next/navigation"
 import { getLocalizedProduct } from "@/lib/pricing"
 import { getProductBySlug } from "@/lib/products"
+import {
+  isMetaPaidTraffic,
+  resolveColdAdsSlug,
+} from "@/lib/paid-traffic"
 import HotmartBuyButton from "./HotmartBuyButton"
 import PrimaryCTA from "./PrimaryCTA"
 
@@ -11,6 +15,7 @@ const STICKY_ATTR = "data-sticky-cta"
 
 export default function StickyMobileCTA() {
   const pathname = usePathname()
+  const searchParams = useSearchParams()
   const enabled =
     pathname === "/" ||
     pathname.startsWith("/shop") ||
@@ -23,8 +28,13 @@ export default function StickyMobileCTA() {
   const isHome = pathname === "/"
   const isShopCatalog = pathname === "/shop"
 
-  // Home sticky always points to collections (not a direct princesas buy).
-  const product = isHome ? undefined : pathProduct
+  // Paid home + ads catalog: map the campaign to a product so Comprar is one tap.
+  const paidHome = isHome && isMetaPaidTraffic(searchParams)
+  const catalogBuy =
+    isAdsCatalog || paidHome
+      ? getProductBySlug(resolveColdAdsSlug({ searchParams }))
+      : undefined
+  const product = catalogBuy ?? (isHome ? undefined : pathProduct)
   const localized = product ? getLocalizedProduct(product) : null
 
   useLayoutEffect(() => {
@@ -56,17 +66,14 @@ export default function StickyMobileCTA() {
     <>
       {/* In-flow spacer so bottom padding exists in SSR HTML (no CLS on hydrate) */}
       <div className="sticky-mobile-cta-spacer lg:hidden" aria-hidden="true" />
-      <div
-        className="sticky-mobile-cta fixed bottom-0 left-0 right-0 z-50 lg:hidden"
-        style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
-      >
+      <div className="sticky-mobile-cta fixed bottom-0 left-0 right-0 z-50 lg:hidden">
         <div className="sticky-mobile-cta__panel">
-          <div className="mx-auto flex max-w-lg items-center gap-3.5 px-4 py-3.5 sm:gap-4 sm:px-5">
+          <div className="mx-auto flex max-w-lg items-center gap-3 px-4 py-2.5 sm:gap-3.5 sm:px-5">
             <div className="min-w-0 flex-1">
-              <p className="truncate font-display text-[0.95rem] font-semibold leading-[1.25] text-rose-600 sm:text-[1.05rem]">
+              <p className="truncate font-display text-[0.95rem] font-semibold leading-[1.2] text-ink sm:text-[1.05rem]">
                 {title}
               </p>
-              <p className="mt-1.5 flex min-w-0 items-baseline gap-1.5 truncate text-[11px] tracking-[0.04em] text-muted">
+              <p className="mt-0.5 flex min-w-0 items-baseline gap-1.5 truncate text-[11px] tracking-[0.04em] text-muted">
                 {localized ? (
                   <>
                     <span className="font-semibold tabular-nums text-ink/85">

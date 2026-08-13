@@ -34,6 +34,18 @@ export async function hashEmail(email: string): Promise<string> {
   return sha256Hex(email)
 }
 
+/** Meta wants digits only, including country code. */
+export async function hashPhone(phone: string): Promise<string> {
+  const digits = phone.replace(/\D/g, "")
+  return sha256Hex(digits)
+}
+
+/** Meta click ID cookie: fb.1.{unixSeconds}.{fbclid} */
+export function fbcFromFbclid(fbclid: string, eventTimeSec?: number): string {
+  const ts = eventTimeSec ?? Math.floor(Date.now() / 1000)
+  return `fb.1.${ts}.${fbclid.trim()}`
+}
+
 type CloudflareEnv = {
   META_CAPI_ACCESS_TOKEN?: string
   META_PIXEL_ID?: string

@@ -114,12 +114,12 @@ export function appendAttributionToHotmartUrl(
       url.searchParams.set("sck", sanitizeParam(sckParts.join("|")))
     }
 
-    for (const key of ATTR_KEYS) {
-      const value = attribution[key]
-      if (value && !url.searchParams.has(key)) {
-        url.searchParams.set(key, value)
-      }
+    // Official Hotmart param only — raw fbclid/utm_* on the pay URL can
+    // break checkout parsers. Webhook reads xcod for Meta fbc.
+    if (attribution.fbclid && !url.searchParams.has("xcod")) {
+      url.searchParams.set("xcod", sanitizeParam(attribution.fbclid, 255))
     }
+
     return url.toString()
   } catch {
     return href

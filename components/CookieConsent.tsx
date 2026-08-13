@@ -28,8 +28,12 @@ export default function CookieConsent() {
       setView("hidden")
       return
     }
-    // Paid Meta (home + landers): show fast so pixel can load before Comprar.
-    // Organic: defer so the banner doesn’t steal first paint / CLS.
+    // Never cover the pay CTA — checkout must stay tappable.
+    if (pathname.startsWith("/checkout")) {
+      setView("hidden")
+      return
+    }
+    // Paid Meta: top bar (does not cover Comprar). Organic: defer for LCP.
     const paid = isMetaPaidTraffic(searchParams)
     const delay = paid ? 250 : 2800
     const t = window.setTimeout(() => setView("banner"), delay)
@@ -64,9 +68,11 @@ export default function CookieConsent() {
 
   if (view === "hidden") return null
 
+  const paid = isMetaPaidTraffic(searchParams)
+
   return (
     <div
-      className="cookie-consent"
+      className={`cookie-consent${paid ? " cookie-consent--top cookie-consent--compact" : ""}`}
       role="dialog"
       aria-modal="false"
       aria-labelledby="cookie-consent-title"
@@ -76,12 +82,23 @@ export default function CookieConsent() {
           Cookies y privacidad
         </p>
         <p className="cookie-consent__text">
-          Usamos cookies necesarias para el sitio. Con tu permiso, también
-          cookies de analítica (Google) y publicidad (Meta) para medir visitas y
-          optimizar anuncios.{" "}
-          <Link href="/cookies-policy" className="cookie-consent__link">
-            Más información
-          </Link>
+          {paid ? (
+            <>
+              Cookies para medir visitas y anuncios.{" "}
+              <Link href="/cookies-policy" className="cookie-consent__link">
+                Más información
+              </Link>
+            </>
+          ) : (
+            <>
+              Usamos cookies necesarias para el sitio. Con tu permiso, también
+              cookies de analítica (Google) y publicidad (Meta) para medir visitas y
+              optimizar anuncios.{" "}
+              <Link href="/cookies-policy" className="cookie-consent__link">
+                Más información
+              </Link>
+            </>
+          )}
         </p>
 
         {view === "prefs" ? (

@@ -1,14 +1,33 @@
 import {
   claimEventId,
+  fbcFromFbclid,
   hashEmail,
+  hashPhone,
   sendMetaCapiEvents,
   type MetaCapiEvent,
 } from "@/lib/meta-capi"
+import {
+  getHotmartCode,
+  getProductByHotmartRef,
+} from "@/lib/products"
 import { absoluteUrl } from "@/lib/site"
 
 type HotmartPrice = {
   value?: number
   currency_value?: string
+}
+
+type HotmartBuyer = {
+  email?: string
+  name?: string
+  checkout_phone?: string
+  checkout_phone_code?: string
+}
+
+type HotmartOrigin = {
+  src?: string
+  sck?: string
+  xcod?: string
 }
 
 type HotmartPayload = {
@@ -20,10 +39,11 @@ type HotmartPayload = {
       status?: string
       price?: HotmartPrice
       order_date?: number
-      buyer?: { email?: string; name?: string; checkout_phone?: string }
+      origin?: HotmartOrigin
+      buyer?: HotmartBuyer
     }
     product?: { id?: number; name?: string; ucode?: string }
-    buyer?: { email?: string; name?: string; checkout_phone?: string }
+    buyer?: HotmartBuyer
     affiliates?: unknown
   }
 }
@@ -57,12 +77,30 @@ function extractHottok(req: Request, body: HotmartPayload): string {
   )
 }
 
-function clientIp(req: Request): string | undefined {
+function looksLikeFbclid(value: string | undefined): string | undefined {
+  const v = value?.trim()
+  if (!v) return undefined
+  if (v.startsWith("fb.1.")) return undefined
+  if (v.length < 12) return undefined
+  return v
+}
+
+function extractFbclid(origin: HotmartOrigin | undefined): string | undefined {
+  if (!origin) return undefined
   return (
-    req.headers.get("cf-connecting-ip") ||
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    undefined
+    looksLikeFbclid(origin.xcod) ||
+    looksLikeFbclid(origin.sck) ||
+    looksLikeFbclid(origin.src)
   )
+}
+
+function buyerPhone(buyer: HotmartBuyer | undefined): string | undefined {
+  if (!buyer) return undefined
+  const phone = buyer.checkout_phone?.replace(/\D/g, "")
+  if (!phone) return undefined
+  const code = buyer.checkout_phone_code?.replace(/\D/g, "")
+  if (code && !phone.startsWith(code)) return `${code}${phone}`
+  return phone
 }
 
 export async function POST(req: Request) {
@@ -102,22 +140,40 @@ export async function POST(req: Request) {
 
   const buyer = purchase?.buyer || body.data?.buyer
   const email = buyer?.email?.trim()
+  const phone = buyerPhone(buyer)
   const value = purchase?.price?.value
   const currency = (purchase?.price?.currency_value || "EUR").toUpperCase()
   const productName = body.data?.product?.name
-  const productId = body.data?.product?.ucode || String(body.data?.product?.id || "")
+  const hotmartRef =
+    body.data?.product?.ucode || String(body.data?.product?.id || "")
+  const siteProduct = getProductByHotmartRef(
+    body.data?.product?.ucode || body.data?.product?.id
+  )
+  const contentIds = siteProduct
+    ? [siteProduct.id, getHotmartCode(siteProduct)].filter(
+        (id): id is string => Boolean(id)
+      )
+    : hotmartRef
+      ? [hotmartRef]
+      : []
+  const fbclid = extractFbclid(purchase?.origin)
+  const eventTime = Math.floor(Date.now() / 1000)
 
-  const userData: MetaCapiEvent["user_data"] = {
-    client_ip_address: clientIp(req),
-    client_user_agent: req.headers.get("user-agent") || undefined,
-  }
+  // Never send the webhook request IP/UA — that is Hotmart's server, not the buyer.
+  const userData: MetaCapiEvent["user_data"] = {}
   if (email) {
     userData.em = [await hashEmail(email)]
+  }
+  if (phone) {
+    userData.ph = [await hashPhone(phone)]
+  }
+  if (fbclid) {
+    userData.fbc = fbcFromFbclid(fbclid, eventTime)
   }
 
   const event: MetaCapiEvent = {
     event_name: "Purchase",
-    event_time: Math.floor(Date.now() / 1000),
+    event_time: eventTime,
     event_id: transaction,
     action_source: "website",
     event_source_url: absoluteUrl("/gracias"),
@@ -126,8 +182,10 @@ export async function POST(req: Request) {
       currency,
       value: typeof value === "number" ? value : undefined,
       content_type: "product",
-      ...(productId ? { content_ids: [productId] } : {}),
-      ...(productName ? { content_name: productName } : {}),
+      ...(contentIds.length ? { content_ids: contentIds } : {}),
+      ...(productName || siteProduct?.seoTitle
+        ? { content_name: siteProduct?.seoTitle || productName }
+        : {}),
       order_id: transaction,
     },
   }

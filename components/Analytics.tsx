@@ -16,7 +16,7 @@ const GA_ID = process.env.NEXT_PUBLIC_GA_ID
 const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID
 
 /** Meta standard events we optimize Facebook ads against.
- * InitiateCheckout: fires on /checkout/[slug] load (not buy-button click).
+ * InitiateCheckout: fires on Comprar tap (and /checkout if it still renders).
  * Purchase: Hotmart Pixel + CAPI webhook (/api/webhooks/hotmart) + optional
  * browser fire on /gracias with matching event_id (transaction).
  */

@@ -40,6 +40,20 @@ function normalize(value: string | null | undefined): string {
   return (value ?? "").trim().toLowerCase()
 }
 
+/** Next.js page `searchParams` → URLSearchParams (first value wins). */
+export function toURLSearchParams(
+  raw?: Record<string, string | string[] | undefined> | URLSearchParams | null
+): URLSearchParams {
+  if (!raw) return new URLSearchParams()
+  if (raw instanceof URLSearchParams) return new URLSearchParams(raw)
+  const out = new URLSearchParams()
+  for (const [key, value] of Object.entries(raw)) {
+    const v = Array.isArray(value) ? value[0] : value
+    if (v?.trim()) out.set(key, v)
+  }
+  return out
+}
+
 export function isPaidMedium(medium: string | null | undefined): boolean {
   const m = normalize(medium)
   if (!m) return false

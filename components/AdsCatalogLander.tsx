@@ -20,6 +20,7 @@ const FAQ = dynamic(() => import("@/components/FAQ"))
 
 type Props = {
   reviews: Review[]
+  hrefQuery?: string
 }
 
 const TRUST = [
@@ -32,10 +33,12 @@ const TRUST = [
 const sectionHeading =
   "font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-ink tracking-tight leading-normal overflow-visible pb-1"
 
-export default function AdsCatalogLander({ reviews }: Props) {
+export default function AdsCatalogLander({ reviews, hrefQuery }: Props) {
   const fromPrice = getCatalogFromPrice()
   const featured = getLocalizedProduct(getProductBySlug("princesas-disney")!)
   const bestsellers = ["princesas-disney", "flores-eternas", "amigurumis-chenille"]
+  const adsHref = (slug: string) =>
+    hrefQuery ? `/ads/${slug}?${hrefQuery}` : `/ads/${slug}`
 
   return (
     <>
@@ -54,21 +57,7 @@ export default function AdsCatalogLander({ reviews }: Props) {
             />
           </div>
 
-          <div
-            className="pointer-events-none absolute inset-0 lg:hidden"
-            style={{
-              background: `
-                linear-gradient(
-                  to top,
-                  rgba(250,243,241,0.92) 0%,
-                  rgba(255,250,248,0.9) 20%,
-                  rgba(255,250,248,0.55) 42%,
-                  transparent 68%
-                ),
-                linear-gradient(to bottom, rgba(255,250,248,0.85) 0%, transparent 26%)
-              `,
-            }}
-          />
+          <div className="hero-veil-mobile pointer-events-none absolute inset-0 lg:hidden" />
 
           <div
             className="pointer-events-none absolute inset-0 hidden lg:block"
@@ -95,7 +84,7 @@ export default function AdsCatalogLander({ reviews }: Props) {
           />
         </div>
 
-        <div className="section relative z-10 flex min-h-[min(88svh,48rem)] flex-col justify-end pb-12 pt-10 sm:min-h-[min(90svh,50rem)] sm:justify-center sm:pb-20 sm:pt-16 lg:pb-24">
+        <div className="section relative z-10 flex min-h-[min(88svh,48rem)] flex-col justify-end pb-[calc(var(--sticky-cta-stack)+1.15rem)] pt-10 sm:min-h-[min(90svh,50rem)] sm:justify-center sm:pb-[calc(var(--sticky-cta-stack)+2rem)] sm:pt-16 lg:pb-24">
           <div className="max-w-xl lg:max-w-[36rem]">
             <p className="font-script h-[2.35rem] text-[2.35rem] leading-none text-rose-500 sm:h-[2.75rem] sm:text-[2.75rem]">
               Manos Creativas Bynmw
@@ -128,7 +117,7 @@ export default function AdsCatalogLander({ reviews }: Props) {
                 Ver colecciones
               </PrimaryCTA>
               <Link
-                href={`/ads/${featured.slug}`}
+                href={adsHref(featured.slug)}
                 className="inline-flex min-h-12 items-center text-[0.9rem] font-medium tracking-[0.03em] text-ink/55 transition-colors hover:text-rose-600"
               >
                 Más vendida: {featured.shortTitle} →
@@ -197,7 +186,7 @@ export default function AdsCatalogLander({ reviews }: Props) {
                       </span>
                     )}
                     <Link
-                      href={`/ads/${slug}`}
+                      href={adsHref(slug)}
                       className="font-medium text-ink/75 transition-colors hover:text-rose-600"
                     >
                       {p.shortTitle}
@@ -214,6 +203,7 @@ export default function AdsCatalogLander({ reviews }: Props) {
                 <ProductCard
                   product={p}
                   hrefBase="/ads"
+                  hrefQuery={hrefQuery}
                   ctaLabel="Ver oferta"
                 />
               </ScrollReveal>
@@ -250,7 +240,7 @@ export default function AdsCatalogLander({ reviews }: Props) {
                   Ver colecciones
                 </PrimaryCTA>
                 <Link
-                  href={`/ads/${featured.slug}`}
+                  href={adsHref(featured.slug)}
                   className="text-sm font-medium text-ink/50 transition-colors hover:text-rose-600"
                 >
                   {featured.shortTitle} {featured.price} →

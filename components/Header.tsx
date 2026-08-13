@@ -4,6 +4,8 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import PrimaryCTA from "@/components/PrimaryCTA"
+import HotmartBuyButton from "@/components/HotmartBuyButton"
+import { getProductBySlug } from "@/lib/products"
 import { WHATSAPP_URL } from "@/lib/site"
 
 const links = [
@@ -116,14 +118,17 @@ export default function Header() {
 
   // Paid landers + checkout: no organic nav — logo + one action.
   if (isSlim) {
-    const isAdsProduct = /^\/ads\/[^/]+\/?$/.test(pathname)
+    const adsSlug = pathname.match(/^\/ads\/([^/]+)\/?$/)?.[1]
+    const adsProduct = adsSlug ? getProductBySlug(adsSlug) : undefined
+    const checkoutSlug = pathname.match(/^\/checkout\/([^/]+)/)?.[1]
+    const checkoutBackHref = checkoutSlug ? `/ads/${checkoutSlug}` : "/ads"
     return (
       <>
         <div className="ios-status-bar" aria-hidden="true" />
         <div className="site-header">
           <header className={`site-header__nav ${scrolled ? "is-scrolled" : ""}`}>
             <div className="site-header__bar">
-              <BrandMark href={isCheckout ? "/" : "/ads"} />
+              <BrandMark href={isCheckout ? checkoutBackHref : "/ads"} />
               {isCheckout ? (
                 <a
                   href={WHATSAPP_URL}
@@ -134,10 +139,17 @@ export default function Header() {
                 >
                   Ayuda<span className="hidden sm:inline"> WhatsApp</span>
                 </a>
-              ) : isAdsProduct ? (
-                <a href="#oferta" className="btn-nav">
+              ) : adsProduct ? (
+                <HotmartBuyButton
+                  slug={adsProduct.slug}
+                  contentId={adsProduct.id}
+                  contentName={adsProduct.seoTitle}
+                  price={adsProduct.price}
+                  size="compact"
+                  className="!w-auto shrink-0"
+                >
                   Comprar ahora
-                </a>
+                </HotmartBuyButton>
               ) : (
                 <a href="#colecciones" className="btn-nav">
                   Ver ofertas

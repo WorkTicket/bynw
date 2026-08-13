@@ -17,6 +17,39 @@ type Props = {
   price: string
 }
 
+/** Fire InitiateCheckout once per product per tab after marketing consent. */
+export function fireInitiateCheckout(opts: {
+  id: string
+  name?: string
+  price: string
+}): (() => void) | undefined {
+  try {
+    if (typeof window === "undefined") return
+    if (!hasMarketingConsent(readConsent())) return
+
+    try {
+      if (sessionStorage.getItem(`${FIRED_KEY}:${opts.id}`)) return
+    } catch {
+      // sessionStorage blocked — still try to send
+    }
+
+    const payload = buildCommercePayload({
+      id: opts.id,
+      name: opts.name,
+      price: opts.price,
+    })
+    const cleanup = trackMetaStandard("InitiateCheckout", payload)
+    try {
+      sessionStorage.setItem(`${FIRED_KEY}:${opts.id}`, "1")
+    } catch {
+      // ignore
+    }
+    return cleanup
+  } catch {
+    return undefined
+  }
+}
+
 /** Fires Meta InitiateCheckout once per product per tab after marketing consent. */
 export default function MetaInitiateCheckout({
   contentId,
@@ -27,32 +60,16 @@ export default function MetaInitiateCheckout({
   const cleanupRef = useRef<(() => void) | null>(null)
 
   useEffect(() => {
-    const payload = buildCommercePayload({
-      id: contentId,
-      name: contentName,
-      price,
-    })
-
     const tryFire = () => {
       if (fired.current) return
+      const cleanup = fireInitiateCheckout({
+        id: contentId,
+        name: contentName,
+        price,
+      })
       if (!hasMarketingConsent(readConsent())) return
-
-      try {
-        if (sessionStorage.getItem(`${FIRED_KEY}:${contentId}`)) {
-          fired.current = true
-          return
-        }
-      } catch {
-        // sessionStorage blocked
-      }
-
       fired.current = true
-      cleanupRef.current = trackMetaStandard("InitiateCheckout", payload)
-      try {
-        sessionStorage.setItem(`${FIRED_KEY}:${contentId}`, "1")
-      } catch {
-        // ignore
-      }
+      if (cleanup) cleanupRef.current = cleanup
     }
 
     tryFire()

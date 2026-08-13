@@ -9,7 +9,7 @@ export const faqs = [
   },
   {
     q: "¿Qué métodos de pago aceptáis?",
-    a: "Los pagos pasan por Hotmart. Puedes pagar con tarjeta, PayPal, Klarna y otros métodos según tu país.",
+    a: "Los pagos pasan por Hotmart. Puedes pagar con tarjeta o PayPal; otros métodos dependen de tu país.",
   },
   {
     q: "¿Puedo imprimir los patrones?",

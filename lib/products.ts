@@ -433,3 +433,22 @@ export const products: Product[] = [
 export function getProductBySlug(slug: string): Product | undefined {
   return products.find((p) => p.slug === slug)
 }
+
+/** Hotmart ucode from a pay.hotmart.com URL (e.g. L104751068L). */
+export function getHotmartCode(product: Product): string | undefined {
+  const match = product.buyUrl.match(/pay\.hotmart\.com\/([^/?#]+)/i)
+  return match?.[1]
+}
+
+/** Match webhook ucode / numeric id / site slug back to a catalog product. */
+export function getProductByHotmartRef(
+  ref: string | number | null | undefined
+): Product | undefined {
+  const value = String(ref ?? "").trim()
+  if (!value) return undefined
+  return products.find((product) => {
+    if (product.id === value || product.slug === value) return true
+    const code = getHotmartCode(product)
+    return Boolean(code && code.toLowerCase() === value.toLowerCase())
+  })
+}

@@ -9,6 +9,8 @@
   --header-announcement-height: 2.5rem;
   --header-nav-height: 4.5rem;
   --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --sticky-cta-stack: calc(4.55rem + var(--safe-area-bottom));
   --site-header-offset: calc(
     var(--header-announcement-height) + var(--header-nav-height) + var(--safe-area-top)
   );
@@ -854,7 +856,7 @@ html[data-nav-open="true"] .floating-whatsapp {
 
 /* ── Base — sitewide flowing canvas ── */
 html {
-  background-color: var(--surface-blush);
+  background-color: var(--surface-pearl);
   scroll-behavior: smooth;
   overflow-x: clip;
 }
@@ -1348,6 +1350,23 @@ body::after {
 /* Hero — full-bleed editorial; canvas shows at edges / after image */
 .hero-editorial {
   background-color: transparent;
+}
+
+/* Mobile hero wash — one pearl fade (no blush/white banding) into the dock */
+.hero-veil-mobile {
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255, 250, 248, 0.7) 0%,
+      transparent 16%
+    ),
+    linear-gradient(
+      to top,
+      rgba(255, 250, 248, 0.97) 0%,
+      rgba(255, 250, 248, 0.7) 12%,
+      rgba(255, 250, 248, 0.24) 28%,
+      transparent 46%
+    );
 }
 
 /* Avoid content-visibility — it breaks IntersectionObserver scroll reveals */
@@ -1928,26 +1947,16 @@ body::after {
 }
 
 /* ── Sticky mobile CTA (always on for shop/home/ads) ── */
+.sticky-mobile-cta {
+  background: var(--surface-pearl);
+}
+
 .sticky-mobile-cta__panel {
   position: relative;
-  border-top: 1px solid rgba(232, 180, 184, 0.45);
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.62) 0%,
-      transparent 46%
-    ),
-    linear-gradient(
-      105deg,
-      rgba(255, 250, 248, 0.96) 0%,
-      rgba(250, 243, 241, 0.98) 48%,
-      rgba(255, 250, 248, 0.96) 100%
-    );
-  -webkit-backdrop-filter: blur(24px) saturate(1.2);
-  backdrop-filter: blur(24px) saturate(1.2);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.78) inset,
-    0 -22px 52px -20px rgba(184, 74, 94, 0.24);
+  padding-bottom: var(--safe-area-bottom);
+  border-top: 1px solid rgba(232, 180, 184, 0.28);
+  background: var(--surface-pearl);
+  box-shadow: 0 -10px 28px -18px rgba(184, 74, 94, 0.14);
 }
 
 /* Sticky buy — thumb-friendly, not the tiny compact variant */
@@ -1963,31 +1972,10 @@ body::after {
   animation: none !important;
 }
 
-.sticky-mobile-cta__panel::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 12%;
-  right: 12%;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.95),
-    transparent
-  );
-  pointer-events: none;
-}
-
-@supports not (backdrop-filter: blur(1px)) {
-  .sticky-mobile-cta__panel {
-    background: var(--surface-pearl);
-  }
-}
-
 /* In-flow reserve for fixed sticky buy bar (SSR-safe, no hydrate CLS) */
 .sticky-mobile-cta-spacer {
-  height: calc(6.75rem + env(safe-area-inset-bottom, 0px));
+  height: var(--sticky-cta-stack);
+  background: var(--surface-pearl);
   pointer-events: none;
 }
 
@@ -2072,7 +2060,7 @@ main:has([data-ads-lander], [data-checkout-lander]) {
 /* Park WhatsApp above the always-on sticky bar */
 @media (max-width: 1023px) {
   html[data-sticky-cta="visible"] .floating-whatsapp {
-    bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px));
+    bottom: calc(var(--sticky-cta-stack) + 0.85rem);
   }
 }
 
@@ -2097,6 +2085,26 @@ main:has([data-ads-lander], [data-checkout-lander]) {
   padding: 0.75rem;
   padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
   pointer-events: none;
+}
+
+/* Paid traffic: park above the fold so it never covers Comprar / sticky buy */
+.cookie-consent--top {
+  top: var(--site-header-offset);
+  bottom: auto;
+  padding-bottom: 0.5rem;
+}
+
+.cookie-consent--compact .cookie-consent__panel {
+  padding: 0.75rem 0.95rem 0.85rem;
+}
+
+.cookie-consent--compact .cookie-consent__title {
+  font-size: 0.95rem;
+}
+
+.cookie-consent--compact .cookie-consent__text {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
 }
 
 .cookie-consent__panel {
@@ -2198,53 +2206,30 @@ body:has([data-ads-lander], [data-checkout-lander]) .site-footer--ads {
   display: block;
 }
 
-/* Branded Hotmart checkout shell */
+/* Branded checkout → full-page Hotmart (no iframe) */
 .checkout-shell__layout {
   width: 100%;
 }
 
-.checkout-hotmart-wrap {
-  overflow: hidden;
-  border-radius: 1.15rem;
+.checkout-pay-card {
+  margin: 1.25rem 1rem 2rem;
   border: 1px solid rgba(232, 180, 184, 0.45);
-  background: #fff;
+  border-radius: 1.15rem;
+  background: rgba(255, 250, 248, 0.94);
+  padding: 1.5rem 1.25rem 1.75rem;
   box-shadow: 0 18px 48px -28px rgba(184, 74, 94, 0.28);
-}
-
-.checkout-hotmart-frame {
-  display: block;
-  width: 100%;
-  min-height: 860px;
-  height: min(920px, 92vh);
-  border: 0;
-  background: #fff;
-}
-
-.checkout-hotmart-frame--pending {
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 250, 248, 0.95) 0%,
-      rgba(250, 243, 241, 0.9) 100%
-    );
-}
-
-.checkout-shell__fallback {
-  margin-top: 1rem;
   text-align: center;
+}
+
+.checkout-pay-card__hint {
+  margin-top: 0.85rem;
+  border-radius: 0.85rem;
+  background: rgba(184, 74, 94, 0.06);
+  padding: 0.7rem 0.85rem;
   font-size: 12px;
-  line-height: 1.6;
-  color: color-mix(in srgb, var(--muted) 75%, transparent);
-}
-
-.checkout-shell__fallback a {
-  font-weight: 600;
-  color: #b84a5e;
-  text-underline-offset: 4px;
-}
-
-.checkout-shell__fallback a:hover {
-  text-decoration: underline;
+  line-height: 1.5;
+  color: rgba(58, 36, 40, 0.78);
+  text-align: left;
 }
 
 @media (min-width: 1024px) {
@@ -2261,6 +2246,16 @@ body:has([data-ads-lander], [data-checkout-lander]) .site-footer--ads {
     gap: 3rem;
     padding: 2.5rem 1.5rem 3.5rem;
   }
+
+  .checkout-pay-card {
+    margin: 0;
+    padding: 2.25rem 2rem 2.5rem;
+    text-align: left;
+  }
+
+  .checkout-pay-card .btn-collection-buy {
+    margin-inline: 0;
+  }
 }
 
 @media (max-width: 1023px) {
@@ -2268,16 +2263,14 @@ body:has([data-ads-lander], [data-checkout-lander]) .site-footer--ads {
     display: none !important;
   }
 
-  body:has([data-checkout-lander]) .cookie-consent__text {
-    display: none;
-  }
-
-  body:has([data-checkout-lander]) .cookie-consent__panel {
-    padding: 0.7rem 0.85rem 0.8rem;
+  html[data-sticky-cta="visible"] .cookie-consent:not(.cookie-consent--top) {
+    bottom: var(--sticky-cta-stack);
+    padding-bottom: 0.5rem;
   }
 
   .checkout-shell {
     background: var(--surface-pearl);
+    min-height: calc(100svh - var(--header-nav-height) - var(--safe-area-top));
   }
 
   .checkout-shell__mobile-bar {
@@ -2300,33 +2293,32 @@ body:has([data-ads-lander], [data-checkout-lander]) .site-footer--ads {
     box-shadow: 0 0 0 1px rgba(232, 180, 184, 0.45);
   }
 
-  .checkout-shell__layout,
-  .checkout-shell__pay {
-    display: block;
+  .checkout-shell__sticky-spacer {
+    height: var(--sticky-cta-stack);
   }
 
-  /* Hotmart's embed is a short widget — don't stretch a white iframe under it. */
-  .checkout-hotmart-wrap {
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
-    background: transparent;
+  .checkout-shell__sticky {
+    position: fixed;
+    z-index: 60;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
 
-  .checkout-hotmart-frame {
-    display: block;
-    width: 100%;
-    height: 36.5rem;
-    min-height: 36.5rem;
-    max-height: none;
-    background: transparent;
+  .checkout-shell__sticky-panel {
+    padding: 0.65rem 1rem calc(0.65rem + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid rgba(232, 180, 184, 0.4);
+    background: rgba(255, 250, 248, 0.97);
+    box-shadow: 0 -10px 28px -18px rgba(184, 74, 94, 0.2);
   }
 
-  .checkout-shell__fallback {
-    margin: 0;
-    padding: 0.45rem 1rem calc(0.7rem + env(safe-area-inset-bottom, 0px));
-    font-size: 11px;
-    background: var(--surface-pearl);
+  .checkout-shell__sticky .btn-collection-buy {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  .checkout-pay-card {
+    margin-bottom: 1rem;
   }
 }
 
@@ -2353,9 +2345,22 @@ body:has([data-ads-lander], [data-checkout-lander]) .site-footer--ads {
   }
 
   .sticky-mobile-cta__panel {
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
     background: var(--surface-pearl);
+  }
+
+  html[data-sticky-cta="visible"],
+  html[data-sticky-cta="visible"] body {
+    background-color: var(--surface-pearl);
+  }
+
+  html[data-sticky-cta="visible"] .site-footer--organic,
+  html[data-sticky-cta="visible"] .site-footer--ads {
+    background-image: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(255, 250, 248, 0.55) 42%,
+      var(--surface-pearl) 100%
+    );
   }
 
   .site-header__nav {
@@ -2376,8 +2381,6 @@ body:has([data-ads-lander], [data-checkout-lander]) .site-footer--ads {
 }
 
 [data-ads-lander] .sticky-mobile-cta__panel {
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
   background: var(--surface-pearl);
 }
 
@@ -2387,9 +2390,9 @@ body:has([data-ads-lander], [data-checkout-lander]) .site-footer--ads {
   background: var(--surface-pearl);
 }
 
-[data-ads-lander],
-[data-checkout-lander] {
-  --grad-site-canvas: var(--surface-pearl);
+body:has([data-ads-lander], [data-checkout-lander]) {
+  background-color: var(--surface-pearl);
+  background-image: none;
 }
 
 [data-checkout-lander] .site-header__nav {

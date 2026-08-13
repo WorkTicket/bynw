@@ -1,11 +1,12 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import Link from "next/link"
 import { getPriceCurrency } from "@/lib/tracking"
 import { parsePriceValue } from "@/lib/pricing"
 import { captureAndPersistFromLocation } from "@/lib/ad-attribution"
-import { onsiteCheckoutPath } from "@/lib/hotmart"
+import { buildHotmartPayUrl, onsiteCheckoutPath } from "@/lib/hotmart"
+import { getProductBySlug } from "@/lib/products"
+import { fireInitiateCheckout } from "@/components/MetaInitiateCheckout"
 
 type Size = "default" | "compact" | "lg"
 
@@ -15,7 +16,7 @@ type Props = {
   className?: string
   /** Visual size — maps to CSS modifiers on the checkout anchor */
   size?: Size
-  /** Product id for Meta (commerce attrs; InitiateCheckout fires on /checkout) */
+  /** Product id for Meta (commerce attrs; InitiateCheckout fires on tap) */
   contentId?: string
   contentName?: string
   /** Display price string e.g. "15€" */
@@ -28,7 +29,16 @@ const sizeClass: Record<Size, string> = {
   lg: "btn-collection-buy--lg",
 }
 
-/** On-site checkout CTA — navigates to /checkout/{slug} (Hotmart lives there). */
+function payHref(slug: string, search?: string): string {
+  const product = getProductBySlug(slug)
+  if (!product) return onsiteCheckoutPath(slug, search)
+  return buildHotmartPayUrl(product.buyUrl, search)
+}
+
+/**
+ * One-tap Hotmart checkout. Native <a> to pay.hotmart.com so Facebook
+ * in-app browsers keep the user gesture (scripted redirects are blocked).
+ */
 export default function HotmartBuyButton({
   slug,
   children,
@@ -38,11 +48,12 @@ export default function HotmartBuyButton({
   contentName,
   price,
 }: Props) {
-  const [href, setHref] = useState(onsiteCheckoutPath(slug))
+  const product = getProductBySlug(slug)
+  const [href, setHref] = useState(() => payHref(slug))
 
   useEffect(() => {
     captureAndPersistFromLocation(window.location.search)
-    setHref(onsiteCheckoutPath(slug, window.location.search))
+    setHref(payHref(slug, window.location.search))
   }, [slug])
 
   const value = price ? String(parsePriceValue(price)) : undefined
@@ -53,16 +64,30 @@ export default function HotmartBuyButton({
     <span
       className={`relative inline-flex w-auto max-w-full justify-center ${className ?? ""}`}
     >
-      <Link
+      <a
         href={href}
+        target="_top"
         data-content-id={contentId}
         data-content-name={contentName}
         data-value={value}
         data-currency={currency}
         className={`btn-collection-buy${sizeMod ? ` ${sizeMod}` : ""}`}
+        onClick={() => {
+          // Never mutate href here — rewriting the URL during the tap can
+          // cancel navigation in Instagram/Facebook in-app browsers.
+          try {
+            fireInitiateCheckout({
+              id: contentId || product?.id || slug,
+              name: contentName || product?.seoTitle,
+              price: price || product?.price || "",
+            })
+          } catch {
+            // Tracking must never block payment.
+          }
+        }}
       >
         <span className="btn-label">{children}</span>
-      </Link>
+      </a>
     </span>
   )
 }

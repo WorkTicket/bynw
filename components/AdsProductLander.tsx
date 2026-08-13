@@ -33,7 +33,7 @@ const sectionHeading =
 const TRUST_POINTS = [
   { title: "Acceso inmediato", detail: "PDF por correo al pagar" },
   { title: "Garantía 7 días", detail: "Compra sin riesgo" },
-  { title: "Pago en euros", detail: "Checkout seguro Hotmart" },
+  { title: "Pago seguro", detail: "Checkout Hotmart" },
   { title: "Soporte WhatsApp", detail: "Respuesta en 24h" },
 ] as const
 
@@ -41,7 +41,7 @@ const STEPS = [
   {
     n: "01",
     title: "Compras en 2 minutos",
-    detail: "Pago seguro con tarjeta, PayPal o Klarna vía Hotmart.",
+    detail: "Pago seguro con tarjeta o PayPal vía Hotmart.",
   },
   {
     n: "02",
@@ -158,7 +158,7 @@ function BuyBlock({
         <span className="meta-sep hidden sm:inline" aria-hidden="true">
           ✦
         </span>
-        <span className="hidden sm:inline">Pago 100% seguro</span>
+        <span className="hidden sm:inline">Pago seguro en Hotmart</span>
       </p>
       <div
         className={`flex ${align === "start" ? "justify-center lg:justify-start" : "justify-center"} ${compact ? "hidden sm:flex" : ""}`}
@@ -225,21 +225,7 @@ export default function AdsProductLander({ product, reviews }: Props) {
             />
           </div>
 
-          <div
-            className="pointer-events-none absolute inset-0 lg:hidden"
-            style={{
-              background: `
-                linear-gradient(
-                  to top,
-                  rgba(250,243,241,0.92) 0%,
-                  rgba(255,250,248,0.94) 18%,
-                  rgba(255,250,248,0.62) 42%,
-                  transparent 68%
-                ),
-                linear-gradient(to bottom, rgba(255,250,248,0.85) 0%, transparent 22%)
-              `,
-            }}
-          />
+          <div className="hero-veil-mobile pointer-events-none absolute inset-0 lg:hidden" />
 
           <div
             className="pointer-events-none absolute inset-0 hidden lg:block"
@@ -266,7 +252,7 @@ export default function AdsProductLander({ product, reviews }: Props) {
           />
         </div>
 
-        <div className="section relative z-10 flex min-h-[min(78svh,42rem)] flex-col justify-end pb-6 pt-6 sm:min-h-[min(88svh,50rem)] sm:justify-center sm:pb-16 sm:pt-14 lg:pb-24">
+        <div className="section relative z-10 flex min-h-[min(78svh,42rem)] flex-col justify-end pb-[calc(var(--sticky-cta-stack)+0.85rem)] pt-6 sm:min-h-[min(88svh,50rem)] sm:justify-center sm:pb-[calc(var(--sticky-cta-stack)+1.75rem)] sm:pt-14 lg:pb-24">
           <div className="max-w-xl lg:max-w-[36rem]">
             <p className="font-script h-[2.15rem] text-[2.15rem] leading-none text-rose-500 sm:h-[2.65rem] sm:text-[2.65rem]">
               Manos Creativas Bynmw

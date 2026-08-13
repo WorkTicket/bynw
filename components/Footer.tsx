@@ -29,7 +29,7 @@ function LegalNav() {
 
 function AdsFooter({ year }: { year: number }) {
   return (
-    <footer className="site-footer site-footer--ads relative z-[1] bg-[linear-gradient(180deg,transparent_0%,rgba(250,243,241,0.22)_28%,rgba(243,228,226,0.42)_100%)]">
+    <footer className="site-footer site-footer--ads relative z-[1] bg-[linear-gradient(180deg,transparent_0%,rgba(255,250,248,0.4)_40%,#fffaf8_100%)]">
       <div className="section relative py-8 pb-12 sm:py-10 sm:pb-12">
         <div className="flex flex-col items-center justify-center gap-3 text-center">
           <p className="text-[11px] tracking-[0.02em] text-muted/75">
@@ -53,7 +53,7 @@ function AdsFooter({ year }: { year: number }) {
 
 function OrganicFooter({ year }: { year: number }) {
   return (
-    <footer className="site-footer site-footer--organic relative z-[1] bg-[linear-gradient(180deg,transparent_0%,rgba(250,243,241,0.2)_24%,rgba(243,228,226,0.4)_100%)]">
+    <footer className="site-footer site-footer--organic relative z-[1] bg-[linear-gradient(180deg,transparent_0%,rgba(255,250,248,0.35)_36%,#fffaf8_100%)]">
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-rose-300/35 to-transparent"
         aria-hidden="true"

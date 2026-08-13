@@ -7,6 +7,7 @@ import { BRAND_NAME, DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE } from "@/lib/site"
 import { createPageMetadata, buildReviewsJsonLd } from "@/lib/seo"
 import { faqJsonLd } from "@/lib/faqs"
 import { listFeaturedReviews, listPublishedReviews } from "@/lib/reviews"
+import { isMetaPaidTraffic, toURLSearchParams } from "@/lib/paid-traffic"
 
 export const metadata: Metadata = {
   ...createPageMetadata({
@@ -25,7 +26,15 @@ const UrgencyCTA = dynamic(() => import("@/components/UrgencyCTA"))
 const FAQ = dynamic(() => import("@/components/FAQ"))
 const LeadMagnetSection = dynamic(() => import("@/components/LeadMagnetSection"))
 
-export default async function HomePage() {
+type Props = {
+  searchParams?: Record<string, string | string[] | undefined>
+}
+
+export default async function HomePage({ searchParams }: Props) {
+  const query = toURLSearchParams(searchParams)
+  const paid = isMetaPaidTraffic(query)
+  const hrefQuery = paid ? query.toString() : undefined
+
   const [featured, allReviews] = await Promise.all([
     listFeaturedReviews(3),
     listPublishedReviews(),
@@ -50,7 +59,10 @@ export default async function HomePage() {
       />
       <Hero />
       <TrustBar />
-      <ProductGrid />
+      <ProductGrid
+        hrefBase={paid ? "/ads" : "/shop"}
+        hrefQuery={hrefQuery}
+      />
       <FeatureGrid />
       <WhatsAppSupport />
       <Testimonials reviews={featured} limit={3} showForm />

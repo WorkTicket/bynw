@@ -19,24 +19,8 @@ export default function Hero() {
           />
         </div>
 
-        {/* Mobile: pearl veil behind copy — bottom dissolves into the site canvas */}
-        <div
-          className="pointer-events-none absolute inset-0 lg:hidden"
-          style={{
-            background: `
-              linear-gradient(
-                to top,
-                rgba(250,243,241,0.92) 0%,
-                rgba(255,250,248,0.94) 22%,
-                rgba(255,250,248,0.88) 42%,
-                rgba(255,250,248,0.55) 58%,
-                rgba(255,250,248,0.22) 72%,
-                transparent 88%
-              ),
-              linear-gradient(to bottom, rgba(255,250,248,0.88) 0%, transparent 22%)
-            `,
-          }}
-        />
+        {/* Mobile: single pearl fade behind copy — meets the sticky dock */}
+        <div className="hero-veil-mobile pointer-events-none absolute inset-0 lg:hidden" />
 
         {/* Desktop: solid pearl behind copy → fade into image */}
         <div
@@ -64,7 +48,7 @@ export default function Hero() {
         />
       </div>
 
-      <div className="section relative z-10 flex min-h-[100svh] flex-1 flex-col justify-end pb-10 pt-[calc(var(--site-header-offset)+1.5rem)] sm:justify-center sm:pb-16 sm:pt-[calc(var(--site-header-offset)+2rem)] lg:pb-20">
+      <div className="section relative z-10 flex min-h-[100svh] flex-1 flex-col justify-end pb-[calc(var(--sticky-cta-stack)+1.15rem)] pt-[calc(var(--site-header-offset)+1.5rem)] sm:justify-center sm:pb-[calc(var(--sticky-cta-stack)+1.75rem)] sm:pt-[calc(var(--site-header-offset)+2rem)] lg:pb-20">
         <div className="mx-auto w-full max-w-xl text-center lg:mx-0 lg:max-w-[36rem] lg:text-left">
           <p className="font-script text-[2.25rem] leading-[1.05] text-rose-600 sm:text-[2.85rem] lg:text-[3.25rem] lg:text-rose-500">
             Manos Creativas Bynmw
