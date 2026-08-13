@@ -1363,20 +1363,23 @@ body::after {
   background-color: transparent;
 }
 
-/* Mobile hero wash — one pearl fade (no blush/white banding) into the dock */
+/* Mobile hero wash — solid pearl behind copy, then fade into the doll */
 .hero-veil-mobile {
   background:
     linear-gradient(
       to bottom,
-      rgba(255, 250, 248, 0.7) 0%,
-      transparent 16%
+      rgba(255, 250, 248, 0.55) 0%,
+      transparent 18%
     ),
     linear-gradient(
       to top,
-      rgba(255, 250, 248, 0.97) 0%,
-      rgba(255, 250, 248, 0.7) 12%,
-      rgba(255, 250, 248, 0.24) 28%,
-      transparent 46%
+      #fffaf8 0%,
+      #fffaf8 28%,
+      rgba(255, 250, 248, 0.97) 40%,
+      rgba(255, 250, 248, 0.86) 52%,
+      rgba(255, 250, 248, 0.5) 64%,
+      rgba(255, 250, 248, 0.18) 74%,
+      transparent 86%
     );
 }
 
