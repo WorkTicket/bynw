@@ -898,7 +898,18 @@ body::after {
 }
 
 @media (max-width: 1023px) {
-  body::after {
+  /*
+   * 100% 100% on a long homepage stretches the wash into a flat tint.
+   * Size it to ~two screens so the blush reads, then continue in blush.
+   */
+  body {
+    background-size: 100% 170vh;
+    background-position: 50% 0;
+    background-color: var(--surface-blush);
+  }
+
+  /* Ads / checkout stay flat pearl — no extra paint layer */
+  body:has([data-ads-lander], [data-checkout-lander])::after {
     display: none;
   }
 }
@@ -2355,8 +2366,8 @@ body:has([data-ads-lander], [data-checkout-lander]) .site-footer--ads {
     background: var(--surface-pearl);
   }
 
-  html[data-sticky-cta="visible"],
-  html[data-sticky-cta="visible"] body {
+  /* Overscroll / home-indicator only — do not flatten the body canvas */
+  html[data-sticky-cta="visible"] {
     background-color: var(--surface-pearl);
   }
 
