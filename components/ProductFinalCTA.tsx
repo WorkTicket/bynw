@@ -5,7 +5,7 @@ import ScrollReveal from "@/components/ScrollReveal"
 import { formatDiscountBadge, promoUrgencyLine } from "@/lib/offer"
 
 type BuyProps = {
-  href: string
+  slug: string
   contentId: string
   contentName: string
   price: string

@@ -84,7 +84,7 @@ export default async function ProductPage({ params }: Props) {
   }
 
   const buyProps = {
-    href: localizedProduct.buyUrl,
+    slug: localizedProduct.slug,
     contentId: localizedProduct.id,
     contentName: localizedProduct.seoTitle,
     price: localizedProduct.price,

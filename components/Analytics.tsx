@@ -16,6 +16,7 @@ const GA_ID = process.env.NEXT_PUBLIC_GA_ID
 const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID
 
 /** Meta standard events we optimize Facebook ads against.
+ * InitiateCheckout: fires on /checkout/[slug] load (not buy-button click).
  * Purchase: Hotmart Pixel + CAPI webhook (/api/webhooks/hotmart) + optional
  * browser fire on /gracias with matching event_id (transaction).
  */
@@ -45,11 +46,16 @@ function isAdsPath(pathname: string | null) {
   return Boolean(pathname?.startsWith("/ads"))
 }
 
+function isCheckoutPath(pathname: string | null) {
+  return Boolean(pathname?.startsWith("/checkout"))
+}
+
 function isPaidDestinationPath(pathname: string | null) {
-  return pathname === "/" || isAdsPath(pathname)
+  return pathname === "/" || isAdsPath(pathname) || isCheckoutPath(pathname)
 }
 
 /** Home + /ads get eager pixel only when Meta paid params are present.
+ * /checkout always eager-loads so InitiateCheckout is ready on the shell.
  * Cold lab runs (no utm/fbclid) stay deferred — attribution still fires on
  * real paid clicks and on first interaction / idle.
  */
@@ -57,6 +63,7 @@ function shouldEagerLoadAnalytics(
   pathname: string | null,
   searchParams: URLSearchParams | { get(name: string): string | null } | null
 ) {
+  if (isCheckoutPath(pathname)) return true
   if (!isPaidDestinationPath(pathname)) return false
   if (!searchParams) return false
   return isMetaPaidTraffic(searchParams)
@@ -201,13 +208,12 @@ type AttrBinding = {
 }
 
 const CLICK_BINDINGS: AttrBinding[] = [
-  { attr: "data-track-hotmart-click", meta: "InitiateCheckout", ga: "begin_checkout", commerce: true },
   { attr: "data-track-whatsapp-click", meta: "Contact", ga: "whatsapp_click" },
   { attr: "data-track-shop-view", meta: "ShopCollectionClick", ga: "select_item", commerce: true },
 ]
 
 function commerceFromEl(el: HTMLElement): Record<string, unknown> {
-  const id = el.getAttribute("data-content-id") || el.getAttribute("data-track-hotmart-click") || ""
+  const id = el.getAttribute("data-content-id") || ""
   const name = el.getAttribute("data-content-name") || undefined
   const valueRaw = el.getAttribute("data-value")
   const currency = el.getAttribute("data-currency") || undefined
@@ -281,7 +287,7 @@ function injectFb() {
 /**
  * Organic / cold lab: load after LCP (idle ≤2.5s or first gesture).
  * Paid Meta landings with campaign params: inject on the next frame so
- * PageView / InitiateCheckout are ready before a fast “Comprar” tap.
+ * PageView / InitiateCheckout are ready on /checkout.
  */
 function scheduleAnalyticsLoad(load: () => void, eager: boolean) {
   if (eager) {
@@ -389,23 +395,6 @@ export default function Analytics() {
       for (const binding of CLICK_BINDINGS) {
         const el = target.closest(`[${binding.attr}]`) as HTMLElement | null
         if (!el) continue
-
-        // Checkout navigates off-site (esp. mobile). Ensure the Meta stub +
-        // script start synchronously so InitiateCheckout can queue before unload.
-        if (
-          binding.attr === "data-track-hotmart-click" &&
-          hasMarketingConsent(readConsent()) &&
-          FB_PIXEL_ID
-        ) {
-          injectFb()
-        }
-        if (
-          binding.attr === "data-track-hotmart-click" &&
-          hasAnalyticsConsent(readConsent()) &&
-          GA_ID
-        ) {
-          injectGa()
-        }
 
         const label = el.getAttribute(binding.attr) || ""
         const params = binding.commerce

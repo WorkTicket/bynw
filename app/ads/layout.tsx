@@ -1,6 +1,5 @@
 import type { ReactNode } from "react"
 import type { Metadata } from "next"
-import AdsHotmartWarmup from "@/components/AdsHotmartWarmup"
 
 export const metadata: Metadata = {
   robots: { index: false, follow: false },
@@ -17,7 +16,6 @@ export default function AdsLayout({ children }: { children: ReactNode }) {
           __html: `document.documentElement.dataset.announcement="hidden"`,
         }}
       />
-      <AdsHotmartWarmup />
       {children}
     </div>
   )

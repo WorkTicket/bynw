@@ -19,8 +19,12 @@ export default function FloatingWhatsApp() {
     )
   }, [pathname])
 
-  // Paid landers + paid home: one primary thumb action (sticky buy).
-  if (pathname.startsWith("/ads") || hideForPaidHome) {
+  // Paid landers + checkout + paid home: one primary thumb action.
+  if (
+    pathname.startsWith("/ads") ||
+    pathname.startsWith("/checkout") ||
+    hideForPaidHome
+  ) {
     return null
   }
 

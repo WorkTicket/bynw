@@ -1991,8 +1991,8 @@ body::after {
   pointer-events: none;
 }
 
-/* Ads never show the announcement strip — lock header offset without waiting on JS */
-main:has([data-ads-lander]) {
+/* Ads / checkout never show the announcement strip — lock header offset without waiting on JS */
+main:has([data-ads-lander], [data-checkout-lander]) {
   padding-top: calc(var(--header-nav-height) + var(--safe-area-top));
 }
 
@@ -2181,7 +2181,7 @@ main:has([data-ads-lander]) {
 
 /* ── Performance gates (mobile + paid landers) ── */
 
-body:has([data-ads-lander]) .floating-whatsapp {
+body:has([data-ads-lander], [data-checkout-lander]) .floating-whatsapp {
   display: none !important;
 }
 
@@ -2190,12 +2190,144 @@ body:has([data-ads-lander]) .floating-whatsapp {
   display: none;
 }
 
-body:has([data-ads-lander]) .site-footer--organic {
+body:has([data-ads-lander], [data-checkout-lander]) .site-footer--organic {
   display: none;
 }
 
-body:has([data-ads-lander]) .site-footer--ads {
+body:has([data-ads-lander], [data-checkout-lander]) .site-footer--ads {
   display: block;
+}
+
+/* Branded Hotmart checkout shell */
+.checkout-shell__layout {
+  width: 100%;
+}
+
+.checkout-hotmart-wrap {
+  overflow: hidden;
+  border-radius: 1.15rem;
+  border: 1px solid rgba(232, 180, 184, 0.45);
+  background: #fff;
+  box-shadow: 0 18px 48px -28px rgba(184, 74, 94, 0.28);
+}
+
+.checkout-hotmart-frame {
+  display: block;
+  width: 100%;
+  min-height: 860px;
+  height: min(920px, 92vh);
+  border: 0;
+  background: #fff;
+}
+
+.checkout-hotmart-frame--pending {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 250, 248, 0.95) 0%,
+      rgba(250, 243, 241, 0.9) 100%
+    );
+}
+
+.checkout-shell__fallback {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--muted) 75%, transparent);
+}
+
+.checkout-shell__fallback a {
+  font-weight: 600;
+  color: #b84a5e;
+  text-underline-offset: 4px;
+}
+
+.checkout-shell__fallback a:hover {
+  text-decoration: underline;
+}
+
+@media (min-width: 1024px) {
+  .checkout-shell {
+    background: transparent;
+  }
+
+  .checkout-shell__layout {
+    margin-inline: auto;
+    max-width: 72rem;
+    display: grid;
+    grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
+    align-items: start;
+    gap: 3rem;
+    padding: 2.5rem 1.5rem 3.5rem;
+  }
+}
+
+@media (max-width: 1023px) {
+  body:has([data-checkout-lander]) .site-footer--ads {
+    display: none !important;
+  }
+
+  body:has([data-checkout-lander]) .cookie-consent__text {
+    display: none;
+  }
+
+  body:has([data-checkout-lander]) .cookie-consent__panel {
+    padding: 0.7rem 0.85rem 0.8rem;
+  }
+
+  .checkout-shell {
+    background: var(--surface-pearl);
+  }
+
+  .checkout-shell__mobile-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-bottom: 1px solid rgba(232, 180, 184, 0.4);
+    background: rgba(255, 250, 248, 0.96);
+    padding: 0.65rem 1rem;
+  }
+
+  .checkout-shell__thumb {
+    position: relative;
+    height: 3.25rem;
+    width: 3.25rem;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    background: #fff;
+    box-shadow: 0 0 0 1px rgba(232, 180, 184, 0.45);
+  }
+
+  .checkout-shell__layout,
+  .checkout-shell__pay {
+    display: block;
+  }
+
+  /* Hotmart's embed is a short widget — don't stretch a white iframe under it. */
+  .checkout-hotmart-wrap {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .checkout-hotmart-frame {
+    display: block;
+    width: 100%;
+    height: 36.5rem;
+    min-height: 36.5rem;
+    max-height: none;
+    background: transparent;
+  }
+
+  .checkout-shell__fallback {
+    margin: 0;
+    padding: 0.45rem 1rem calc(0.7rem + env(safe-area-inset-bottom, 0px));
+    font-size: 11px;
+    background: var(--surface-pearl);
+  }
 }
 
 /* Never animate the LCP hero image */
@@ -2255,8 +2387,15 @@ body:has([data-ads-lander]) .site-footer--ads {
   background: var(--surface-pearl);
 }
 
-[data-ads-lander] {
+[data-ads-lander],
+[data-checkout-lander] {
   --grad-site-canvas: var(--surface-pearl);
+}
+
+[data-checkout-lander] .site-header__nav {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background: var(--surface-pearl);
 }
 
 

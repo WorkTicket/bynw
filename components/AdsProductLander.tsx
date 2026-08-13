@@ -123,7 +123,7 @@ function BuyBlock({
   compact = false,
 }: {
   buyProps: {
-    href: string
+    slug: string
     contentId: string
     contentName: string
     price: string
@@ -179,7 +179,7 @@ export default function AdsProductLander({ product, reviews }: Props) {
   const heroBenefits = buildHeroBenefits(product)
   const heroSupport = buildHeroSupport(product)
   const buyProps = {
-    href: product.buyUrl,
+    slug: product.slug,
     contentId: product.id,
     contentName: product.seoTitle,
     price: product.price,

@@ -209,8 +209,9 @@ function OrganicFooter({ year }: { year: number }) {
 }
 
 /**
- * Server Footer: organic + ads shells toggled with CSS :has([data-ads-lander])
- * so we avoid a client pathname subscription on every page.
+ * Server Footer: organic + ads shells toggled with CSS
+ * :has([data-ads-lander], [data-checkout-lander]) so we avoid a client
+ * pathname subscription on every page.
  */
 export default function Footer() {
   const year = new Date().getFullYear()

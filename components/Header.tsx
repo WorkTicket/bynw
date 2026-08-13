@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import PrimaryCTA from "@/components/PrimaryCTA"
+import { WHATSAPP_URL } from "@/lib/site"
 
 const links = [
   { href: "/", label: "Inicio" },
@@ -51,6 +52,8 @@ function BrandMark({
 export default function Header() {
   const pathname = usePathname()
   const isAds = pathname.startsWith("/ads")
+  const isCheckout = pathname.startsWith("/checkout")
+  const isSlim = isAds || isCheckout
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [announcementVisible, setAnnouncementVisible] = useState(true)
@@ -62,7 +65,7 @@ export default function Header() {
   }, [])
 
   useEffect(() => {
-    if (isAds) {
+    if (isSlim) {
       document.documentElement.dataset.announcement = "hidden"
       return () => {
         delete document.documentElement.dataset.announcement
@@ -74,15 +77,15 @@ export default function Header() {
     return () => {
       delete document.documentElement.dataset.announcement
     }
-  }, [announcementVisible, isAds])
+  }, [announcementVisible, isSlim])
 
   useEffect(() => {
-    if (isAds) return
+    if (isSlim) return
     const onScroll = () => setScrolled(window.scrollY > 12)
     onScroll()
     window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
-  }, [isAds])
+  }, [isSlim])
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : ""
@@ -111,8 +114,8 @@ export default function Header() {
     sessionStorage.setItem("announcement-dismissed", "true")
   }
 
-  // Paid landers: no organic nav — logo + on-page buy so attention stays on the offer.
-  if (isAds) {
+  // Paid landers + checkout: no organic nav — logo + one action.
+  if (isSlim) {
     const isAdsProduct = /^\/ads\/[^/]+\/?$/.test(pathname)
     return (
       <>
@@ -120,8 +123,18 @@ export default function Header() {
         <div className="site-header">
           <header className={`site-header__nav ${scrolled ? "is-scrolled" : ""}`}>
             <div className="site-header__bar">
-              <BrandMark href="/ads" />
-              {isAdsProduct ? (
+              <BrandMark href={isCheckout ? "/" : "/ads"} />
+              {isCheckout ? (
+                <a
+                  href={WHATSAPP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-track-whatsapp-click="checkout_header"
+                  className="btn-nav"
+                >
+                  Ayuda<span className="hidden sm:inline"> WhatsApp</span>
+                </a>
+              ) : isAdsProduct ? (
                 <a href="#oferta" className="btn-nav">
                   Comprar ahora
                 </a>

@@ -85,7 +85,7 @@ export default function StickyMobileCTA() {
 
             {localized ? (
               <HotmartBuyButton
-                href={localized.buyUrl}
+                slug={localized.slug}
                 contentId={localized.id}
                 contentName={localized.seoTitle}
                 price={localized.price}
