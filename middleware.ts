@@ -7,13 +7,6 @@ import {
   resolveColdAdsSlug,
   shouldRedirectPaidOrganicPath,
 } from "@/lib/paid-traffic"
-import { getProductBySlug } from "@/lib/products"
-import { buildHotmartPayUrl } from "@/lib/hotmart"
-
-function checkoutSlug(pathname: string): string | null {
-  const match = pathname.match(/^\/checkout\/([^/]+)\/?$/)
-  return match?.[1] ?? null
-}
 
 export function middleware(request: NextRequest) {
   const host = request.headers.get("host")?.toLowerCase() ?? ""
@@ -27,18 +20,6 @@ export function middleware(request: NextRequest) {
   }
 
   const { pathname, searchParams } = request.nextUrl
-
-  // /checkout/{slug} → Hotmart. A 302 from a tapped link keeps the user
-  // gesture in Facebook/Instagram in-app browsers; sitting on a branded
-  // interstitial was dropping paid buyers.
-  const slug = checkoutSlug(pathname)
-  if (slug) {
-    const product = getProductBySlug(slug)
-    if (product) {
-      const payUrl = buildHotmartPayUrl(product.buyUrl, searchParams)
-      return NextResponse.redirect(payUrl, 302)
-    }
-  }
 
   // Safety net: Meta paid hits on /shop* → conversion lander /ads/{slug}
   // Home (`/`) is an intentional paid destination — do not redirect.
@@ -65,6 +46,5 @@ export const config = {
     },
     "/shop",
     "/shop/:path*",
-    "/checkout/:path*",
   ],
 }

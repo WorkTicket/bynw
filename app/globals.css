@@ -2206,30 +2206,52 @@ body:has([data-ads-lander], [data-checkout-lander]) .site-footer--ads {
   display: block;
 }
 
-/* Branded checkout → full-page Hotmart (no iframe) */
+/* Branded checkout with embedded Hotmart iframe */
 .checkout-shell__layout {
   width: 100%;
 }
 
-.checkout-pay-card {
-  margin: 1.25rem 1rem 2rem;
-  border: 1px solid rgba(232, 180, 184, 0.45);
+.checkout-hotmart-wrap {
+  overflow: hidden;
   border-radius: 1.15rem;
-  background: rgba(255, 250, 248, 0.94);
-  padding: 1.5rem 1.25rem 1.75rem;
+  border: 1px solid rgba(232, 180, 184, 0.45);
+  background: #fff;
   box-shadow: 0 18px 48px -28px rgba(184, 74, 94, 0.28);
-  text-align: center;
 }
 
-.checkout-pay-card__hint {
-  margin-top: 0.85rem;
-  border-radius: 0.85rem;
-  background: rgba(184, 74, 94, 0.06);
-  padding: 0.7rem 0.85rem;
+.checkout-hotmart-frame {
+  display: block;
+  width: 100%;
+  min-height: 860px;
+  height: min(920px, 92vh);
+  border: 0;
+  background: #fff;
+}
+
+.checkout-hotmart-frame--pending {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 250, 248, 0.95) 0%,
+    rgba(250, 243, 241, 0.9) 100%
+  );
+}
+
+.checkout-shell__fallback {
+  margin-top: 1rem;
+  text-align: center;
   font-size: 12px;
-  line-height: 1.5;
-  color: rgba(58, 36, 40, 0.78);
-  text-align: left;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--muted) 75%, transparent);
+}
+
+.checkout-shell__fallback a {
+  font-weight: 600;
+  color: #b84a5e;
+  text-underline-offset: 4px;
+}
+
+.checkout-shell__fallback a:hover {
+  text-decoration: underline;
 }
 
 @media (min-width: 1024px) {
@@ -2245,16 +2267,6 @@ body:has([data-ads-lander], [data-checkout-lander]) .site-footer--ads {
     align-items: start;
     gap: 3rem;
     padding: 2.5rem 1.5rem 3.5rem;
-  }
-
-  .checkout-pay-card {
-    margin: 0;
-    padding: 2.25rem 2rem 2.5rem;
-    text-align: left;
-  }
-
-  .checkout-pay-card .btn-collection-buy {
-    margin-inline: 0;
   }
 }
 
@@ -2293,32 +2305,27 @@ body:has([data-ads-lander], [data-checkout-lander]) .site-footer--ads {
     box-shadow: 0 0 0 1px rgba(232, 180, 184, 0.45);
   }
 
-  .checkout-shell__sticky-spacer {
-    height: var(--sticky-cta-stack);
+  .checkout-hotmart-wrap {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
   }
 
-  .checkout-shell__sticky {
-    position: fixed;
-    z-index: 60;
-    left: 0;
-    right: 0;
-    bottom: 0;
+  .checkout-hotmart-frame {
+    display: block;
+    width: 100%;
+    height: 36.5rem;
+    min-height: 36.5rem;
+    max-height: none;
+    background: transparent;
   }
 
-  .checkout-shell__sticky-panel {
-    padding: 0.65rem 1rem calc(0.65rem + env(safe-area-inset-bottom, 0px));
-    border-top: 1px solid rgba(232, 180, 184, 0.4);
-    background: rgba(255, 250, 248, 0.97);
-    box-shadow: 0 -10px 28px -18px rgba(184, 74, 94, 0.2);
-  }
-
-  .checkout-shell__sticky .btn-collection-buy {
-    width: 100% !important;
-    max-width: none !important;
-  }
-
-  .checkout-pay-card {
-    margin-bottom: 1rem;
+  .checkout-shell__fallback {
+    margin: 0;
+    padding: 0.45rem 1rem calc(0.7rem + env(safe-area-inset-bottom, 0px));
+    font-size: 11px;
+    background: var(--surface-pearl);
   }
 }
 

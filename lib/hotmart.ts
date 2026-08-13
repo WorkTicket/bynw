@@ -1,4 +1,4 @@
-/** Hotmart checkout URL helpers — full-page only (iframe/lightbox breaks 3DS). */
+/** Hotmart checkout URL helpers — embed on /checkout, full-page fallback. */
 
 import {
   appendAttributionToHotmartUrl,
@@ -17,7 +17,7 @@ const EU_PAY_PARAMS: Record<string, string> = {
 
 /**
  * Strip Hotmart lightbox mode (`checkoutMode=2`) so checkout opens as a
- * full-page flow. 3DS, PayPal and bank redirects fail inside iframes.
+ * full-page flow. Used as the iframe fallback (3DS / PayPal).
  */
 export function toFullPageCheckoutUrl(href: string): string {
   try {
@@ -76,6 +76,32 @@ export function buildHotmartPayUrl(
   return withHotmartPayParams(
     appendAttributionToHotmartUrl(buyUrl, attribution)
   )
+}
+
+/** Iframe embed — Hotmart only allows framing with checkoutMode=2. */
+export function toLightboxCheckoutUrl(href: string): string {
+  try {
+    const url = new URL(toFullPageCheckoutUrl(href))
+    url.searchParams.set("checkoutMode", "2")
+    return url.toString()
+  } catch {
+    const stripped = toFullPageCheckoutUrl(href)
+    if (/[?&]checkoutMode=/.test(stripped)) {
+      return stripped.replace(/checkoutMode=[^&]*/g, "checkoutMode=2")
+    }
+    return stripped.includes("?")
+      ? `${stripped}&checkoutMode=2`
+      : `${stripped}?checkoutMode=2`
+  }
+}
+
+/** Embedded Hotmart URL with attribution + EU checkout params. */
+export function buildHotmartEmbedUrl(
+  buyUrl: string,
+  search?: string | URLSearchParams | null,
+  attrs?: AdAttribution
+): string {
+  return toLightboxCheckoutUrl(buildHotmartPayUrl(buyUrl, search, attrs))
 }
 
 /** On-site branded checkout path. Optionally keep the current query string. */
