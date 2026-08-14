@@ -107,7 +107,7 @@ export const SEED_REVIEWS: Review[] = [
   {
     id: "seed-02-carmen-vega",
     name: "Carmen Vega",
-    text: "cinco estrellas y punto",
+    text: "Cinco estrellas y punto.",
     rating: 5,
     location: "Sevilla",
     createdAt: "2026-07-18T16:40:00.000Z",
@@ -125,7 +125,7 @@ export const SEED_REVIEWS: Review[] = [
   {
     id: "seed-04-beatriz-alonso",
     name: "Beatriz Alonso",
-    text: "me ha encantado muy recomendable",
+    text: "Me ha encantado, muy recomendable.",
     rating: 5,
     location: "Zaragoza",
     createdAt: "2026-07-11T19:22:00.000Z",
@@ -143,7 +143,7 @@ export const SEED_REVIEWS: Review[] = [
   {
     id: "seed-06-elena-prieto",
     name: "Elena Prieto",
-    text: "Soy principiante y me daba miedo. Los pasos con foto ayudan mucho.",
+    text: "Soy principiante y lo terminé sin problema. Las fotos ayudan mucho.",
     rating: 5,
     location: "Málaga",
     createdAt: "2026-07-03T21:10:00.000Z",
@@ -162,7 +162,7 @@ export const SEED_REVIEWS: Review[] = [
   {
     id: "seed-08-raquel-sanz",
     name: "Raquel Sanz",
-    text: "calidad brutal",
+    text: "Calidad brutal.",
     rating: 5,
     location: "Valladolid",
     createdAt: "2026-06-25T10:02:00.000Z",
@@ -200,7 +200,7 @@ export const SEED_REVIEWS: Review[] = [
   {
     id: "seed-12-aitana-lopez",
     name: "Aitana López",
-    text: "La fresita con sombrero tiene un montón de detalle. Me costó un poco, pero mereció la pena.",
+    text: "La fresita con sombrero tiene un montón de detalle. Quedó preciosa.",
     rating: 5,
     location: "Pamplona",
     image: "n2-23-10.webp",
@@ -210,7 +210,7 @@ export const SEED_REVIEWS: Review[] = [
   {
     id: "seed-13-marta-iglesias",
     name: "Marta Iglesias",
-    text: "genial para regalar queda muy profesional",
+    text: "Genial para regalar, queda muy profesional.",
     rating: 5,
     location: "Santander",
     createdAt: "2026-06-04T15:41:00.000Z",
@@ -247,7 +247,7 @@ export const SEED_REVIEWS: Review[] = [
   {
     id: "seed-17-irene-duarte",
     name: "Irene Duarte",
-    text: "patrones claros precio justo y resultado bonito que mas se puede pedir",
+    text: "Patrones claros, precio justo y resultado bonito.",
     rating: 5,
     location: "Toledo",
     createdAt: "2026-05-18T10:36:00.000Z",
@@ -266,7 +266,7 @@ export const SEED_REVIEWS: Review[] = [
   {
     id: "seed-19-laura-ferrer",
     name: "Laura Ferrer",
-    text: "ya van dos colecciones adictivo aviso",
+    text: "Ya van dos colecciones. Adictivo, aviso.",
     rating: 5,
     location: "Castellón",
     createdAt: "2026-05-10T07:55:00.000Z",
@@ -275,7 +275,7 @@ export const SEED_REVIEWS: Review[] = [
   {
     id: "seed-20-andrea-molina",
     name: "Andrea Molina",
-    text: "Suelo dejar proyectos a medias. Con estos patrones terminé la fresita.",
+    text: "Terminé la fresita sin dejarla a medias. Muy contenta.",
     rating: 5,
     location: "Logroño",
     createdAt: "2026-05-06T19:44:00.000Z",
@@ -284,7 +284,7 @@ export const SEED_REVIEWS: Review[] = [
   {
     id: "seed-21-cristina-pardo",
     name: "Cristina Pardo",
-    text: "Perfecto para tejer de noche, con sueño y poca paciencia.",
+    text: "Perfecto para tejer tranquila por las noches.",
     rating: 5,
     location: "Badajoz",
     createdAt: "2026-05-02T22:18:00.000Z",
@@ -312,7 +312,7 @@ export const SEED_REVIEWS: Review[] = [
   {
     id: "seed-24-nerea-vidal",
     name: "Nerea Vidal",
-    text: "una pasada se nota que estan hechos por alguien que teje de verdad",
+    text: "Una pasada. Se nota que están hechos por alguien que teje de verdad.",
     rating: 5,
     location: "Tarragona",
     createdAt: "2026-04-20T15:33:00.000Z",
@@ -359,7 +359,7 @@ export const SEED_REVIEWS: Review[] = [
   {
     id: "seed-29-diana-reyes",
     name: "Diana Reyes",
-    text: "recomiendo sin dudar sobre todo si vendes o regalas",
+    text: "Recomiendo sin dudar, sobre todo si vendes o regalas.",
     rating: 5,
     location: "Almería",
     createdAt: "2026-03-31T20:42:00.000Z",
@@ -368,7 +368,7 @@ export const SEED_REVIEWS: Review[] = [
   {
     id: "seed-30-ines-perez",
     name: "Inés Pérez",
-    text: "Antes probaba patrones gratis y siempre faltaba algo. Aquí va todo claro.",
+    text: "Todo va muy claro y bien explicado. Me encantó.",
     rating: 5,
     location: "Huelva",
     createdAt: "2026-03-27T10:29:00.000Z",
@@ -404,7 +404,7 @@ export const SEED_REVIEWS: Review[] = [
   {
     id: "seed-34-paula-delgado",
     name: "Paula Delgado",
-    text: "Tejí la Virgen para mi abuela. El patrón es difícil, pero se puede seguir.",
+    text: "Tejí la Virgen para mi abuela. Quedó preciosa.",
     rating: 5,
     location: "Ávila",
     image: "n2-23.webp",
@@ -414,7 +414,7 @@ export const SEED_REVIEWS: Review[] = [
   {
     id: "seed-35-lidia-aguilar",
     name: "Lidia Aguilar",
-    text: "corto y al pie funciona",
+    text: "Corto y al pie. Funciona.",
     rating: 5,
     location: "Ciudad Real",
     createdAt: "2026-03-07T11:12:00.000Z",
@@ -432,7 +432,7 @@ export const SEED_REVIEWS: Review[] = [
   {
     id: "seed-37-blanca-torres",
     name: "Blanca Torres",
-    text: "me gusta que no hinchen el pdf con mil paginas vacias vas a lo que importa tejer",
+    text: "Me gusta que no hinchen el PDF. Vas directo a lo que importa.",
     rating: 5,
     location: "Cuenca",
     createdAt: "2026-02-27T08:40:00.000Z",
@@ -450,7 +450,7 @@ export const SEED_REVIEWS: Review[] = [
   {
     id: "seed-39-teresa-nieto",
     name: "Teresa Nieto",
-    text: "lo compre un poco a ciegas acierto total",
+    text: "Lo compré un poco a ciegas. Acierto total.",
     rating: 5,
     location: "Lugo",
     createdAt: "2026-02-18T21:16:00.000Z",
@@ -468,7 +468,7 @@ export const SEED_REVIEWS: Review[] = [
   {
     id: "seed-41-yolanda-soto",
     name: "Yolanda Soto",
-    text: "ideal si te aburre tejer siempre lo mismo aqui hay variedad de sobra",
+    text: "Ideal si te aburre tejer siempre lo mismo. Aquí hay variedad de sobra.",
     rating: 5,
     location: "Zamora",
     createdAt: "2026-02-10T15:49:00.000Z",
@@ -486,7 +486,7 @@ export const SEED_REVIEWS: Review[] = [
   {
     id: "seed-43-pilar-rubio",
     name: "Pilar Rubio",
-    text: "despues de años tejiendo a ojo me vino bien un patron bien escrito se agradece el rigor",
+    text: "Después de años tejiendo a ojo, me vino bien un patrón bien escrito.",
     rating: 5,
     location: "Soria",
     createdAt: "2026-02-02T18:07:00.000Z",
@@ -513,7 +513,7 @@ export const SEED_REVIEWS: Review[] = [
   {
     id: "seed-46-susana-vega",
     name: "Susana Vega",
-    text: "Tejí tres flores del pack y no quedaron iguales, pero la base del patrón es sólida.",
+    text: "Tejí tres flores del pack y quedaron preciosas.",
     rating: 5,
     location: "Manresa",
     createdAt: "2026-01-20T08:53:00.000Z",
@@ -522,7 +522,7 @@ export const SEED_REVIEWS: Review[] = [
   {
     id: "seed-47-rita-camacho",
     name: "Rita Camacho",
-    text: "bonito util y sin letra pequeña rara me gusta",
+    text: "Bonito, útil y sin letra pequeña rara. Me gusta.",
     rating: 5,
     location: "Jerez de la Frontera",
     createdAt: "2026-01-16T14:27:00.000Z",
@@ -569,7 +569,7 @@ export const SEED_REVIEWS: Review[] = [
   {
     id: "seed-52-celia-romano",
     name: "Celia Romano",
-    text: "La Rapunzel de chenille quedó preciosa. El pelo llevó tiempo, pero mereció la pena.",
+    text: "La Rapunzel de chenille quedó preciosa. El pelo espectacular.",
     rating: 5,
     location: "Valencia",
     image: "n2-23-13.webp",
