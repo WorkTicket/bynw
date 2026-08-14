@@ -6,7 +6,8 @@ export default function Hero() {
   return (
     <section className="hero-editorial relative flex min-h-[100svh] flex-col overflow-x-clip -mt-[var(--site-header-offset)]">
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute inset-0 origin-[72%_40%] scale-[0.84] sm:origin-[74%_42%] sm:scale-[0.91] lg:origin-[78%_center] lg:scale-100">
+        {/* Match client ref (doc image1): head + torso visible, headroom above the doll */}
+        <div className="absolute inset-0 origin-[68%_26%] scale-[0.71] translate-y-[6%] sm:origin-[70%_30%] sm:scale-[0.82] sm:translate-y-[3%] lg:origin-[78%_center] lg:scale-100 lg:translate-y-0">
           <Image
             src="/images/hero-editorial.webp"
             alt="Amigurumi de princesa en crochet o ganchillo junto a un ramo de flores eternas tejidas"
@@ -15,12 +16,33 @@ export default function Hero() {
             fetchPriority="high"
             unoptimized
             sizes="100vw"
-            className="object-cover object-[72%_58%] sm:object-[74%_54%] lg:object-[78%_center]"
+            className="object-cover object-[68%_40%] sm:object-[70%_44%] lg:object-[78%_center]"
           />
         </div>
 
-        {/* Mobile: single pearl fade behind copy — meets the sticky dock */}
-        <div className="hero-veil-mobile pointer-events-none absolute inset-0 lg:hidden" />
+        {/* Mobile: pearl fade behind copy — lighter top so the doll stays visible */}
+        <div
+          className="pointer-events-none absolute inset-0 lg:hidden"
+          style={{
+            background: `
+              linear-gradient(
+                to bottom,
+                rgba(255, 250, 248, 0.35) 0%,
+                transparent 16%
+              ),
+              linear-gradient(
+                to top,
+                #fffaf8 0%,
+                #fffaf8 26%,
+                rgba(255, 250, 248, 0.97) 38%,
+                rgba(255, 250, 248, 0.86) 50%,
+                rgba(255, 250, 248, 0.48) 62%,
+                rgba(255, 250, 248, 0.15) 76%,
+                transparent 90%
+              )
+            `,
+          }}
+        />
 
         {/* Desktop: solid pearl behind copy → fade into image */}
         <div
