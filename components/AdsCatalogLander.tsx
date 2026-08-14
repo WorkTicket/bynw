@@ -42,9 +42,9 @@ export default function AdsCatalogLander({ reviews, hrefQuery }: Props) {
 
   return (
     <>
-      <section className="hero-editorial relative min-h-[min(88svh,48rem)] overflow-hidden sm:min-h-[min(90svh,50rem)]">
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 origin-[68%_26%] scale-[0.71] translate-y-[6%] sm:origin-[70%_30%] sm:scale-[0.82] sm:translate-y-[3%] lg:origin-center lg:scale-100 lg:translate-y-0">
+      <section className="hero-editorial relative min-h-[min(88svh,48rem)] overflow-hidden bg-[#fffaf8] sm:min-h-[min(90svh,50rem)]">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute inset-0">
             <Image
               src="/images/hero-editorial.webp"
               alt="Amigurumi de princesa en crochet o ganchillo junto a un ramo de flores eternas tejidas"
@@ -53,7 +53,7 @@ export default function AdsCatalogLander({ reviews, hrefQuery }: Props) {
               fetchPriority="high"
               unoptimized
               sizes="100vw"
-              className="object-cover object-[68%_40%] sm:object-[70%_44%] lg:object-[78%_center]"
+              className="object-cover object-[68%_36%] sm:object-[70%_40%] lg:object-[78%_center]"
             />
           </div>
 

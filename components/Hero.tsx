@@ -4,10 +4,10 @@ import { SITE_RATING_DISPLAY } from "@/lib/testimonials-data"
 
 export default function Hero() {
   return (
-    <section className="hero-editorial relative flex min-h-[100svh] flex-col overflow-x-clip -mt-[var(--site-header-offset)]">
+    <section className="hero-editorial relative flex min-h-[100svh] flex-col overflow-x-clip bg-[#fffaf8] -mt-[var(--site-header-offset)]">
       <div className="absolute inset-0 overflow-hidden">
-        {/* Match client ref (doc image1): head + torso visible, headroom above the doll */}
-        <div className="absolute inset-0 origin-[68%_26%] scale-[0.71] translate-y-[6%] sm:origin-[70%_30%] sm:scale-[0.82] sm:translate-y-[3%] lg:origin-[78%_center] lg:scale-100 lg:translate-y-0">
+        {/* Full-bleed width: object-cover only (scale left side gaps on mobile) */}
+        <div className="absolute inset-0">
           <Image
             src="/images/hero-editorial.webp"
             alt="Amigurumi de princesa en crochet o ganchillo junto a un ramo de flores eternas tejidas"
@@ -16,7 +16,7 @@ export default function Hero() {
             fetchPriority="high"
             unoptimized
             sizes="100vw"
-            className="object-cover object-[68%_40%] sm:object-[70%_44%] lg:object-[78%_center]"
+            className="object-cover object-[68%_36%] sm:object-[70%_40%] lg:object-[78%_center]"
           />
         </div>
 
