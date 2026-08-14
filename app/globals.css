@@ -2438,4 +2438,85 @@ body:has([data-ads-lander], [data-checkout-lander]) {
   background: var(--surface-pearl);
 }
 
+/* In-app checkout (Facebook/Instagram WebView) — native Hotmart tap, no iframe */
+.checkout-pay-card {
+  margin-inline: auto;
+  max-width: 28rem;
+  padding: 1.75rem 1.25rem 2rem;
+  text-align: center;
+}
+
+.checkout-pay-card__hint {
+  margin-top: 1rem;
+  font-size: 12px;
+  line-height: 1.65;
+  color: color-mix(in srgb, var(--muted) 80%, transparent);
+}
+
+.checkout-shell__sticky-spacer {
+  height: calc(4.25rem + env(safe-area-inset-bottom, 0px));
+}
+
+.checkout-shell__sticky {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 45;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.checkout-shell__sticky-panel {
+  border-top: 1px solid rgba(232, 180, 184, 0.45);
+  background: rgba(255, 250, 248, 0.98);
+  padding: 0.65rem 1rem;
+}
+
+@media (min-width: 1024px) {
+  .checkout-pay-card {
+    max-width: none;
+    padding: 2rem;
+    text-align: left;
+  }
+}
+
+@media (max-width: 1023px) {
+  .checkout-shell--in-app {
+    height: auto;
+    min-height: calc(100svh - var(--header-nav-height) - var(--safe-area-top));
+  }
+
+  .checkout-shell--in-app .checkout-shell__layout {
+    flex: initial;
+  }
+}
+
+/* Facebook / Instagram in-app browser — lighter paint, faster checkout */
+html[data-fb-iab] {
+  --header-announcement-height: 0px;
+}
+
+html[data-fb-iab] .site-header__announcement {
+  display: none !important;
+}
+
+html[data-fb-iab] .floating-whatsapp {
+  display: none !important;
+}
+
+html[data-fb-iab] .icon-bloom,
+html[data-fb-iab] .hero-image-drift,
+html[data-fb-iab] .animate-petal-float,
+html[data-fb-iab] .site-header__announcement-sheen,
+html[data-fb-iab] .btn-collection-buy {
+  animation: none !important;
+  will-change: auto !important;
+}
+
+html[data-fb-iab] .site-header__nav,
+html[data-fb-iab] .sticky-mobile-cta__panel {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  background: var(--surface-pearl);
+}
 

@@ -7,9 +7,11 @@ import {
   resolveColdAdsSlug,
   shouldRedirectPaidOrganicPath,
 } from "@/lib/paid-traffic"
+import { isInAppBrowser } from "@/lib/hotmart"
 
 export function middleware(request: NextRequest) {
   const host = request.headers.get("host")?.toLowerCase() ?? ""
+  const ua = request.headers.get("user-agent")
 
   // Consolidate www → apex for a single canonical host.
   if (host === "www.bynmwcreative.com") {
@@ -25,7 +27,7 @@ export function middleware(request: NextRequest) {
   // Home (`/`) is an intentional paid destination — do not redirect.
   if (
     shouldRedirectPaidOrganicPath(pathname) &&
-    isMetaPaidTraffic(searchParams)
+    isMetaPaidTraffic(searchParams, ua)
   ) {
     const targetSlug = resolveColdAdsSlug({
       searchParams,
@@ -35,7 +37,18 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(target, 302)
   }
 
-  return NextResponse.next()
+  const response = NextResponse.next()
+
+  // Flag Facebook/Instagram WebView for client checkout routing.
+  if (isInAppBrowser(ua ?? undefined)) {
+    response.cookies.set("fb_iab", "1", {
+      path: "/",
+      maxAge: 60 * 60,
+      sameSite: "lax",
+    })
+  }
+
+  return response
 }
 
 export const config = {
@@ -44,7 +57,6 @@ export const config = {
       source: "/:path*",
       has: [{ type: "host", value: "www.bynmwcreative.com" }],
     },
-    "/shop",
-    "/shop/:path*",
+    "/((?!_next/static|_next/image|api|images|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|txt|xml|json|webmanifest)$).*)",
   ],
 }

@@ -110,6 +110,34 @@ export function onsiteCheckoutPath(slug: string, search?: string): string {
   return q ? `/checkout/${slug}?${q}` : `/checkout/${slug}`
 }
 
+/** Read early UA flag set by inline script in root layout (before React). */
+export function isFacebookInAppFromDom(): boolean {
+  if (typeof document === "undefined") return false
+  return document.documentElement.dataset.fbIab === "true"
+}
+
+/**
+ * Comprar destination: in Facebook/Instagram in-app browsers go straight to
+ * Hotmart (iframe + /checkout hop often breaks payment). Normal browsers use
+ * branded /checkout with embedded Hotmart.
+ */
+export function resolveBuyHref(
+  slug: string,
+  buyUrl: string,
+  search?: string,
+  opts?: { forceInApp?: boolean }
+): string {
+  const inApp =
+    opts?.forceInApp !== undefined
+      ? opts.forceInApp
+      : isFacebookInAppFromDom() ||
+        (typeof navigator !== "undefined" && isInAppBrowser())
+  if (inApp) {
+    return buildHotmartPayUrl(buyUrl, search)
+  }
+  return onsiteCheckoutPath(slug, search)
+}
+
 /**
  * Facebook / Instagram / TikTok in-app browsers. They often block
  * scripted `location.assign` to a third-party pay domain.

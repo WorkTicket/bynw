@@ -8,7 +8,7 @@ import {
   isMetaPaidTraffic,
   resolveColdAdsSlug,
 } from "@/lib/paid-traffic"
-import HotmartBuyButton from "./HotmartBuyButton"
+import HotmartBuyButtonClient from "./HotmartBuyButtonClient"
 import PrimaryCTA from "./PrimaryCTA"
 
 const STICKY_ATTR = "data-sticky-cta"
@@ -29,7 +29,12 @@ export default function StickyMobileCTA() {
   const isShopCatalog = pathname === "/shop"
 
   // Paid home + ads catalog: map the campaign to a product so Comprar is one tap.
-  const paidHome = isHome && isMetaPaidTraffic(searchParams)
+  const paidHome =
+    isHome &&
+    isMetaPaidTraffic(
+      searchParams,
+      typeof navigator !== "undefined" ? navigator.userAgent : null
+    )
   const catalogBuy =
     isAdsCatalog || paidHome
       ? getProductBySlug(resolveColdAdsSlug({ searchParams }))
@@ -62,6 +67,9 @@ export default function StickyMobileCTA() {
       ? "PDF al momento"
       : "Ver ofertas"
 
+  const useDirectPay =
+    pathname.startsWith("/ads") || paidHome
+
   return (
     <>
       {/* In-flow spacer so bottom padding exists in SSR HTML (no CLS on hydrate) */}
@@ -91,15 +99,17 @@ export default function StickyMobileCTA() {
             </div>
 
             {localized ? (
-              <HotmartBuyButton
+              <HotmartBuyButtonClient
                 slug={localized.slug}
                 contentId={localized.id}
                 contentName={localized.seoTitle}
                 price={localized.price}
+                directPay={useDirectPay}
+                initialHref={localized.buyUrl}
                 className="!w-auto shrink-0 sticky-mobile-cta__buy"
               >
                 Comprar ahora
-              </HotmartBuyButton>
+              </HotmartBuyButtonClient>
             ) : (
               <PrimaryCTA
                 href={

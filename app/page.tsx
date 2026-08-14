@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import dynamic from "next/dynamic"
+import { headers } from "next/headers"
 import Hero from "@/components/Hero"
 import TrustBar from "@/components/TrustBar"
 import ProductGrid from "@/components/ProductGrid"
@@ -32,7 +33,8 @@ type Props = {
 
 export default async function HomePage({ searchParams }: Props) {
   const query = toURLSearchParams(searchParams)
-  const paid = isMetaPaidTraffic(query)
+  const ua = headers().get("user-agent")
+  const paid = isMetaPaidTraffic(query, ua)
   const hrefQuery = paid ? query.toString() : undefined
 
   const [featured, allReviews] = await Promise.all([

@@ -137,6 +137,12 @@ export default function RootLayout({
       className={`${sans.variable} ${display.variable} ${script.variable}`}
     >
       <head>
+        {/* Facebook/Instagram in-app browser — flag before React for checkout routing + CSS */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var u=navigator.userAgent||'';if(/FBAN|FBAV|FB_IAB|FBIOS|Instagram/i.test(u)){document.documentElement.dataset.fbIab='true'}})();`,
+          }}
+        />
         {/* Analytics hosts only — Hotmart hints inject when a buy CTA is near */}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://connect.facebook.net" />

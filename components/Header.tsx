@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import PrimaryCTA from "@/components/PrimaryCTA"
-import HotmartBuyButton from "@/components/HotmartBuyButton"
+import HotmartBuyButtonClient from "@/components/HotmartBuyButtonClient"
 import { getProductBySlug } from "@/lib/products"
 import { WHATSAPP_URL } from "@/lib/site"
 
@@ -140,16 +140,18 @@ export default function Header() {
                   Ayuda<span className="hidden sm:inline"> WhatsApp</span>
                 </a>
               ) : adsProduct ? (
-                <HotmartBuyButton
+                <HotmartBuyButtonClient
                   slug={adsProduct.slug}
                   contentId={adsProduct.id}
                   contentName={adsProduct.seoTitle}
                   price={adsProduct.price}
+                  directPay
+                  initialHref={adsProduct.buyUrl}
                   size="compact"
                   className="!w-auto shrink-0"
                 >
                   Comprar ahora
-                </HotmartBuyButton>
+                </HotmartBuyButtonClient>
               ) : (
                 <a href="#colecciones" className="btn-nav">
                   Ver ofertas

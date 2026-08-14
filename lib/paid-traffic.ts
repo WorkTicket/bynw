@@ -65,12 +65,22 @@ export function isMetaSource(source: string | null | undefined): boolean {
   return META_SOURCES.has(normalize(source))
 }
 
+/** Facebook / Instagram in-app WebView (Meta ads primary conversion path). */
+export function isFacebookInAppBrowser(userAgent?: string | null): boolean {
+  const ua =
+    userAgent ??
+    (typeof navigator !== "undefined" ? navigator.userAgent : "")
+  return /FBAN|FBAV|FB_IAB|FBIOS|Instagram/i.test(ua)
+}
+
 /**
  * True when query params indicate Meta paid traffic that should use /ads landers.
- * Avoids redirecting bare organic Facebook shares (fbclid alone, no campaign/UTM paid).
+ * In Facebook in-app browsers, fbclid alone counts as paid (ad click).
+ * Avoids treating bare fbclid as paid in normal mobile Safari/Chrome shares.
  */
 export function isMetaPaidTraffic(
-  searchParams: URLSearchParams | { get(name: string): string | null }
+  searchParams: URLSearchParams | { get(name: string): string | null },
+  userAgent?: string | null
 ): boolean {
   const source = searchParams.get("utm_source")
   const medium = searchParams.get("utm_medium")
@@ -79,6 +89,7 @@ export function isMetaPaidTraffic(
   const hasFbclid = Boolean(fbclid?.trim())
   const paid = isPaidMedium(medium)
   const meta = isMetaSource(source)
+  const fbIab = isFacebookInAppBrowser(userAgent)
 
   if (paid && (meta || hasFbclid || !source?.trim())) return true
   if (meta && paid) return true
@@ -86,6 +97,7 @@ export function isMetaPaidTraffic(
   if (hasFbclid && paid) return true
   if (hasFbclid && campaign?.trim()) return true
   if (hasFbclid && meta) return true
+  if (hasFbclid && fbIab) return true
   return false
 }
 

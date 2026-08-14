@@ -6,7 +6,7 @@ export default function Hero() {
   return (
     <section className="hero-editorial relative flex min-h-[100svh] flex-col overflow-x-clip -mt-[var(--site-header-offset)]">
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute inset-0 origin-[71%_18%] scale-[1.3] -translate-y-[6%] sm:origin-[74%_24%] sm:scale-[1.12] sm:-translate-y-[2%] lg:origin-[78%_center] lg:scale-100 lg:translate-y-0">
+        <div className="absolute inset-0">
           <Image
             src="/images/hero-editorial.webp"
             alt="Amigurumi de princesa en crochet o ganchillo junto a un ramo de flores eternas tejidas"
@@ -15,7 +15,7 @@ export default function Hero() {
             fetchPriority="high"
             unoptimized
             sizes="100vw"
-            className="object-cover object-[72%_22%] sm:object-[74%_36%] lg:object-[78%_center]"
+            className="object-cover object-[72%_52%] sm:object-[74%_48%] lg:object-[78%_center]"
           />
         </div>
 

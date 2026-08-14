@@ -1,12 +1,11 @@
-"use client"
-
-import { useEffect, useState } from "react"
-import { getPriceCurrency } from "@/lib/tracking"
-import { parsePriceValue } from "@/lib/pricing"
-import { captureAndPersistFromLocation } from "@/lib/ad-attribution"
-import { onsiteCheckoutPath } from "@/lib/hotmart"
-import { fireInitiateCheckout } from "@/components/MetaInitiateCheckout"
+import { headers } from "next/headers"
+import HotmartBuyButtonClient from "@/components/HotmartBuyButtonClient"
 import { getProductBySlug } from "@/lib/products"
+import {
+  buildHotmartPayUrl,
+  isInAppBrowser,
+  onsiteCheckoutPath,
+} from "@/lib/hotmart"
 
 type Size = "default" | "compact" | "lg"
 
@@ -14,71 +13,36 @@ type Props = {
   slug: string
   children: React.ReactNode
   className?: string
-  /** Visual size — maps to CSS modifiers on the checkout anchor */
   size?: Size
-  /** Product id for Meta (commerce attrs; InitiateCheckout fires on /checkout) */
   contentId?: string
   contentName?: string
-  /** Display price string e.g. "15€" */
   price?: string
+  /** Force direct Hotmart (used on /ads landers). */
+  directPay?: boolean
 }
 
-const sizeClass: Record<Size, string> = {
-  default: "",
-  compact: "btn-collection-buy--compact",
-  lg: "btn-collection-buy--lg",
-}
-
-/**
- * On-site checkout CTA — stays on /checkout/{slug} with Hotmart embedded.
- * Native <a> (not next/link) so Facebook in-app browsers actually navigate.
- */
+/** Server wrapper — sets the correct pay URL in HTML for Facebook in-app browsers. */
 export default function HotmartBuyButton({
   slug,
-  children,
-  className,
-  size = "default",
-  contentId,
-  contentName,
-  price,
+  directPay: directPayProp = false,
+  ...rest
 }: Props) {
   const product = getProductBySlug(slug)
-  const [href, setHref] = useState(onsiteCheckoutPath(slug))
+  const ua = headers().get("user-agent") ?? ""
+  const fbIab = isInAppBrowser(ua)
+  const directPay = directPayProp || fbIab
 
-  useEffect(() => {
-    captureAndPersistFromLocation(window.location.search)
-    setHref(onsiteCheckoutPath(slug, window.location.search))
-  }, [slug])
-
-  const value = price ? String(parsePriceValue(price)) : undefined
-  const currency = price ? getPriceCurrency(price) : undefined
-  const sizeMod = sizeClass[size]
+  const initialHref =
+    product && directPay
+      ? buildHotmartPayUrl(product.buyUrl)
+      : onsiteCheckoutPath(slug)
 
   return (
-    <span
-      className={`relative inline-flex w-auto max-w-full justify-center ${className ?? ""}`}
-    >
-      <a
-        href={href}
-        data-content-id={contentId}
-        data-content-name={contentName}
-        data-value={value}
-        data-currency={currency}
-        className={`btn-collection-buy${sizeMod ? ` ${sizeMod}` : ""}`}
-        onClick={() => {
-          try {
-            fireInitiateCheckout({
-              id: contentId || product?.id || slug,
-              name: contentName || product?.seoTitle,
-              price: price || product?.price || "",
-            })
-          } catch {
-            // Tracking must never block checkout.
-          }
-        }}
-      >
-        <span className="btn-label">{children}</span>
-      </a>
-    </span>
+    <HotmartBuyButtonClient
+      slug={slug}
+      initialHref={initialHref}
+      directPay={directPay}
+      {...rest}
+    />
   )
 }

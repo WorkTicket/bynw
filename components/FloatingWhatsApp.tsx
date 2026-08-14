@@ -15,7 +15,10 @@ export default function FloatingWhatsApp() {
       return
     }
     setHideForPaidHome(
-      isMetaPaidTraffic(new URLSearchParams(window.location.search))
+      isMetaPaidTraffic(
+        new URLSearchParams(window.location.search),
+        navigator.userAgent
+      )
     )
   }, [pathname])
 

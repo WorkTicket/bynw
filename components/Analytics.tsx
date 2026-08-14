@@ -11,6 +11,7 @@ import {
   type ConsentChoice,
 } from "@/lib/consent"
 import { isMetaPaidTraffic } from "@/lib/paid-traffic"
+import { isFacebookInAppFromDom } from "@/lib/hotmart"
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID
 const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID
@@ -106,7 +107,7 @@ function trackPageViewWhenReady(
   }
 
   let attempts = 0
-  const maxAttempts = 100
+  const maxAttempts = 40
   const id = window.setInterval(() => {
     attempts += 1
     if (trackPageView(url, consent)) {
@@ -133,7 +134,7 @@ function whenTrackersReady(
   }
 
   let attempts = 0
-  const maxAttempts = 100
+  const maxAttempts = 40
   const id = window.setInterval(() => {
     attempts += 1
     if (fire() || attempts >= maxAttempts) {
@@ -343,11 +344,23 @@ function scheduleAnalyticsLoad(load: () => void, eager: boolean) {
   return cleanup
 }
 
+function isFacebookInAppClient(): boolean {
+  if (typeof document !== "undefined" && isFacebookInAppFromDom()) return true
+  return typeof navigator !== "undefined" && /FBAN|FBAV|FB_IAB|FBIOS|Instagram/i.test(navigator.userAgent)
+}
+
 export default function Analytics() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const tracked = useRef<string | null>(null)
-  const eagerAds = shouldEagerLoadAnalytics(pathname, searchParams)
+  const fbIab = isFacebookInAppClient()
+  const eagerAds =
+    shouldEagerLoadAnalytics(pathname, searchParams) ||
+    fbIab ||
+    isMetaPaidTraffic(
+      searchParams ?? new URLSearchParams(),
+      typeof navigator !== "undefined" ? navigator.userAgent : null
+    )
   const [consent, setConsent] = useState<ConsentChoice | null>(null)
 
   useEffect(() => {
@@ -367,10 +380,13 @@ export default function Analytics() {
     const wantFb = hasMarketingConsent(consent) && Boolean(FB_PIXEL_ID)
     if (!wantGa && !wantFb) return
 
+    // Load immediately once the user has opted in — deferral is only for pre-consent cold traffic.
+    const eagerLoad = eagerAds || wantGa || wantFb
+
     return scheduleAnalyticsLoad(() => {
       if (wantGa) injectGa()
       if (wantFb) injectFb()
-    }, eagerAds)
+    }, eagerLoad)
   }, [eagerAds, consent])
 
   useEffect(() => {
