@@ -4,10 +4,7 @@ import { useLayoutEffect } from "react"
 import { usePathname, useSearchParams } from "next/navigation"
 import { getLocalizedProduct } from "@/lib/pricing"
 import { getProductBySlug } from "@/lib/products"
-import {
-  isMetaPaidTraffic,
-  resolveColdAdsSlug,
-} from "@/lib/paid-traffic"
+import { isMetaPaidTraffic } from "@/lib/paid-traffic"
 import HotmartBuyButtonClient from "./HotmartBuyButtonClient"
 import PrimaryCTA from "./PrimaryCTA"
 
@@ -28,18 +25,16 @@ export default function StickyMobileCTA() {
   const isHome = pathname === "/"
   const isShopCatalog = pathname === "/shop"
 
-  // Paid home + ads catalog: map the campaign to a product so Comprar is one tap.
+  // Paid catalog (home or /ads): sticky = choose, not a forced product buy.
+  // Product landers (/ads/{slug}) still get one-tap Comprar.
   const paidHome =
     isHome &&
     isMetaPaidTraffic(
       searchParams,
       typeof navigator !== "undefined" ? navigator.userAgent : null
     )
-  const catalogBuy =
-    isAdsCatalog || paidHome
-      ? getProductBySlug(resolveColdAdsSlug({ searchParams }))
-      : undefined
-  const product = catalogBuy ?? (isHome ? undefined : pathProduct)
+  const isPaidCatalog = isAdsCatalog || paidHome
+  const product = isPaidCatalog || isHome ? undefined : pathProduct
   const localized = product ? getLocalizedProduct(product) : null
 
   useLayoutEffect(() => {
@@ -57,18 +52,19 @@ export default function StickyMobileCTA() {
 
   const title = localized
     ? localized.shortTitle
-    : isAdsCatalog || isShopCatalog || isHome
+    : isPaidCatalog || isShopCatalog || isHome
       ? "Manos Creativas"
       : "Colecciones"
 
   const priceLabel = localized
     ? localized.price
-    : isAdsCatalog || isShopCatalog || isHome
+    : isPaidCatalog || isShopCatalog || isHome
       ? "PDF al momento"
       : "Ver ofertas"
 
-  const useDirectPay =
-    pathname.startsWith("/ads") || paidHome
+  const catalogHref =
+    isAdsCatalog || isShopCatalog || paidHome ? "#colecciones" : "/#colecciones"
+  const catalogCta = isPaidCatalog ? "Ver opciones" : "Ver colecciones"
 
   return (
     <>
@@ -104,21 +100,14 @@ export default function StickyMobileCTA() {
                 contentId={localized.id}
                 contentName={localized.seoTitle}
                 price={localized.price}
-                directPay={useDirectPay}
-                initialHref={localized.buyUrl}
+                initialHref={`/checkout/${localized.slug}`}
                 className="!w-auto shrink-0 sticky-mobile-cta__buy"
               >
                 Comprar ahora
               </HotmartBuyButtonClient>
             ) : (
-              <PrimaryCTA
-                href={
-                  isAdsCatalog || isShopCatalog ? "#colecciones" : "/#colecciones"
-                }
-                size="sm"
-                className="shrink-0"
-              >
-                Ver colecciones
+              <PrimaryCTA href={catalogHref} size="sm" className="shrink-0">
+                {catalogCta}
               </PrimaryCTA>
             )}
           </div>

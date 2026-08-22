@@ -35,6 +35,7 @@ const sectionHeading =
 
 export default function AdsCatalogLander({ reviews, hrefQuery }: Props) {
   const fromPrice = getCatalogFromPrice()
+  const collectionCount = products.length
   const featured = getLocalizedProduct(getProductBySlug("princesas-disney")!)
   const bestsellers = ["princesas-disney", "flores-eternas", "amigurumis-chenille"]
   const adsHref = (slug: string) =>
@@ -44,7 +45,7 @@ export default function AdsCatalogLander({ reviews, hrefQuery }: Props) {
     <>
       <section className="hero-editorial relative min-h-[min(88svh,48rem)] overflow-hidden bg-[#fffaf8] sm:min-h-[min(90svh,50rem)]">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute inset-0">
+          <div className="absolute inset-x-0 bottom-0 top-[3in] sm:top-[2in] lg:inset-0">
             <Image
               src="/images/hero-editorial.webp"
               alt="Amigurumi de princesa en crochet o ganchillo junto a un ramo de flores eternas tejidas"
@@ -53,7 +54,7 @@ export default function AdsCatalogLander({ reviews, hrefQuery }: Props) {
               fetchPriority="high"
               unoptimized
               sizes="100vw"
-              className="object-cover object-[68%_36%] sm:object-[70%_40%] lg:object-[78%_center]"
+              className="object-cover object-[70%_center] sm:object-[72%_center] lg:object-[78%_center]"
             />
           </div>
 
@@ -90,12 +91,13 @@ export default function AdsCatalogLander({ reviews, hrefQuery }: Props) {
               Manos Creativas Bynmw
             </p>
             <h1 className="mt-6 font-display text-[2.15rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.85rem] lg:text-[3.15rem]">
-              Elige tu colección de{" "}
-              <span className="gradient-text-candy italic">crochet o ganchillo</span>
+              Muchas opciones de{" "}
+              <span className="gradient-text-candy italic">crochet o ganchillo</span>{" "}
+              para elegir
             </h1>
             <p className="mt-5 max-w-md text-[15px] leading-[1.75] text-muted sm:text-base lg:text-lg">
-              Patrones digitales en PDF con fotos paso a paso. Compra una vez,
-              descarga al momento y teje cuando quieras.
+              {collectionCount} colecciones en PDF con fotos paso a paso. Elige
+              la tuya, descarga al momento y teje cuando quieras.
             </p>
 
             <div className="mt-5 flex flex-wrap items-center gap-2">
@@ -114,7 +116,7 @@ export default function AdsCatalogLander({ reviews, hrefQuery }: Props) {
 
             <div className="mt-8 flex flex-row flex-wrap items-center gap-x-5 gap-y-3">
               <PrimaryCTA href="#colecciones" size="lg">
-                Ver colecciones
+                Ver todas las opciones
               </PrimaryCTA>
               <Link
                 href={adsHref(featured.slug)}
@@ -125,11 +127,11 @@ export default function AdsCatalogLander({ reviews, hrefQuery }: Props) {
             </div>
 
             <p className="mt-7 text-[11px] tracking-[0.06em] text-muted/65 sm:text-xs">
-              Desde {fromPrice}
+              {collectionCount} colecciones
               <span className="meta-sep" aria-hidden="true">
                 ✦
               </span>
-              {featured.shortTitle} {featured.price}
+              Desde {fromPrice}
               <span className="meta-sep" aria-hidden="true">
                 ✦
               </span>
@@ -159,22 +161,22 @@ export default function AdsCatalogLander({ reviews, hrefQuery }: Props) {
         <div className="section">
           <ScrollReveal>
             <div className="section-header">
-              <span className="eyebrow">Colecciones</span>
+              <span className="eyebrow">{collectionCount} opciones</span>
               <PetiteOrnament className="mb-5 mt-1" />
               <h2 className={sectionHeading}>
-                Todas las colecciones{" "}
-                <span className="gradient-text-rose italic">disponibles</span>
+                Elige la colección{" "}
+                <span className="gradient-text-rose italic">que más te guste</span>
               </h2>
               <p>
-                Elige la que más te inspire. Cada una incluye patrones en PDF,
-                bonos y acceso inmediato.
+                Cada una incluye patrones en PDF, bonos y acceso inmediato.
+                Toca una para ver la oferta.
               </p>
             </div>
           </ScrollReveal>
 
           <ScrollReveal>
             <p className="mb-10 text-center text-[13px] tracking-[0.02em] text-muted sm:mb-12">
-              Destacadas:{" "}
+              Más elegidas:{" "}
               {bestsellers.map((slug, i) => {
                 const p = products.find((x) => x.slug === slug)
                 if (!p) return null
@@ -204,7 +206,8 @@ export default function AdsCatalogLander({ reviews, hrefQuery }: Props) {
                   product={p}
                   hrefBase="/ads"
                   hrefQuery={hrefQuery}
-                  ctaLabel="Ver oferta"
+                  ctaLabel="Elegir esta"
+                  priority={i < 2}
                 />
               </ScrollReveal>
             ))}
@@ -229,15 +232,15 @@ export default function AdsCatalogLander({ reviews, hrefQuery }: Props) {
                 Manos Creativas Bynmw
               </p>
               <h2 className={`mt-5 ${sectionHeading}`}>
-                ¿Lista para{" "}
+                ¿Cuál vas a{" "}
                 <span className="gradient-text-rose italic">elegir</span>?
               </h2>
               <p className="mt-3 text-sm text-muted">
-                Desde {fromPrice} · PDF al momento · Garantía 7 días
+                {collectionCount} opciones · Desde {fromPrice} · Garantía 7 días
               </p>
               <div className="mt-8 flex flex-col items-center gap-4">
                 <PrimaryCTA href="#colecciones" size="lg">
-                  Ver colecciones
+                  Ver todas las opciones
                 </PrimaryCTA>
                 <Link
                   href={adsHref(featured.slug)}

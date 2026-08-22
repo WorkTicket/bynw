@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useSearchParams } from "next/navigation"
 import PrimaryCTA from "@/components/PrimaryCTA"
 import HotmartBuyButtonClient from "@/components/HotmartBuyButtonClient"
 import { getProductBySlug } from "@/lib/products"
+import { isMetaPaidTraffic } from "@/lib/paid-traffic"
 import { WHATSAPP_URL } from "@/lib/site"
 
 const links = [
@@ -53,9 +54,16 @@ function BrandMark({
 
 export default function Header() {
   const pathname = usePathname()
+  const searchParams = useSearchParams()
   const isAds = pathname.startsWith("/ads")
   const isCheckout = pathname.startsWith("/checkout")
-  const isSlim = isAds || isCheckout
+  const isPaidHome =
+    pathname === "/" &&
+    isMetaPaidTraffic(
+      searchParams,
+      typeof navigator !== "undefined" ? navigator.userAgent : null
+    )
+  const isSlim = isAds || isCheckout || isPaidHome
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [announcementVisible, setAnnouncementVisible] = useState(true)
@@ -116,19 +124,20 @@ export default function Header() {
     sessionStorage.setItem("announcement-dismissed", "true")
   }
 
-  // Paid landers + checkout: no organic nav — logo + one action.
+  // Paid landers + paid home + checkout: no organic nav — logo + one action.
   if (isSlim) {
     const adsSlug = pathname.match(/^\/ads\/([^/]+)\/?$/)?.[1]
     const adsProduct = adsSlug ? getProductBySlug(adsSlug) : undefined
     const checkoutSlug = pathname.match(/^\/checkout\/([^/]+)/)?.[1]
     const checkoutBackHref = checkoutSlug ? `/ads/${checkoutSlug}` : "/ads"
+    const brandHref = isCheckout ? checkoutBackHref : isPaidHome ? "/" : "/ads"
     return (
       <>
         <div className="ios-status-bar" aria-hidden="true" />
         <div className="site-header">
           <header className={`site-header__nav ${scrolled ? "is-scrolled" : ""}`}>
             <div className="site-header__bar">
-              <BrandMark href={isCheckout ? checkoutBackHref : "/ads"} />
+              <BrandMark href={brandHref} />
               {isCheckout ? (
                 <a
                   href={WHATSAPP_URL}
@@ -145,8 +154,7 @@ export default function Header() {
                   contentId={adsProduct.id}
                   contentName={adsProduct.seoTitle}
                   price={adsProduct.price}
-                  directPay
-                  initialHref={adsProduct.buyUrl}
+                  initialHref={`/checkout/${adsProduct.slug}`}
                   size="compact"
                   className="!w-auto shrink-0"
                 >
@@ -154,7 +162,7 @@ export default function Header() {
                 </HotmartBuyButtonClient>
               ) : (
                 <a href="#colecciones" className="btn-nav">
-                  Ver ofertas
+                  Ver opciones
                 </a>
               )}
             </div>

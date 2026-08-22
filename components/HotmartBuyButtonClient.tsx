@@ -1,16 +1,10 @@
 "use client"
 
 import { useLayoutEffect, useState } from "react"
-import { usePathname } from "next/navigation"
 import { getPriceCurrency } from "@/lib/tracking"
 import { parsePriceValue } from "@/lib/pricing"
 import { captureAndPersistFromLocation } from "@/lib/ad-attribution"
-import {
-  buildHotmartPayUrl,
-  isFacebookInAppFromDom,
-  isInAppBrowser,
-  onsiteCheckoutPath,
-} from "@/lib/hotmart"
+import { onsiteCheckoutPath } from "@/lib/hotmart"
 import { fireInitiateCheckout } from "@/components/MetaInitiateCheckout"
 import { getProductBySlug } from "@/lib/products"
 
@@ -24,10 +18,8 @@ export type HotmartBuyButtonClientProps = {
   contentId?: string
   contentName?: string
   price?: string
-  /** Server-detected Facebook/Instagram in-app browser — correct href in first HTML. */
+  /** First-paint href; hydrated to /checkout/{slug} with current query. */
   initialHref: string
-  /** Skip /checkout hop and open Hotmart in the top window. */
-  directPay: boolean
 }
 
 const sizeClass: Record<Size, string> = {
@@ -36,31 +28,9 @@ const sizeClass: Record<Size, string> = {
   lg: "btn-collection-buy--lg",
 }
 
-function shouldDirectPay(pathname: string | null, directPayProp: boolean): boolean {
-  if (directPayProp) return true
-  if (pathname?.startsWith("/ads")) return true
-  if (isFacebookInAppFromDom()) return true
-  if (typeof navigator !== "undefined" && isInAppBrowser()) return true
-  if (typeof document !== "undefined" && document.cookie.includes("fb_iab=1")) {
-    return true
-  }
-  return false
-}
-
-function resolveHref(
-  slug: string,
-  search: string,
-  direct: boolean
-): string {
-  const product = getProductBySlug(slug)
-  if (!product) return onsiteCheckoutPath(slug, search)
-  if (direct) return buildHotmartPayUrl(product.buyUrl, search)
-  return onsiteCheckoutPath(slug, search)
-}
-
 /**
- * Native <a> checkout CTA. In Facebook/Instagram WebViews the href must be
- * pay.hotmart.com in the first paint — /checkout breaks before hydration.
+ * Native <a> checkout CTA. Always stays on bynmwcreative.com/checkout —
+ * Hotmart only loads inside that branded shell (iframe or Pagar there).
  */
 export default function HotmartBuyButtonClient({
   slug,
@@ -71,20 +41,14 @@ export default function HotmartBuyButtonClient({
   contentName,
   price,
   initialHref,
-  directPay: directPayProp,
 }: HotmartBuyButtonClientProps) {
-  const pathname = usePathname()
   const product = getProductBySlug(slug)
   const [href, setHref] = useState(initialHref)
-  const [directPay, setDirectPay] = useState(directPayProp)
 
   useLayoutEffect(() => {
     captureAndPersistFromLocation(window.location.search)
-    const search = window.location.search
-    const direct = shouldDirectPay(pathname, directPayProp)
-    setDirectPay(direct)
-    setHref(resolveHref(slug, search, direct))
-  }, [slug, pathname, directPayProp])
+    setHref(onsiteCheckoutPath(slug, window.location.search))
+  }, [slug])
 
   const value = price ? String(parsePriceValue(price)) : undefined
   const currency = price ? getPriceCurrency(price) : undefined
@@ -108,7 +72,6 @@ export default function HotmartBuyButtonClient({
     >
       <a
         href={href}
-        {...(directPay ? { target: "_top" } : {})}
         suppressHydrationWarning
         data-content-id={contentId}
         data-content-name={contentName}

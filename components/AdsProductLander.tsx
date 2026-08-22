@@ -144,7 +144,6 @@ function BuyBlock({
     >
       <HotmartBuyButton
         {...buyProps}
-        directPay
         size="lg"
         className={align === "start" ? "lg:justify-start" : undefined}
       >

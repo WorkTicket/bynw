@@ -160,7 +160,9 @@ export default function RootLayout({
         <Suspense>
           <Analytics />
         </Suspense>
-        <Header />
+        <Suspense fallback={null}>
+          <Header />
+        </Suspense>
         <main className="relative z-[1] flex-1 pt-[var(--site-header-offset)]">{children}</main>
         <Footer />
         <FloatingWhatsApp />

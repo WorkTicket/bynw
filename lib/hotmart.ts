@@ -117,24 +117,15 @@ export function isFacebookInAppFromDom(): boolean {
 }
 
 /**
- * Comprar destination: in Facebook/Instagram in-app browsers go straight to
- * Hotmart (iframe + /checkout hop often breaks payment). Normal browsers use
- * branded /checkout with embedded Hotmart.
+ * Comprar destination — always branded /checkout.
+ * Hotmart only loads inside CheckoutShell (embed or full-page fallback there).
  */
 export function resolveBuyHref(
   slug: string,
-  buyUrl: string,
+  _buyUrl: string,
   search?: string,
-  opts?: { forceInApp?: boolean }
+  _opts?: { forceInApp?: boolean }
 ): string {
-  const inApp =
-    opts?.forceInApp !== undefined
-      ? opts.forceInApp
-      : isFacebookInAppFromDom() ||
-        (typeof navigator !== "undefined" && isInAppBrowser())
-  if (inApp) {
-    return buildHotmartPayUrl(buyUrl, search)
-  }
   return onsiteCheckoutPath(slug, search)
 }
 

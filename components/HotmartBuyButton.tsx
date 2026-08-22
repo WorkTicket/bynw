@@ -1,11 +1,5 @@
-import { headers } from "next/headers"
 import HotmartBuyButtonClient from "@/components/HotmartBuyButtonClient"
-import { getProductBySlug } from "@/lib/products"
-import {
-  buildHotmartPayUrl,
-  isInAppBrowser,
-  onsiteCheckoutPath,
-} from "@/lib/hotmart"
+import { onsiteCheckoutPath } from "@/lib/hotmart"
 
 type Size = "default" | "compact" | "lg"
 
@@ -17,31 +11,14 @@ type Props = {
   contentId?: string
   contentName?: string
   price?: string
-  /** Force direct Hotmart (used on /ads landers). */
-  directPay?: boolean
 }
 
-/** Server wrapper — sets the correct pay URL in HTML for Facebook in-app browsers. */
-export default function HotmartBuyButton({
-  slug,
-  directPay: directPayProp = false,
-  ...rest
-}: Props) {
-  const product = getProductBySlug(slug)
-  const ua = headers().get("user-agent") ?? ""
-  const fbIab = isInAppBrowser(ua)
-  const directPay = directPayProp || fbIab
-
-  const initialHref =
-    product && directPay
-      ? buildHotmartPayUrl(product.buyUrl)
-      : onsiteCheckoutPath(slug)
-
+/** Server wrapper — Comprar always goes to branded /checkout (Hotmart embeds there). */
+export default function HotmartBuyButton({ slug, ...rest }: Props) {
   return (
     <HotmartBuyButtonClient
       slug={slug}
-      initialHref={initialHref}
-      directPay={directPay}
+      initialHref={onsiteCheckoutPath(slug)}
       {...rest}
     />
   )

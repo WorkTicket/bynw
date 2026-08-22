@@ -2,6 +2,7 @@
  * Meta paid-traffic helpers for Ads Manager + attribution.
  *
  * Ops: cold ads may land on `/` (home catalog) or `/ads/{slug}`.
+ * Paid hits on `/` render AdsCatalogLander (message-match for “many options”).
  * Safety net: paid hits on `/shop*` still bounce to `/ads/{slug}`.
  * Do NOT redirect `/` — home is an intentional paid destination.
  */

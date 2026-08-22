@@ -4,10 +4,15 @@ import { headers } from "next/headers"
 import Hero from "@/components/Hero"
 import TrustBar from "@/components/TrustBar"
 import ProductGrid from "@/components/ProductGrid"
+import AdsCatalogLander from "@/components/AdsCatalogLander"
 import { BRAND_NAME, DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE } from "@/lib/site"
 import { createPageMetadata, buildReviewsJsonLd } from "@/lib/seo"
 import { faqJsonLd } from "@/lib/faqs"
-import { listFeaturedReviews, listPublishedReviews } from "@/lib/reviews"
+import {
+  listAdsFeaturedReviews,
+  listFeaturedReviews,
+  listPublishedReviews,
+} from "@/lib/reviews"
 import { isMetaPaidTraffic, toURLSearchParams } from "@/lib/paid-traffic"
 
 export const metadata: Metadata = {
@@ -37,6 +42,22 @@ export default async function HomePage({ searchParams }: Props) {
   const paid = isMetaPaidTraffic(query, ua)
   const hrefQuery = paid ? query.toString() : undefined
 
+  // Meta cold ads to `/` (many-options creative): conversion catalog, not organic home.
+  if (paid) {
+    const reviews = await listAdsFeaturedReviews(3)
+    return (
+      <div data-ads-lander="true">
+        <link
+          rel="preload"
+          as="image"
+          href="/images/hero-editorial.webp"
+          fetchPriority="high"
+        />
+        <AdsCatalogLander reviews={reviews} hrefQuery={hrefQuery} />
+      </div>
+    )
+  }
+
   const [featured, allReviews] = await Promise.all([
     listFeaturedReviews(3),
     listPublishedReviews(),
@@ -61,10 +82,7 @@ export default async function HomePage({ searchParams }: Props) {
       />
       <Hero />
       <TrustBar />
-      <ProductGrid
-        hrefBase={paid ? "/ads" : "/shop"}
-        hrefQuery={hrefQuery}
-      />
+      <ProductGrid />
       <FeatureGrid />
       <WhatsAppSupport />
       <Testimonials reviews={featured} limit={3} showForm />
