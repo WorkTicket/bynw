@@ -1,6 +1,5 @@
 import Image from "next/image"
 import HeroCtas from "@/components/HeroCtas"
-import SaleCountdown from "@/components/SaleCountdown"
 import { StarIcon } from "@/lib/icons"
 import { SITE_RATING_DISPLAY } from "@/lib/testimonials-data"
 import { promoHeroBadge } from "@/lib/offer"
@@ -43,8 +42,8 @@ export default function Hero() {
             </h1>
 
             <p className="mt-5 max-w-md text-[15px] leading-[1.75] text-muted sm:mt-6 sm:text-base lg:text-[1.05rem]">
-              Princesas, flores, amigurumis y más. Fotos paso a paso, para
-              tejer, regalar o vender. Todas las colecciones al 50% esta semana.
+              Colecciones de patrones premium con fotos paso a paso,
+              instrucciones claras, descarga al momento, acceso de por vida.
             </p>
 
             <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 md:justify-start">
@@ -65,7 +64,6 @@ export default function Hero() {
             </div>
 
             <HeroCtas />
-            <SaleCountdown className="mt-4 text-[12px] font-medium tracking-[0.04em] text-rose-700/90 md:text-left" />
           </div>
         </div>
       </div>

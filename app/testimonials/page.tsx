@@ -3,6 +3,7 @@ import TestimonialsLive from "@/components/TestimonialsLive"
 import { createPageMetadata, buildReviewsJsonLd } from "@/lib/seo"
 import { DEFAULT_OG_IMAGE } from "@/lib/site"
 import { listPublishedReviews } from "@/lib/reviews"
+import { dailyShuffleSeed } from "@/lib/testimonials-data"
 
 export const metadata: Metadata = createPageMetadata({
   title: "Testimonios",
@@ -22,7 +23,10 @@ export default async function TestimonialsPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewsJsonLd) }}
       />
-      <TestimonialsLive initialReviews={reviews} />
+      <TestimonialsLive
+        initialReviews={reviews}
+        shuffleSeed={dailyShuffleSeed("testimonials-page")}
+      />
     </>
   )
 }

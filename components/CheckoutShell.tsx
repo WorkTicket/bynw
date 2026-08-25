@@ -221,7 +221,7 @@ export default function CheckoutShell({ product }: Props) {
                     title={`Pago seguro — ${product.shortTitle}`}
                     src={iframeSrc}
                     className="checkout-hotmart-frame"
-                    allow="payment *"
+                    allow="payment"
                     referrerPolicy="strict-origin-when-cross-origin"
                   />
                 ) : (

@@ -2,8 +2,9 @@ import { Metadata } from "next"
 import ScrollReveal from "@/components/ScrollReveal"
 import ProductCard from "@/components/ProductCard"
 import LeadMagnet from "@/components/LeadMagnet"
+import WhatsAppSupport from "@/components/WhatsAppSupport"
 import { products, isBestseller } from "@/lib/products"
-import { DEFAULT_OG_IMAGE, WHATSAPP_URL, absoluteUrl } from "@/lib/site"
+import { DEFAULT_OG_IMAGE, absoluteUrl } from "@/lib/site"
 import { createPageMetadata, buildBreadcrumbJsonLd } from "@/lib/seo"
 import { listFeaturedReviews } from "@/lib/reviews"
 import { reviewImageSrc } from "@/lib/testimonials-data"
@@ -25,7 +26,7 @@ const features = [
   },
   {
     title: "Soporte por WhatsApp",
-    desc: "Natalia te guía personalmente. Resolvemos tus dudas en menos de 24h.",
+    desc: "Natalia te ayuda con tu compra o con el ingreso a tus patrones. Respuesta en menos de 24h.",
   },
   {
     title: "Patrones cuidados",
@@ -165,6 +166,8 @@ export default async function ShopPage() {
         </div>
       </section>
 
+      <WhatsAppSupport />
+
       <section className="section-white section-padding">
         <div className="section">
           <ScrollReveal>
@@ -217,47 +220,6 @@ export default async function ShopPage() {
               )
             })}
           </ul>
-        </div>
-      </section>
-
-      <section className="section-alt section-padding">
-        <div className="section">
-          <ScrollReveal>
-            <div className="mx-auto grid max-w-5xl items-center gap-10 md:grid-cols-[1fr_auto] md:gap-14">
-              <div className="order-2 text-center md:order-1 md:text-left">
-                <span className="eyebrow">Soporte directo</span>
-                <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-                  Natalia te guía personalmente por WhatsApp
-                </h2>
-                <p className="mt-4 max-w-lg text-base leading-relaxed text-muted mx-auto md:mx-0">
-                  Soy Natalia, de Manos Creativas. Escríbeme y te guiaré en cada
-                  paso del proceso de compra.
-                </p>
-                <a
-                  href={WHATSAPP_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-track-whatsapp-click="shop_support"
-                  className="mt-5 inline-block text-sm font-medium text-rose-600 underline-offset-4 hover:text-rose-700 hover:underline"
-                >
-                  ¿Dudas? WhatsApp a Natalia
-                </a>
-              </div>
-              <div className="order-1 mx-auto md:order-2">
-                <div className="h-28 w-28 overflow-hidden rounded-full shadow-[0_0_0_1px_rgba(242,179,182,0.55),0_0_0_5px_rgba(255,248,246,0.95),0_0_0_6px_rgba(237,145,150,0.28)] sm:h-36 sm:w-36">
-                  <img
-                    src="/images/manoscreative.webp"
-                    alt="Natalia - Fundadora"
-                    loading="lazy"
-                    decoding="async"
-                    width="144"
-                    height="144"
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-              </div>
-            </div>
-          </ScrollReveal>
         </div>
       </section>
 

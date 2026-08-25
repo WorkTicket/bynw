@@ -20,9 +20,9 @@ export default function PurchaseTrustStrip() {
           data-track-whatsapp-click="catalog_trust"
           className="shrink-0 text-[13px] font-medium text-rose-600 underline-offset-4 transition-colors hover:text-rose-700 hover:underline"
         >
-          ¿Dudas? WhatsApp a Natalia
+          WhatsApp a Natalia
           <span className="mt-0.5 block text-[11px] font-normal text-muted no-underline">
-            {SUPPORT_SLA}
+            Compra o ingreso · {SUPPORT_SLA}
           </span>
         </a>
       </div>

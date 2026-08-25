@@ -9,7 +9,6 @@ import ScrollReveal from "@/components/ScrollReveal"
 import { StarIcon } from "@/lib/icons"
 import {
   computeAggregate,
-  dailyShuffleSeed,
   interleaveReviews,
   reviewImageSrc,
   seededShuffle,
@@ -18,6 +17,8 @@ import {
 
 type Props = {
   initialReviews: Review[]
+  /** SSR-computed so gallery order matches hydrate across UTC midnight. */
+  shuffleSeed: string
 }
 
 /** Initial + batch sizes — keep the page scannable, then expand on demand. */
@@ -53,11 +54,13 @@ function RatingStars({
 }
 
 /** Full testimonials page: live counts, form early, progressive photo/reviews. */
-export default function TestimonialsLive({ initialReviews }: Props) {
+export default function TestimonialsLive({
+  initialReviews,
+  shuffleSeed,
+}: Props) {
   const [reviews, setReviews] = useState(initialReviews)
   const [photoVisibleCount, setPhotoVisibleCount] = useState(PHOTOS_INITIAL)
   const [reviewVisibleCount, setReviewVisibleCount] = useState(REVIEWS_INITIAL)
-  const shuffleSeed = dailyShuffleSeed("testimonials-page")
 
   useEffect(() => {
     setReviews(initialReviews)
@@ -316,8 +319,8 @@ export default function TestimonialsLive({ initialReviews }: Props) {
             {visibleReviews.map((t, i) => {
               const photo = reviewImageSrc(t)
               return (
-                <ScrollReveal key={t.id} delay={Math.min(i * 35, 240)} variant="fade">
-                  <li className="h-full">
+                <li key={t.id} className="h-full">
+                  <ScrollReveal delay={Math.min(i * 35, 240)} variant="fade">
                     <blockquote className="flex h-full flex-col rounded-[1.35rem] border border-rose-100/80 bg-white/80 px-5 py-6 shadow-[0_12px_40px_-28px_rgba(184,74,94,0.35)] backdrop-blur-sm sm:px-6 sm:py-7">
                       <div
                         className="flex items-center gap-0.5"
@@ -372,8 +375,8 @@ export default function TestimonialsLive({ initialReviews }: Props) {
                         </cite>
                       </footer>
                     </blockquote>
-                  </li>
-                </ScrollReveal>
+                  </ScrollReveal>
+                </li>
               )
             })}
           </ul>

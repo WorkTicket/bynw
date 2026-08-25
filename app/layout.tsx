@@ -140,7 +140,7 @@ export default function RootLayout({
         {/* Facebook/Instagram in-app browser — flag before React for checkout routing + CSS */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){var u=navigator.userAgent||'';if(/FBAN|FBAV|FB_IAB|FBIOS|Instagram/i.test(u)){document.documentElement.dataset.fbIab='true'}})();`,
+            __html: `(function(){var d=document.documentElement,u=navigator.userAgent||'';if(/FBAN|FBAV|FB_IAB|FBIOS|Instagram/i.test(u))d.dataset.fbIab='true';try{if(sessionStorage.getItem('announcement-dismissed')==='true')d.dataset.announcement='hidden'}catch(e){}})();`,
           }}
         />
         {/* Analytics hosts only — Hotmart hints inject when a buy CTA is near */}

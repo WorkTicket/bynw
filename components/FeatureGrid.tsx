@@ -11,7 +11,7 @@ const features = [
   {
     icon: (cls: string) => <MessageCircleIcon className={cls} size={20} />,
     title: "Soporte WhatsApp",
-    desc: "Natalia te acompañara si tienes dudas o preguntas sobre tu acceso o proceso de compra",
+    desc: "Natalia te ayuda con tu compra o con el ingreso a tus patrones.",
   },
   {
     icon: (cls: string) => <BookOpenIcon className={cls} size={20} />,

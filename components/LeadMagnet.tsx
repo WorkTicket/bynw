@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import PrimaryCTA from "@/components/PrimaryCTA"
 import { GIFT_MAGNET } from "@/lib/gift-magnet"
@@ -16,9 +16,14 @@ type Props = {
   dark?: boolean
 }
 
-function LeadMagnetSuccess({ dark = false }: { dark?: boolean }) {
+function LeadMagnetSuccess({
+  dark = false,
+  isIOS,
+}: {
+  dark?: boolean
+  isIOS: boolean
+}) {
   const [downloading, setDownloading] = useState(false)
-  const isIOS = isIOSGiftDownload()
 
   async function handleDownload() {
     setDownloading(true)
@@ -152,6 +157,12 @@ export default function LeadMagnet({ variant = "inline", submitLabel, placeholde
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
+  // Detect iOS after mount — navigator during render mismatches SSR and crashes hydrate on iPhone.
+  const [isIOS, setIsIOS] = useState(false)
+
+  useEffect(() => {
+    setIsIOS(isIOSGiftDownload())
+  }, [])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -193,7 +204,7 @@ export default function LeadMagnet({ variant = "inline", submitLabel, placeholde
   }
 
   if (status === "success") {
-    return <LeadMagnetSuccess dark={dark} />
+    return <LeadMagnetSuccess dark={dark} isIOS={isIOS} />
   }
 
   const isHero = variant === "hero"
@@ -257,7 +268,7 @@ export default function LeadMagnet({ variant = "inline", submitLabel, placeholde
       {status === "error" && <p className={`mt-3 text-xs ${dark ? "text-rose-300" : "text-rose-500"}`}>Algo salió mal. Inténtalo de nuevo.</p>}
       {status !== "error" && (
         <p className={`mt-3 text-center text-xs ${dark ? "text-white/40" : isHero ? "text-muted/60" : "text-muted/50"} ${!isHero && !isCompact ? "sm:text-left" : ""}`}>
-          {isIOSGiftDownload()
+          {isIOS
             ? "En iPhone te llevamos a Google Drive para descargar el PDF. Sin spam."
             : "Descarga al instante en la web. Sin spam."}
         </p>

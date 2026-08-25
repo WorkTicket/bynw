@@ -30,6 +30,7 @@ export async function triggerGiftDownload(): Promise<void> {
     anchor.remove()
     URL.revokeObjectURL(blobUrl)
   } catch {
-    window.location.assign(GIFT_MAGNET.downloadPath)
+    // API/PDF missing → Drive folder, not another 404 on /api/gift.
+    openIOSGiftDrive()
   }
 }

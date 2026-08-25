@@ -1,7 +1,6 @@
 import PrimaryCTA from "@/components/PrimaryCTA"
 import PetiteOrnament from "@/components/PetiteOrnament"
 import ScrollReveal from "@/components/ScrollReveal"
-import SaleCountdown from "@/components/SaleCountdown"
 import { promoUrgencyLine } from "@/lib/offer"
 
 export default function UrgencyCTA() {
@@ -31,8 +30,6 @@ export default function UrgencyCTA() {
                 Ver colecciones
               </PrimaryCTA>
             </div>
-
-            <SaleCountdown className="mt-5 text-[12px] font-medium text-rose-700/90" />
 
             <p className="mt-7 text-[11px] tracking-[0.06em] text-ink/45">
               PDF al momento

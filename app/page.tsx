@@ -25,6 +25,8 @@ export const metadata: Metadata = {
 }
 
 const FeatureGrid = dynamic(() => import("@/components/FeatureGrid"))
+const WhatsAppSupport = dynamic(() => import("@/components/WhatsAppSupport"))
+const Guarantee = dynamic(() => import("@/components/Guarantee"))
 const Testimonials = dynamic(() => import("@/components/Testimonials"))
 const UrgencyCTA = dynamic(() => import("@/components/UrgencyCTA"))
 const FAQ = dynamic(() => import("@/components/FAQ"))
@@ -82,6 +84,8 @@ export default async function HomePage({ searchParams }: Props) {
       <TrustBar />
       <ProductGrid />
       <FeatureGrid />
+      <WhatsAppSupport />
+      <Guarantee />
       <LeadMagnetSection />
       <Testimonials reviews={featured} limit={3} showForm preserveOrder />
       <UrgencyCTA />

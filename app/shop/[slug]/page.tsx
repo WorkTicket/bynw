@@ -17,6 +17,7 @@ import {
   buildBreadcrumbJsonLd,
 } from "@/lib/seo"
 import { listFeaturedReviews } from "@/lib/reviews"
+import { dailyShuffleSeed } from "@/lib/testimonials-data"
 
 const Testimonials = dynamic(() => import("@/components/Testimonials"))
 const Guarantee = dynamic(() => import("@/components/Guarantee"))
@@ -323,7 +324,12 @@ export default async function ProductPage({ params }: Props) {
         </div>
       </section>
 
-      <Testimonials reviews={featuredReviews} limit={3} showForm={false} />
+      <Testimonials
+        reviews={featuredReviews}
+        limit={3}
+        showForm={false}
+        shuffleSeed={dailyShuffleSeed("testimonials-home")}
+      />
       <Guarantee />
 
       <ProductFinalCTA

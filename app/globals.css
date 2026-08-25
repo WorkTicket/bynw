@@ -120,6 +120,10 @@ html[data-announcement="hidden"] {
   --site-header-offset: calc(var(--header-nav-height) + var(--safe-area-top));
 }
 
+html[data-announcement="hidden"] .site-header__announcement {
+  display: none !important;
+}
+
 html:has([data-ads-lander], [data-checkout-lander]) {
   --site-header-offset: calc(var(--header-nav-height) + var(--safe-area-top));
 }

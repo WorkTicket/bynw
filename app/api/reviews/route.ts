@@ -7,19 +7,23 @@ import {
 import { isAllowedImageType, REVIEW_IMAGE_MAX_BYTES } from "@/lib/review-image"
 
 export async function GET() {
-  const [reviews, aggregate] = await Promise.all([
-    listPublishedReviews(),
-    getAggregateRating(),
-  ])
+  try {
+    const [reviews, aggregate] = await Promise.all([
+      listPublishedReviews(),
+      getAggregateRating(),
+    ])
 
-  return Response.json(
-    { reviews, aggregate },
-    {
-      headers: {
-        "Cache-Control": "public, s-maxage=30, stale-while-revalidate=120",
-      },
-    }
-  )
+    return Response.json(
+      { reviews, aggregate },
+      {
+        headers: {
+          "Cache-Control": "public, s-maxage=30, stale-while-revalidate=120",
+        },
+      }
+    )
+  } catch {
+    return Response.json({ error: "No se pudieron cargar las reseñas." }, { status: 500 })
+  }
 }
 
 async function parseImageFile(

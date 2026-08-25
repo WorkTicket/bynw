@@ -31,11 +31,14 @@ export default function ImageCarousel({
   const [autoplayReady, setAutoplayReady] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
   const next = useCallback(
-    () => setIdx((i) => (i + 1) % images.length),
+    () => setIdx((i) => (images.length ? (i + 1) % images.length : 0)),
     [images.length]
   )
   const prev = useCallback(
-    () => setIdx((i) => (i - 1 + images.length) % images.length),
+    () =>
+      setIdx((i) =>
+        images.length ? (i - 1 + images.length) % images.length : 0
+      ),
     [images.length]
   )
 
@@ -103,7 +106,7 @@ export default function ImageCarousel({
           const isLcp = priority && i === 0
           return (
             <Image
-              key={src}
+              key={`${src}-${i}`}
               src={`/images/${src}`}
               alt={active ? alt : ""}
               fill

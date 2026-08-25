@@ -8,7 +8,6 @@ import PetiteOrnament from "@/components/PetiteOrnament"
 import ScrollReveal from "@/components/ScrollReveal"
 import SecondaryCTA from "@/components/SecondaryCTA"
 import {
-  dailyShuffleSeed,
   interleaveReviews,
   reviewImageSrc,
   type Review,
@@ -26,6 +25,8 @@ type Props = {
   layout?: "list" | "photos"
   /** Keep server order (photo-first ads reviews) instead of daily shuffle. */
   preserveOrder?: boolean
+  /** SSR-computed shuffle seed so UTC midnight cannot mismatch hydrate. */
+  shuffleSeed?: string
 }
 
 export default function Testimonials({
@@ -35,6 +36,7 @@ export default function Testimonials({
   showMoreLink: showMoreLinkProp,
   layout = "list",
   preserveOrder = false,
+  shuffleSeed = "testimonials-home",
 }: Props) {
   const pathname = usePathname()
   const [reviews, setReviews] = useState(() =>
@@ -52,9 +54,9 @@ export default function Testimonials({
   const visible = useMemo(() => {
     const list = preserveOrder
       ? reviews.slice()
-      : interleaveReviews(reviews, dailyShuffleSeed("testimonials-home"))
+      : interleaveReviews(reviews, shuffleSeed)
     return typeof limit === "number" ? list.slice(0, limit) : list
-  }, [reviews, limit, preserveOrder])
+  }, [reviews, limit, preserveOrder, shuffleSeed])
 
   function handleSubmitted(review: Review) {
     setReviews((prev) => {
@@ -83,8 +85,8 @@ export default function Testimonials({
             {visible.map((t, i) => {
               const photo = reviewImageSrc(t)
               return (
-                <ScrollReveal key={t.id} delay={i * 55} variant="fade">
-                  <li>
+                <li key={t.id}>
+                  <ScrollReveal delay={i * 55} variant="fade">
                     <blockquote className="h-full">
                       {photo && (
                         <div className="overflow-hidden rounded-2xl bg-rose-50/50 ring-1 ring-rose-100/70">
@@ -126,8 +128,8 @@ export default function Testimonials({
                         {t.text}
                       </p>
                     </blockquote>
-                  </li>
-                </ScrollReveal>
+                  </ScrollReveal>
+                </li>
               )
             })}
           </ul>
@@ -136,8 +138,8 @@ export default function Testimonials({
             {visible.map((t, i) => {
               const photo = reviewImageSrc(t)
               return (
-                <ScrollReveal key={t.id} delay={i * 55} variant="fade">
-                  <li>
+                <li key={t.id}>
+                  <ScrollReveal delay={i * 55} variant="fade">
                     <blockquote className="flex items-start gap-4 py-7 sm:gap-6 sm:py-8">
                       {photo && (
                         <div className="shrink-0">
@@ -186,8 +188,8 @@ export default function Testimonials({
                         </p>
                       </div>
                     </blockquote>
-                  </li>
-                </ScrollReveal>
+                  </ScrollReveal>
+                </li>
               )
             })}
           </ul>

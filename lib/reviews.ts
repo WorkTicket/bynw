@@ -133,18 +133,22 @@ async function writeLocalReviews(reviews: Review[]) {
 }
 
 async function readSiteReviews(): Promise<Review[]> {
-  const kv = await getKv()
-  if (kv) {
-    const raw = await kv.get(KV_KEY)
-    if (!raw) return []
-    try {
-      const parsed = JSON.parse(raw) as Review[]
-      return Array.isArray(parsed) ? parsed : []
-    } catch {
-      return []
+  try {
+    const kv = await getKv()
+    if (kv) {
+      const raw = await kv.get(KV_KEY)
+      if (!raw) return []
+      try {
+        const parsed = JSON.parse(raw) as Review[]
+        return Array.isArray(parsed) ? parsed : []
+      } catch {
+        return []
+      }
     }
+    return readLocalReviews()
+  } catch {
+    return []
   }
-  return readLocalReviews()
 }
 
 async function writeSiteReviews(reviews: Review[]) {
@@ -203,8 +207,12 @@ function mergeReviews(site: Review[]): Review[] {
 }
 
 export async function listPublishedReviews(): Promise<Review[]> {
-  const site = await readSiteReviews()
-  return mergeReviews(site)
+  try {
+    const site = await readSiteReviews()
+    return mergeReviews(site)
+  } catch {
+    return mergeReviews([])
+  }
 }
 
 export async function getAggregateRating(): Promise<AggregateRating> {
@@ -348,19 +356,19 @@ export async function readReviewImage(
 
   const kv = await getKv()
   let raw: string | null = null
-  if (kv) {
-    raw = await kv.get(reviewImageKvKey(id))
-  } else {
-    try {
+  try {
+    if (kv) {
+      raw = await kv.get(reviewImageKvKey(id))
+    } else {
       const { promises: fs } = await import("fs")
       const path = await import("path")
       raw = await fs.readFile(
         path.join(process.cwd(), ".data", "review-images", `${id}.json`),
         "utf8"
       )
-    } catch {
-      return null
     }
+  } catch {
+    return null
   }
 
   if (!raw) return null
