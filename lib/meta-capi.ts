@@ -1,7 +1,11 @@
 /**
- * Meta Conversions API (CAPI) helpers for server-side Purchase events.
- * Deduplicate with browser Pixel using the same event_id (Hotmart transaction).
+ * Meta Conversions API (CAPI) helpers for server-side events.
+ * Deduplicate with browser Pixel using the same event_id.
  */
+
+import { readCookieValue } from "@/lib/meta-ids"
+
+export { fbcFromFbclid } from "@/lib/meta-ids"
 
 export type MetaCapiUserData = {
   em?: string[]
@@ -38,12 +42,6 @@ export async function hashEmail(email: string): Promise<string> {
 export async function hashPhone(phone: string): Promise<string> {
   const digits = phone.replace(/\D/g, "")
   return sha256Hex(digits)
-}
-
-/** Meta click ID cookie: fb.1.{unixSeconds}.{fbclid} */
-export function fbcFromFbclid(fbclid: string, eventTimeSec?: number): string {
-  const ts = eventTimeSec ?? Math.floor(Date.now() / 1000)
-  return `fb.1.${ts}.${fbclid.trim()}`
 }
 
 type CloudflareEnv = {
@@ -144,4 +142,36 @@ export async function sendMetaCapiEvents(
 
   const body = await res.text()
   return { ok: res.ok, status: res.status, body }
+}
+
+export function clientIpFromRequest(req: Request): string | undefined {
+  const cf = req.headers.get("cf-connecting-ip")?.trim()
+  if (cf) return cf
+  const forwarded = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
+  return forwarded || undefined
+}
+
+export async function metaUserDataFromRequest(
+  req: Request,
+  extra?: { fbp?: string; fbc?: string; email?: string; phone?: string }
+): Promise<MetaCapiUserData> {
+  const cookie = req.headers.get("cookie")
+  const userData: MetaCapiUserData = {}
+  const ip = clientIpFromRequest(req)
+  const ua = req.headers.get("user-agent")?.trim()
+  if (ip) userData.client_ip_address = ip
+  if (ua) userData.client_user_agent = ua
+
+  const fbp = extra?.fbp?.trim() || readCookieValue(cookie, "_fbp")
+  const fbc = extra?.fbc?.trim() || readCookieValue(cookie, "_fbc")
+  if (fbp) userData.fbp = fbp
+  if (fbc) userData.fbc = fbc
+
+  if (extra?.email?.trim()) {
+    userData.em = [await hashEmail(extra.email)]
+  }
+  if (extra?.phone?.trim()) {
+    userData.ph = [await hashPhone(extra.phone)]
+  }
+  return userData
 }

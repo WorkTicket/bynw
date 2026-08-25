@@ -19,7 +19,7 @@ export const SOCIAL_LINKS = [
 ] as const
 
 /** Primary locale for crawlers — Spain. */
-export const SITE_LANG = "es"
+export const SITE_LANG = "es-ES"
 export const DEFAULT_OG_LOCALE = "es_ES"
 export const OG_ALTERNATE_LOCALES = [] as const
 

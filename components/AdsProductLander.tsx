@@ -10,9 +10,12 @@ import { parsePriceValue } from "@/lib/pricing"
 import {
   formatDiscountBadge,
   getDiscountPercent,
+  promoHeroBadge,
   promoUrgencyLine,
 } from "@/lib/offer"
 import { StarIcon, CheckCircleIcon } from "@/lib/icons"
+import { WHATSAPP_URL } from "@/lib/site"
+import SaleCountdown from "@/components/SaleCountdown"
 import {
   SITE_RATING,
   SITE_RATING_DISPLAY,
@@ -21,7 +24,6 @@ import {
 import type { Product } from "@/lib/products"
 
 const Testimonials = dynamic(() => import("@/components/Testimonials"))
-const Guarantee = dynamic(() => import("@/components/Guarantee"))
 type Props = {
   product: Product
   reviews: Review[]
@@ -41,7 +43,7 @@ const STEPS = [
   {
     n: "01",
     title: "Compras en 2 minutos",
-    detail: "Pago seguro con tarjeta o PayPal vía Hotmart.",
+    detail: "Pago seguro con tarjeta, PayPal o Klarna vía Hotmart.",
   },
   {
     n: "02",
@@ -85,7 +87,7 @@ function buildHeroBenefits(product: Product): string[] {
   return [
     stackLead,
     "Fotos paso a paso en español",
-    "Ideal para principiantes · acceso de por vida",
+    "Para tejer, regalar o vender · acceso de por vida",
   ]
 }
 
@@ -160,6 +162,15 @@ function BuyBlock({
         </span>
         <span className="hidden sm:inline">Pago seguro en Hotmart</span>
       </p>
+      <a
+        href={WHATSAPP_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-track-whatsapp-click="ads_product_buy"
+        className="text-[12px] font-medium text-rose-600 underline-offset-4 transition-colors hover:text-rose-700 hover:underline"
+      >
+        ¿Dudas? WhatsApp a Natalia
+      </a>
       <div
         className={`flex ${align === "start" ? "justify-center lg:justify-start" : "justify-center"} ${compact ? "hidden sm:flex" : ""}`}
       >
@@ -254,11 +265,11 @@ export default function AdsProductLander({ product, reviews }: Props) {
 
         <div className="section relative z-10 flex min-h-[min(78svh,42rem)] flex-col justify-end pb-[calc(var(--sticky-cta-stack)+0.85rem)] pt-6 sm:min-h-[min(88svh,50rem)] sm:justify-center sm:pb-[calc(var(--sticky-cta-stack)+1.75rem)] sm:pt-14 lg:pb-24">
           <div className="max-w-xl lg:max-w-[36rem]">
-            <p className="font-script h-[2.15rem] text-[2.15rem] leading-none text-rose-500 sm:h-[2.65rem] sm:text-[2.65rem]">
-              Manos Creativas Bynmw
-            </p>
+            <span className="inline-flex items-center rounded-full bg-rose-100/90 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-rose-700">
+              {promoHeroBadge()}
+            </span>
 
-            <h1 className="mt-1.5 font-display text-[1.75rem] font-semibold leading-[1.05] tracking-tight text-ink sm:mt-2 sm:text-4xl lg:text-[2.85rem]">
+            <h1 className="mt-4 font-display text-[1.75rem] font-semibold leading-[1.05] tracking-tight text-ink sm:mt-5 sm:text-4xl lg:text-[2.85rem]">
               {product.shortTitle}
             </h1>
 
@@ -331,6 +342,7 @@ export default function AdsProductLander({ product, reviews }: Props) {
               <span className="w-full text-[11px] text-muted/80 sm:text-xs">
                 {promoLine}
               </span>
+              <SaleCountdown className="w-full text-[12px] font-medium text-rose-700/90" />
             </div>
 
             <div className="mt-3.5 w-full max-w-md sm:mt-7">
@@ -574,9 +586,9 @@ export default function AdsProductLander({ product, reviews }: Props) {
         limit={3}
         showForm={false}
         showMoreLink={false}
+        layout="photos"
+        preserveOrder
       />
-      <Guarantee />
-
       <ProductFinalCTA
         shortTitle={product.shortTitle}
         price={product.price}

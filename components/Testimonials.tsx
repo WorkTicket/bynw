@@ -22,6 +22,10 @@ type Props = {
   limit?: number
   /** Override “Ver todos” link (ads landers hide it to keep focus). */
   showMoreLink?: boolean
+  /** Photo-forward cards for paid traffic (finished work above the quote). */
+  layout?: "list" | "photos"
+  /** Keep server order (photo-first ads reviews) instead of daily shuffle. */
+  preserveOrder?: boolean
 }
 
 export default function Testimonials({
@@ -29,12 +33,16 @@ export default function Testimonials({
   showForm,
   limit,
   showMoreLink: showMoreLinkProp,
+  layout = "list",
+  preserveOrder = false,
 }: Props) {
   const pathname = usePathname()
-  const [reviews, setReviews] = useState(initialReviews)
+  const [reviews, setReviews] = useState(() =>
+    Array.isArray(initialReviews) ? initialReviews : []
+  )
 
   useEffect(() => {
-    setReviews(initialReviews)
+    setReviews(Array.isArray(initialReviews) ? initialReviews : [])
   }, [initialReviews])
 
   const onTestimonialsPage = pathname === "/testimonials"
@@ -42,9 +50,11 @@ export default function Testimonials({
   const showMoreLink = showMoreLinkProp ?? !onTestimonialsPage
 
   const visible = useMemo(() => {
-    const list = interleaveReviews(reviews, dailyShuffleSeed("testimonials-home"))
+    const list = preserveOrder
+      ? reviews.slice()
+      : interleaveReviews(reviews, dailyShuffleSeed("testimonials-home"))
     return typeof limit === "number" ? list.slice(0, limit) : list
-  }, [reviews, limit])
+  }, [reviews, limit, preserveOrder])
 
   function handleSubmitted(review: Review) {
     setReviews((prev) => {
@@ -68,29 +78,26 @@ export default function Testimonials({
           </div>
         </ScrollReveal>
 
-        <ul className="mx-auto max-w-3xl divide-y divide-rose-100/80">
-          {visible.map((t, i) => {
-            const photo = reviewImageSrc(t)
-            return (
-              <ScrollReveal key={t.id} delay={i * 55} variant="fade">
-                <li>
-                  <blockquote className="flex items-start gap-4 py-7 sm:gap-6 sm:py-8">
-                    {photo && (
-                      <div className="shrink-0">
+        {layout === "photos" ? (
+          <ul className="mx-auto grid max-w-5xl gap-8 sm:grid-cols-3 sm:gap-6 lg:gap-8">
+            {visible.map((t, i) => {
+              const photo = reviewImageSrc(t)
+              return (
+                <ScrollReveal key={t.id} delay={i * 55} variant="fade">
+                  <li>
+                    <blockquote className="h-full">
+                      {photo && (
                         <div className="overflow-hidden rounded-2xl bg-rose-50/50 ring-1 ring-rose-100/70">
                           <img
                             src={photo}
                             alt={`Trabajo terminado de ${t.name}`}
                             loading="lazy"
                             decoding="async"
-                            className="h-[5.5rem] w-[5.5rem] object-cover sm:h-[6.75rem] sm:w-[6.75rem]"
+                            className="aspect-square w-full object-cover"
                           />
                         </div>
-                      </div>
-                    )}
-
-                    <div className="min-w-0 flex-1 text-left">
-                      <cite className="not-italic">
+                      )}
+                      <cite className="mt-4 block not-italic">
                         <p className="text-sm font-semibold tracking-wide text-ink">
                           {t.name}
                         </p>
@@ -98,7 +105,6 @@ export default function Testimonials({
                           <p className="mt-0.5 text-[12px] text-muted">{t.location}</p>
                         )}
                       </cite>
-
                       <div
                         className="mt-2 flex items-center gap-0.5"
                         aria-label={`${t.rating} de 5 estrellas`}
@@ -113,20 +119,79 @@ export default function Testimonials({
                           />
                         ))}
                       </div>
-
-                      <p className="mt-3 text-[1.05rem] font-normal leading-[1.7] tracking-[-0.01em] text-ink/85 sm:text-[1.1rem]">
-                        <span className="font-script text-[1.65rem] leading-none text-rose-300/80 mr-1">
+                      <p className="mt-3 text-[1.02rem] font-normal leading-[1.65] tracking-[-0.01em] text-ink/85">
+                        <span className="mr-1 font-script text-[1.5rem] leading-none text-rose-300/80">
                           “
                         </span>
                         {t.text}
                       </p>
-                    </div>
-                  </blockquote>
-                </li>
-              </ScrollReveal>
-            )
-          })}
-        </ul>
+                    </blockquote>
+                  </li>
+                </ScrollReveal>
+              )
+            })}
+          </ul>
+        ) : (
+          <ul className="mx-auto max-w-3xl divide-y divide-rose-100/80">
+            {visible.map((t, i) => {
+              const photo = reviewImageSrc(t)
+              return (
+                <ScrollReveal key={t.id} delay={i * 55} variant="fade">
+                  <li>
+                    <blockquote className="flex items-start gap-4 py-7 sm:gap-6 sm:py-8">
+                      {photo && (
+                        <div className="shrink-0">
+                          <div className="overflow-hidden rounded-2xl bg-rose-50/50 ring-1 ring-rose-100/70">
+                            <img
+                              src={photo}
+                              alt={`Trabajo terminado de ${t.name}`}
+                              loading="lazy"
+                              decoding="async"
+                              className="h-[5.5rem] w-[5.5rem] object-cover sm:h-[6.75rem] sm:w-[6.75rem]"
+                            />
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="min-w-0 flex-1 text-left">
+                        <cite className="not-italic">
+                          <p className="text-sm font-semibold tracking-wide text-ink">
+                            {t.name}
+                          </p>
+                          {t.location && (
+                            <p className="mt-0.5 text-[12px] text-muted">{t.location}</p>
+                          )}
+                        </cite>
+
+                        <div
+                          className="mt-2 flex items-center gap-0.5"
+                          aria-label={`${t.rating} de 5 estrellas`}
+                        >
+                          {Array.from({ length: 5 }).map((_, idx) => (
+                            <StarIcon
+                              key={idx}
+                              className={
+                                idx < t.rating ? "text-rose-400" : "text-rose-100"
+                              }
+                              size={13}
+                            />
+                          ))}
+                        </div>
+
+                        <p className="mt-3 text-[1.05rem] font-normal leading-[1.7] tracking-[-0.01em] text-ink/85 sm:text-[1.1rem]">
+                          <span className="mr-1 font-script text-[1.65rem] leading-none text-rose-300/80">
+                            “
+                          </span>
+                          {t.text}
+                        </p>
+                      </div>
+                    </blockquote>
+                  </li>
+                </ScrollReveal>
+              )
+            })}
+          </ul>
+        )}
 
         {shouldShowForm && (
           <ScrollReveal delay={120}>

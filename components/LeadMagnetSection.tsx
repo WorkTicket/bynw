@@ -3,7 +3,11 @@ import LeadMagnet from "./LeadMagnet"
 import ScrollReveal from "@/components/ScrollReveal"
 import { GIFT_MAGNET } from "@/lib/gift-magnet"
 
-export default function LeadMagnetSection() {
+type Props = {
+  source?: string
+}
+
+export default function LeadMagnetSection({ source = "inline-section" }: Props) {
   return (
     <section
       id="regalo-gratis"
@@ -41,7 +45,7 @@ export default function LeadMagnetSection() {
                 <div className="mx-auto mt-8 w-full max-w-md sm:mt-9 lg:mx-0">
                   <LeadMagnet
                     variant="compact"
-                    source="inline-section"
+                    source={source}
                     submitLabel="Descargar patrón gratis"
                     placeholder="tu@email.com"
                   />

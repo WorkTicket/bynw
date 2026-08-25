@@ -1,7 +1,9 @@
 import Image from "next/image"
 import HeroCtas from "@/components/HeroCtas"
+import SaleCountdown from "@/components/SaleCountdown"
 import { StarIcon } from "@/lib/icons"
 import { SITE_RATING_DISPLAY } from "@/lib/testimonials-data"
+import { promoHeroBadge } from "@/lib/offer"
 
 export default function Hero() {
   return (
@@ -27,9 +29,11 @@ export default function Hero() {
       <div className="relative z-10 bg-white pb-[calc(var(--sticky-cta-stack)+1.25rem)] md:flex md:min-h-[100svh] md:flex-col md:justify-center md:bg-transparent md:pb-24 md:pt-[calc(var(--site-header-offset)+1.5rem)]">
         <div className="section pt-8 sm:pt-10 md:pt-0">
           <div className="mx-auto flex w-full max-w-xl flex-col items-center text-center md:mx-0 md:max-w-[28rem] md:items-start md:text-left lg:max-w-[34rem]">
-            <span className="eyebrow">Patrones en PDF</span>
+            <span className="inline-flex items-center rounded-full bg-rose-100/90 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-rose-700">
+              {promoHeroBadge()}
+            </span>
 
-            <p className="mt-4 font-script text-[1.7rem] leading-none text-rose-500 sm:mt-5 sm:text-[2.05rem] lg:text-[2.35rem]">
+            <p className="mt-5 font-script text-[1.7rem] leading-none text-rose-500 sm:mt-6 sm:text-[2.05rem] lg:text-[2.35rem]">
               Manos Creativas Bynmw
             </p>
 
@@ -39,8 +43,8 @@ export default function Hero() {
             </h1>
 
             <p className="mt-5 max-w-md text-[15px] leading-[1.75] text-muted sm:mt-6 sm:text-base lg:text-[1.05rem]">
-              Colecciones con fotos paso a paso, instrucciones claras,
-              descarga al momento y acceso de por vida.
+              Princesas, flores, amigurumis y más. Fotos paso a paso, para
+              tejer, regalar o vender. Todas las colecciones al 50% esta semana.
             </p>
 
             <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 md:justify-start">
@@ -61,6 +65,7 @@ export default function Hero() {
             </div>
 
             <HeroCtas />
+            <SaleCountdown className="mt-4 text-[12px] font-medium tracking-[0.04em] text-rose-700/90 md:text-left" />
           </div>
         </div>
       </div>

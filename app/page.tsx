@@ -25,9 +25,7 @@ export const metadata: Metadata = {
 }
 
 const FeatureGrid = dynamic(() => import("@/components/FeatureGrid"))
-const WhatsAppSupport = dynamic(() => import("@/components/WhatsAppSupport"))
 const Testimonials = dynamic(() => import("@/components/Testimonials"))
-const Guarantee = dynamic(() => import("@/components/Guarantee"))
 const UrgencyCTA = dynamic(() => import("@/components/UrgencyCTA"))
 const FAQ = dynamic(() => import("@/components/FAQ"))
 const LeadMagnetSection = dynamic(() => import("@/components/LeadMagnetSection"))
@@ -50,7 +48,7 @@ export default async function HomePage({ searchParams }: Props) {
         <link
           rel="preload"
           as="image"
-          href="/images/hero-editorial.webp"
+          href="/images/imagen-2.webp"
           fetchPriority="high"
         />
         <AdsCatalogLander reviews={reviews} hrefQuery={hrefQuery} />
@@ -84,11 +82,9 @@ export default async function HomePage({ searchParams }: Props) {
       <TrustBar />
       <ProductGrid />
       <FeatureGrid />
-      <WhatsAppSupport />
-      <Testimonials reviews={featured} limit={3} showForm />
-      <Guarantee />
-      <UrgencyCTA />
       <LeadMagnetSection />
+      <Testimonials reviews={featured} limit={3} showForm preserveOrder />
+      <UrgencyCTA />
       <FAQ />
     </div>
   )

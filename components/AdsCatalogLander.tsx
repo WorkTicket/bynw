@@ -1,12 +1,15 @@
-import Image from "next/image"
-import Link from "next/link"
 import dynamic from "next/dynamic"
 import PrimaryCTA from "@/components/PrimaryCTA"
 import ProductCard from "@/components/ProductCard"
 import PetiteOrnament from "@/components/PetiteOrnament"
 import ScrollReveal from "@/components/ScrollReveal"
-import { products, getProductBySlug } from "@/lib/products"
-import { getCatalogFromPrice, getLocalizedProduct } from "@/lib/pricing"
+import HeroCatalogCollage from "@/components/HeroCatalogCollage"
+import PurchaseTrustStrip from "@/components/PurchaseTrustStrip"
+import MetaViewCatalog from "@/components/MetaViewCatalog"
+import SaleCountdown from "@/components/SaleCountdown"
+import { products, isBestseller } from "@/lib/products"
+import { getCatalogFromPrice } from "@/lib/pricing"
+import { promoHeroBadge, SALE_PERCENT } from "@/lib/offer"
 import { CheckCircleIcon, StarIcon } from "@/lib/icons"
 import {
   SITE_RATING_DISPLAY,
@@ -15,8 +18,8 @@ import {
 } from "@/lib/testimonials-data"
 
 const Testimonials = dynamic(() => import("@/components/Testimonials"))
-const Guarantee = dynamic(() => import("@/components/Guarantee"))
 const FAQ = dynamic(() => import("@/components/FAQ"))
+const LeadMagnetSection = dynamic(() => import("@/components/LeadMagnetSection"))
 
 type Props = {
   reviews: Review[]
@@ -26,7 +29,7 @@ type Props = {
 const TRUST = [
   "PDF con fotos paso a paso",
   "Descarga al momento",
-  "Acceso de por vida",
+  "Listas para regalar o vender",
   "Garantía 7 días",
 ] as const
 
@@ -36,107 +39,74 @@ const sectionHeading =
 export default function AdsCatalogLander({ reviews, hrefQuery }: Props) {
   const fromPrice = getCatalogFromPrice()
   const collectionCount = products.length
-  const featured = getLocalizedProduct(getProductBySlug("princesas-disney")!)
-  const bestsellers = ["princesas-disney", "flores-eternas", "amigurumis-chenille"]
-  const adsHref = (slug: string) =>
-    hrefQuery ? `/ads/${slug}?${hrefQuery}` : `/ads/${slug}`
+  const featured = products.filter((p) => isBestseller(p.slug))
+  const rest = products.filter((p) => !isBestseller(p.slug))
+  const catalogItems = products.map((p) => ({
+    id: p.id,
+    name: p.seoTitle,
+    price: p.price,
+  }))
 
   return (
     <>
-      <section className="hero-editorial relative min-h-[min(88svh,48rem)] overflow-hidden bg-[#fffaf8] sm:min-h-[min(90svh,50rem)]">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute inset-x-0 bottom-0 top-[3in] sm:top-[2in] lg:inset-0">
-            <Image
-              src="/images/hero-editorial.webp"
-              alt="Amigurumi de princesa en crochet o ganchillo junto a un ramo de flores eternas tejidas"
-              fill
-              priority
-              fetchPriority="high"
-              unoptimized
-              sizes="100vw"
-              className="object-cover object-[70%_center] sm:object-[72%_center] lg:object-[78%_center]"
-            />
-          </div>
+      <MetaViewCatalog items={catalogItems} />
 
-          <div className="hero-veil-mobile pointer-events-none absolute inset-0 lg:hidden" />
+      <section className="relative overflow-hidden bg-[#fffaf8]">
+        <div className="section relative z-10 pb-[calc(var(--sticky-cta-stack)+1.15rem)] pt-10 sm:pb-[calc(var(--sticky-cta-stack)+2rem)] sm:pt-14 lg:pb-20 lg:pt-16">
+          <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-14 xl:gap-20">
+            <div className="mx-auto max-w-xl text-center lg:mx-0 lg:text-left">
+              <span className="inline-flex items-center rounded-full bg-rose-100/90 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-rose-700">
+                {promoHeroBadge()}
+              </span>
 
-          <div
-            className="pointer-events-none absolute inset-0 hidden lg:block"
-            style={{
-              background: `
-                linear-gradient(
-                  92deg,
-                  #fffaf8 0%,
-                  #fffaf8 32%,
-                  rgba(255,250,248,0.97) 40%,
-                  rgba(255,250,248,0.82) 50%,
-                  rgba(255,250,248,0.4) 62%,
-                  rgba(255,250,248,0.1) 74%,
-                  transparent 86%
-                ),
-                linear-gradient(
-                  180deg,
-                  transparent 72%,
-                  rgba(250,243,241,0.35) 88%,
-                  rgba(250,243,241,0.72) 100%
-                )
-              `,
-            }}
-          />
-        </div>
+              <h1 className="mt-5 font-display text-[2.05rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.7rem] lg:text-[3.05rem]">
+                Todas las colecciones al{" "}
+                <span className="gradient-text-candy italic">{SALE_PERCENT}%</span>{" "}
+                esta semana
+              </h1>
 
-        <div className="section relative z-10 flex min-h-[min(88svh,48rem)] flex-col justify-end pb-[calc(var(--sticky-cta-stack)+1.15rem)] pt-10 sm:min-h-[min(90svh,50rem)] sm:justify-center sm:pb-[calc(var(--sticky-cta-stack)+2rem)] sm:pt-16 lg:pb-24">
-          <div className="max-w-xl lg:max-w-[36rem]">
-            <p className="font-script h-[2.35rem] text-[2.35rem] leading-none text-rose-500 sm:h-[2.75rem] sm:text-[2.75rem]">
-              Manos Creativas Bynmw
-            </p>
-            <h1 className="mt-6 font-display text-[2.15rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.85rem] lg:text-[3.15rem]">
-              Muchas opciones de{" "}
-              <span className="gradient-text-candy italic">crochet o ganchillo</span>{" "}
-              para elegir
-            </h1>
-            <p className="mt-5 max-w-md text-[15px] leading-[1.75] text-muted sm:text-base lg:text-lg">
-              {collectionCount} colecciones en PDF con fotos paso a paso. Elige
-              la tuya, descarga al momento y teje cuando quieras.
-            </p>
+              <p className="mt-5 max-w-md text-[15px] leading-[1.75] text-muted mx-auto lg:mx-0 sm:text-base lg:text-lg">
+                Princesas, flores eternas, amigurumis, reversibles, Navidad y
+                Halloween. PDF con fotos paso a paso, para tejer, regalar o
+                vender.
+              </p>
 
-            <div className="mt-5 flex flex-wrap items-center gap-2">
-              <div className="flex items-center gap-0.5" aria-hidden="true">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <StarIcon key={i} className="text-rose-400" size={14} />
-                ))}
+              <div className="mt-5 flex flex-wrap items-center justify-center gap-2 lg:justify-start">
+                <div className="flex items-center gap-0.5" aria-hidden="true">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <StarIcon key={i} className="text-rose-400" size={14} />
+                  ))}
+                </div>
+                <span className="text-sm font-semibold text-ink">
+                  {SITE_RATING_DISPLAY}
+                </span>
+                <span className="text-sm text-muted">
+                  · {SITE_RATING.reviewCount}+ artesanas
+                </span>
               </div>
-              <span className="text-sm font-semibold text-ink">
-                {SITE_RATING_DISPLAY}
-              </span>
-              <span className="text-sm text-muted">
-                · {SITE_RATING.reviewCount}+ artesanas
-              </span>
+
+              <div className="mt-8 flex justify-center lg:justify-start">
+                <PrimaryCTA href="#colecciones" size="lg">
+                  Ver colecciones
+                </PrimaryCTA>
+              </div>
+
+              <SaleCountdown className="mt-4 text-[12px] font-medium tracking-[0.04em] text-rose-700/90 sm:text-[13px]" />
+
+              <p className="mt-6 text-[11px] tracking-[0.06em] text-muted/65 sm:text-xs">
+                {collectionCount} colecciones
+                <span className="meta-sep" aria-hidden="true">
+                  ✦
+                </span>
+                Desde {fromPrice}
+                <span className="meta-sep" aria-hidden="true">
+                  ✦
+                </span>
+                Acceso de por vida
+              </p>
             </div>
 
-            <div className="mt-8 flex flex-row flex-wrap items-center gap-x-5 gap-y-3">
-              <PrimaryCTA href="#colecciones" size="lg">
-                Ver todas las opciones
-              </PrimaryCTA>
-              <Link
-                href={adsHref(featured.slug)}
-                className="inline-flex min-h-12 items-center text-[0.9rem] font-medium tracking-[0.03em] text-ink/55 transition-colors hover:text-rose-600"
-              >
-                Más vendida: {featured.shortTitle} →
-              </Link>
-            </div>
-
-            <p className="mt-7 text-[11px] tracking-[0.06em] text-muted/65 sm:text-xs">
-              {collectionCount} colecciones
-              <span className="meta-sep" aria-hidden="true">
-                ✦
-              </span>
-              Desde {fromPrice}
-              <span className="meta-sep" aria-hidden="true">
-                ✦
-              </span>
-              PDF al momento
-            </p>
+            <HeroCatalogCollage />
           </div>
         </div>
       </section>
@@ -161,67 +131,65 @@ export default function AdsCatalogLander({ reviews, hrefQuery }: Props) {
         <div className="section">
           <ScrollReveal>
             <div className="section-header">
-              <span className="eyebrow">{collectionCount} opciones</span>
+              <span className="eyebrow">−{SALE_PERCENT}% en todas</span>
               <PetiteOrnament className="mb-5 mt-1" />
               <h2 className={sectionHeading}>
                 Elige la colección{" "}
                 <span className="gradient-text-rose italic">que más te guste</span>
               </h2>
               <p>
-                Cada una incluye patrones en PDF, bonos y acceso inmediato.
-                Toca una para ver la oferta.
+                Patrones listos para tejer en un fin de semana, regalar o
+                vender. Cada una incluye PDF, fotos paso a paso y acceso
+                inmediato.
               </p>
             </div>
           </ScrollReveal>
 
-          <ScrollReveal>
-            <p className="mb-10 text-center text-[13px] tracking-[0.02em] text-muted sm:mb-12">
-              Más elegidas:{" "}
-              {bestsellers.map((slug, i) => {
-                const p = products.find((x) => x.slug === slug)
-                if (!p) return null
-                return (
-                  <span key={slug}>
-                    {i > 0 && (
-                      <span className="mx-1.5 text-rose-300" aria-hidden>
-                        ·
-                      </span>
-                    )}
-                    <Link
-                      href={adsHref(slug)}
-                      className="font-medium text-ink/75 transition-colors hover:text-rose-600"
-                    >
-                      {p.shortTitle}
-                    </Link>
-                  </span>
-                )
-              })}
-            </p>
-          </ScrollReveal>
-
           <div className="grid gap-10 sm:grid-cols-2 sm:gap-12 lg:grid-cols-3 lg:gap-14">
-            {products.map((p, i) => (
-              <ScrollReveal key={p.slug} delay={i * 60}>
+            {featured.map((p, i) => (
+              <ScrollReveal key={p.slug} delay={i * 45}>
                 <ProductCard
                   product={p}
                   hrefBase="/ads"
                   hrefQuery={hrefQuery}
                   ctaLabel="Elegir esta"
                   priority={i < 2}
+                  featured
+                  badge="Más vendida"
                 />
               </ScrollReveal>
             ))}
           </div>
+
+          <div className="mt-10 grid gap-10 sm:mt-12 sm:grid-cols-2 sm:gap-12 lg:mt-14 lg:grid-cols-3 lg:gap-14">
+            {rest.map((p, i) => (
+              <ScrollReveal key={p.slug} delay={i * 40}>
+                <ProductCard
+                  product={p}
+                  hrefBase="/ads"
+                  hrefQuery={hrefQuery}
+                  ctaLabel="Elegir esta"
+                />
+              </ScrollReveal>
+            ))}
+          </div>
+
+          <div className="mt-12 sm:mt-14">
+            <PurchaseTrustStrip />
+          </div>
         </div>
       </section>
+
+      <LeadMagnetSection source="ads-catalog" />
 
       <Testimonials
         reviews={reviews}
         limit={3}
         showForm={false}
         showMoreLink={false}
+        layout="photos"
+        preserveOrder
       />
-      <Guarantee />
       <FAQ />
 
       <section className="section-premium-dark section-padding">
@@ -236,18 +204,13 @@ export default function AdsCatalogLander({ reviews, hrefQuery }: Props) {
                 <span className="gradient-text-rose italic">elegir</span>?
               </h2>
               <p className="mt-3 text-sm text-muted">
-                {collectionCount} opciones · Desde {fromPrice} · Garantía 7 días
+                {collectionCount} opciones · {promoHeroBadge()} · Desde {fromPrice}
               </p>
+              <SaleCountdown className="mt-2 text-[12px] font-medium text-rose-700/90" />
               <div className="mt-8 flex flex-col items-center gap-4">
                 <PrimaryCTA href="#colecciones" size="lg">
-                  Ver todas las opciones
+                  Ver colecciones
                 </PrimaryCTA>
-                <Link
-                  href={adsHref(featured.slug)}
-                  className="text-sm font-medium text-ink/50 transition-colors hover:text-rose-600"
-                >
-                  {featured.shortTitle} {featured.price} →
-                </Link>
               </div>
             </div>
           </ScrollReveal>

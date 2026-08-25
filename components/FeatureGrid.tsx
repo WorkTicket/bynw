@@ -44,7 +44,7 @@ export default function FeatureGrid() {
             </h2>
             <p>
               Patrones en PDF con fotos claras, vídeos de apoyo y bonos
-              incluidos — pensados para tejer con calma y confianza.
+              incluidos — para tejer con calma, regalar o vender.
             </p>
           </div>
         </ScrollReveal>

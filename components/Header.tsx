@@ -1,12 +1,11 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, type ReactNode } from "react"
 import Link from "next/link"
-import { usePathname, useSearchParams } from "next/navigation"
+import { usePathname } from "next/navigation"
 import PrimaryCTA from "@/components/PrimaryCTA"
 import HotmartBuyButtonClient from "@/components/HotmartBuyButtonClient"
 import { getProductBySlug } from "@/lib/products"
-import { isMetaPaidTraffic } from "@/lib/paid-traffic"
 import { WHATSAPP_URL } from "@/lib/site"
 
 const links = [
@@ -52,18 +51,76 @@ function BrandMark({
   )
 }
 
+function SlimBar({
+  brandHref,
+  className = "",
+  children,
+}: {
+  brandHref: string
+  className?: string
+  children: ReactNode
+}) {
+  return (
+    <div className={`site-header ${className}`.trim()}>
+      <header className="site-header__nav">
+        <div className="site-header__bar">
+          <BrandMark href={brandHref} />
+          {children}
+        </div>
+      </header>
+    </div>
+  )
+}
+
+function SlimAction({ pathname }: { pathname: string }) {
+  const adsSlug = pathname.match(/^\/ads\/([^/]+)\/?$/)?.[1]
+  const adsProduct = adsSlug ? getProductBySlug(adsSlug) : undefined
+  const isCheckout = pathname.startsWith("/checkout")
+
+  if (isCheckout) {
+    return (
+      <a
+        href={WHATSAPP_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-track-whatsapp-click="checkout_header"
+        className="btn-nav"
+      >
+        Ayuda<span className="hidden sm:inline"> WhatsApp</span>
+      </a>
+    )
+  }
+
+  if (adsProduct) {
+    return (
+      <HotmartBuyButtonClient
+        slug={adsProduct.slug}
+        contentId={adsProduct.id}
+        contentName={adsProduct.seoTitle}
+        price={adsProduct.price}
+        initialHref={`/checkout/${adsProduct.slug}`}
+        size="compact"
+        className="!w-auto shrink-0"
+      >
+        Comprar ahora
+      </HotmartBuyButtonClient>
+    )
+  }
+
+  return (
+    <a href="#colecciones" className="btn-nav">
+      Ver colecciones
+    </a>
+  )
+}
+
 export default function Header() {
   const pathname = usePathname()
-  const searchParams = useSearchParams()
   const isAds = pathname.startsWith("/ads")
   const isCheckout = pathname.startsWith("/checkout")
-  const isPaidHome =
-    pathname === "/" &&
-    isMetaPaidTraffic(
-      searchParams,
-      typeof navigator !== "undefined" ? navigator.userAgent : null
-    )
-  const isSlim = isAds || isCheckout || isPaidHome
+  // Pathname-only. Paid home (`/` + [data-ads-lander]) is CSS-toggled so
+  // Facebook in-app never hydrates a different header tree than SSR.
+  const isSlim = isAds || isCheckout
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [announcementVisible, setAnnouncementVisible] = useState(true)
@@ -75,7 +132,10 @@ export default function Header() {
   }, [])
 
   useEffect(() => {
-    if (isSlim) {
+    const adsPage = Boolean(
+      document.querySelector("[data-ads-lander], [data-checkout-lander]")
+    )
+    if (isSlim || adsPage) {
       document.documentElement.dataset.announcement = "hidden"
       return () => {
         delete document.documentElement.dataset.announcement
@@ -87,7 +147,7 @@ export default function Header() {
     return () => {
       delete document.documentElement.dataset.announcement
     }
-  }, [announcementVisible, isSlim])
+  }, [announcementVisible, isSlim, pathname])
 
   useEffect(() => {
     if (isSlim) return
@@ -124,50 +184,20 @@ export default function Header() {
     sessionStorage.setItem("announcement-dismissed", "true")
   }
 
-  // Paid landers + paid home + checkout: no organic nav — logo + one action.
+  // /ads + /checkout: pathname-only slim chrome (hydration-safe).
   if (isSlim) {
-    const adsSlug = pathname.match(/^\/ads\/([^/]+)\/?$/)?.[1]
-    const adsProduct = adsSlug ? getProductBySlug(adsSlug) : undefined
     const checkoutSlug = pathname.match(/^\/checkout\/([^/]+)/)?.[1]
-    const checkoutBackHref = checkoutSlug ? `/ads/${checkoutSlug}` : "/ads"
-    const brandHref = isCheckout ? checkoutBackHref : isPaidHome ? "/" : "/ads"
+    const brandHref = isCheckout
+      ? checkoutSlug
+        ? `/ads/${checkoutSlug}`
+        : "/ads"
+      : "/ads"
     return (
       <>
         <div className="ios-status-bar" aria-hidden="true" />
-        <div className="site-header">
-          <header className={`site-header__nav ${scrolled ? "is-scrolled" : ""}`}>
-            <div className="site-header__bar">
-              <BrandMark href={brandHref} />
-              {isCheckout ? (
-                <a
-                  href={WHATSAPP_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-track-whatsapp-click="checkout_header"
-                  className="btn-nav"
-                >
-                  Ayuda<span className="hidden sm:inline"> WhatsApp</span>
-                </a>
-              ) : adsProduct ? (
-                <HotmartBuyButtonClient
-                  slug={adsProduct.slug}
-                  contentId={adsProduct.id}
-                  contentName={adsProduct.seoTitle}
-                  price={adsProduct.price}
-                  initialHref={`/checkout/${adsProduct.slug}`}
-                  size="compact"
-                  className="!w-auto shrink-0"
-                >
-                  Comprar ahora
-                </HotmartBuyButtonClient>
-              ) : (
-                <a href="#colecciones" className="btn-nav">
-                  Ver opciones
-                </a>
-              )}
-            </div>
-          </header>
-        </div>
+        <SlimBar brandHref={brandHref}>
+          <SlimAction pathname={pathname} />
+        </SlimBar>
       </>
     )
   }
@@ -176,7 +206,7 @@ export default function Header() {
     <>
       <div className="ios-status-bar" aria-hidden="true" />
 
-      <div className={`site-header ${open ? "is-menu-open" : ""}`}>
+      <div className={`site-header site-header--organic ${open ? "is-menu-open" : ""}`}>
         {announcementVisible && (
           <div className="site-header__announcement">
             <div className="site-header__announcement-sheen" aria-hidden="true" />
@@ -263,7 +293,7 @@ export default function Header() {
 
       <div
         id="mobile-nav"
-        className={`site-header__panel lg:hidden ${open ? "is-open" : ""}`}
+        className={`site-header__panel site-header--organic-panel lg:hidden ${open ? "is-open" : ""}`}
         aria-hidden={!open}
       >
         <div className="site-header__panel-veil" aria-hidden="true">
@@ -342,6 +372,10 @@ export default function Header() {
           </div>
         </nav>
       </div>
+
+      <SlimBar brandHref="/" className="site-header--ads-home">
+        <SlimAction pathname="/" />
+      </SlimBar>
     </>
   )
 }

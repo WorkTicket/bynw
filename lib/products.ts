@@ -430,6 +430,17 @@ export const products: Product[] = [
   },
 ]
 
+/** Collections to visually feature on catalog landers (Meta many-options ads). */
+export const BESTSELLER_SLUGS = [
+  "princesas-disney",
+  "flores-eternas",
+  "amigurumis-chenille",
+] as const
+
+export function isBestseller(slug: string): boolean {
+  return (BESTSELLER_SLUGS as readonly string[]).includes(slug)
+}
+
 export function getProductBySlug(slug: string): Product | undefined {
   return products.find((p) => p.slug === slug)
 }

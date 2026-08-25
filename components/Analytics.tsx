@@ -3,6 +3,7 @@
 import { usePathname, useSearchParams } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import { captureAndPersistFromLocation } from "@/lib/ad-attribution"
+import { newMetaEventId, sendBrowserCapiEvent } from "@/lib/meta-browser"
 import {
   CONSENT_UPDATED_EVENT,
   hasAnalyticsConsent,
@@ -80,7 +81,7 @@ function splitMetaParams(params?: Record<string, unknown>) {
   return { data: rest, eventID: id }
 }
 
-function trackPageView(url: string, consent: ConsentChoice | null) {
+function trackPageView(url: string, consent: ConsentChoice | null, eventID?: string) {
   let gaOk = !GA_ID || !hasAnalyticsConsent(consent)
   let fbOk = !FB_PIXEL_ID || !hasMarketingConsent(consent)
 
@@ -89,7 +90,8 @@ function trackPageView(url: string, consent: ConsentChoice | null) {
     gaOk = true
   }
   if (hasMarketingConsent(consent) && FB_PIXEL_ID && typeof window.fbq === "function") {
-    window.fbq("track", "PageView")
+    if (eventID) window.fbq("track", "PageView", {}, { eventID })
+    else window.fbq("track", "PageView")
     fbOk = true
   }
   return gaOk && fbOk
@@ -101,7 +103,12 @@ function trackPageViewWhenReady(
   consent: ConsentChoice | null,
   onDone: (ok: boolean) => void
 ) {
-  if (trackPageView(url, consent)) {
+  const eventID = newMetaEventId()
+  if (hasMarketingConsent(consent)) {
+    sendBrowserCapiEvent({ event_name: "PageView", event_id: eventID })
+  }
+
+  if (trackPageView(url, consent, eventID)) {
     onDone(true)
     return () => {}
   }
@@ -110,7 +117,7 @@ function trackPageViewWhenReady(
   const maxAttempts = 40
   const id = window.setInterval(() => {
     attempts += 1
-    if (trackPageView(url, consent)) {
+    if (trackPageView(url, consent, eventID)) {
       window.clearInterval(id)
       onDone(true)
       return
@@ -170,9 +177,19 @@ export function trackMetaStandard(
   params?: Record<string, unknown>
 ): () => void {
   const gaName = GA_EVENT_MAP[name] || name
-  const { data, eventID } = splitMetaParams(params)
+  const incoming = splitMetaParams(params)
+  const eventID = incoming.eventID || newMetaEventId()
+  const data = incoming.data
   let gaSent = !GA_ID
   let fbSent = !FB_PIXEL_ID
+
+  if (hasMarketingConsent(readConsent())) {
+    sendBrowserCapiEvent({
+      event_name: name,
+      event_id: eventID,
+      custom_data: data,
+    })
+  }
 
   return whenTrackersReady(() => {
     const consent = readConsent()
@@ -407,9 +424,10 @@ export default function Analytics() {
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      const target = e.target as HTMLElement
+      const raw = e.target
+      if (!(raw instanceof Element)) return
       for (const binding of CLICK_BINDINGS) {
-        const el = target.closest(`[${binding.attr}]`) as HTMLElement | null
+        const el = raw.closest(`[${binding.attr}]`) as HTMLElement | null
         if (!el) continue
 
         const label = el.getAttribute(binding.attr) || ""

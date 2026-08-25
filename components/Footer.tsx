@@ -36,15 +36,6 @@ function AdsFooter({ year }: { year: number }) {
             &copy; {year} Manos Creativas Bynmw
           </p>
           <LegalNav />
-          <a
-            href="https://wa.me/573008504709"
-            target="_blank"
-            rel="noopener noreferrer"
-            data-track-whatsapp-click="ads-footer"
-            className="mt-1 text-xs text-rose-600 transition-colors hover:text-rose-700"
-          >
-            Soporte WhatsApp
-          </a>
         </div>
       </div>
     </footer>

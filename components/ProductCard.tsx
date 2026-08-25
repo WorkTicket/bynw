@@ -13,6 +13,9 @@ type Props = {
   ctaLabel?: string
   /** LCP hint for above-the-fold cards */
   priority?: boolean
+  /** Visual emphasis for 2–3 bestsellers in a 9-collection grid. */
+  featured?: boolean
+  badge?: string
 }
 
 export default function ProductCard({
@@ -21,6 +24,8 @@ export default function ProductCard({
   hrefQuery,
   ctaLabel = "Ver y comprar",
   priority = false,
+  featured = false,
+  badge,
 }: Props) {
   const priceNum = parsePriceValue(product.price)
   const originalNum = parsePriceValue(product.originalPrice)
@@ -44,7 +49,7 @@ export default function ProductCard({
         data-product-card={product.id}
         className="relative flex h-full flex-col"
       >
-        <div className="product-media aspect-square">
+        <div className={`product-media aspect-square ${featured ? "ring-2 ring-rose-300/80" : ""}`}>
           <Image
             src={`/images/${product.images[0]}`}
             alt={product.shortTitle}
@@ -58,6 +63,11 @@ export default function ProductCard({
             className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#3a2428]/[0.08] via-transparent to-transparent opacity-70 transition-opacity duration-500 group-hover:opacity-40"
             aria-hidden="true"
           />
+          {badge && (
+            <span className="absolute right-3.5 top-3.5 rounded-xl bg-rose-600 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-white shadow-soft sm:right-4 sm:top-4">
+              {badge}
+            </span>
+          )}
           {discount >= 50 && (
             <span className="absolute left-3.5 top-3.5 rounded-xl bg-white/95 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-rose-600 shadow-soft ring-1 ring-rose-100/90 backdrop-blur-sm sm:left-4 sm:top-4">
               −{discount}%
@@ -70,7 +80,7 @@ export default function ProductCard({
             Colección
           </p>
 
-          <h3 className="mt-2 font-display text-[1.65rem] font-semibold leading-tight tracking-tight text-ink transition-colors duration-300 group-hover:text-rose-600 sm:text-[1.8rem]">
+          <h3 className={`mt-2 font-display font-semibold leading-tight tracking-tight text-ink transition-colors duration-300 group-hover:text-rose-600 ${featured ? "text-[1.8rem] sm:text-[2rem]" : "text-[1.65rem] sm:text-[1.8rem]"}`}>
             {product.shortTitle}
           </h3>
 

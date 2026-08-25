@@ -227,11 +227,14 @@ function interleavePhotoAndText(reviews: Review[], limit: number): Review[] {
 
 export async function listFeaturedReviews(limit = 3): Promise<Review[]> {
   const reviews = await listPublishedReviews()
-  const site = reviews.filter((r) => r.source === "site")
-  const seeds = reviews.filter((r) => r.source === "seed")
-  const pool = [...site, ...seeds]
-  const featured = interleavePhotoAndText(pool, limit)
-  if (featured.length > 0) return featured
+  const hasPhoto = (r: Review) => Boolean(r.image || r.productImages?.[0])
+  const sitePhoto = reviews.filter((r) => r.source === "site" && hasPhoto(r))
+  const seedPhoto = reviews.filter((r) => r.source === "seed" && hasPhoto(r))
+  const siteText = reviews.filter((r) => r.source === "site" && !hasPhoto(r))
+  const seedText = reviews.filter((r) => r.source === "seed" && !hasPhoto(r))
+  const pool = [...sitePhoto, ...seedPhoto, ...siteText, ...seedText]
+  if (pool.length >= limit) return pool.slice(0, limit)
+  if (pool.length > 0) return pool
   return interleavePhotoAndText([...SEED_REVIEWS], limit)
 }
 
@@ -243,10 +246,11 @@ export async function listAdsFeaturedReviews(limit = 3): Promise<Review[]> {
   const reviews = await listPublishedReviews()
   const hasPhoto = (r: Review) => Boolean(r.image || r.productImages?.[0])
   const sitePhoto = reviews.filter((r) => r.source === "site" && hasPhoto(r))
-  const siteText = reviews.filter((r) => r.source === "site" && !hasPhoto(r))
   const seedPhoto = reviews.filter((r) => r.source === "seed" && hasPhoto(r))
+  const siteText = reviews.filter((r) => r.source === "site" && !hasPhoto(r))
   const seedText = reviews.filter((r) => r.source === "seed" && !hasPhoto(r))
-  const pool = [...sitePhoto, ...siteText, ...seedPhoto, ...seedText]
+  // Photos first (site, then seed) so Meta landers lead with finished-work proof.
+  const pool = [...sitePhoto, ...seedPhoto, ...siteText, ...seedText]
   if (pool.length >= limit) return pool.slice(0, limit)
   if (pool.length > 0) return pool
   return interleavePhotoAndText([...SEED_REVIEWS], limit)

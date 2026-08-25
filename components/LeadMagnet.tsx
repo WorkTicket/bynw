@@ -6,6 +6,7 @@ import PrimaryCTA from "@/components/PrimaryCTA"
 import { GIFT_MAGNET } from "@/lib/gift-magnet"
 import { isIOSGiftDownload, openIOSGiftDrive, triggerGiftDownload } from "@/lib/download-gift"
 import { trackMetaStandard } from "@/components/Analytics"
+import { newMetaEventId, readMetaClickIds } from "@/lib/meta-browser"
 
 type Props = {
   variant?: "inline" | "hero" | "compact"
@@ -157,12 +158,23 @@ export default function LeadMagnet({ variant = "inline", submitLabel, placeholde
     if (!email) return
     setStatus("loading")
     try {
+      const eventId = newMetaEventId()
+      const { fbp, fbc } = readMetaClickIds()
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, source }),
+        body: JSON.stringify({
+          name,
+          email,
+          source,
+          event_id: eventId,
+          fbp,
+          fbc,
+          event_source_url: window.location.href,
+        }),
       })
       if (!res.ok) throw new Error("Request failed")
+      const payload = (await res.json().catch(() => ({}))) as { event_id?: string }
       setStatus("success")
       setName("")
       setEmail("")
@@ -170,6 +182,7 @@ export default function LeadMagnet({ variant = "inline", submitLabel, placeholde
         content_name: GIFT_MAGNET.title,
         content_category: "lead_magnet",
         status: source,
+        eventID: payload.event_id || eventId,
       })
       if (isIOSGiftDownload()) {
         openIOSGiftDrive()

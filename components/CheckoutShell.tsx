@@ -22,7 +22,7 @@ type Props = {
 const TRUST = [
   "Acceso inmediato por correo al confirmar el pago",
   "Garantía 7 días · sin preguntas",
-  "Pago seguro con tarjeta o PayPal vía Hotmart",
+  "Pago seguro con tarjeta, PayPal o Klarna vía Hotmart",
 ] as const
 
 export default function CheckoutShell({ product }: Props) {
@@ -178,7 +178,7 @@ export default function CheckoutShell({ product }: Props) {
                 Pulsa el botón para pagar{" "}
                 <span className="font-medium text-ink">{product.shortTitle}</span>
                 {" · "}
-                {product.price} en Hotmart (tarjeta o PayPal). El PDF llega al
+                {product.price} en Hotmart (tarjeta, PayPal o Klarna). El PDF llega al
                 correo al confirmar.
               </p>
               <p className="checkout-pay-card__hint">
@@ -192,7 +192,7 @@ export default function CheckoutShell({ product }: Props) {
               <div className="mt-6 flex flex-col items-center gap-2 lg:items-start">
                 <PaymentLogos className="h-[1.2rem] opacity-80" />
                 <p className="text-[11px] tracking-wide text-muted/70">
-                  Tarjeta o PayPal · Socio oficial Hotmart
+                  Tarjeta, PayPal o Klarna · Socio oficial Hotmart
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 lg:justify-start">
                   <Link

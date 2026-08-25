@@ -120,6 +120,10 @@ html[data-announcement="hidden"] {
   --site-header-offset: calc(var(--header-nav-height) + var(--safe-area-top));
 }
 
+html:has([data-ads-lander], [data-checkout-lander]) {
+  --site-header-offset: calc(var(--header-nav-height) + var(--safe-area-top));
+}
+
 /*
  * Header + buttons live in @layer components so Tailwind utilities
  * (hidden, lg:hidden, lg:inline-flex, etc.) correctly override display.
@@ -2275,6 +2279,24 @@ body:has([data-ads-lander], [data-checkout-lander]) .site-footer--organic {
 
 body:has([data-ads-lander], [data-checkout-lander]) .site-footer--ads {
   display: block;
+}
+
+/* Dual home headers: CSS toggle so Facebook in-app hydrates the same tree as SSR */
+.site-header--ads-home {
+  display: none;
+}
+
+body:has([data-ads-lander]) .site-header--organic,
+body:has([data-ads-lander]) .site-header--organic-panel {
+  display: none !important;
+}
+
+body:has([data-ads-lander]) .site-header--ads-home {
+  display: block;
+}
+
+html:has([data-ads-lander], [data-checkout-lander]) .ios-status-bar {
+  background-color: var(--surface-pearl);
 }
 
 /* Branded checkout with embedded Hotmart iframe */

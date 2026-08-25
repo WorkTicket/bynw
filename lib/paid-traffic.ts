@@ -80,9 +80,10 @@ export function isFacebookInAppBrowser(userAgent?: string | null): boolean {
  * Avoids treating bare fbclid as paid in normal mobile Safari/Chrome shares.
  */
 export function isMetaPaidTraffic(
-  searchParams: URLSearchParams | { get(name: string): string | null },
+  searchParams: URLSearchParams | { get(name: string): string | null } | null | undefined,
   userAgent?: string | null
 ): boolean {
+  if (!searchParams || typeof searchParams.get !== "function") return false
   const source = searchParams.get("utm_source")
   const medium = searchParams.get("utm_medium")
   const campaign = searchParams.get("utm_campaign")

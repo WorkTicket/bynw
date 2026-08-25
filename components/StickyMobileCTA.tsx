@@ -1,10 +1,10 @@
 "use client"
 
 import { useLayoutEffect } from "react"
-import { usePathname, useSearchParams } from "next/navigation"
+import { usePathname } from "next/navigation"
 import { getLocalizedProduct } from "@/lib/pricing"
 import { getProductBySlug } from "@/lib/products"
-import { isMetaPaidTraffic } from "@/lib/paid-traffic"
+import { promoHeroBadge } from "@/lib/offer"
 import HotmartBuyButtonClient from "./HotmartBuyButtonClient"
 import PrimaryCTA from "./PrimaryCTA"
 
@@ -12,7 +12,6 @@ const STICKY_ATTR = "data-sticky-cta"
 
 export default function StickyMobileCTA() {
   const pathname = usePathname()
-  const searchParams = useSearchParams()
   const enabled =
     pathname === "/" ||
     pathname.startsWith("/shop") ||
@@ -25,16 +24,10 @@ export default function StickyMobileCTA() {
   const isHome = pathname === "/"
   const isShopCatalog = pathname === "/shop"
 
-  // Paid catalog (home or /ads): sticky = choose, not a forced product buy.
-  // Product landers (/ads/{slug}) still get one-tap Comprar.
-  const paidHome =
-    isHome &&
-    isMetaPaidTraffic(
-      searchParams,
-      typeof navigator !== "undefined" ? navigator.userAgent : null
-    )
-  const isPaidCatalog = isAdsCatalog || paidHome
-  const product = isPaidCatalog || isHome ? undefined : pathProduct
+  // Catalog sticky on home + /ads. Product landers still get one-tap Comprar.
+  // Do not use navigator/searchParams during render — Facebook in-app UA
+  // differs between SSR and hydrate and crashes the page.
+  const product = isAdsCatalog || isHome ? undefined : pathProduct
   const localized = product ? getLocalizedProduct(product) : null
 
   useLayoutEffect(() => {
@@ -52,19 +45,21 @@ export default function StickyMobileCTA() {
 
   const title = localized
     ? localized.shortTitle
-    : isPaidCatalog || isShopCatalog || isHome
+    : isAdsCatalog || isShopCatalog || isHome
       ? "Manos Creativas"
       : "Colecciones"
 
   const priceLabel = localized
     ? localized.price
-    : isPaidCatalog || isShopCatalog || isHome
-      ? "PDF al momento"
-      : "Ver ofertas"
+    : isAdsCatalog || isHome
+      ? promoHeroBadge()
+      : isShopCatalog
+        ? "PDF al momento"
+        : "Ver ofertas"
 
   const catalogHref =
-    isAdsCatalog || isShopCatalog || paidHome ? "#colecciones" : "/#colecciones"
-  const catalogCta = isPaidCatalog ? "Ver opciones" : "Ver colecciones"
+    isAdsCatalog || isShopCatalog || isHome ? "#colecciones" : "/#colecciones"
+  const catalogCta = "Ver colecciones"
 
   return (
     <>

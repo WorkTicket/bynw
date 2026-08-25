@@ -1,14 +1,14 @@
 import { Metadata } from "next"
-import PrimaryCTA from "@/components/PrimaryCTA"
-import SecondaryCTA from "@/components/SecondaryCTA"
 import ScrollReveal from "@/components/ScrollReveal"
 import ProductCard from "@/components/ProductCard"
 import LeadMagnet from "@/components/LeadMagnet"
-import { products } from "@/lib/products"
+import { products, isBestseller } from "@/lib/products"
 import { DEFAULT_OG_IMAGE, WHATSAPP_URL, absoluteUrl } from "@/lib/site"
 import { createPageMetadata, buildBreadcrumbJsonLd } from "@/lib/seo"
 import { listFeaturedReviews } from "@/lib/reviews"
 import { reviewImageSrc } from "@/lib/testimonials-data"
+import { SALE_PERCENT } from "@/lib/offer"
+import PurchaseTrustStrip from "@/components/PurchaseTrustStrip"
 
 export const metadata: Metadata = createPageMetadata({
   title: "Colección Maestra de Patrones",
@@ -83,14 +83,14 @@ export default async function ShopPage() {
               <p className="font-script text-[2rem] text-rose-500 sm:text-[2.25rem]">
                 Manos Creativas Bynmw
               </p>
-              <span className="eyebrow mt-5">Colección Maestra</span>
+              <span className="eyebrow mt-5">−{SALE_PERCENT}% esta semana</span>
               <h1 className="mt-4">
                 Patrones de amigurumis y{" "}
                 <span className="gradient-text-rose italic">flores en crochet o ganchillo</span>
               </h1>
               <p className="mt-6 text-lg text-muted max-w-2xl mx-auto leading-relaxed">
-                PDF de amigurumis, Princesas de Cuento y Flores Eternas. Tanto si
-                empiezas como si ya llevas tiempo tejiendo.
+                PDF de amigurumis, Princesas de Cuento y Flores Eternas, para
+                tejer, regalar o vender. Descarga al momento.
               </p>
             </div>
           </ScrollReveal>
@@ -110,8 +110,8 @@ export default async function ShopPage() {
                 <span className="gradient-text-rose italic">favorita</span>
               </h2>
               <p>
-                Cada colección incluye patrones detallados en PDF con fotos paso
-                a paso.
+                Patrones en PDF con fotos paso a paso, para tejer, regalar o
+                vender.
               </p>
             </div>
           </ScrollReveal>
@@ -119,9 +119,18 @@ export default async function ShopPage() {
           <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
             {products.map((p, i) => (
               <ScrollReveal key={p.id} delay={i * 120}>
-                <ProductCard product={p} />
+                <ProductCard
+                  product={p}
+                  priority={i < 2}
+                  featured={isBestseller(p.slug)}
+                  badge={isBestseller(p.slug) ? "Más vendida" : undefined}
+                />
               </ScrollReveal>
             ))}
+          </div>
+
+          <div className="mt-12 sm:mt-14">
+            <PurchaseTrustStrip />
           </div>
         </div>
       </section>
@@ -224,15 +233,15 @@ export default async function ShopPage() {
                   Soy Natalia, de Manos Creativas. Escríbeme y te guiaré en cada
                   paso del proceso de compra.
                 </p>
-                <PrimaryCTA
+                <a
                   href={WHATSAPP_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-7 inline-flex"
                   data-track-whatsapp-click="shop_support"
+                  className="mt-5 inline-block text-sm font-medium text-rose-600 underline-offset-4 hover:text-rose-700 hover:underline"
                 >
-                  Escribir a Natalia
-                </PrimaryCTA>
+                  ¿Dudas? WhatsApp a Natalia
+                </a>
               </div>
               <div className="order-1 mx-auto md:order-2">
                 <div className="h-28 w-28 overflow-hidden rounded-full shadow-[0_0_0_1px_rgba(242,179,182,0.55),0_0_0_5px_rgba(255,248,246,0.95),0_0_0_6px_rgba(237,145,150,0.28)] sm:h-36 sm:w-36">
@@ -274,31 +283,6 @@ export default async function ShopPage() {
                   placeholder="tu@email.com"
                 />
               </div>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      <section className="section-white section-padding">
-        <div className="section">
-          <ScrollReveal>
-            <div className="mx-auto max-w-lg text-center">
-              <span className="eyebrow">Contacto</span>
-              <h2 className="mt-3 font-display text-3xl font-semibold text-ink sm:text-4xl">
-                ¿Tienes alguna pregunta?
-              </h2>
-              <p className="mt-3 text-sm text-muted">
-                Estamos aquí para ayudarte. Respuesta en menos de 24h.
-              </p>
-              <SecondaryCTA
-                href={WHATSAPP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-8"
-                data-track-whatsapp-click="shop_contact"
-              >
-                Escribir por WhatsApp
-              </SecondaryCTA>
             </div>
           </ScrollReveal>
         </div>

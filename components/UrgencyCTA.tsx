@@ -1,7 +1,7 @@
-import Link from "next/link"
 import PrimaryCTA from "@/components/PrimaryCTA"
 import PetiteOrnament from "@/components/PetiteOrnament"
 import ScrollReveal from "@/components/ScrollReveal"
+import SaleCountdown from "@/components/SaleCountdown"
 import { promoUrgencyLine } from "@/lib/offer"
 
 export default function UrgencyCTA() {
@@ -17,25 +17,22 @@ export default function UrgencyCTA() {
             <PetiteOrnament className="mt-5" tone="mid" />
 
             <h2 className="mt-6 font-display text-[2.1rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:mt-7 sm:text-[2.85rem] lg:text-[3.15rem]">
-              Precio promocional.{" "}
+              {promoUrgencyLine()}.{" "}
               <span className="gradient-text-rose italic">Teje esta semana</span>
             </h2>
 
             <p className="mx-auto mt-6 max-w-md text-[15px] leading-[1.75] text-ink/55 sm:text-lg">
-              {promoUrgencyLine()}. Acceso de por vida y garantía de 7 días.
+              Acceso de por vida y garantía de 7 días. Piezas listas para
+              regalar o vender.
             </p>
 
             <div className="mt-10 flex flex-col items-center gap-4 sm:mt-11">
               <PrimaryCTA href="/#colecciones">
                 Ver colecciones
               </PrimaryCTA>
-              <Link
-                href="/shop"
-                className="text-sm font-medium text-ink/50 transition-colors hover:text-rose-600"
-              >
-                Ir a la tienda
-              </Link>
             </div>
+
+            <SaleCountdown className="mt-5 text-[12px] font-medium text-rose-700/90" />
 
             <p className="mt-7 text-[11px] tracking-[0.06em] text-ink/45">
               PDF al momento

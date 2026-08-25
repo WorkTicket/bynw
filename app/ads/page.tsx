@@ -29,7 +29,7 @@ export default async function AdsCatalogPage({ searchParams }: Props) {
       <link
         rel="preload"
         as="image"
-        href="/images/hero-editorial.webp"
+        href="/images/imagen-2.webp"
         fetchPriority="high"
       />
       <AdsCatalogLander
