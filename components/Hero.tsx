@@ -1,4 +1,3 @@
-import Image from "next/image"
 import HeroCtas from "@/components/HeroCtas"
 import { StarIcon } from "@/lib/icons"
 import { SITE_RATING_DISPLAY } from "@/lib/testimonials-data"
@@ -9,16 +8,22 @@ export default function Hero() {
     <section className="hero-editorial relative flex flex-col overflow-x-clip md:-mt-[var(--site-header-offset)] md:min-h-[100svh]">
       <div className="relative aspect-[4/3] w-full overflow-hidden sm:aspect-[3/2] md:absolute md:inset-0 md:aspect-auto">
         <div className="absolute inset-0 origin-[70%_6%] scale-[1.16] sm:origin-[72%_10%] sm:scale-[1.12] md:origin-[78%_22%] md:scale-[1.08]">
-          <Image
-            src="/images/hero-editorial.webp"
-            alt="Amigurumi de princesa en crochet o ganchillo junto a un ramo de flores eternas tejidas"
-            fill
-            priority
-            fetchPriority="high"
-            unoptimized
-            sizes="100vw"
-            className="object-cover object-[70%_18%] sm:object-[72%_22%] md:object-[78%_28%]"
-          />
+          <picture>
+            <source
+              media="(min-width: 768px)"
+              srcSet="/images/hero-editorial-lg.webp"
+              type="image/webp"
+            />
+            <img
+              src="/images/hero-editorial.webp"
+              alt="Amigurumi de princesa en crochet o ganchillo junto a un ramo de flores eternas tejidas"
+              width={1536}
+              height={1024}
+              fetchPriority="high"
+              decoding="sync"
+              className="absolute inset-0 h-full w-full object-cover object-[70%_18%] sm:object-[72%_22%] md:object-[78%_28%]"
+            />
+          </picture>
         </div>
 
         <div className="hero-veil-photo pointer-events-none absolute inset-x-0 bottom-0 h-[28%] md:hidden" />
