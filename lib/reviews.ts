@@ -163,14 +163,14 @@ async function writeSiteReviews(reviews: Review[]) {
 
 /** Drop leftover local/dev junk so it never shows beside editorial seeds. */
 export function isJunkSiteReview(review: Review): boolean {
-  const name = review.name.trim().toLowerCase()
+  const name = (review.name ?? "").trim().toLowerCase()
   if (name === "test" || name.startsWith("test ") || name.endsWith(" test")) return true
   if (name === "t" || name === "tt" || name === "asdf") return true
   if (name === "lucia test" || name === "lucía test") return true
   if (name === "carmen ruiz") return true
 
   // Catch mojibake / encoding-broken copies of the smoke-test review
-  const text = review.text.toLowerCase()
+  const text = (review.text ?? "").toLowerCase()
   if (text.includes("\ufffd")) return true
   if (
     text.includes("los patrones son claros y mi amigurumi") &&

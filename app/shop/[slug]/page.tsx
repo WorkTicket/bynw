@@ -8,6 +8,7 @@ import HotmartBuyButton from "@/components/HotmartBuyButton"
 import PaymentLogos from "@/components/PaymentLogos"
 import MetaViewContent from "@/components/MetaViewContent"
 import ProductFinalCTA from "@/components/ProductFinalCTA"
+import WhatsAppSupport from "@/components/WhatsAppSupport"
 import { products, getProductBySlug } from "@/lib/products"
 import { parsePriceValue } from "@/lib/pricing"
 import { DEFAULT_OG_IMAGE } from "@/lib/site"
@@ -323,6 +324,8 @@ export default async function ProductPage({ params }: Props) {
           </div>
         </div>
       </section>
+
+      <WhatsAppSupport />
 
       <Testimonials
         reviews={featuredReviews}

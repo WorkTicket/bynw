@@ -21,6 +21,10 @@ function isActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`)
 }
 
+function pathOf(pathname: string | null): string {
+  return pathname ?? ""
+}
+
 function BrandMark({
   href,
   onClick,
@@ -115,7 +119,7 @@ function SlimAction({ pathname }: { pathname: string }) {
 }
 
 export default function Header() {
-  const pathname = usePathname()
+  const pathname = pathOf(usePathname())
   const isAds = pathname.startsWith("/ads")
   const isCheckout = pathname.startsWith("/checkout")
   // Pathname-only. Paid home (`/` + [data-ads-lander]) is CSS-toggled so
@@ -126,8 +130,12 @@ export default function Header() {
   const [announcementVisible, setAnnouncementVisible] = useState(true)
 
   useEffect(() => {
-    if (sessionStorage.getItem("announcement-dismissed") === "true") {
-      setAnnouncementVisible(false)
+    try {
+      if (sessionStorage.getItem("announcement-dismissed") === "true") {
+        setAnnouncementVisible(false)
+      }
+    } catch {
+      // Private Safari can block sessionStorage.
     }
   }, [])
 
@@ -181,7 +189,11 @@ export default function Header() {
 
   function dismissAnnouncement() {
     setAnnouncementVisible(false)
-    sessionStorage.setItem("announcement-dismissed", "true")
+    try {
+      sessionStorage.setItem("announcement-dismissed", "true")
+    } catch {
+      // Private Safari can block sessionStorage.
+    }
   }
 
   // /ads + /checkout: pathname-only slim chrome (hydration-safe).

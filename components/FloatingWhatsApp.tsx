@@ -6,7 +6,7 @@ import { isMetaPaidTraffic } from "@/lib/paid-traffic"
 import { WHATSAPP_URL } from "@/lib/site"
 
 export default function FloatingWhatsApp() {
-  const pathname = usePathname()
+  const pathname = usePathname() ?? ""
   const [hideForPaidHome, setHideForPaidHome] = useState(false)
 
   useEffect(() => {

@@ -63,7 +63,11 @@ export function readConsent(): ConsentChoice | null {
 
 export function writeConsent(choice: ConsentChoice): void {
   if (typeof window === "undefined") return
-  localStorage.setItem(CONSENT_STORAGE_KEY, JSON.stringify(choice))
+  try {
+    localStorage.setItem(CONSENT_STORAGE_KEY, JSON.stringify(choice))
+  } catch {
+    // Private Safari can block localStorage.
+  }
   window.dispatchEvent(
     new CustomEvent(CONSENT_UPDATED_EVENT, { detail: choice })
   )

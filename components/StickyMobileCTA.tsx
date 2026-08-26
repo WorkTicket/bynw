@@ -11,7 +11,7 @@ import PrimaryCTA from "./PrimaryCTA"
 const STICKY_ATTR = "data-sticky-cta"
 
 export default function StickyMobileCTA() {
-  const pathname = usePathname()
+  const pathname = usePathname() ?? ""
   const enabled =
     pathname === "/" ||
     pathname.startsWith("/shop") ||

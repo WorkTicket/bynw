@@ -370,15 +370,21 @@ export default function Analytics() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const tracked = useRef<string | null>(null)
-  const fbIab = isFacebookInAppClient()
-  const eagerAds =
-    shouldEagerLoadAnalytics(pathname, searchParams) ||
-    fbIab ||
-    isMetaPaidTraffic(
-      searchParams ?? new URLSearchParams(),
-      typeof navigator !== "undefined" ? navigator.userAgent : null
-    )
+  // Query-only on first paint. UA/IAB is applied after mount so iPhone SSR
+  // never mismatches the hydrated tree.
+  const [eagerAds, setEagerAds] = useState(() =>
+    shouldEagerLoadAnalytics(pathname, searchParams)
+  )
   const [consent, setConsent] = useState<ConsentChoice | null>(null)
+
+  useEffect(() => {
+    const ua = typeof navigator !== "undefined" ? navigator.userAgent : null
+    setEagerAds(
+      shouldEagerLoadAnalytics(pathname, searchParams) ||
+        isFacebookInAppClient() ||
+        isMetaPaidTraffic(searchParams ?? new URLSearchParams(), ua)
+    )
+  }, [pathname, searchParams])
 
   useEffect(() => {
     setConsent(readConsent())

@@ -25,21 +25,22 @@ export default function ImageCarousel({
   alt = "Imagen del producto",
   priority = false,
 }: Props) {
+  const slides = Array.isArray(images) ? images.filter(Boolean) : []
   const [idx, setIdx] = useState(0)
   const [inView, setInView] = useState(false)
   const [tabVisible, setTabVisible] = useState(true)
   const [autoplayReady, setAutoplayReady] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
   const next = useCallback(
-    () => setIdx((i) => (images.length ? (i + 1) % images.length : 0)),
-    [images.length]
+    () => setIdx((i) => (slides.length ? (i + 1) % slides.length : 0)),
+    [slides.length]
   )
   const prev = useCallback(
     () =>
       setIdx((i) =>
-        images.length ? (i - 1 + images.length) % images.length : 0
+        slides.length ? (i - 1 + slides.length) % slides.length : 0
       ),
-    [images.length]
+    [slides.length]
   )
 
   useEffect(() => {
@@ -70,7 +71,7 @@ export default function ImageCarousel({
 
   // Defer autoplay until after LCP / idle so the first frame stays stable.
   useEffect(() => {
-    if (noAutoplay || images.length < 2) return
+    if (noAutoplay || slides.length < 2) return
     let idleId: number | undefined
     let timer: number | undefined
     const start = () => setAutoplayReady(true)
@@ -85,15 +86,15 @@ export default function ImageCarousel({
       }
       if (timer != null) window.clearTimeout(timer)
     }
-  }, [noAutoplay, images.length])
+  }, [noAutoplay, slides.length])
 
   useEffect(() => {
-    if (!autoplayReady || !inView || !tabVisible || images.length < 2) return
+    if (!autoplayReady || !inView || !tabVisible || slides.length < 2) return
     const t = setInterval(next, interval)
     return () => clearInterval(t)
-  }, [next, interval, autoplayReady, inView, tabVisible, images.length])
+  }, [next, interval, autoplayReady, inView, tabVisible, slides.length])
 
-  if (images.length === 0) return null
+  if (slides.length === 0) return null
 
   const frame = aspect ?? "aspect-square"
 
@@ -101,7 +102,7 @@ export default function ImageCarousel({
     <div ref={rootRef} className={`group relative ${className}`}>
       <div className={`corner-accents relative overflow-hidden rounded-2xl bg-rose-50/30 ring-1 ring-rose-100/60 ${frame}`}>
         {/* Keep all slides mounted so LCP image is never torn down on advance */}
-        {images.map((src, i) => {
+        {slides.map((src, i) => {
           const active = i === idx
           const isLcp = priority && i === 0
           return (
@@ -124,7 +125,7 @@ export default function ImageCarousel({
         })}
       </div>
 
-      {images.length > 1 && (
+      {slides.length > 1 && (
         <>
           <button
             type="button"
@@ -148,7 +149,7 @@ export default function ImageCarousel({
           </button>
 
           <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5">
-            {images.map((_, i) => (
+            {slides.map((_, i) => (
               <button
                 type="button"
                 key={i}
@@ -165,7 +166,7 @@ export default function ImageCarousel({
 
           <div className="absolute top-3 right-3 rounded-lg bg-rose-500/85 px-2.5 py-1 text-[10px] font-medium text-white backdrop-blur-sm opacity-0 shadow-sm transition-opacity duration-300 group-hover:opacity-100">
             <LayersIcon className="inline-block mr-1 text-rose-100 align-[-2px]" size={10} />
-            {idx + 1} / {images.length}
+            {idx + 1} / {slides.length}
           </div>
         </>
       )}

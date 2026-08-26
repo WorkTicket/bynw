@@ -29,7 +29,7 @@ export default function CookieConsent() {
       return
     }
     // Never cover the pay CTA — checkout must stay tappable.
-    if (pathname.startsWith("/checkout")) {
+    if (pathname?.startsWith("/checkout")) {
       setView("hidden")
       return
     }
