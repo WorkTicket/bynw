@@ -110,11 +110,10 @@ export function onsiteCheckoutPath(slug: string, search?: string): string {
   return q ? `/checkout/${slug}?${q}` : `/checkout/${slug}`
 }
 
-/** Read early UA flag set by inline script in root layout (before React). */
-export function isFacebookInAppFromDom(): boolean {
-  if (typeof document === "undefined") return false
-  return document.documentElement.dataset.fbIab === "true"
-}
+export {
+  isFacebookInAppFromDom,
+  isInAppBrowser,
+} from "@/lib/in-app-browser"
 
 /**
  * Comprar destination — always branded /checkout.
@@ -129,15 +128,3 @@ export function resolveBuyHref(
   return onsiteCheckoutPath(slug, search)
 }
 
-/**
- * Facebook / Instagram / TikTok in-app browsers. They often block
- * scripted `location.assign` to a third-party pay domain.
- */
-export function isInAppBrowser(userAgent?: string): boolean {
-  const ua =
-    userAgent ??
-    (typeof navigator !== "undefined" ? navigator.userAgent : "")
-  return /FBAN|FBAV|FB_IAB|FBIOS|Instagram|Line\/|WhatsApp|TikTok|BytedanceWebview|Twitter|Snapchat|Pinterest/i.test(
-    ua
-  )
-}

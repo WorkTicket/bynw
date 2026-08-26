@@ -15,7 +15,7 @@ export default function AdsLayout({ children }: { children: ReactNode }) {
           CSS main:has([data-ads-lander]) also locks the header offset. */}
       <script
         dangerouslySetInnerHTML={{
-          __html: `document.documentElement.dataset.announcement="hidden"`,
+          __html: `document.documentElement.dataset.lander="ads";document.documentElement.dataset.announcement="hidden"`,
         }}
       />
       {children}

@@ -8,6 +8,8 @@ import FloatingWhatsApp from "@/components/FloatingWhatsApp"
 import Analytics from "@/components/Analytics"
 import CookieConsent from "@/components/CookieConsent"
 import StickyMobileCTA from "@/components/StickyMobileCTA"
+import InAppBrowserChrome from "@/components/InAppBrowserChrome"
+import { IN_APP_BROWSER_BOOT_SCRIPT } from "@/lib/in-app-browser"
 import {
   SITE_URL,
   BRAND_NAME,
@@ -53,6 +55,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: "cover",
   themeColor: "#fffaf8",
+  colorScheme: "light",
 }
 
 export function generateMetadata(): Metadata {
@@ -79,6 +82,14 @@ export function generateMetadata(): Metadata {
       email: false,
       address: false,
       telephone: false,
+    },
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: "default",
+      title: BRAND_NAME,
+    },
+    other: {
+      "mobile-web-app-capable": "yes",
     },
     robots: {
       index: true,
@@ -137,11 +148,9 @@ export default function RootLayout({
       className={`${sans.variable} ${display.variable} ${script.variable}`}
     >
       <head>
-        {/* Facebook/Instagram in-app browser — flag before React for checkout routing + CSS */}
+        {/* In-app browsers (FB/IG/TikTok/…) — flag before React for checkout + CSS */}
         <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){var d=document.documentElement,u=navigator.userAgent||'';if(/FBAN|FBAV|FB_IAB|FBIOS|Instagram/i.test(u))d.dataset.fbIab='true';try{if(sessionStorage.getItem('announcement-dismissed')==='true')d.dataset.announcement='hidden'}catch(e){}})();`,
-          }}
+          dangerouslySetInnerHTML={{ __html: IN_APP_BROWSER_BOOT_SCRIPT }}
         />
         {/* Analytics hosts only — Hotmart hints inject when a buy CTA is near */}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
@@ -157,6 +166,7 @@ export default function RootLayout({
         />
       </head>
       <body className="flex min-h-screen flex-col font-sans antialiased text-ink">
+        <InAppBrowserChrome />
         <Suspense>
           <Analytics />
         </Suspense>

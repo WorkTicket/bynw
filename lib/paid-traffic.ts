@@ -7,6 +7,7 @@
  * Do NOT redirect `/` — home is an intentional paid destination.
  */
 
+import { isMetaInAppBrowser } from "@/lib/in-app-browser"
 import { getProductBySlug, products } from "@/lib/products"
 
 /** Default featured / sticky product when campaign cannot be mapped. */
@@ -66,12 +67,9 @@ export function isMetaSource(source: string | null | undefined): boolean {
   return META_SOURCES.has(normalize(source))
 }
 
-/** Facebook / Instagram in-app WebView (Meta ads primary conversion path). */
+/** Facebook / Instagram / Messenger in-app WebView (Meta ads conversion path). */
 export function isFacebookInAppBrowser(userAgent?: string | null): boolean {
-  const ua =
-    userAgent ??
-    (typeof navigator !== "undefined" ? navigator.userAgent : "")
-  return /FBAN|FBAV|FB_IAB|FBIOS|Instagram/i.test(ua)
+  return isMetaInAppBrowser(userAgent)
 }
 
 /**

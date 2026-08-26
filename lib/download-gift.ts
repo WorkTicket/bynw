@@ -1,8 +1,15 @@
 import { GIFT_MAGNET } from "@/lib/gift-magnet"
+import { isAppleMobileUa, isInAppBrowser } from "@/lib/in-app-browser"
 
 export function isIOSGiftDownload(): boolean {
   if (typeof navigator === "undefined") return false
-  return /iPad|iPhone|iPod/.test(navigator.userAgent)
+  return isAppleMobileUa()
+}
+
+/** iOS and in-app browsers block blob downloads — open Drive instead. */
+export function needsExternalGiftOpen(): boolean {
+  if (typeof navigator === "undefined") return false
+  return isAppleMobileUa() || isInAppBrowser()
 }
 
 export function openIOSGiftDrive(): void {
@@ -10,7 +17,7 @@ export function openIOSGiftDrive(): void {
 }
 
 export async function triggerGiftDownload(): Promise<void> {
-  if (isIOSGiftDownload()) {
+  if (needsExternalGiftOpen()) {
     openIOSGiftDrive()
     return
   }

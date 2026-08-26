@@ -217,7 +217,7 @@ export default function AdsProductLander({ product, reviews }: Props) {
       {/* ── Full-bleed hero: product image + one offer (buy stays in FB in-app fold) ── */}
       <section
         id="oferta"
-        className="hero-editorial relative min-h-[min(78svh,42rem)] scroll-mt-[var(--site-header-offset)] overflow-hidden sm:min-h-[min(88svh,50rem)]"
+        className="hero-editorial min-h-ads-hero relative scroll-mt-[var(--site-header-offset)] overflow-hidden"
       >
         <div className="absolute inset-0 bg-[#fffaf8]">
           <div className="absolute inset-0 origin-center">
@@ -262,7 +262,7 @@ export default function AdsProductLander({ product, reviews }: Props) {
           />
         </div>
 
-        <div className="section relative z-10 flex min-h-[min(78svh,42rem)] flex-col justify-end pb-[calc(var(--sticky-cta-stack)+0.85rem)] pt-6 sm:min-h-[min(88svh,50rem)] sm:justify-center sm:pb-[calc(var(--sticky-cta-stack)+1.75rem)] sm:pt-14 lg:pb-24">
+        <div className="section relative z-10 flex min-h-ads-hero flex-col justify-end pb-[calc(var(--sticky-cta-stack)+0.85rem)] pt-6 sm:justify-center sm:pb-[calc(var(--sticky-cta-stack)+1.75rem)] sm:pt-14 lg:pb-24">
           <div className="max-w-xl lg:max-w-[36rem]">
             <span className="inline-flex items-center rounded-full bg-rose-100/90 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-rose-700">
               {promoHeroBadge()}

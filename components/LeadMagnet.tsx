@@ -4,7 +4,12 @@ import { useEffect, useState } from "react"
 import Image from "next/image"
 import PrimaryCTA from "@/components/PrimaryCTA"
 import { GIFT_MAGNET } from "@/lib/gift-magnet"
-import { isIOSGiftDownload, openIOSGiftDrive, triggerGiftDownload } from "@/lib/download-gift"
+import {
+  isIOSGiftDownload,
+  needsExternalGiftOpen,
+  openIOSGiftDrive,
+  triggerGiftDownload,
+} from "@/lib/download-gift"
 import { trackMetaStandard } from "@/components/Analytics"
 import { newMetaEventId, readMetaClickIds } from "@/lib/meta-browser"
 
@@ -19,9 +24,11 @@ type Props = {
 function LeadMagnetSuccess({
   dark = false,
   isIOS,
+  useExternalOpen,
 }: {
   dark?: boolean
   isIOS: boolean
+  useExternalOpen: boolean
 }) {
   const [downloading, setDownloading] = useState(false)
 
@@ -73,7 +80,9 @@ function LeadMagnetSuccess({
           <p className={`mt-1 text-sm ${dark ? "text-white/60" : "text-muted"}`}>
             {isIOS
               ? "Pulsa el botón para abrir el PDF en Google Drive y guardarlo en tu iPhone."
-              : "Tu patrón está disponible aquí mismo. Pulsa el botón para guardarlo en tu dispositivo."}
+              : useExternalOpen
+                ? "Pulsa el botón para abrir el PDF. Si no descarga, pulsa ⋯ y elige Abrir en el navegador."
+                : "Tu patrón está disponible aquí mismo. Pulsa el botón para guardarlo en tu dispositivo."}
           </p>
         </div>
       </div>
@@ -121,7 +130,7 @@ function LeadMagnetSuccess({
         </ul>
       </div>
 
-      {isIOS ? (
+      {useExternalOpen ? (
         <PrimaryCTA href={GIFT_MAGNET.iosDriveUrl} className={buttonClass}>
           <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5M16.5 6L21 10.5M21 10.5H15.75M21 10.5v5.25" />
@@ -147,7 +156,9 @@ function LeadMagnetSuccess({
       <p className={`mt-3 text-center text-xs ${dark ? "text-white/35" : "text-muted/50"}`}>
         {isIOS
           ? "Toca el PDF en Drive y elige Descargar o Guardar en Archivos."
-          : "El PDF se guardará en tu dispositivo."}
+          : useExternalOpen
+            ? "Si el PDF no abre, pulsa ⋯ y elige Abrir en el navegador."
+            : "El PDF se guardará en tu dispositivo."}
       </p>
     </div>
   )
@@ -157,11 +168,13 @@ export default function LeadMagnet({ variant = "inline", submitLabel, placeholde
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
-  // Detect iOS after mount — navigator during render mismatches SSR and crashes hydrate on iPhone.
+  // Detect iOS / in-app after mount — navigator during render mismatches SSR on iPhone.
   const [isIOS, setIsIOS] = useState(false)
+  const [useExternalOpen, setUseExternalOpen] = useState(false)
 
   useEffect(() => {
     setIsIOS(isIOSGiftDownload())
+    setUseExternalOpen(needsExternalGiftOpen())
   }, [])
 
   async function handleSubmit(e: React.FormEvent) {
@@ -195,7 +208,7 @@ export default function LeadMagnet({ variant = "inline", submitLabel, placeholde
         status: source,
         eventID: payload.event_id || eventId,
       })
-      if (isIOSGiftDownload()) {
+      if (needsExternalGiftOpen()) {
         openIOSGiftDrive()
       } else {
         void triggerGiftDownload()
@@ -204,17 +217,23 @@ export default function LeadMagnet({ variant = "inline", submitLabel, placeholde
   }
 
   if (status === "success") {
-    return <LeadMagnetSuccess dark={dark} isIOS={isIOS} />
+    return (
+      <LeadMagnetSuccess
+        dark={dark}
+        isIOS={isIOS}
+        useExternalOpen={useExternalOpen}
+      />
+    )
   }
 
   const isHero = variant === "hero"
   const isCompact = variant === "compact"
 
   const inputClass = dark
-    ? "w-full rounded-xl border border-white/20 bg-white/10 pl-11 pr-4 py-3.5 text-sm text-white placeholder:text-white/40 transition-all duration-200 focus:border-rose-300 focus:outline-none focus:ring-2 focus:ring-rose-300/20"
+    ? "w-full rounded-xl border border-white/20 bg-white/10 pl-11 pr-4 py-3.5 text-base text-white placeholder:text-white/40 transition-all duration-200 focus:border-rose-300 focus:outline-none focus:ring-2 focus:ring-rose-300/20"
     : isHero
-    ? "w-full rounded-xl border border-rose-200/80 bg-white pl-11 pr-4 py-3.5 text-sm text-ink placeholder:text-muted/45 transition-all duration-200 focus:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-400/15"
-    : "w-full rounded-xl border border-rose-200/70 bg-white pl-11 pr-4 py-3.5 text-sm text-ink placeholder:text-muted/40 transition-all duration-200 focus:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-400/15"
+    ? "w-full rounded-xl border border-rose-200/80 bg-white pl-11 pr-4 py-3.5 text-base text-ink placeholder:text-muted/45 transition-all duration-200 focus:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-400/15"
+    : "w-full rounded-xl border border-rose-200/70 bg-white pl-11 pr-4 py-3.5 text-base text-ink placeholder:text-muted/40 transition-all duration-200 focus:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-400/15"
 
   const iconClass = dark ? "text-white/40" : "text-muted/40"
 
@@ -233,6 +252,8 @@ export default function LeadMagnet({ variant = "inline", submitLabel, placeholde
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Tu nombre"
+              autoComplete="given-name"
+              enterKeyHint="next"
               className={inputClass}
             />
           </div>
@@ -249,6 +270,11 @@ export default function LeadMagnet({ variant = "inline", submitLabel, placeholde
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder={placeholder || "tu@email.com"}
+            autoComplete="email"
+            inputMode="email"
+            autoCapitalize="none"
+            autoCorrect="off"
+            enterKeyHint="send"
             required
             className={inputClass}
           />
@@ -270,7 +296,9 @@ export default function LeadMagnet({ variant = "inline", submitLabel, placeholde
         <p className={`mt-3 text-center text-xs ${dark ? "text-white/40" : isHero ? "text-muted/60" : "text-muted/50"} ${!isHero && !isCompact ? "sm:text-left" : ""}`}>
           {isIOS
             ? "En iPhone te llevamos a Google Drive para descargar el PDF. Sin spam."
-            : "Descarga al instante en la web. Sin spam."}
+            : useExternalOpen
+              ? "En Facebook e Instagram el PDF se abre en Drive. Sin spam."
+              : "Descarga al instante en la web. Sin spam."}
         </p>
       )}
     </form>

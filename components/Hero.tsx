@@ -5,7 +5,7 @@ import { promoHeroBadge } from "@/lib/offer"
 
 export default function Hero() {
   return (
-    <section className="hero-editorial relative flex flex-col overflow-x-clip md:-mt-[var(--site-header-offset)] md:min-h-[100svh]">
+    <section className="hero-editorial relative flex flex-col overflow-x-hidden md:-mt-[var(--site-header-offset)] md:min-h-[100svh]">
       <div className="relative aspect-[4/3] w-full overflow-hidden sm:aspect-[3/2] md:absolute md:inset-0 md:aspect-auto">
         <div className="absolute inset-0 origin-[70%_6%] scale-[1.16] sm:origin-[72%_10%] sm:scale-[1.12] md:origin-[78%_22%] md:scale-[1.08]">
           <picture>

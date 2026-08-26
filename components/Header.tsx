@@ -167,9 +167,11 @@ export default function Header() {
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : ""
+    document.documentElement.style.overflow = open ? "hidden" : ""
     document.documentElement.dataset.navOpen = open ? "true" : "false"
     return () => {
       document.body.style.overflow = ""
+      document.documentElement.style.overflow = ""
       delete document.documentElement.dataset.navOpen
     }
   }, [open])

@@ -8,6 +8,10 @@ import {
   buildHotmartPayUrl,
   isInAppBrowser,
 } from "@/lib/hotmart"
+import {
+  androidChromeIntentUrl,
+  isAndroidUa,
+} from "@/lib/in-app-browser"
 import { formatDiscountBadge, getDiscountPercent } from "@/lib/offer"
 import { WHATSAPP_URL } from "@/lib/site"
 import type { Product } from "@/lib/products"
@@ -27,16 +31,24 @@ const TRUST = [
 
 export default function CheckoutShell({ product }: Props) {
   const [inApp, setInApp] = useState(false)
+  const [androidInApp, setAndroidInApp] = useState(false)
   const [iframeSrc, setIframeSrc] = useState<string | null>(null)
   const [fullPageUrl, setFullPageUrl] = useState(() =>
+    buildHotmartPayUrl(product.buyUrl)
+  )
+  const [payHref, setPayHref] = useState(() =>
     buildHotmartPayUrl(product.buyUrl)
   )
 
   useEffect(() => {
     const search = window.location.search
     const fbIab = isInAppBrowser()
+    const android = fbIab && isAndroidUa()
+    const payUrl = buildHotmartPayUrl(product.buyUrl, search)
     setInApp(fbIab)
-    setFullPageUrl(buildHotmartPayUrl(product.buyUrl, search))
+    setAndroidInApp(android)
+    setFullPageUrl(payUrl)
+    setPayHref(android ? androidChromeIntentUrl(payUrl) : payUrl)
     if (!fbIab) {
       setIframeSrc(buildHotmartEmbedUrl(product.buyUrl, search))
     }
@@ -47,8 +59,9 @@ export default function CheckoutShell({ product }: Props) {
 
   const payButton = (opts?: { sticky?: boolean }) => (
     <a
-      href={fullPageUrl}
-      target="_top"
+      href={payHref}
+      target={inApp ? (androidInApp ? undefined : "_blank") : "_top"}
+      rel={inApp && !androidInApp ? "noopener noreferrer" : undefined}
       className={`btn-collection-buy btn-collection-buy--lg ${
         opts?.sticky ? "w-full" : "w-full max-w-sm"
       }`}
@@ -182,9 +195,11 @@ export default function CheckoutShell({ product }: Props) {
                 correo al confirmar.
               </p>
               <p className="checkout-pay-card__hint">
-                Si Hotmart muestra dólares u otra moneda, pulsa{" "}
-                <strong>Cambiar país</strong> arriba a la derecha y elige el tuyo.
-                En España el precio es {product.price}.
+                El pago se abre en Safari o Chrome — Facebook e Instagram bloquean
+                tarjetas y PayPal dentro de su navegador. Si no abre, pulsa{" "}
+                <strong>⋯</strong> y elige <strong>Abrir en el navegador</strong>.
+                Si Hotmart muestra dólares, pulsa <strong>Cambiar país</strong> y
+                elige el tuyo. En España el precio es {product.price}.
               </p>
               <div className="mt-6 flex justify-center lg:justify-start">
                 {payButton()}
@@ -221,7 +236,7 @@ export default function CheckoutShell({ product }: Props) {
                     title={`Pago seguro — ${product.shortTitle}`}
                     src={iframeSrc}
                     className="checkout-hotmart-frame"
-                    allow="payment"
+                    allow="payment *"
                     referrerPolicy="strict-origin-when-cross-origin"
                   />
                 ) : (

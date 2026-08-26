@@ -11,7 +11,8 @@ import {
   writeConsent,
   type ConsentChoice,
 } from "@/lib/consent"
-import { isFacebookInAppBrowser, isMetaPaidTraffic } from "@/lib/paid-traffic"
+import { isInAppBrowser } from "@/lib/in-app-browser"
+import { isMetaPaidTraffic } from "@/lib/paid-traffic"
 
 type View = "hidden" | "banner" | "prefs"
 
@@ -35,9 +36,9 @@ export default function CookieConsent() {
     }
     // Paid Meta / FB in-app: top bar (does not cover Comprar). Organic: defer for LCP.
     const ua = typeof navigator !== "undefined" ? navigator.userAgent : null
-    const fbIab = isFacebookInAppBrowser(ua)
+    const inApp = isInAppBrowser(ua)
     const paid = isMetaPaidTraffic(searchParams, ua)
-    const delay = paid || fbIab ? 250 : 2800
+    const delay = paid || inApp ? 250 : 2800
     const t = window.setTimeout(() => setView("banner"), delay)
     return () => window.clearTimeout(t)
   }, [pathname, searchParams])
@@ -71,8 +72,8 @@ export default function CookieConsent() {
   if (view === "hidden") return null
 
   const ua = typeof navigator !== "undefined" ? navigator.userAgent : null
-  const fbIab = isFacebookInAppBrowser(ua)
-  const paid = isMetaPaidTraffic(searchParams, ua) || fbIab
+  const inApp = isInAppBrowser(ua)
+  const paid = isMetaPaidTraffic(searchParams, ua) || inApp
 
   return (
     <div

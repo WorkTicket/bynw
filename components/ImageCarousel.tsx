@@ -30,6 +30,14 @@ export default function ImageCarousel({
   const [tabVisible, setTabVisible] = useState(true)
   const [autoplayReady, setAutoplayReady] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
+  const startX = useRef(0)
+  const startY = useRef(0)
+
+  function onPointerDown(e: React.PointerEvent) {
+    startX.current = e.clientX
+    startY.current = e.clientY
+  }
+
   const next = useCallback(
     () => setIdx((i) => (slides.length ? (i + 1) % slides.length : 0)),
     [slides.length]
@@ -41,6 +49,15 @@ export default function ImageCarousel({
       ),
     [slides.length]
   )
+
+  function onPointerUp(e: React.PointerEvent) {
+    if (slides.length < 2) return
+    const dx = e.clientX - startX.current
+    const dy = e.clientY - startY.current
+    if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy)) return
+    if (dx < 0) next()
+    else prev()
+  }
 
   useEffect(() => {
     const el = rootRef.current
@@ -98,7 +115,12 @@ export default function ImageCarousel({
   const frame = aspect ?? "aspect-square"
 
   return (
-    <div ref={rootRef} className={`group relative ${className}`}>
+    <div
+      ref={rootRef}
+      className={`group relative ${className}`}
+      onPointerDown={onPointerDown}
+      onPointerUp={onPointerUp}
+    >
       <div className={`corner-accents relative overflow-hidden rounded-2xl bg-rose-50/30 ring-1 ring-rose-100/60 ${frame}`}>
         {/* Keep all slides mounted so LCP image is never torn down on advance */}
         {slides.map((src, i) => {
@@ -126,7 +148,7 @@ export default function ImageCarousel({
           <button
             type="button"
             onClick={prev}
-            className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-ink/70 shadow-soft opacity-70 sm:opacity-0 transition-opacity duration-300 group-hover:opacity-100 hover:text-rose-600"
+            className="absolute left-3 top-1/2 -translate-y-1/2 flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-ink/70 shadow-soft opacity-100 sm:h-9 sm:w-9 sm:opacity-0 transition-opacity duration-300 group-hover:opacity-100 hover:text-rose-600"
             aria-label="Anterior"
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
@@ -136,7 +158,7 @@ export default function ImageCarousel({
           <button
             type="button"
             onClick={next}
-            className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-ink/70 shadow-soft opacity-70 sm:opacity-0 transition-opacity duration-300 group-hover:opacity-100 hover:text-rose-600"
+            className="absolute right-3 top-1/2 -translate-y-1/2 flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-ink/70 shadow-soft opacity-100 sm:h-9 sm:w-9 sm:opacity-0 transition-opacity duration-300 group-hover:opacity-100 hover:text-rose-600"
             aria-label="Siguiente"
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">

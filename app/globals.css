@@ -124,7 +124,9 @@ html[data-announcement="hidden"] .site-header__announcement {
   display: none !important;
 }
 
-html:has([data-ads-lander], [data-checkout-lander]) {
+html:has([data-ads-lander], [data-checkout-lander]),
+html[data-lander="ads"],
+html[data-lander="checkout"] {
   --site-header-offset: calc(var(--header-nav-height) + var(--safe-area-top));
 }
 
@@ -174,6 +176,10 @@ html[data-nav-open="true"] .floating-whatsapp {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+}
+
+html[data-nav-open="true"] {
+  overflow: hidden;
 }
 
 /* ── Announcement: warm soft blush strip ── */
@@ -866,7 +872,63 @@ html[data-nav-open="true"] .floating-whatsapp {
 html {
   background-color: var(--surface-pearl);
   scroll-behavior: smooth;
+  overflow-x: hidden;
   overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  color-scheme: light;
+}
+
+a,
+button,
+[role="button"],
+input,
+select,
+textarea,
+summary,
+label {
+  touch-action: manipulation;
+}
+
+img,
+video,
+svg,
+canvas {
+  max-width: 100%;
+}
+
+iframe {
+  max-width: 100%;
+  border: 0;
+}
+
+@media (max-width: 1023px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-editorial {
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+}
+
+.min-h-ads-hero {
+  min-height: 32rem;
+  min-height: 78vh;
+  min-height: 78svh;
+}
+
+@media (min-width: 640px) {
+  .min-h-ads-hero {
+    min-height: 36rem;
+    min-height: 88vh;
+    min-height: 88svh;
+  }
 }
 
 body {
@@ -874,6 +936,7 @@ body {
   isolation: isolate;
   background-color: var(--surface-blush);
   color: theme("colors.ink");
+  overflow-x: hidden;
   overflow-x: clip;
   background-image: var(--grad-site-canvas);
   background-repeat: no-repeat;
@@ -917,7 +980,9 @@ body::after {
   }
 
   /* Ads / checkout stay flat pearl — no extra paint layer */
-  body:has([data-ads-lander], [data-checkout-lander])::after {
+  body:has([data-ads-lander], [data-checkout-lander])::after,
+  html[data-lander="ads"] body::after,
+  html[data-lander="checkout"] body::after {
     display: none;
   }
 }
@@ -1588,7 +1653,7 @@ body::after {
 }
 
 .input-soft {
-  @apply w-full rounded-2xl border border-rose-200/70 bg-white px-4 py-3.5 text-base text-ink placeholder:text-muted/45 transition-all duration-200 focus:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-400/15 sm:text-sm;
+  @apply w-full rounded-2xl border border-rose-200/70 bg-white px-4 py-3.5 text-base text-ink placeholder:text-muted/45 transition-all duration-200 focus:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-400/15;
 }
 
 /*
@@ -2009,8 +2074,10 @@ body::after {
 @media (max-width: 768px) {
   .fancybox-container .fancybox-content {
     width: 100% !important;
+    max-width: 100% !important;
     max-width: 100vw !important;
     height: 100% !important;
+    max-height: 100vh !important;
     max-height: 100dvh !important;
     margin: 0 !important;
     border-radius: 0 !important;
@@ -2019,8 +2086,10 @@ body::after {
   .fancybox-container .fancybox-iframe,
   .fancybox-container iframe.fancybox-iframe {
     width: 100% !important;
+    max-width: 100% !important;
     max-width: 100vw !important;
     height: 100% !important;
+    min-height: 100vh !important;
     min-height: 100dvh !important;
   }
 }
@@ -2059,7 +2128,9 @@ body::after {
 }
 
 /* Ads / checkout never show the announcement strip — lock header offset without waiting on JS */
-main:has([data-ads-lander], [data-checkout-lander]) {
+main:has([data-ads-lander], [data-checkout-lander]),
+html[data-lander="ads"] main,
+html[data-lander="checkout"] main {
   padding-top: calc(var(--header-nav-height) + var(--safe-area-top));
 }
 
@@ -2268,7 +2339,9 @@ main:has([data-ads-lander], [data-checkout-lander]) {
 
 /* ── Performance gates (mobile + paid landers) ── */
 
-body:has([data-ads-lander], [data-checkout-lander]) .floating-whatsapp {
+body:has([data-ads-lander], [data-checkout-lander]) .floating-whatsapp,
+html[data-lander="ads"] .floating-whatsapp,
+html[data-lander="checkout"] .floating-whatsapp {
   display: none !important;
 }
 
@@ -2277,11 +2350,15 @@ body:has([data-ads-lander], [data-checkout-lander]) .floating-whatsapp {
   display: none;
 }
 
-body:has([data-ads-lander], [data-checkout-lander]) .site-footer--organic {
+body:has([data-ads-lander], [data-checkout-lander]) .site-footer--organic,
+html[data-lander="ads"] .site-footer--organic,
+html[data-lander="checkout"] .site-footer--organic {
   display: none;
 }
 
-body:has([data-ads-lander], [data-checkout-lander]) .site-footer--ads {
+body:has([data-ads-lander], [data-checkout-lander]) .site-footer--ads,
+html[data-lander="ads"] .site-footer--ads,
+html[data-lander="checkout"] .site-footer--ads {
   display: block;
 }
 
@@ -2291,15 +2368,20 @@ body:has([data-ads-lander], [data-checkout-lander]) .site-footer--ads {
 }
 
 body:has([data-ads-lander]) .site-header--organic,
-body:has([data-ads-lander]) .site-header--organic-panel {
+body:has([data-ads-lander]) .site-header--organic-panel,
+html[data-lander="ads"] .site-header--organic,
+html[data-lander="ads"] .site-header--organic-panel {
   display: none !important;
 }
 
-body:has([data-ads-lander]) .site-header--ads-home {
+body:has([data-ads-lander]) .site-header--ads-home,
+html[data-lander="ads"] .site-header--ads-home {
   display: block;
 }
 
-html:has([data-ads-lander], [data-checkout-lander]) .ios-status-bar {
+html:has([data-ads-lander], [data-checkout-lander]) .ios-status-bar,
+html[data-lander="ads"] .ios-status-bar,
+html[data-lander="checkout"] .ios-status-bar {
   background-color: var(--surface-pearl);
 }
 
@@ -2320,6 +2402,7 @@ html:has([data-ads-lander], [data-checkout-lander]) .ios-status-bar {
   display: block;
   width: 100%;
   min-height: 860px;
+  height: 920px;
   height: min(920px, 92vh);
   border: 0;
   background: #fff;
@@ -2338,7 +2421,7 @@ html:has([data-ads-lander], [data-checkout-lander]) .ios-status-bar {
   text-align: center;
   font-size: 12px;
   line-height: 1.6;
-  color: color-mix(in srgb, var(--muted) 75%, transparent);
+  color: rgba(138, 101, 112, 0.75);
 }
 
 .checkout-shell__fallback a {
@@ -2368,7 +2451,8 @@ html:has([data-ads-lander], [data-checkout-lander]) .ios-status-bar {
 }
 
 @media (max-width: 1023px) {
-  body:has([data-checkout-lander]) .site-footer--ads {
+  body:has([data-checkout-lander]) .site-footer--ads,
+  html[data-lander="checkout"] .site-footer--ads {
     display: none !important;
   }
 
@@ -2381,6 +2465,8 @@ html:has([data-ads-lander], [data-checkout-lander]) .ios-status-bar {
     display: flex;
     flex-direction: column;
     background: var(--surface-pearl);
+    height: calc(100vh - var(--header-nav-height) - var(--safe-area-top));
+    min-height: calc(100vh - var(--header-nav-height) - var(--safe-area-top));
     height: calc(100svh - var(--header-nav-height) - var(--safe-area-top));
     min-height: calc(100svh - var(--header-nav-height) - var(--safe-area-top));
   }
@@ -2510,7 +2596,9 @@ html:has([data-ads-lander], [data-checkout-lander]) .ios-status-bar {
   background: var(--surface-pearl);
 }
 
-body:has([data-ads-lander], [data-checkout-lander]) {
+body:has([data-ads-lander], [data-checkout-lander]),
+html[data-lander="ads"] body,
+html[data-lander="checkout"] body {
   background-color: var(--surface-pearl);
   background-image: none;
 }
@@ -2533,7 +2621,7 @@ body:has([data-ads-lander], [data-checkout-lander]) {
   margin-top: 1rem;
   font-size: 12px;
   line-height: 1.65;
-  color: color-mix(in srgb, var(--muted) 80%, transparent);
+  color: rgba(138, 101, 112, 0.8);
 }
 
 .checkout-shell__sticky-spacer {
@@ -2566,6 +2654,7 @@ body:has([data-ads-lander], [data-checkout-lander]) {
 @media (max-width: 1023px) {
   .checkout-shell--in-app {
     height: auto;
+    min-height: calc(100vh - var(--header-nav-height) - var(--safe-area-top));
     min-height: calc(100svh - var(--header-nav-height) - var(--safe-area-top));
   }
 
@@ -2574,9 +2663,78 @@ body:has([data-ads-lander], [data-checkout-lander]) {
   }
 }
 
-/* Facebook / Instagram in-app browser — lighter paint, faster checkout */
+/* Facebook / Instagram / TikTok / WhatsApp in-app browsers (iPhone + Android).
+ * Instagram WebView is the fragile one: it inflates text, ignores unknown
+ * viewport keys, and can collapse layout with -webkit-fill-available. */
 html[data-fb-iab] {
   --header-announcement-height: 0px;
+  --iab-chrome-min: 8px;
+  --iab-vv-bottom: 0px;
+  --iab-bottom-chrome: var(--iab-chrome-min);
+  --sticky-cta-stack: calc(4.55rem + var(--safe-area-bottom) + var(--iab-bottom-chrome));
+  scroll-behavior: auto;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+  -webkit-text-size-adjust: 100% !important;
+  text-size-adjust: 100% !important;
+}
+
+html[data-iab="ig"] {
+  --iab-chrome-min: 48px;
+  font-size: 16px;
+}
+
+html[data-iab="tt"] {
+  --iab-chrome-min: 24px;
+}
+
+html[data-fb-iab] body {
+  isolation: auto;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  -webkit-text-size-adjust: 100% !important;
+  text-size-adjust: 100% !important;
+}
+
+html[data-fb-iab] body::after {
+  display: none;
+}
+
+/* Android Instagram font-boosting: huge random type that overflows the page */
+html[data-iab="ig"] p,
+html[data-iab="ig"] h1,
+html[data-iab="ig"] h2,
+html[data-iab="ig"] h3,
+html[data-iab="ig"] h4,
+html[data-iab="ig"] li,
+html[data-iab="ig"] span,
+html[data-iab="ig"] a,
+html[data-iab="ig"] label,
+html[data-iab="ig"] button,
+html[data-iab="ig"] .section-header p,
+html[data-iab="ig"] .font-script {
+  max-height: 1000000px;
+}
+
+html[data-iab="ig"] .font-script {
+  line-height: 1.25 !important;
+  letter-spacing: 0;
+}
+
+/* background-clip:text + transparent fill = invisible type in Instagram WebView */
+html[data-fb-iab] .gradient-text,
+html[data-fb-iab] .gradient-text-rose,
+html[data-fb-iab] .gradient-text-candy {
+  background: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  -webkit-text-fill-color: #b84a5e !important;
+  color: #b84a5e !important;
 }
 
 html[data-fb-iab] .site-header__announcement {
@@ -2591,15 +2749,54 @@ html[data-fb-iab] .icon-bloom,
 html[data-fb-iab] .hero-image-drift,
 html[data-fb-iab] .animate-petal-float,
 html[data-fb-iab] .site-header__announcement-sheen,
-html[data-fb-iab] .btn-collection-buy {
+html[data-fb-iab] .btn-collection-buy,
+html[data-fb-iab] .petite-ornament svg,
+html[data-fb-iab] .sticky-title-cute {
   animation: none !important;
   will-change: auto !important;
 }
 
 html[data-fb-iab] .site-header__nav,
-html[data-fb-iab] .sticky-mobile-cta__panel {
+html[data-fb-iab] .sticky-mobile-cta__panel,
+html[data-fb-iab] .checkout-shell__sticky-panel {
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
   background: var(--surface-pearl);
+}
+
+html[data-fb-iab] .sticky-mobile-cta,
+html[data-fb-iab] .site-header,
+html[data-fb-iab] .checkout-shell__sticky,
+html[data-fb-iab] .ios-status-bar {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+html[data-fb-iab] .sticky-mobile-cta__panel,
+html[data-fb-iab] .checkout-shell__sticky {
+  padding-bottom: calc(var(--safe-area-bottom) + var(--iab-bottom-chrome));
+}
+
+html[data-fb-iab] .checkout-shell__sticky-spacer {
+  height: calc(4.25rem + var(--safe-area-bottom) + var(--iab-bottom-chrome));
+}
+
+html[data-fb-iab] .btn-collection-buy,
+html[data-fb-iab] .btn-primary,
+html[data-fb-iab] .btn-nav,
+html[data-fb-iab] .cookie-consent__btn {
+  min-height: 44px !important;
+}
+
+html[data-iab="ig"] .btn-collection-buy,
+html[data-iab="ig"] .btn-primary {
+  white-space: normal !important;
+  max-width: 100% !important;
+}
+
+html[data-fb-iab] input,
+html[data-fb-iab] textarea,
+html[data-fb-iab] select {
+  font-size: 16px !important;
 }
 

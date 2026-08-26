@@ -13,7 +13,7 @@ export default function CheckoutLayout({ children }: { children: ReactNode }) {
       <link rel="dns-prefetch" href="https://checkout.hotmart.com" />
       <script
         dangerouslySetInnerHTML={{
-          __html: `document.documentElement.dataset.announcement="hidden"`,
+          __html: `document.documentElement.dataset.lander="checkout";document.documentElement.dataset.announcement="hidden"`,
         }}
       />
       {children}

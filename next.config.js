@@ -8,7 +8,7 @@ const nextConfig = {
     // https://opennext.js.org/cloudflare/howtos/image
     // CF Images only accepts configured qualities (include 90 for sharp heroes).
     qualities: [70, 75, 90],
-    formats: ["image/avif", "image/webp"],
+    formats: ["image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60 * 60 * 24 * 30,

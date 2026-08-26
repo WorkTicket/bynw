@@ -13,6 +13,7 @@ import {
 } from "@/lib/consent"
 import { isMetaPaidTraffic } from "@/lib/paid-traffic"
 import { isFacebookInAppFromDom } from "@/lib/hotmart"
+import { isMetaInAppBrowser } from "@/lib/in-app-browser"
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID
 const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID
@@ -363,7 +364,7 @@ function scheduleAnalyticsLoad(load: () => void, eager: boolean) {
 
 function isFacebookInAppClient(): boolean {
   if (typeof document !== "undefined" && isFacebookInAppFromDom()) return true
-  return typeof navigator !== "undefined" && /FBAN|FBAV|FB_IAB|FBIOS|Instagram/i.test(navigator.userAgent)
+  return isMetaInAppBrowser()
 }
 
 export default function Analytics() {

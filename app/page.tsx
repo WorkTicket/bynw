@@ -47,6 +47,11 @@ export default async function HomePage({ searchParams }: Props) {
     const reviews = await listAdsFeaturedReviews(3)
     return (
       <div data-ads-lander="true">
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `document.documentElement.dataset.lander="ads";document.documentElement.dataset.announcement="hidden"`,
+          }}
+        />
         <link
           rel="preload"
           as="image"

@@ -54,7 +54,7 @@ export default function GraciasPage({ searchParams }: Props) {
         <PurchaseComplete />
       </Suspense>
 
-      <section className="section-premium-dark section-padding min-h-[min(70svh,36rem)]">
+      <section className="section-premium-dark section-padding min-h-[60vh]">
         <div className="section relative">
           <div className="mx-auto max-w-xl text-center animate-fade-in-up">
             <p className="font-script text-[2.15rem] leading-[1.15] text-rose-400 sm:text-[2.45rem]">
