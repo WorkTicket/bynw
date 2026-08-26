@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation"
 import { Metadata } from "next"
-import dynamic from "next/dynamic"
 import ProductMedia from "@/components/ProductMedia"
 import ImageCarousel from "@/components/ImageCarousel"
 import ScrollReveal from "@/components/ScrollReveal"
@@ -9,6 +8,8 @@ import PaymentLogos from "@/components/PaymentLogos"
 import MetaViewContent from "@/components/MetaViewContent"
 import ProductFinalCTA from "@/components/ProductFinalCTA"
 import WhatsAppSupport from "@/components/WhatsAppSupport"
+import Testimonials from "@/components/Testimonials"
+import Guarantee from "@/components/Guarantee"
 import { products, getProductBySlug } from "@/lib/products"
 import { parsePriceValue } from "@/lib/pricing"
 import { DEFAULT_OG_IMAGE } from "@/lib/site"
@@ -20,8 +21,6 @@ import {
 import { listFeaturedReviews } from "@/lib/reviews"
 import { dailyShuffleSeed } from "@/lib/testimonials-data"
 
-const Testimonials = dynamic(() => import("@/components/Testimonials"))
-const Guarantee = dynamic(() => import("@/components/Guarantee"))
 type Props = { params: { slug: string } }
 
 export async function generateStaticParams() {

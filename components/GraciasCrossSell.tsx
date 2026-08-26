@@ -1,5 +1,4 @@
 import Image from "next/image"
-import Link from "next/link"
 import { products } from "@/lib/products"
 import { formatDiscountBadge, getDiscountPercent } from "@/lib/offer"
 
@@ -38,7 +37,7 @@ export default function GraciasCrossSell({ excludeSlug }: Props) {
             const img = product.images[0]
             return (
               <li key={product.slug}>
-                <Link
+                <a
                   href={`/shop/${product.slug}`}
                   className="group block text-center"
                 >
@@ -62,7 +61,7 @@ export default function GraciasCrossSell({ excludeSlug }: Props) {
                       <span className="ml-1.5 text-rose-600">{badge}</span>
                     ) : null}
                   </p>
-                </Link>
+                </a>
               </li>
             )
           })}

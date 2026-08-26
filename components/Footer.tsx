@@ -111,9 +111,9 @@ function OrganicFooter({ year }: { year: number }) {
                   { href: "/shop/flores-eternas", label: "Patrones de Flores Eternas" },
                 ].map((l) => (
                   <li key={l.href}>
-                    <Link href={l.href} className="soft-link">
+                    <a href={l.href} className="soft-link">
                       {l.label}
-                    </Link>
+                    </a>
                   </li>
                 ))}
               </ul>

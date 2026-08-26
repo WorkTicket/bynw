@@ -1,4 +1,3 @@
-import Image from "next/image"
 import ImageCarousel from "@/components/ImageCarousel"
 
 type Props = {
@@ -18,15 +17,12 @@ export default function ProductMedia({ images, alt, interval = 4500 }: Props) {
     return (
       <div className="product-media">
         <div className="corner-accents relative aspect-square overflow-hidden rounded-2xl bg-rose-50/30 ring-1 ring-rose-100/60">
-          <Image
+          <img
             src={`/images/${images[0]}`}
             alt={alt}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 55vw, 640px"
-            priority
             fetchPriority="high"
-            unoptimized
-            className="object-contain"
+            decoding="sync"
+            className="absolute inset-0 h-full w-full object-contain"
           />
         </div>
       </div>

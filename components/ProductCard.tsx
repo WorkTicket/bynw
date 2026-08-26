@@ -1,4 +1,3 @@
-import Link from "next/link"
 import Image from "next/image"
 import type { Product } from "@/lib/products"
 import { parsePriceValue } from "@/lib/pricing"
@@ -44,7 +43,7 @@ export default function ProductCard({
   } as const
 
   return (
-    <Link href={href} className="group block h-full" {...tracking}>
+    <a href={href} className="group block h-full" {...tracking}>
       <article
         data-product-card={product.id}
         className="relative flex h-full flex-col"
@@ -120,6 +119,6 @@ export default function ProductCard({
           </span>
         </span>
       </article>
-    </Link>
+    </a>
   )
 }

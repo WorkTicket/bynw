@@ -1,6 +1,6 @@
-import dynamic from "next/dynamic"
 import Image from "next/image"
 import ImageCarousel from "@/components/ImageCarousel"
+import Testimonials from "@/components/Testimonials"
 import ScrollReveal from "@/components/ScrollReveal"
 import HotmartBuyButton from "@/components/HotmartBuyButton"
 import PaymentLogos from "@/components/PaymentLogos"
@@ -23,7 +23,6 @@ import {
 } from "@/lib/testimonials-data"
 import type { Product } from "@/lib/products"
 
-const Testimonials = dynamic(() => import("@/components/Testimonials"))
 type Props = {
   product: Product
   reviews: Review[]

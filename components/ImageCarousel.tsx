@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image"
 import { useState, useEffect, useCallback, useRef } from "react"
 import { LayersIcon } from "@/lib/icons"
 
@@ -106,18 +105,15 @@ export default function ImageCarousel({
           const active = i === idx
           const isLcp = priority && i === 0
           return (
-            <Image
+            <img
               key={`${src}-${i}`}
               src={`/images/${src}`}
               alt={active ? alt : ""}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 55vw, 640px"
-              quality={90}
-              priority={isLcp}
-              unoptimized={isLcp}
-              loading={isLcp ? undefined : "lazy"}
+              fetchPriority={isLcp ? "high" : "auto"}
+              loading={isLcp ? "eager" : "lazy"}
+              decoding={isLcp ? "sync" : "async"}
               aria-hidden={!active}
-              className={`object-contain transition-opacity duration-500 ease-out ${
+              className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-500 ease-out ${
                 active ? "opacity-100" : "opacity-0"
               }`}
             />
