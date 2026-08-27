@@ -11,6 +11,7 @@ import StickyMobileCTA from "@/components/StickyMobileCTA"
 import InAppBrowserChrome from "@/components/InAppBrowserChrome"
 import NavigationRecovery from "@/components/NavigationRecovery"
 import { IN_APP_BROWSER_BOOT_SCRIPT } from "@/lib/in-app-browser"
+import { HARD_NAVIGATION_BOOT_SCRIPT } from "@/lib/hard-navigation"
 import {
   SITE_URL,
   BRAND_NAME,
@@ -152,6 +153,9 @@ export default function RootLayout({
         {/* In-app browsers (FB/IG/TikTok/…) — flag before React for checkout + CSS */}
         <script
           dangerouslySetInnerHTML={{ __html: IN_APP_BROWSER_BOOT_SCRIPT }}
+        />
+        <script
+          dangerouslySetInnerHTML={{ __html: HARD_NAVIGATION_BOOT_SCRIPT }}
         />
         {/* Analytics hosts only — Hotmart hints inject when a buy CTA is near */}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />

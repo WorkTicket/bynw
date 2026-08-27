@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic"
 import PrimaryCTA from "@/components/PrimaryCTA"
 import ProductCard from "@/components/ProductCard"
 import PetiteOrnament from "@/components/PetiteOrnament"
@@ -7,6 +6,9 @@ import HeroCatalogCollage from "@/components/HeroCatalogCollage"
 import PurchaseTrustStrip from "@/components/PurchaseTrustStrip"
 import MetaViewCatalog from "@/components/MetaViewCatalog"
 import SaleCountdown from "@/components/SaleCountdown"
+import Testimonials from "@/components/Testimonials"
+import FAQ from "@/components/FAQ"
+import LeadMagnetSection from "@/components/LeadMagnetSection"
 import { products, isBestseller } from "@/lib/products"
 import { getCatalogFromPrice } from "@/lib/pricing"
 import { promoHeroBadge, SALE_PERCENT } from "@/lib/offer"
@@ -16,10 +18,6 @@ import {
   SITE_RATING,
   type Review,
 } from "@/lib/testimonials-data"
-
-const Testimonials = dynamic(() => import("@/components/Testimonials"))
-const FAQ = dynamic(() => import("@/components/FAQ"))
-const LeadMagnetSection = dynamic(() => import("@/components/LeadMagnetSection"))
 
 type Props = {
   reviews: Review[]

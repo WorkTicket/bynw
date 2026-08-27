@@ -1,10 +1,9 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import PrimaryCTA from "@/components/PrimaryCTA"
 import SecondaryCTA from "@/components/SecondaryCTA"
-
-const RELOAD_KEY = "bynmw-nav-error-reload"
+import { RELOAD_KEY } from "@/components/NavigationRecovery"
 
 export default function Error({
   error,
@@ -13,17 +12,30 @@ export default function Error({
   error: Error & { digest?: string }
   reset: () => void
 }) {
+  const [showUi, setShowUi] = useState(false)
+
   useEffect(() => {
-    // Soft-nav / stale-chunk failures: one hard reload of the same URL.
-    // Any client render crash during routing recovers without losing the customer.
     try {
-      if (sessionStorage.getItem(RELOAD_KEY) === "1") return
+      if (sessionStorage.getItem(RELOAD_KEY) === "1") {
+        sessionStorage.removeItem(RELOAD_KEY)
+        window.location.replace("/")
+        return
+      }
       sessionStorage.setItem(RELOAD_KEY, "1")
       window.location.reload()
+      return
     } catch {
-      // Private Safari can block sessionStorage — fall through to UI.
+      window.location.replace("/")
+      return
     }
   }, [error])
+
+  useEffect(() => {
+    const t = window.setTimeout(() => setShowUi(true), 2500)
+    return () => window.clearTimeout(t)
+  }, [])
+
+  if (!showUi) return null
 
   return (
     <section className="page-hero flex min-h-[60vh] flex-col items-center justify-center px-6 py-24 text-center">

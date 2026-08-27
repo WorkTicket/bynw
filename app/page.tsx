@@ -1,10 +1,16 @@
 import type { Metadata } from "next"
-import dynamic from "next/dynamic"
 import { headers } from "next/headers"
 import Hero from "@/components/Hero"
 import TrustBar from "@/components/TrustBar"
 import ProductGrid from "@/components/ProductGrid"
 import AdsCatalogLander from "@/components/AdsCatalogLander"
+import FeatureGrid from "@/components/FeatureGrid"
+import WhatsAppSupport from "@/components/WhatsAppSupport"
+import Guarantee from "@/components/Guarantee"
+import Testimonials from "@/components/Testimonials"
+import UrgencyCTA from "@/components/UrgencyCTA"
+import FAQ from "@/components/FAQ"
+import LeadMagnetSection from "@/components/LeadMagnetSection"
 import { BRAND_NAME, DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE } from "@/lib/site"
 import { createPageMetadata, buildReviewsJsonLd } from "@/lib/seo"
 import { faqJsonLd } from "@/lib/faqs"
@@ -23,14 +29,6 @@ export const metadata: Metadata = {
     images: [DEFAULT_OG_IMAGE],
   }),
 }
-
-const FeatureGrid = dynamic(() => import("@/components/FeatureGrid"))
-const WhatsAppSupport = dynamic(() => import("@/components/WhatsAppSupport"))
-const Guarantee = dynamic(() => import("@/components/Guarantee"))
-const Testimonials = dynamic(() => import("@/components/Testimonials"))
-const UrgencyCTA = dynamic(() => import("@/components/UrgencyCTA"))
-const FAQ = dynamic(() => import("@/components/FAQ"))
-const LeadMagnetSection = dynamic(() => import("@/components/LeadMagnetSection"))
 
 type Props = {
   searchParams?: Record<string, string | string[] | undefined>

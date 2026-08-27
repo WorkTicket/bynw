@@ -2,11 +2,31 @@
 
 import { useEffect } from "react"
 
-const RELOAD_KEY = "bynmw-nav-error-reload"
+export const RELOAD_KEY = "bynmw-nav-error-reload"
+export const RECOVERABLE_RE =
+  /ChunkLoadError|Loading chunk|Failed to fetch dynamically imported module|Loading CSS chunk|Minified React error|Hydration|hydration|Text content does not match|Application error|client-side exception/i
+
+function reloadOnce() {
+  try {
+    if (sessionStorage.getItem(RELOAD_KEY) === "1") {
+      sessionStorage.removeItem(RELOAD_KEY)
+      window.location.replace("/")
+      return
+    }
+    sessionStorage.setItem(RELOAD_KEY, "1")
+  } catch {
+    // Storage blocked — still reload.
+  }
+  window.location.reload()
+}
+
+function isRecoverableMessage(msg: string) {
+  return RECOVERABLE_RE.test(msg)
+}
 
 /**
- * Clears one-shot error-reload guards after a healthy page mount, and
- * recovers from stale JS chunks without showing the error screen.
+ * Clears reload guards after a healthy mount and catches chunk/hydration
+ * failures before React error boundaries flash the error screen.
  */
 export default function NavigationRecovery() {
   useEffect(() => {
@@ -16,26 +36,11 @@ export default function NavigationRecovery() {
       // Private Safari can block sessionStorage.
     }
 
-    const reloadOnce = () => {
-      try {
-        if (sessionStorage.getItem(RELOAD_KEY) === "1") return
-        sessionStorage.setItem(RELOAD_KEY, "1")
-      } catch {
-        // Still attempt reload if storage is blocked.
-      }
-      window.location.reload()
-    }
-
     const onError = (event: ErrorEvent) => {
       const msg = `${event.message || ""} ${event.error?.message || ""} ${event.error?.name || ""}`
-      if (
-        /ChunkLoadError|Loading chunk|Failed to fetch dynamically imported module|Loading CSS chunk/i.test(
-          msg
-        )
-      ) {
-        event.preventDefault()
-        reloadOnce()
-      }
+      if (!isRecoverableMessage(msg)) return
+      event.preventDefault()
+      reloadOnce()
     }
 
     const onRejection = (event: PromiseRejectionEvent) => {
@@ -44,14 +49,9 @@ export default function NavigationRecovery() {
         typeof reason === "string"
           ? reason
           : `${reason?.name || ""} ${reason?.message || ""}`
-      if (
-        /ChunkLoadError|Loading chunk|Failed to fetch dynamically imported module|Loading CSS chunk/i.test(
-          msg
-        )
-      ) {
-        event.preventDefault()
-        reloadOnce()
-      }
+      if (!isRecoverableMessage(msg)) return
+      event.preventDefault()
+      reloadOnce()
     }
 
     window.addEventListener("error", onError)

@@ -3,6 +3,12 @@ const nextConfig = {
   poweredByHeader: false,
   compress: true,
   reactStrictMode: true,
+  experimental: {
+    staleTimes: {
+      dynamic: 0,
+      static: 0,
+    },
+  },
   images: {
     // Optimized via Cloudflare Images binding (see wrangler.toml [images])
     // https://opennext.js.org/cloudflare/howtos/image

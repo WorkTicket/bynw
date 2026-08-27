@@ -1,8 +1,7 @@
 "use client"
 
-import { useEffect } from "react"
-
-const RELOAD_KEY = "bynmw-nav-error-reload"
+import { useEffect, useState } from "react"
+import { RELOAD_KEY } from "@/components/NavigationRecovery"
 
 export default function GlobalError({
   error,
@@ -11,15 +10,28 @@ export default function GlobalError({
   error: Error & { digest?: string }
   reset: () => void
 }) {
+  const [showUi, setShowUi] = useState(false)
+
   useEffect(() => {
     try {
-      if (sessionStorage.getItem(RELOAD_KEY) === "1") return
+      if (sessionStorage.getItem(RELOAD_KEY) === "1") {
+        sessionStorage.removeItem(RELOAD_KEY)
+        window.location.replace("/")
+        return
+      }
       sessionStorage.setItem(RELOAD_KEY, "1")
       window.location.reload()
     } catch {
-      // ignore
+      window.location.replace("/")
     }
   }, [error])
+
+  useEffect(() => {
+    const t = window.setTimeout(() => setShowUi(true), 2500)
+    return () => window.clearTimeout(t)
+  }, [])
+
+  if (!showUi) return null
 
   return (
     <html lang="es">
