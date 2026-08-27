@@ -1,4 +1,3 @@
-import Image from "next/image"
 import type { Product } from "@/lib/products"
 import { parsePriceValue } from "@/lib/pricing"
 import { getPriceCurrency } from "@/lib/tracking"
@@ -49,14 +48,15 @@ export default function ProductCard({
         className="relative flex h-full flex-col"
       >
         <div className={`product-media aspect-square ${featured ? "ring-2 ring-rose-300/80" : ""}`}>
-          <Image
+          <img
             src={`/images/${product.images[0]}`}
             alt={product.shortTitle}
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            quality={90}
-            priority={priority}
-            className="object-contain p-2 transition-transform duration-[1000ms] ease-out motion-safe:group-hover:scale-[1.03] sm:p-2.5"
+            width={800}
+            height={800}
+            decoding="async"
+            loading={priority ? "eager" : "lazy"}
+            fetchPriority={priority ? "high" : "auto"}
+            className="absolute inset-0 h-full w-full object-contain p-2 transition-transform duration-[1000ms] ease-out motion-safe:group-hover:scale-[1.03] sm:p-2.5"
           />
           <div
             className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#3a2428]/[0.08] via-transparent to-transparent opacity-70 transition-opacity duration-500 group-hover:opacity-40"

@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import Image from "next/image"
-import Link from "next/link"
 import {
   buildHotmartEmbedUrl,
   buildHotmartPayUrl,
@@ -210,12 +209,12 @@ export default function CheckoutShell({ product }: Props) {
                   Tarjeta, PayPal o Klarna · Socio oficial Hotmart
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 lg:justify-start">
-                  <Link
+                  <a
                     href="/refund-policy"
                     className="text-sm font-medium text-ink/65 underline-offset-2 hover:text-rose-600 hover:underline"
                   >
                     Garantía 7 días
-                  </Link>
+                  </a>
                   <a
                     href={WHATSAPP_URL}
                     target="_blank"

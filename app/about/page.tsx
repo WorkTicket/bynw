@@ -1,5 +1,4 @@
 import { Metadata } from "next"
-import Link from "next/link"
 import PrimaryCTA from "@/components/PrimaryCTA"
 import SecondaryCTA from "@/components/SecondaryCTA"
 import ScrollReveal from "@/components/ScrollReveal"

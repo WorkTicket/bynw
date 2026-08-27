@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect, type ReactNode } from "react"
-import Link from "next/link"
 import { usePathname } from "next/navigation"
 import PrimaryCTA from "@/components/PrimaryCTA"
 import HotmartBuyButtonClient from "@/components/HotmartBuyButtonClient"
@@ -33,7 +32,7 @@ function BrandMark({
   onClick?: () => void
 }) {
   return (
-    <Link
+    <a
       href={href}
       className="site-header__brand group"
       onClick={onClick}
@@ -51,7 +50,7 @@ function BrandMark({
         <span className="site-header__name">Manos Creativas</span>
         <span className="site-header__script">Bynmw</span>
       </div>
-    </Link>
+    </a>
   )
 }
 
@@ -232,9 +231,9 @@ export default function Header() {
                 <span className="site-header__diamond hidden sm:block" aria-hidden="true" />
                 <span className="hidden md:inline">Acceso de por vida</span>
                 <span className="site-header__diamond hidden md:block" aria-hidden="true" />
-                <Link href="/#regalo-gratis" className="announcement-gift">
+                <a href="/#regalo-gratis" className="announcement-gift">
                   Regalo gratis
-                </Link>
+                </a>
               </p>
               <button
                 type="button"
@@ -258,19 +257,19 @@ export default function Header() {
               <ul className="site-header__desktop-links">
                 {links.map((l) => (
                   <li key={l.href}>
-                    <Link
+                    <a
                       href={l.href}
                       className={`nav-link ${isActive(pathname, l.href) ? "nav-link-active" : ""}`}
                     >
                       {l.label}
-                    </Link>
+                    </a>
                   </li>
                 ))}
               </ul>
             </nav>
 
             <div className="site-header__actions">
-              <Link href="/shop" className="btn-nav group hidden lg:inline-flex">
+              <a href="/shop" className="btn-nav group hidden lg:inline-flex">
                 <span>Ver Colecciones</span>
                 <svg
                   className="site-header__cta-arrow"
@@ -286,7 +285,7 @@ export default function Header() {
                     strokeLinejoin="round"
                   />
                 </svg>
-              </Link>
+              </a>
 
               <button
                 type="button"
@@ -333,7 +332,7 @@ export default function Header() {
                 style={{ ["--i" as string]: i }}
                 className="site-header__panel-item"
               >
-                <Link
+                <a
                   href={l.href}
                   onClick={() => setOpen(false)}
                   className={`site-header__panel-link ${
@@ -353,7 +352,7 @@ export default function Header() {
                       />
                     </svg>
                   </span>
-                </Link>
+                </a>
               </li>
             ))}
           </ul>

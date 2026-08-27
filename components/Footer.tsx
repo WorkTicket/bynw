@@ -1,4 +1,3 @@
-import Link from "next/link"
 import ConsentPrefsButton from "@/components/ConsentPrefsButton"
 import FooterSignature from "@/components/FooterSignature"
 import PetiteOrnament from "@/components/PetiteOrnament"
@@ -18,9 +17,9 @@ function LegalNav() {
   return (
     <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-muted sm:gap-x-5">
       {legalLinks.map((l) => (
-        <Link key={l.href} href={l.href} className={legalLinkClass}>
+        <a key={l.href} href={l.href} className={legalLinkClass}>
           {l.label}
-        </Link>
+        </a>
       ))}
       <ConsentPrefsButton className={legalLinkClass} />
     </div>
@@ -92,9 +91,9 @@ function OrganicFooter({ year }: { year: number }) {
                   { href: "/contact", label: "Contacto" },
                 ].map((l) => (
                   <li key={l.href}>
-                    <Link href={l.href} className="soft-link">
+                    <a href={l.href} className="soft-link">
                       {l.label}
-                    </Link>
+                    </a>
                   </li>
                 ))}
               </ul>

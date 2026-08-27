@@ -9,6 +9,7 @@ import Analytics from "@/components/Analytics"
 import CookieConsent from "@/components/CookieConsent"
 import StickyMobileCTA from "@/components/StickyMobileCTA"
 import InAppBrowserChrome from "@/components/InAppBrowserChrome"
+import NavigationRecovery from "@/components/NavigationRecovery"
 import { IN_APP_BROWSER_BOOT_SCRIPT } from "@/lib/in-app-browser"
 import {
   SITE_URL,
@@ -166,6 +167,7 @@ export default function RootLayout({
         />
       </head>
       <body className="flex min-h-screen flex-col font-sans antialiased text-ink">
+        <NavigationRecovery />
         <InAppBrowserChrome />
         <Suspense>
           <Analytics />

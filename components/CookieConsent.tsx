@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link"
 import { usePathname, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import {
@@ -90,18 +89,18 @@ export default function CookieConsent() {
           {paid ? (
             <>
               Cookies para medir visitas y anuncios.{" "}
-              <Link href="/cookies-policy" className="cookie-consent__link">
+              <a href="/cookies-policy" className="cookie-consent__link">
                 Más información
-              </Link>
+              </a>
             </>
           ) : (
             <>
               Usamos cookies necesarias para el sitio. Con tu permiso, también
               cookies de analítica (Google) y publicidad (Meta) para medir visitas y
               optimizar anuncios.{" "}
-              <Link href="/cookies-policy" className="cookie-consent__link">
+              <a href="/cookies-policy" className="cookie-consent__link">
                 Más información
-              </Link>
+              </a>
             </>
           )}
         </p>

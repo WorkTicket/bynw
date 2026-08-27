@@ -1,14 +1,30 @@
 "use client"
 
+import { useEffect } from "react"
 import PrimaryCTA from "@/components/PrimaryCTA"
 import SecondaryCTA from "@/components/SecondaryCTA"
 
+const RELOAD_KEY = "bynmw-nav-error-reload"
+
 export default function Error({
+  error,
   reset,
 }: {
   error: Error & { digest?: string }
   reset: () => void
 }) {
+  useEffect(() => {
+    // Soft-nav / stale-chunk failures: one hard reload of the same URL.
+    // Any client render crash during routing recovers without losing the customer.
+    try {
+      if (sessionStorage.getItem(RELOAD_KEY) === "1") return
+      sessionStorage.setItem(RELOAD_KEY, "1")
+      window.location.reload()
+    } catch {
+      // Private Safari can block sessionStorage — fall through to UI.
+    }
+  }, [error])
+
   return (
     <section className="page-hero flex min-h-[60vh] flex-col items-center justify-center px-6 py-24 text-center">
       <div className="relative z-10 max-w-lg">
@@ -21,7 +37,21 @@ export default function Error({
           volver al inicio.
         </p>
         <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-          <PrimaryCTA type="button" onClick={reset}>
+          <PrimaryCTA
+            type="button"
+            onClick={() => {
+              try {
+                sessionStorage.removeItem(RELOAD_KEY)
+              } catch {
+                // ignore
+              }
+              try {
+                window.location.reload()
+              } catch {
+                reset()
+              }
+            }}
+          >
             Reintentar
           </PrimaryCTA>
           <SecondaryCTA href="/">Volver al inicio</SecondaryCTA>

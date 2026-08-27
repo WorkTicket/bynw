@@ -1,5 +1,3 @@
-import Link from "next/link"
-
 type Shared = {
   children: React.ReactNode
   className?: string
@@ -29,7 +27,11 @@ const sizeClass = {
   lg: "btn-primary--lg",
 } as const
 
-/** Site primary CTA — silk-gradient pill. */
+/**
+ * Site primary CTA — silk-gradient pill.
+ * Always uses a native <a> for same-origin routes so phones never hit
+ * Next.js client-side navigation (known crash on iOS / in-app browsers).
+ */
 export default function PrimaryCTA({
   children,
   className,
@@ -45,24 +47,11 @@ export default function PrimaryCTA({
       LinkProps,
       "href" | "children" | "className" | "size"
     >
-    const external =
-      href.startsWith("http") ||
-      href.startsWith("mailto:") ||
-      href.startsWith("tel:")
-    const isHash = href.startsWith("#")
-
-    if (external || isHash) {
-      return (
-        <a href={href} className={classes} {...anchorRest}>
-          {label}
-        </a>
-      )
-    }
 
     return (
-      <Link href={href} className={classes} {...anchorRest}>
+      <a href={href} className={classes} {...anchorRest}>
         {label}
-      </Link>
+      </a>
     )
   }
 

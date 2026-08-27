@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import { Suspense } from "react"
-import Link from "next/link"
 import PrimaryCTA from "@/components/PrimaryCTA"
 import SecondaryCTA from "@/components/SecondaryCTA"
 import PetiteOrnament from "@/components/PetiteOrnament"
@@ -85,12 +84,12 @@ export default function GraciasPage({ searchParams }: Props) {
               <SecondaryCTA href="/testimonials#dejar-resena">
                 Dejar reseña con foto
               </SecondaryCTA>
-              <Link
+              <a
                 href="/shop"
                 className="text-sm font-medium text-ink/50 transition-colors hover:text-rose-600"
               >
                 Ver más colecciones
-              </Link>
+              </a>
             </div>
 
             <p className="mt-8 text-[11px] tracking-[0.06em] text-ink/45">

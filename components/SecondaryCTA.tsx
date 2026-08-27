@@ -1,5 +1,3 @@
-import Link from "next/link"
-
 type Shared = {
   children: React.ReactNode
   className?: string
@@ -21,7 +19,10 @@ function cx(...parts: Array<string | false | null | undefined>) {
   return parts.filter(Boolean).join(" ")
 }
 
-/** Site secondary CTA — pearl outline pill. */
+/**
+ * Site secondary CTA — pearl outline pill.
+ * Native <a> only — avoids Next.js soft navigation crashes on mobile.
+ */
 export default function SecondaryCTA({
   children,
   className,
@@ -36,24 +37,11 @@ export default function SecondaryCTA({
       LinkProps,
       "href" | "children" | "className"
     >
-    const external =
-      href.startsWith("http") ||
-      href.startsWith("mailto:") ||
-      href.startsWith("tel:")
-    const isHash = href.startsWith("#")
-
-    if (external || isHash) {
-      return (
-        <a href={href} className={classes} {...anchorRest}>
-          {label}
-        </a>
-      )
-    }
 
     return (
-      <Link href={href} className={classes} {...anchorRest}>
+      <a href={href} className={classes} {...anchorRest}>
         {label}
-      </Link>
+      </a>
     )
   }
 

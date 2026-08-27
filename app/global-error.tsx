@@ -1,11 +1,26 @@
 "use client"
 
+import { useEffect } from "react"
+
+const RELOAD_KEY = "bynmw-nav-error-reload"
+
 export default function GlobalError({
+  error,
   reset,
 }: {
   error: Error & { digest?: string }
   reset: () => void
 }) {
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem(RELOAD_KEY) === "1") return
+      sessionStorage.setItem(RELOAD_KEY, "1")
+      window.location.reload()
+    } catch {
+      // ignore
+    }
+  }, [error])
+
   return (
     <html lang="es">
       <body
@@ -51,7 +66,18 @@ export default function GlobalError({
           >
             <button
               type="button"
-              onClick={reset}
+              onClick={() => {
+                try {
+                  sessionStorage.removeItem(RELOAD_KEY)
+                } catch {
+                  // ignore
+                }
+                try {
+                  window.location.reload()
+                } catch {
+                  reset()
+                }
+              }}
               style={{
                 border: 0,
                 borderRadius: "999px",
