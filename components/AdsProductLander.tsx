@@ -214,143 +214,139 @@ export default function AdsProductLander({ product, reviews }: Props) {
         price={product.price}
       />
 
-      {/* ── Full-bleed hero: product image + one offer (buy stays in FB in-app fold) ── */}
+      {/* ── Product Hero: Clean, responsive layout for high-converting ads ── */}
       <section
         id="oferta"
-        className="hero-editorial min-h-ads-hero relative scroll-mt-[var(--site-header-offset)] overflow-hidden"
+        className="relative scroll-mt-[var(--site-header-offset)] overflow-hidden bg-[#fffaf8] pb-[calc(var(--sticky-cta-stack)+1.25rem)] pt-6 sm:pb-[calc(var(--sticky-cta-stack)+2rem)] sm:pt-10 lg:pb-20 lg:pt-14"
       >
-        <div className="absolute inset-0 bg-[#fffaf8]">
-          <div className="absolute inset-0 origin-center">
-            <Image
-              src={`/images/${product.images[0]}`}
-              alt={product.shortTitle}
-              fill
-              priority
-              fetchPriority="high"
-              quality={70}
-              sizes="100vw"
-              // Already resized/compressed sources — skip optimizer RTT on LCP
-              unoptimized
-              className="object-contain object-center p-5 sm:object-cover sm:object-[58%_center] sm:p-0 lg:object-[62%_center]"
-            />
-          </div>
-
-          <div className="hero-veil-mobile pointer-events-none absolute inset-0 lg:hidden" />
-
-          <div
-            className="pointer-events-none absolute inset-0 hidden lg:block"
-            style={{
-              background: `
-                linear-gradient(
-                  92deg,
-                  #fffaf8 0%,
-                  #fffaf8 30%,
-                  rgba(255,250,248,0.97) 38%,
-                  rgba(255,250,248,0.82) 48%,
-                  rgba(255,250,248,0.4) 60%,
-                  rgba(255,250,248,0.1) 74%,
-                  transparent 86%
-                ),
-                linear-gradient(
-                  180deg,
-                  transparent 72%,
-                  rgba(250,243,241,0.35) 88%,
-                  rgba(250,243,241,0.72) 100%
-                )
-              `,
-            }}
-          />
-        </div>
-
-        <div className="section relative z-10 flex min-h-ads-hero flex-col justify-end pb-[calc(var(--sticky-cta-stack)+0.85rem)] pt-6 sm:justify-center sm:pb-[calc(var(--sticky-cta-stack)+1.75rem)] sm:pt-14 lg:pb-24">
-          <div className="max-w-xl lg:max-w-[36rem]">
-            <span className="inline-flex items-center rounded-full bg-rose-100/90 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-rose-700">
-              {promoHeroBadge()}
-            </span>
-
-            <h1 className="mt-4 font-display text-[1.75rem] font-semibold leading-[1.05] tracking-tight text-ink sm:mt-5 sm:text-4xl lg:text-[2.85rem]">
-              {product.shortTitle}
-            </h1>
-
-            <p className="mt-2 max-w-md text-[13px] leading-[1.5] text-muted sm:mt-3.5 sm:text-base sm:leading-[1.65]">
-              {heroSupport}
-            </p>
-
-            <div className="mt-2.5 flex flex-wrap items-center gap-1.5 sm:mt-5 sm:gap-2">
-              <div
-                className="flex items-center gap-0.5"
-                aria-label={`${SITE_RATING_DISPLAY} de 5 estrellas`}
-              >
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <StarIcon key={i} className="text-rose-400" size={12} />
-                ))}
-              </div>
-              <span className="text-xs font-semibold text-ink sm:text-sm">
-                {SITE_RATING_DISPLAY}
+        <div className="section relative z-10">
+          <div className="mx-auto grid max-w-6xl items-start gap-8 lg:grid-cols-2 lg:gap-14 xl:gap-16">
+            {/* Left Column (Desktop) / Main Content */}
+            <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
+              <span className="inline-flex items-center rounded-full bg-rose-100/90 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-rose-700">
+                {promoHeroBadge()}
               </span>
-              <span className="text-xs text-muted sm:text-sm">
-                · {reviewCount} reseñas
-              </span>
-            </div>
 
-            {proofQuote && proofReview ? (
-              <p className="mt-2 max-w-md text-[11px] leading-snug text-ink/55 sm:mt-3 sm:text-xs sm:leading-relaxed">
-                <span className="italic">“{proofQuote}”</span>
-                <span className="not-italic text-muted">
-                  {" "}
-                  — {proofReview.name}
-                  {proofReview.location ? `, ${proofReview.location}` : ""}
-                </span>
+              <h1 className="mt-4 font-display text-2xl font-semibold leading-[1.1] tracking-tight text-ink sm:text-4xl lg:text-[2.65rem]">
+                {product.shortTitle}
+              </h1>
+
+              <p className="mt-2.5 max-w-md text-sm leading-[1.55] text-muted sm:text-base sm:leading-[1.65]">
+                {heroSupport}
               </p>
-            ) : null}
 
-            <ul className="mt-2.5 w-full max-w-md space-y-1.5 sm:mt-5 sm:space-y-2.5">
-              {heroBenefits.map((b) => (
-                <li
-                  key={b}
-                  className="flex items-start gap-2 text-[12px] text-ink/80 sm:gap-2.5 sm:text-[15px]"
+              <div className="mt-3 flex flex-wrap items-center justify-center gap-1.5 sm:mt-4 sm:gap-2 lg:justify-start">
+                <div
+                  className="flex items-center gap-0.5"
+                  aria-label={`${SITE_RATING_DISPLAY} de 5 estrellas`}
                 >
-                  <CheckCircleIcon
-                    className="mt-0.5 shrink-0 text-rose-500"
-                    size={15}
-                  />
-                  <span>{b}</span>
-                </li>
-              ))}
-            </ul>
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <StarIcon key={i} className="text-rose-400" size={13} />
+                  ))}
+                </div>
+                <span className="text-xs font-semibold text-ink sm:text-sm">
+                  {SITE_RATING_DISPLAY}
+                </span>
+                <span className="text-xs text-muted sm:text-sm">
+                  · {reviewCount} reseñas
+                </span>
+              </div>
 
-            <div className="mt-3 flex flex-wrap items-baseline gap-x-2.5 gap-y-1 sm:mt-6 sm:gap-x-3">
-              <span className="text-2xl font-semibold tracking-tight text-ink sm:text-4xl">
-                {product.price}
-              </span>
-              {originalNum > priceNum && (
-                <span className="text-base text-muted/40 line-through sm:text-lg">
-                  {product.originalPrice}
+              {proofQuote && proofReview ? (
+                <p className="mt-2.5 max-w-md text-[11px] leading-snug text-ink/60 sm:text-xs sm:leading-relaxed">
+                  <span className="italic">“{proofQuote}”</span>
+                  <span className="not-italic text-muted">
+                    {" "}
+                    — {proofReview.name}
+                    {proofReview.location ? `, ${proofReview.location}` : ""}
+                  </span>
+                </p>
+              ) : null}
+
+              {/* Mobile Image preview (between title/rating and benefits/buy) */}
+              <div className="my-5 w-full max-w-sm overflow-hidden rounded-2xl bg-rose-50/40 ring-1 ring-rose-100/60 lg:hidden">
+                <div className="relative aspect-square w-full">
+                  <Image
+                    src={`/images/${product.images[0]}`}
+                    alt={product.shortTitle}
+                    fill
+                    priority
+                    fetchPriority="high"
+                    quality={80}
+                    sizes="(max-width: 640px) 90vw, 380px"
+                    unoptimized
+                    className="object-contain p-2"
+                  />
+                </div>
+              </div>
+
+              <ul className="mt-3 w-full max-w-md space-y-2 text-left sm:mt-5 sm:space-y-2.5">
+                {heroBenefits.map((b) => (
+                  <li
+                    key={b}
+                    className="flex items-start gap-2.5 text-[13px] text-ink/85 sm:text-[15px]"
+                  >
+                    <CheckCircleIcon
+                      className="mt-0.5 shrink-0 text-rose-500"
+                      size={16}
+                    />
+                    <span>{b}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-4 flex flex-wrap items-baseline justify-center gap-x-2.5 gap-y-1 sm:mt-6 sm:gap-x-3 lg:justify-start">
+                <span className="text-2xl font-semibold tracking-tight text-ink sm:text-4xl">
+                  {product.price}
                 </span>
-              )}
-              {discountBadge && (
-                <span className="rounded-full bg-rose-100/80 px-2 py-0.5 text-[11px] font-semibold text-rose-700 sm:px-2.5 sm:text-xs">
-                  {discountBadge}
+                {originalNum > priceNum && (
+                  <span className="text-base text-muted/40 line-through sm:text-lg">
+                    {product.originalPrice}
+                  </span>
+                )}
+                {discountBadge && (
+                  <span className="rounded-full bg-rose-100/80 px-2.5 py-0.5 text-[11px] font-semibold text-rose-700 sm:text-xs">
+                    {discountBadge}
+                  </span>
+                )}
+                {savingsLabel && (
+                  <span className="w-full text-[11px] font-medium text-rose-700/90 sm:w-auto sm:text-xs">
+                    {savingsLabel}
+                  </span>
+                )}
+                <span className="w-full text-[11px] text-muted/80 sm:text-xs">
+                  {promoLine}
                 </span>
-              )}
-              {savingsLabel && (
-                <span className="w-full text-[11px] font-medium text-rose-700/90 sm:w-auto sm:text-xs">
-                  {savingsLabel}
-                </span>
-              )}
-              <span className="w-full text-[11px] text-muted/80 sm:text-xs">
-                {promoLine}
-              </span>
-              <SaleCountdown className="w-full text-[12px] font-medium text-rose-700/90" />
+                <SaleCountdown className="w-full text-[12px] font-medium text-rose-700/90" />
+              </div>
+
+              <div className="mt-5 w-full max-w-md sm:mt-7">
+                <BuyBlock
+                  buyProps={buyProps}
+                  buyLabel={buyLabel}
+                  align="start"
+                  compact
+                />
+              </div>
             </div>
 
-            <div className="mt-3.5 w-full max-w-md sm:mt-7">
-              <BuyBlock
-                buyProps={buyProps}
-                buyLabel={buyLabel}
-                align="start"
-                compact
-              />
+            {/* Desktop Image Column */}
+            <div className="hidden lg:block lg:sticky lg:top-[calc(var(--site-header-offset)+1.5rem)]">
+              <div className="overflow-hidden rounded-2xl bg-rose-50/40 ring-1 ring-rose-100/60 shadow-sm">
+                <div className="relative aspect-square w-full">
+                  <Image
+                    src={`/images/${product.images[0]}`}
+                    alt={product.shortTitle}
+                    fill
+                    priority
+                    fetchPriority="high"
+                    quality={85}
+                    sizes="(min-width: 1024px) 480px, 100vw"
+                    unoptimized
+                    className="object-contain p-4"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>

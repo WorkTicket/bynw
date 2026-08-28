@@ -14,3 +14,4 @@ public/images/og-default-ai.webp
 .data/
 .lh-*.json
 .lighthouse-*.json
+.tmp-docx-extract/
