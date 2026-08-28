@@ -430,7 +430,9 @@ export default function Analytics() {
   }, [pathname, searchParams, consent])
 
   useEffect(() => {
-    const handler = (e: MouseEvent) => {
+    let lastKey = ""
+    let lastAt = 0
+    const handler = (e: Event) => {
       const raw = e.target
       if (!(raw instanceof Element)) return
       for (const binding of CLICK_BINDINGS) {
@@ -438,6 +440,12 @@ export default function Analytics() {
         if (!el) continue
 
         const label = el.getAttribute(binding.attr) || ""
+        const key = `${binding.attr}:${label}:${el.getAttribute("href") || ""}`
+        const now = Date.now()
+        if (key === lastKey && now - lastAt < 700) continue
+        lastKey = key
+        lastAt = now
+
         const params = binding.commerce
           ? { ...commerceFromEl(el), event_label: label }
           : { event_label: label, event_category: "engagement" }
@@ -449,8 +457,13 @@ export default function Analytics() {
         }
       }
     }
+    // pointerdown survives hard-nav capture on click (Facebook in-app).
+    document.addEventListener("pointerdown", handler, { capture: true, passive: true })
     document.addEventListener("click", handler)
-    return () => document.removeEventListener("click", handler)
+    return () => {
+      document.removeEventListener("pointerdown", handler, { capture: true })
+      document.removeEventListener("click", handler)
+    }
   }, [])
 
   return null

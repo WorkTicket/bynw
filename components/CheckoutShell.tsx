@@ -1,16 +1,13 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import Image from "next/image"
 import {
   buildHotmartEmbedUrl,
   buildHotmartPayUrl,
+  iabPayHref,
   isInAppBrowser,
 } from "@/lib/hotmart"
-import {
-  androidChromeIntentUrl,
-  isAndroidUa,
-} from "@/lib/in-app-browser"
 import { formatDiscountBadge, getDiscountPercent } from "@/lib/offer"
 import { WHATSAPP_URL } from "@/lib/site"
 import type { Product } from "@/lib/products"
@@ -30,7 +27,6 @@ const TRUST = [
 
 export default function CheckoutShell({ product }: Props) {
   const [inApp, setInApp] = useState(false)
-  const [androidInApp, setAndroidInApp] = useState(false)
   const [iframeSrc, setIframeSrc] = useState<string | null>(null)
   const [fullPageUrl, setFullPageUrl] = useState(() =>
     buildHotmartPayUrl(product.buyUrl)
@@ -38,20 +34,37 @@ export default function CheckoutShell({ product }: Props) {
   const [payHref, setPayHref] = useState(() =>
     buildHotmartPayUrl(product.buyUrl)
   )
+  const [showPayFallback, setShowPayFallback] = useState(false)
+  const iframeLoadedRef = useRef(false)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const search = window.location.search
     const fbIab = isInAppBrowser()
-    const android = fbIab && isAndroidUa()
     const payUrl = buildHotmartPayUrl(product.buyUrl, search)
+    const dest = iabPayHref(product.buyUrl, search)
     setInApp(fbIab)
-    setAndroidInApp(android)
     setFullPageUrl(payUrl)
-    setPayHref(android ? androidChromeIntentUrl(payUrl) : payUrl)
-    if (!fbIab) {
-      setIframeSrc(buildHotmartEmbedUrl(product.buyUrl, search))
+    setPayHref(fbIab ? dest : payUrl)
+    if (fbIab) {
+      // Backup if the HTML boot script did not run — never wait for a second tap.
+      if (document.documentElement.dataset.iabPay !== "1") {
+        document.documentElement.dataset.iabPay = "1"
+        window.location.replace(dest)
+      }
+      return
     }
+    setIframeSrc(buildHotmartEmbedUrl(product.buyUrl, search))
   }, [product.buyUrl])
+
+  useEffect(() => {
+    if (inApp || !iframeSrc) return
+    iframeLoadedRef.current = false
+    setShowPayFallback(false)
+    const t = window.setTimeout(() => {
+      if (!iframeLoadedRef.current) setShowPayFallback(true)
+    }, 6000)
+    return () => window.clearTimeout(t)
+  }, [inApp, iframeSrc])
 
   const discount = getDiscountPercent(product.price, product.originalPrice)
   const discountBadge = formatDiscountBadge(discount)
@@ -59,11 +72,21 @@ export default function CheckoutShell({ product }: Props) {
   const payButton = (opts?: { sticky?: boolean }) => (
     <a
       href={payHref}
-      target={inApp ? (androidInApp ? undefined : "_blank") : "_top"}
-      rel={inApp && !androidInApp ? "noopener noreferrer" : undefined}
+      data-buy-cta="true"
       className={`btn-collection-buy btn-collection-buy--lg ${
         opts?.sticky ? "w-full" : "w-full max-w-sm"
       }`}
+      onClick={(event) => {
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+        const dest = payHref
+        if (!dest) return
+        event.preventDefault()
+        try {
+          window.location.href = dest
+        } catch {
+          window.location.assign(dest)
+        }
+      }}
     >
       <span className="btn-label">Pagar {product.price}</span>
     </a>
@@ -194,11 +217,10 @@ export default function CheckoutShell({ product }: Props) {
                 correo al confirmar.
               </p>
               <p className="checkout-pay-card__hint">
-                El pago se abre en Safari o Chrome — Facebook e Instagram bloquean
-                tarjetas y PayPal dentro de su navegador. Si no abre, pulsa{" "}
-                <strong>⋯</strong> y elige <strong>Abrir en el navegador</strong>.
-                Si Hotmart muestra dólares, pulsa <strong>Cambiar país</strong> y
-                elige el tuyo. En España el precio es {product.price}.
+                Si el pago no abre o la tarjeta falla, pulsa <strong>⋯</strong> y
+                elige <strong>Abrir en el navegador</strong>. Si Hotmart muestra
+                dólares, pulsa <strong>Cambiar país</strong> y elige el tuyo. En
+                España el precio es {product.price}.
               </p>
               <div className="mt-6 flex justify-center lg:justify-start">
                 {payButton()}
@@ -235,16 +257,25 @@ export default function CheckoutShell({ product }: Props) {
                     title={`Pago seguro — ${product.shortTitle}`}
                     src={iframeSrc}
                     className="checkout-hotmart-frame"
-                    allow="payment *"
+                    allow="payment *; publickey-credentials-get *"
                     referrerPolicy="strict-origin-when-cross-origin"
+                    onLoad={() => {
+                      iframeLoadedRef.current = true
+                      setShowPayFallback(false)
+                    }}
                   />
                 ) : (
                   <div className="checkout-hotmart-frame checkout-hotmart-frame--pending" />
                 )}
               </div>
+              {showPayFallback ? (
+                <div className="mt-4 flex justify-center px-4 lg:justify-start">
+                  {payButton()}
+                </div>
+              ) : null}
               <p className="checkout-shell__fallback">
                 Si el pago no carga,{" "}
-                <a href={fullPageUrl} target="_top">
+                <a href={fullPageUrl} data-buy-cta="true">
                   abre el checkout seguro
                 </a>
                 . Si ves dólares, pulsa Cambiar país y elige el tuyo.

@@ -13,6 +13,7 @@ import { BRAND_NAME, DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE } from "@/lib/site"
 import { createPageMetadata, buildReviewsJsonLd } from "@/lib/seo"
 import { faqJsonLd } from "@/lib/faqs"
 import { listFeaturedReviews, listPublishedReviews } from "@/lib/reviews"
+import { toURLSearchParams } from "@/lib/paid-traffic"
 
 export const metadata: Metadata = {
   ...createPageMetadata({
@@ -23,12 +24,17 @@ export const metadata: Metadata = {
   }),
 }
 
-export default async function HomePage() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams?: Record<string, string | string[] | undefined>
+}) {
   const [featured, allReviews] = await Promise.all([
     listFeaturedReviews(3),
     listPublishedReviews(),
   ])
   const reviewsJsonLd = buildReviewsJsonLd(allReviews)
+  const hrefQuery = toURLSearchParams(searchParams).toString() || undefined
 
   return (
     <div className="page-sections">
@@ -58,7 +64,7 @@ export default async function HomePage() {
       />
       <Hero />
       <TrustBar />
-      <ProductGrid />
+      <ProductGrid hrefQuery={hrefQuery} />
       <FeatureGrid />
       <WhatsAppSupport />
       <Guarantee />

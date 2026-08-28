@@ -10,6 +10,7 @@ import { listFeaturedReviews } from "@/lib/reviews"
 import { reviewImageSrc } from "@/lib/testimonials-data"
 import { SALE_PERCENT } from "@/lib/offer"
 import PurchaseTrustStrip from "@/components/PurchaseTrustStrip"
+import { toURLSearchParams } from "@/lib/paid-traffic"
 
 export const metadata: Metadata = createPageMetadata({
   title: "Colección Maestra de Patrones",
@@ -46,8 +47,13 @@ const features = [
   },
 ]
 
-export default async function ShopPage() {
+export default async function ShopPage({
+  searchParams,
+}: {
+  searchParams?: Record<string, string | string[] | undefined>
+}) {
   const featuredTestimonials = await listFeaturedReviews(3)
+  const hrefQuery = toURLSearchParams(searchParams).toString() || undefined
 
   const itemListJsonLd = {
     "@context": "https://schema.org",
@@ -122,6 +128,7 @@ export default async function ShopPage() {
               <ScrollReveal key={p.id} delay={i * 120}>
                 <ProductCard
                   product={p}
+                  hrefQuery={hrefQuery}
                   priority={i < 2}
                   featured={isBestseller(p.slug)}
                   badge={isBestseller(p.slug) ? "Más vendida" : undefined}

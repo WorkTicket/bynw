@@ -4,7 +4,7 @@ import PrimaryCTA from "@/components/PrimaryCTA"
 export default function HeroCtas() {
   return (
     <div className="mt-8 flex justify-center md:justify-start">
-      <PrimaryCTA href="/#colecciones" size="lg">
+      <PrimaryCTA href="#colecciones" size="lg">
         Ver colecciones
       </PrimaryCTA>
     </div>

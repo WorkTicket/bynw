@@ -225,7 +225,7 @@ export default function Header() {
                 <span className="site-header__diamond hidden sm:block" aria-hidden="true" />
                 <span className="hidden md:inline">Acceso de por vida</span>
                 <span className="site-header__diamond hidden md:block" aria-hidden="true" />
-                <a href="/#regalo-gratis" className="announcement-gift">
+                <a href="#regalo-gratis" className="announcement-gift">
                   Regalo gratis
                 </a>
               </p>

@@ -2,6 +2,7 @@ import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import CheckoutShell from "@/components/CheckoutShell"
 import { products, getProductBySlug } from "@/lib/products"
+import { checkoutInAppRedirectScript } from "@/lib/hotmart"
 import { createPageMetadata } from "@/lib/seo"
 import { DEFAULT_OG_IMAGE } from "@/lib/site"
 
@@ -40,5 +41,14 @@ export default function CheckoutPage({ params }: Props) {
   const product = getProductBySlug(params.slug)
   if (!product) notFound()
 
-  return <CheckoutShell product={product} />
+  return (
+    <>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: checkoutInAppRedirectScript(product.buyUrl),
+        }}
+      />
+      <CheckoutShell product={product} />
+    </>
+  )
 }

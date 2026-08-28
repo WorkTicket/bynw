@@ -56,7 +56,7 @@ export default function ProductCard({
             decoding="async"
             loading={priority ? "eager" : "lazy"}
             fetchPriority={priority ? "high" : "auto"}
-            className="absolute inset-0 h-full w-full object-contain p-2 transition-transform duration-[1000ms] ease-out motion-safe:group-hover:scale-[1.03] sm:p-2.5"
+            className="absolute inset-0 h-full w-full object-contain p-2 sm:p-2.5"
           />
           <div
             className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#3a2428]/[0.08] via-transparent to-transparent opacity-70 transition-opacity duration-500 group-hover:opacity-40"

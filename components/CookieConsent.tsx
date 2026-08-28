@@ -35,7 +35,9 @@ export default function CookieConsent() {
     }
     // Paid Meta / FB in-app: top bar (does not cover Comprar). Organic: defer for LCP.
     const ua = typeof navigator !== "undefined" ? navigator.userAgent : null
-    const inApp = isInAppBrowser(ua)
+    const inApp =
+      isInAppBrowser(ua) ||
+      document.documentElement.dataset.fbIab === "true"
     const paid = isMetaPaidTraffic(searchParams, ua)
     const delay = paid || inApp ? 250 : 2800
     const t = window.setTimeout(() => setView("banner"), delay)
@@ -71,8 +73,15 @@ export default function CookieConsent() {
   if (view === "hidden") return null
 
   const ua = typeof navigator !== "undefined" ? navigator.userAgent : null
-  const inApp = isInAppBrowser(ua)
-  const paid = isMetaPaidTraffic(searchParams, ua) || inApp
+  const inApp =
+    isInAppBrowser(ua) ||
+    (typeof document !== "undefined" &&
+      document.documentElement.dataset.fbIab === "true")
+  const paid =
+    isMetaPaidTraffic(searchParams, ua) ||
+    inApp ||
+    (typeof document !== "undefined" &&
+      document.documentElement.getAttribute("data-sticky-cta") === "visible")
 
   return (
     <div

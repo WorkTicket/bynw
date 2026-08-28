@@ -1253,11 +1253,17 @@ body::after {
 .btn-primary:focus-visible {
   background-color: var(--btn-blush-hover);
   border-color: rgba(255, 255, 255, 0.55);
-  transform: translateY(-2px);
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.6) inset,
     0 16px 34px -10px rgba(184, 74, 94, 0.5),
     0 4px 10px -3px rgba(201, 107, 120, 0.28);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:hover,
+  .btn-primary:focus-visible {
+    transform: translateY(-2px);
+  }
 }
 
 .btn-primary:active {
@@ -1377,6 +1383,17 @@ body::after {
   opacity: 0.72;
   cursor: wait;
   transform: none;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .btn-primary:hover,
+  .btn-primary:focus-visible,
+  .btn-nav:hover,
+  .btn-nav:focus-visible,
+  .btn-secondary:hover,
+  .btn-secondary:focus-visible {
+    transform: none !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1740,12 +1757,20 @@ body::after {
   border: 1px solid rgba(255, 255, 255, 0.55) !important;
   outline: none !important;
   filter: none !important;
-  transform: translateY(-2px) !important;
   animation: none !important;
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.6) inset,
     0 16px 34px -10px rgba(184, 74, 94, 0.5),
     0 4px 10px -3px rgba(201, 107, 120, 0.28) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-collection-buy:hover,
+  .btn-collection-buy:focus,
+  .hotmart-fb.hotmart__button-checkout.btn-collection-buy:hover,
+  .hotmart-fb.hotmart__button-checkout.btn-collection-buy:focus {
+    transform: translateY(-2px) !important;
+  }
 }
 
 .btn-collection-buy:active,
@@ -2002,18 +2027,20 @@ body::after {
   display: none;
 }
 
-.group:hover .product-media {
-  box-shadow:
-    0 0 0 1px rgba(201, 107, 120, 0.48),
-    0 0 0 5px rgba(255, 250, 248, 0.97),
-    0 0 0 6px rgba(201, 107, 120, 0.32),
-    0 28px 56px -20px rgba(184, 74, 94, 0.22);
-  transform: translateY(-6px) scale(1.01);
-}
-
 .group:hover .product-media::after,
 .group:hover .corner-accents::after {
   opacity: 0.75;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .group:hover .product-media {
+    box-shadow:
+      0 0 0 1px rgba(201, 107, 120, 0.48),
+      0 0 0 5px rgba(255, 250, 248, 0.97),
+      0 0 0 6px rgba(201, 107, 120, 0.32),
+      0 28px 56px -20px rgba(184, 74, 94, 0.22);
+    transform: translateY(-6px) scale(1.01);
+  }
 }
 
 /* Soft hairline panel — forms & interactive surfaces */
@@ -2244,6 +2271,14 @@ html[data-lander="checkout"] main {
   padding-bottom: 0.5rem;
 }
 
+/* Facebook in-app / paid landers: never cover the buy bar even if React class lags */
+html[data-fb-iab] .cookie-consent,
+html[data-lander="ads"] .cookie-consent {
+  top: var(--site-header-offset);
+  bottom: auto;
+  padding-bottom: 0.5rem;
+}
+
 .cookie-consent--compact .cookie-consent__panel {
   padding: 0.75rem 0.95rem 0.85rem;
 }
@@ -2459,6 +2494,12 @@ html[data-lander="checkout"] .ios-status-bar {
   html[data-sticky-cta="visible"] .cookie-consent:not(.cookie-consent--top) {
     bottom: var(--sticky-cta-stack);
     padding-bottom: 0.5rem;
+  }
+
+  html[data-sticky-cta="visible"] .cookie-consent {
+    top: var(--site-header-offset) !important;
+    bottom: auto !important;
+    padding-bottom: 0.5rem !important;
   }
 
   .checkout-shell {
