@@ -1,12 +1,6 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
-import {
-  buildPaidAdsRedirectUrl,
-  extractShopSlug,
-  isMetaPaidTraffic,
-  resolveColdAdsSlug,
-  shouldRedirectPaidOrganicPath,
-} from "@/lib/paid-traffic"
+import { buildPaidHomeRedirectUrl, isAdsLanderPath } from "@/lib/paid-traffic"
 import { isInAppBrowser } from "@/lib/hotmart"
 
 export function middleware(request: NextRequest) {
@@ -21,20 +15,11 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(url, 301)
   }
 
-  const { pathname, searchParams } = request.nextUrl
+  const { pathname } = request.nextUrl
 
-  // Safety net: Meta paid hits on /shop* → conversion lander /ads/{slug}
-  // Home (`/`) is an intentional paid destination — do not redirect.
-  if (
-    shouldRedirectPaidOrganicPath(pathname) &&
-    isMetaPaidTraffic(searchParams, ua)
-  ) {
-    const targetSlug = resolveColdAdsSlug({
-      searchParams,
-      pathSlug: extractShopSlug(pathname),
-    })
-    const target = buildPaidAdsRedirectUrl(request.nextUrl, targetSlug)
-    return NextResponse.redirect(target, 302)
+  // Existing Facebook ads still point at /ads landers — send them to home.
+  if (isAdsLanderPath(pathname)) {
+    return NextResponse.redirect(buildPaidHomeRedirectUrl(request.nextUrl), 302)
   }
 
   const response = NextResponse.next()

@@ -199,16 +199,10 @@ export default function Header() {
 
   // /ads + /checkout: pathname-only slim chrome (hydration-safe).
   if (isSlim) {
-    const checkoutSlug = pathname.match(/^\/checkout\/([^/]+)/)?.[1]
-    const brandHref = isCheckout
-      ? checkoutSlug
-        ? `/ads/${checkoutSlug}`
-        : "/ads"
-      : "/ads"
     return (
       <>
         <div className="ios-status-bar" aria-hidden="true" />
-        <SlimBar brandHref={brandHref}>
+        <SlimBar brandHref="/">
           <SlimAction pathname={pathname} />
         </SlimBar>
       </>

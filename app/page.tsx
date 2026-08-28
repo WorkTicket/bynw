@@ -1,9 +1,7 @@
 import type { Metadata } from "next"
-import { headers } from "next/headers"
 import Hero from "@/components/Hero"
 import TrustBar from "@/components/TrustBar"
 import ProductGrid from "@/components/ProductGrid"
-import AdsCatalogLander from "@/components/AdsCatalogLander"
 import FeatureGrid from "@/components/FeatureGrid"
 import WhatsAppSupport from "@/components/WhatsAppSupport"
 import Guarantee from "@/components/Guarantee"
@@ -14,12 +12,7 @@ import LeadMagnetSection from "@/components/LeadMagnetSection"
 import { BRAND_NAME, DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE } from "@/lib/site"
 import { createPageMetadata, buildReviewsJsonLd } from "@/lib/seo"
 import { faqJsonLd } from "@/lib/faqs"
-import {
-  listAdsFeaturedReviews,
-  listFeaturedReviews,
-  listPublishedReviews,
-} from "@/lib/reviews"
-import { isMetaPaidTraffic, toURLSearchParams } from "@/lib/paid-traffic"
+import { listFeaturedReviews, listPublishedReviews } from "@/lib/reviews"
 
 export const metadata: Metadata = {
   ...createPageMetadata({
@@ -30,37 +23,7 @@ export const metadata: Metadata = {
   }),
 }
 
-type Props = {
-  searchParams?: Record<string, string | string[] | undefined>
-}
-
-export default async function HomePage({ searchParams }: Props) {
-  const query = toURLSearchParams(searchParams)
-  const ua = headers().get("user-agent")
-  const paid = isMetaPaidTraffic(query, ua)
-  const hrefQuery = paid ? query.toString() : undefined
-
-  // Meta cold ads to `/` (many-options creative): conversion catalog, not organic home.
-  if (paid) {
-    const reviews = await listAdsFeaturedReviews(3)
-    return (
-      <div data-ads-lander="true">
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `document.documentElement.dataset.lander="ads";document.documentElement.dataset.announcement="hidden"`,
-          }}
-        />
-        <link
-          rel="preload"
-          as="image"
-          href="/images/imagen-2.webp"
-          fetchPriority="high"
-        />
-        <AdsCatalogLander reviews={reviews} hrefQuery={hrefQuery} />
-      </div>
-    )
-  }
-
+export default async function HomePage() {
   const [featured, allReviews] = await Promise.all([
     listFeaturedReviews(3),
     listPublishedReviews(),

@@ -1,10 +1,8 @@
 /**
  * Meta paid-traffic helpers for Ads Manager + attribution.
  *
- * Ops: cold ads may land on `/` (home catalog) or `/ads/{slug}`.
- * Paid hits on `/` render AdsCatalogLander (message-match for “many options”).
- * Safety net: paid hits on `/shop*` still bounce to `/ads/{slug}`.
- * Do NOT redirect `/` — home is an intentional paid destination.
+ * Ops: Facebook ads land on `/` (organic home). Existing `/ads*` URLs
+ * redirect there and keep UTM / fbclid query params.
  */
 
 import { isMetaInAppBrowser } from "@/lib/in-app-browser"
@@ -136,25 +134,14 @@ export function resolveColdAdsSlug(options: {
   return DEFAULT_COLD_ADS_SLUG
 }
 
-/** Paths that should bounce Meta paid traffic onto /ads landers.
- * Home (`/`) is intentionally excluded — ads may land on the catalog.
- */
-export function shouldRedirectPaidOrganicPath(pathname: string): boolean {
-  if (pathname === "/shop") return true
-  return /^\/shop\/[^/]+\/?$/.test(pathname)
+/** True for `/ads` and `/ads/{slug}` — those URLs redirect to home. */
+export function isAdsLanderPath(pathname: string): boolean {
+  return pathname === "/ads" || /^\/ads\/[^/]+\/?$/.test(pathname)
 }
 
-export function extractShopSlug(pathname: string): string | null {
-  const m = pathname.match(/^\/shop\/([^/]+)\/?$/)
-  return m?.[1] ?? null
-}
-
-/** Build ads lander path + preserve attribution query string. */
-export function buildPaidAdsRedirectUrl(
-  originUrl: URL,
-  slug: string
-): URL {
-  const target = new URL(`/ads/${slug}`, originUrl.origin)
+/** Send `/ads*` to home and keep UTM / fbclid query params. */
+export function buildPaidHomeRedirectUrl(originUrl: URL): URL {
+  const target = new URL("/", originUrl.origin)
   originUrl.searchParams.forEach((value, key) => {
     target.searchParams.set(key, value)
   })
@@ -168,5 +155,6 @@ export function coldHomeAdsUrlTemplate(): string {
 
 /** Canonical product lander URL template for Ads Manager (ops copy-paste). */
 export function coldAdsUrlTemplate(slug = DEFAULT_COLD_ADS_SLUG): string {
-  return `https://bynmwcreative.com/ads/${slug}?utm_source=facebook&utm_medium=paid&utm_campaign=es_${slug.replace(/-/g, "_")}_cold&utm_content=v1`
+  const campaign = `es_${slug.replace(/-/g, "_")}_cold`
+  return `https://bynmwcreative.com/?utm_source=facebook&utm_medium=paid&utm_campaign=${campaign}&utm_content=v1`
 }
