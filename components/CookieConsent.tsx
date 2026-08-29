@@ -39,7 +39,7 @@ export default function CookieConsent() {
       isInAppBrowser(ua) ||
       document.documentElement.dataset.fbIab === "true"
     const paid = isMetaPaidTraffic(searchParams, ua)
-    const delay = paid || inApp ? 250 : 2800
+    const delay = paid || inApp ? 8000 : 2800
     const t = window.setTimeout(() => setView("banner"), delay)
     return () => window.clearTimeout(t)
   }, [pathname, searchParams])

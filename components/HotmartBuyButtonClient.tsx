@@ -4,10 +4,9 @@ import { useLayoutEffect, useState } from "react"
 import { getPriceCurrency } from "@/lib/tracking"
 import { parsePriceValue } from "@/lib/pricing"
 import { captureAndPersistFromLocation } from "@/lib/ad-attribution"
-import { iabPayHref, onsiteCheckoutPath } from "@/lib/hotmart"
+import { onsiteCheckoutPath } from "@/lib/hotmart"
 import { fireInitiateCheckout } from "@/components/MetaInitiateCheckout"
 import { getProductBySlug } from "@/lib/products"
-import { isInAppBrowser } from "@/lib/in-app-browser"
 
 type Size = "default" | "compact" | "lg"
 
@@ -30,9 +29,8 @@ const sizeClass: Record<Size, string> = {
 }
 
 /**
- * Native <a> checkout CTA.
- * Safari/Chrome → branded /checkout (Hotmart iframe).
- * Facebook/Instagram in-app → Hotmart on the first tap (no extra "Pagar" screen).
+ * Native <a> to branded /checkout — buyer stays on bynmwcreative.com.
+ * Hotmart loads in the checkout iframe. Do not send ads to pay.hotmart.com.
  */
 export default function HotmartBuyButtonClient({
   slug,
@@ -50,12 +48,8 @@ export default function HotmartBuyButtonClient({
   useLayoutEffect(() => {
     const search = window.location.search
     captureAndPersistFromLocation(search)
-    if (isInAppBrowser() && product?.buyUrl) {
-      setHref(iabPayHref(product.buyUrl, search))
-      return
-    }
     setHref(onsiteCheckoutPath(slug, search))
-  }, [slug, product?.buyUrl])
+  }, [slug])
 
   const value = price ? String(parsePriceValue(price)) : undefined
   const currency = price ? getPriceCurrency(price) : undefined
@@ -73,23 +67,6 @@ export default function HotmartBuyButtonClient({
     }
   }
 
-  const goToPay = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    trackTap()
-    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
-    if (event.button !== 0) return
-    const dest = href
-    if (!dest || dest.charAt(0) === "#") return
-    // Facebook in-app often drops the first native click / capture location.assign.
-    // Navigate in this user-gesture turn so Comprar never needs a second tap.
-    event.preventDefault()
-    event.stopPropagation()
-    try {
-      window.location.href = dest
-    } catch {
-      window.location.assign(dest)
-    }
-  }
-
   return (
     <span
       className={`relative inline-flex w-auto max-w-full justify-center ${className ?? ""}`}
@@ -104,7 +81,7 @@ export default function HotmartBuyButtonClient({
         data-buy-cta="true"
         className={`btn-collection-buy${sizeMod ? ` ${sizeMod}` : ""}`}
         onPointerDown={trackTap}
-        onClick={goToPay}
+        onClick={trackTap}
       >
         <span className="btn-label">{children}</span>
       </a>

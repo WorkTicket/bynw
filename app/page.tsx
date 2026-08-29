@@ -13,7 +13,7 @@ import { BRAND_NAME, DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE } from "@/lib/site"
 import { createPageMetadata, buildReviewsJsonLd } from "@/lib/seo"
 import { faqJsonLd } from "@/lib/faqs"
 import { listFeaturedReviews, listPublishedReviews } from "@/lib/reviews"
-import { toURLSearchParams } from "@/lib/paid-traffic"
+import { toURLSearchParams, isMetaPaidTraffic } from "@/lib/paid-traffic"
 
 export const metadata: Metadata = {
   ...createPageMetadata({
@@ -34,7 +34,9 @@ export default async function HomePage({
     listPublishedReviews(),
   ])
   const reviewsJsonLd = buildReviewsJsonLd(allReviews)
-  const hrefQuery = toURLSearchParams(searchParams).toString() || undefined
+  const search = toURLSearchParams(searchParams)
+  const hrefQuery = search.toString() || undefined
+  const paid = isMetaPaidTraffic(search)
 
   return (
     <div className="page-sections">
@@ -64,7 +66,10 @@ export default async function HomePage({
       />
       <Hero />
       <TrustBar />
-      <ProductGrid hrefQuery={hrefQuery} />
+      <ProductGrid
+        hrefBase={paid ? "/ads" : "/shop"}
+        hrefQuery={hrefQuery}
+      />
       <FeatureGrid />
       <WhatsAppSupport />
       <Guarantee />

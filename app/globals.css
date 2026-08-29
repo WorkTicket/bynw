@@ -1697,6 +1697,9 @@ body::after {
   outline: none !important;
   border-radius: var(--btn-radius) !important;
   font-family: inherit !important;
+  cursor: pointer !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
   font-weight: 500 !important;
   font-size: 0.875rem !important;
   letter-spacing: 0.03em !important;

@@ -101,6 +101,7 @@ export default async function ProductPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
+      <link rel="prefetch" href={`/checkout/${localizedProduct.slug}`} />
       <MetaViewContent
         contentId={localizedProduct.id}
         contentName={localizedProduct.seoTitle}

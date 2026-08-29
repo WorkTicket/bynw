@@ -2,11 +2,15 @@ import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import CheckoutShell from "@/components/CheckoutShell"
 import { products, getProductBySlug } from "@/lib/products"
-import { checkoutInAppRedirectScript } from "@/lib/hotmart"
 import { createPageMetadata } from "@/lib/seo"
 import { DEFAULT_OG_IMAGE } from "@/lib/site"
+import { buildHotmartEmbedUrl, buildHotmartPayUrl } from "@/lib/hotmart"
+import { toURLSearchParams } from "@/lib/paid-traffic"
 
-type Props = { params: { slug: string } }
+type Props = {
+  params: { slug: string }
+  searchParams?: Record<string, string | string[] | undefined>
+}
 
 export async function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }))
@@ -37,18 +41,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default function CheckoutPage({ params }: Props) {
+export default function CheckoutPage({ params, searchParams }: Props) {
   const product = getProductBySlug(params.slug)
   if (!product) notFound()
 
+  const search = toURLSearchParams(searchParams)
+  const embedUrl = buildHotmartEmbedUrl(product.buyUrl, search)
+  const payUrl = buildHotmartPayUrl(product.buyUrl, search)
+
   return (
-    <>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: checkoutInAppRedirectScript(product.buyUrl),
-        }}
-      />
-      <CheckoutShell product={product} />
-    </>
+    <CheckoutShell product={product} embedUrl={embedUrl} payUrl={payUrl} />
   )
 }

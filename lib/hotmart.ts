@@ -1,24 +1,22 @@
 /** Hotmart checkout URL helpers — embed on /checkout, full-page fallback. */
 
 import {
-  AD_ATTRIBUTION_KEY,
   appendAttributionToHotmartUrl,
   captureAdAttribution,
   captureAndPersistFromLocation,
   readAdAttribution,
   type AdAttribution,
 } from "@/lib/ad-attribution"
-import {
-  androidChromeIntentUrl,
-  isAndroidUa,
-  isInAppBrowser,
-} from "@/lib/in-app-browser"
 
 const EU_PAY_PARAMS: Record<string, string> = {
   hideBillet: "1",
   hideWallet: "1",
   hideTransf: "1",
   hideMultipleCards: "1",
+  // Hotmart Checkout Elements uses `countrycode` (not countryIsoCode).
+  // Without this, Facebook's in-app browser often geolocates as US → $19 USD.
+  countrycode: "ES",
+  locale: "es",
 }
 
 /**
@@ -42,7 +40,7 @@ export function toFullPageCheckoutUrl(href: string): string {
 }
 
 /**
- * EU-safe checkout params. Boleto, Hotmart wallet and bank transfer look
+ * Spain checkout: euros + Spanish copy, hide Brazil-only methods that look
  * broken when Facebook's in-app browser geolocates the buyer wrongly.
  */
 export function withHotmartPayParams(href: string): string {
@@ -120,43 +118,4 @@ export {
   isFacebookInAppFromDom,
   isInAppBrowser,
 } from "@/lib/in-app-browser"
-
-/** Full-page Hotmart URL, or Android Chrome intent so cards/PayPal work. */
-export function iabPayHref(
-  buyUrl: string,
-  search?: string | URLSearchParams | null
-): string {
-  const payUrl = buildHotmartPayUrl(buyUrl, search)
-  if (typeof navigator !== "undefined" && isAndroidUa()) {
-    return androidChromeIntentUrl(payUrl)
-  }
-  return payUrl
-}
-
-/**
- * Runs in the checkout HTML before React. Facebook/Instagram WebViews must
- * not sit on the "one more step" card — that extra tap drops the sale.
- */
-export function checkoutInAppRedirectScript(buyUrl: string): string {
-  const payKeys = JSON.stringify(Object.keys(EU_PAY_PARAMS))
-  const attrKey = JSON.stringify(AD_ATTRIBUTION_KEY)
-  return `(function(){var d=document.documentElement;if(d.dataset.fbIab!=="true"||d.dataset.iabPay==="1")return;d.dataset.iabPay="1";var base=${JSON.stringify(buyUrl)};try{var url=new URL(base);if(url.searchParams.get("checkoutMode")==="2")url.searchParams.delete("checkoutMode");${payKeys}.forEach(function(k){if(!url.searchParams.has(k))url.searchParams.set(k,"1")});var q=new URLSearchParams(location.search);var stored={};try{stored=JSON.parse(sessionStorage.getItem(${attrKey})||"{}")||{}}catch(e1){}function pick(k){return q.get(k)||stored[k]||""}var src=pick("utm_source")||(pick("fbclid")?"facebook":"");if(src&&!url.searchParams.has("src"))url.searchParams.set("src",src);var sck=[pick("utm_campaign"),pick("utm_content")].filter(Boolean).join("|");if(sck&&!url.searchParams.has("sck"))url.searchParams.set("sck",sck);var fb=pick("fbclid");if(fb&&!url.searchParams.has("xcod"))url.searchParams.set("xcod",String(fb).slice(0,255));var pay=url.toString();if(/Android/i.test(navigator.userAgent||"")){var u=new URL(pay);pay="intent://"+u.host+u.pathname+u.search+u.hash+"#Intent;scheme="+u.protocol.replace(":","")+";package=com.android.chrome;S.browser_fallback_url="+encodeURIComponent(url.toString())+";end"}location.replace(pay)}catch(err){location.replace(base)}})();`
-}
-
-/**
- * Comprar destination. Safari/Chrome stay on branded /checkout.
- * Facebook in-app: Hotmart immediately (no second "Pagar" tap).
- */
-export function resolveBuyHref(
-  slug: string,
-  buyUrl: string,
-  search?: string,
-  opts?: { forceInApp?: boolean }
-): string {
-  const inApp =
-    opts?.forceInApp ??
-    (typeof navigator !== "undefined" && isInAppBrowser())
-  if (inApp && buyUrl) return iabPayHref(buyUrl, search)
-  return onsiteCheckoutPath(slug, search)
-}
 

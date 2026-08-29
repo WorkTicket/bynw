@@ -53,6 +53,7 @@ export default async function AdsProductPage({ params }: Props) {
           fetchPriority="high"
         />
       ) : null}
+      <link rel="prefetch" href={`/checkout/${product.slug}`} />
       <AdsProductLander product={product} reviews={featuredReviews} />
     </>
   )

@@ -1,8 +1,8 @@
 /**
  * Meta paid-traffic helpers for Ads Manager + attribution.
  *
- * Ops: Facebook ads land on `/` (organic home). Existing `/ads*` URLs
- * redirect there and keep UTM / fbclid query params.
+ * Ops: product ads should land on `/ads/{slug}`. Home URLs with a product
+ * campaign are sent there. Catalog ads (`es_home_cold`) stay on `/`.
  */
 
 import { isMetaInAppBrowser } from "@/lib/in-app-browser"
@@ -134,14 +134,42 @@ export function resolveColdAdsSlug(options: {
   return DEFAULT_COLD_ADS_SLUG
 }
 
-/** True for `/ads` and `/ads/{slug}` — those URLs redirect to home. */
+/** True for `/ads` and `/ads/{slug}`. */
 export function isAdsLanderPath(pathname: string): boolean {
   return pathname === "/ads" || /^\/ads\/[^/]+\/?$/.test(pathname)
 }
 
-/** Send `/ads*` to home and keep UTM / fbclid query params. */
-export function buildPaidHomeRedirectUrl(originUrl: URL): URL {
-  const target = new URL("/", originUrl.origin)
+/**
+ * Product slug from campaign/content, or null when the ad is a catalog/home
+ * cold ad (do not fall back to a default product).
+ */
+export function matchCampaignProductSlug(
+  searchParams: URLSearchParams | { get(name: string): string | null }
+): string | null {
+  const haystack = [
+    searchParams.get("utm_campaign"),
+    searchParams.get("utm_content"),
+    searchParams.get("utm_term"),
+  ]
+    .filter(Boolean)
+    .join(" ")
+  if (!haystack.trim()) return null
+
+  for (const rule of CAMPAIGN_SLUG_RULES) {
+    if (rule.test.test(haystack) && getProductBySlug(rule.slug)) {
+      return rule.slug
+    }
+  }
+  const lower = haystack.toLowerCase()
+  for (const p of products) {
+    if (lower.includes(p.slug)) return p.slug
+  }
+  return null
+}
+
+/** `/ads/{slug}` with the current UTM / fbclid query. */
+export function buildAdsProductUrl(originUrl: URL, slug: string): URL {
+  const target = new URL(`/ads/${slug}`, originUrl.origin)
   originUrl.searchParams.forEach((value, key) => {
     target.searchParams.set(key, value)
   })
@@ -156,5 +184,5 @@ export function coldHomeAdsUrlTemplate(): string {
 /** Canonical product lander URL template for Ads Manager (ops copy-paste). */
 export function coldAdsUrlTemplate(slug = DEFAULT_COLD_ADS_SLUG): string {
   const campaign = `es_${slug.replace(/-/g, "_")}_cold`
-  return `https://bynmwcreative.com/?utm_source=facebook&utm_medium=paid&utm_campaign=${campaign}&utm_content=v1`
+  return `https://bynmwcreative.com/ads/${slug}?utm_source=facebook&utm_medium=paid&utm_campaign=${campaign}&utm_content=v1`
 }
