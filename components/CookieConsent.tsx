@@ -11,9 +11,28 @@ import {
   type ConsentChoice,
 } from "@/lib/consent"
 import { isInAppBrowser } from "@/lib/in-app-browser"
-import { isMetaPaidTraffic } from "@/lib/paid-traffic"
 
 type View = "hidden" | "banner" | "prefs"
+
+function isConversionPath(
+  pathname: string | null,
+  searchParams: { get(name: string): string | null } | null
+): boolean {
+  if (!pathname) return false
+  if (pathname.startsWith("/checkout") || pathname.startsWith("/ads")) return true
+  if (typeof document !== "undefined") {
+    const lander = document.documentElement.dataset.lander
+    if (lander === "ads" || lander === "checkout") return true
+  }
+  if (pathname === "/" || pathname === "") {
+    const medium = searchParams?.get("utm_medium") || ""
+    const source = searchParams?.get("utm_source") || ""
+    if (/paid|cpc|cpm|ppc/i.test(medium)) return true
+    if (/^(facebook|fb|instagram|ig|meta)$/i.test(source)) return true
+    if (searchParams?.get("fbclid")) return true
+  }
+  return false
+}
 
 export default function CookieConsent() {
   const pathname = usePathname()
@@ -28,19 +47,19 @@ export default function CookieConsent() {
       setView("hidden")
       return
     }
-    // Never cover the pay CTA — checkout must stay tappable.
-    if (pathname?.startsWith("/checkout")) {
-      setView("hidden")
-      return
-    }
-    // Paid Meta / FB in-app: top bar (does not cover Comprar). Organic: defer for LCP.
+
     const ua = typeof navigator !== "undefined" ? navigator.userAgent : null
     const inApp =
       isInAppBrowser(ua) ||
       document.documentElement.dataset.fbIab === "true"
-    const paid = isMetaPaidTraffic(searchParams, ua)
-    const delay = paid || inApp ? 8000 : 2800
-    const t = window.setTimeout(() => setView("banner"), delay)
+
+    // Ads / checkout / in-app WebViews: never cover Comprar. Footer prefs still work.
+    if (isConversionPath(pathname, searchParams) || inApp) {
+      setView("hidden")
+      return
+    }
+
+    const t = window.setTimeout(() => setView("banner"), 2800)
     return () => window.clearTimeout(t)
   }, [pathname, searchParams])
 
@@ -72,77 +91,48 @@ export default function CookieConsent() {
 
   if (view === "hidden") return null
 
-  const ua = typeof navigator !== "undefined" ? navigator.userAgent : null
-  const inApp =
-    isInAppBrowser(ua) ||
-    (typeof document !== "undefined" &&
-      document.documentElement.dataset.fbIab === "true")
-  const paid =
-    isMetaPaidTraffic(searchParams, ua) ||
-    inApp ||
-    (typeof document !== "undefined" &&
-      document.documentElement.getAttribute("data-sticky-cta") === "visible")
-
   return (
     <div
-      className={`cookie-consent${paid ? " cookie-consent--top cookie-consent--compact" : ""}`}
+      className={`cookie-consent${view === "prefs" ? " cookie-consent--prefs" : ""}`}
       role="dialog"
       aria-modal="false"
       aria-labelledby="cookie-consent-title"
     >
       <div className="cookie-consent__panel">
-        <p id="cookie-consent-title" className="cookie-consent__title">
-          Cookies y privacidad
-        </p>
-        <p className="cookie-consent__text">
-          {paid ? (
-            <>
-              Cookies para medir visitas y anuncios.{" "}
-              <a href="/cookies-policy" className="cookie-consent__link">
-                Más información
-              </a>
-            </>
-          ) : (
-            <>
-              Usamos cookies necesarias para el sitio. Con tu permiso, también
-              cookies de analítica (Google) y publicidad (Meta) para medir visitas y
-              optimizar anuncios.{" "}
-              <a href="/cookies-policy" className="cookie-consent__link">
-                Más información
-              </a>
-            </>
-          )}
-        </p>
-
         {view === "prefs" ? (
-          <div className="cookie-consent__prefs">
-            <label className="cookie-consent__check">
-              <input type="checkbox" checked disabled readOnly />
-              <span>Necesarias (siempre activas)</span>
-            </label>
-            <label className="cookie-consent__check">
-              <input
-                type="checkbox"
-                checked={analytics}
-                onChange={(e) => setAnalytics(e.target.checked)}
-              />
-              <span>Analítica (Google Analytics)</span>
-            </label>
-            <label className="cookie-consent__check">
-              <input
-                type="checkbox"
-                checked={marketing}
-                onChange={(e) => setMarketing(e.target.checked)}
-              />
-              <span>Publicidad (Meta Pixel)</span>
-            </label>
+          <>
+            <p id="cookie-consent-title" className="cookie-consent__title">
+              Preferencias de cookies
+            </p>
+            <div className="cookie-consent__prefs">
+              <label className="cookie-consent__check">
+                <input type="checkbox" checked disabled readOnly />
+                <span>Necesarias (siempre activas)</span>
+              </label>
+              <label className="cookie-consent__check">
+                <input
+                  type="checkbox"
+                  checked={analytics}
+                  onChange={(e) => setAnalytics(e.target.checked)}
+                />
+                <span>Analítica (Google Analytics)</span>
+              </label>
+              <label className="cookie-consent__check">
+                <input
+                  type="checkbox"
+                  checked={marketing}
+                  onChange={(e) => setMarketing(e.target.checked)}
+                />
+                <span>Publicidad (Meta Pixel)</span>
+              </label>
+            </div>
             <div className="cookie-consent__actions">
               <button
                 type="button"
                 className="cookie-consent__btn cookie-consent__btn--primary"
                 onClick={savePrefs}
               >
-                Guardar preferencias
+                Guardar
               </button>
               <button
                 type="button"
@@ -152,31 +142,39 @@ export default function CookieConsent() {
                 Solo necesarias
               </button>
             </div>
-          </div>
+          </>
         ) : (
-          <div className="cookie-consent__actions">
-            <button
-              type="button"
-              className="cookie-consent__btn cookie-consent__btn--primary"
-              onClick={acceptAll}
-            >
-              Aceptar todas
-            </button>
-            <button
-              type="button"
-              className="cookie-consent__btn cookie-consent__btn--ghost"
-              onClick={rejectNonEssential}
-            >
-              Rechazar
-            </button>
-            <button
-              type="button"
-              className="cookie-consent__btn cookie-consent__btn--ghost"
-              onClick={() => setView("prefs")}
-            >
-              Preferencias
-            </button>
-          </div>
+          <>
+            <p id="cookie-consent-title" className="cookie-consent__text">
+              Usamos cookies necesarias y, si aceptas, analítica y anuncios.{" "}
+              <a href="/cookies-policy" className="cookie-consent__link">
+                Más información
+              </a>
+            </p>
+            <div className="cookie-consent__actions">
+              <button
+                type="button"
+                className="cookie-consent__btn cookie-consent__btn--primary"
+                onClick={acceptAll}
+              >
+                Aceptar
+              </button>
+              <button
+                type="button"
+                className="cookie-consent__btn cookie-consent__btn--ghost"
+                onClick={rejectNonEssential}
+              >
+                Rechazar
+              </button>
+              <button
+                type="button"
+                className="cookie-consent__btn cookie-consent__btn--text"
+                onClick={() => setView("prefs")}
+              >
+                Opciones
+              </button>
+            </div>
+          </>
         )}
       </div>
     </div>

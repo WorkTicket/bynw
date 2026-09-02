@@ -2,7 +2,106 @@
  * Runs before React so Next.js never soft-navigates (click or back/forward).
  * Soft routing was crashing iPhone, Android, and in-app browsers on this shop.
  *
- * Buy / pay links stay native <a href>. Facebook/Instagram drop preventDefault +
- * location.href on the first tap — that was kicking buyers off-site or nowhere.
+ * Buy / pay links stay native <a href>. Before that navigation, copy the
+ * current UTM/fbclid onto same-origin /checkout links so a tap before React
+ * hydrates does not drop Facebook attribution.
  */
-export const HARD_NAVIGATION_BOOT_SCRIPT = `(function(){var o=location.origin;function sameOrigin(h){try{return new URL(h,o).origin===o}catch(e){return false}}function findA(e){var t=e.target;if(t&&t.nodeType===3)t=t.parentElement;if(t&&t.closest){var a=t.closest("a[href]");if(a)return a}var p=e.composedPath&&e.composedPath();if(p){for(var i=0;i<p.length;i++){if(p[i]&&p[i].tagName==="A"&&p[i].getAttribute&&p[i].getAttribute("href"))return p[i]}}return null}function go(h){try{location.href=h}catch(err){location.assign(h)}}function samePageHash(h){if(!h)return null;if(h.charAt(0)==="#")return h.slice(1);try{var u=new URL(h,o);if(u.origin!==o)return null;if(u.pathname===location.pathname&&u.hash&&!u.search)return u.hash.slice(1)}catch(err){}return null}function persistAds(){try{var q=location.search;if(!q||q.length<2)return;var p=new URLSearchParams(q),a={},has=0,keys=["utm_source","utm_medium","utm_campaign","utm_content","utm_term","fbclid"];keys.forEach(function(k){var v=p.get(k);if(v){a[k]=v;has=1}});if(!has)return;var prev={};try{prev=JSON.parse(sessionStorage.getItem("ad_attribution")||"{}")}catch(e2){}var merged={};keys.forEach(function(k){merged[k]=prev[k]||a[k]});sessionStorage.setItem("ad_attribution",JSON.stringify(merged))}catch(e3){}}persistAds();document.addEventListener("click",function(e){if(e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;var a=findA(e);if(!a)return;var h=a.getAttribute("href");if(!h)return;var hashId=samePageHash(h);if(hashId!==null){if(!hashId)return;e.preventDefault();e.stopImmediatePropagation();var id=hashId;try{id=decodeURIComponent(hashId)}catch(err){}var el=document.getElementById(id);if(el){try{el.scrollIntoView({block:"start"})}catch(err2){el.scrollIntoView()}try{history.replaceState(null,"",location.pathname+location.search+"#"+id)}catch(err3){}}return}if(a.getAttribute("data-buy-cta")==="true")return;if(/^(mailto:|tel:|javascript:|intent:)/i.test(h))return;if(a.target&&a.target!=="_self"&&a.target!=="_top")return;if(a.hasAttribute("download"))return;if(!sameOrigin(h))return;e.preventDefault();e.stopImmediatePropagation();go(h)},true);window.addEventListener("popstate",function(){location.reload()});window.addEventListener("pageshow",function(e){if(e.persisted)location.reload()})})();`
+export const HARD_NAVIGATION_BOOT_SCRIPT = `(function(){
+  var o=location.origin;
+  function sameOrigin(h){
+    try{return new URL(h,o).origin===o}catch(e){return false}
+  }
+  function findA(e){
+    var t=e.target;
+    if(t&&t.nodeType===3)t=t.parentElement;
+    if(t&&t.closest){
+      var a=t.closest("a[href]");
+      if(a)return a;
+    }
+    var p=e.composedPath&&e.composedPath();
+    if(p){
+      for(var i=0;i<p.length;i++){
+        if(p[i]&&p[i].tagName==="A"&&p[i].getAttribute&&p[i].getAttribute("href"))return p[i];
+      }
+    }
+    return null;
+  }
+  function go(h){
+    try{location.href=h}catch(err){location.assign(h)}
+  }
+  function samePageHash(h){
+    if(!h)return null;
+    if(h.charAt(0)==="#")return h.slice(1);
+    try{
+      var u=new URL(h,o);
+      if(u.origin!==o)return null;
+      if(u.pathname===location.pathname&&u.hash&&!u.search)return u.hash.slice(1);
+    }catch(err){}
+    return null;
+  }
+  function persistAds(){
+    try{
+      var q=location.search;
+      if(!q||q.length<2)return;
+      var p=new URLSearchParams(q),a={},has=0;
+      var keys=["utm_source","utm_medium","utm_campaign","utm_content","utm_term","fbclid"];
+      keys.forEach(function(k){var v=p.get(k);if(v){a[k]=v;has=1}});
+      if(!has)return;
+      var prev={};
+      try{prev=JSON.parse(sessionStorage.getItem("ad_attribution")||"{}")}catch(e2){}
+      var merged={};
+      keys.forEach(function(k){merged[k]=prev[k]||a[k]});
+      sessionStorage.setItem("ad_attribution",JSON.stringify(merged));
+    }catch(e3){}
+  }
+  function keepAdQuery(a,h){
+    if(a.getAttribute("data-buy-cta")!=="true")return h;
+    try{
+      var u=new URL(h,o);
+      if(u.origin!==o)return h;
+      if(!location.search||location.search.length<2)return h;
+      var bp=new URLSearchParams(location.search);
+      bp.forEach(function(v,k){if(!u.searchParams.has(k))u.searchParams.set(k,v)});
+      var next=u.pathname+u.search+u.hash;
+      a.setAttribute("href",next);
+      return next;
+    }catch(e4){
+      return h;
+    }
+  }
+  persistAds();
+  document.addEventListener("click",function(e){
+    if(e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+    var a=findA(e);
+    if(!a)return;
+    var h=a.getAttribute("href");
+    if(!h)return;
+    var hashId=samePageHash(h);
+    if(hashId!==null){
+      if(!hashId)return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      var id=hashId;
+      try{id=decodeURIComponent(hashId)}catch(err){}
+      var el=document.getElementById(id);
+      if(el){
+        try{el.scrollIntoView({block:"start"})}catch(err2){el.scrollIntoView()}
+        try{history.replaceState(null,"",location.pathname+location.search+"#"+id)}catch(err3){}
+      }
+      return;
+    }
+    if(a.getAttribute("data-buy-cta")==="true"){
+      keepAdQuery(a,h);
+      return;
+    }
+    if(/^(mailto:|tel:|javascript:|intent:)/i.test(h))return;
+    if(a.target&&a.target!=="_self"&&a.target!=="_top")return;
+    if(a.hasAttribute("download"))return;
+    if(!sameOrigin(h))return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    go(h);
+  },true);
+  window.addEventListener("popstate",function(){location.reload()});
+  window.addEventListener("pageshow",function(e){if(e.persisted)location.reload()});
+})();`

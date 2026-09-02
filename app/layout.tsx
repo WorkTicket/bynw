@@ -148,6 +148,7 @@ export default function RootLayout({
     <html
       lang={SITE_LANG}
       className={`${sans.variable} ${display.variable} ${script.variable}`}
+      suppressHydrationWarning
     >
       <head>
         {/* In-app browsers (FB/IG/TikTok/…) — flag before React for checkout + CSS */}

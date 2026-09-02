@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation"
 import PrimaryCTA from "@/components/PrimaryCTA"
 import HotmartBuyButtonClient from "@/components/HotmartBuyButtonClient"
 import { getProductBySlug } from "@/lib/products"
-import { WHATSAPP_URL } from "@/lib/site"
 
 const links = [
   { href: "/", label: "Inicio" },
@@ -81,17 +80,7 @@ function SlimAction({ pathname }: { pathname: string }) {
   const isCheckout = pathname.startsWith("/checkout")
 
   if (isCheckout) {
-    return (
-      <a
-        href={WHATSAPP_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        data-track-whatsapp-click="checkout_header"
-        className="btn-nav"
-      >
-        Ayuda<span className="hidden sm:inline"> WhatsApp</span>
-      </a>
-    )
+    return <span className="btn-nav pointer-events-none">Pago seguro</span>
   }
 
   if (adsProduct) {
@@ -202,7 +191,7 @@ export default function Header() {
     return (
       <>
         <div className="ios-status-bar" aria-hidden="true" />
-        <SlimBar brandHref="/">
+        <SlimBar brandHref={isCheckout ? pathname : "/"}>
           <SlimAction pathname={pathname} />
         </SlimBar>
       </>

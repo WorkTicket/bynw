@@ -30,7 +30,9 @@ const sizeClass: Record<Size, string> = {
 
 /**
  * Native <a> to branded /checkout — buyer stays on bynmwcreative.com.
- * Hotmart loads in the checkout iframe. Do not send ads to pay.hotmart.com.
+ * Phone / Facebook in-app: checkout is a confirm screen + top-level Hotmart.
+ * Desktop: Hotmart may embed in an iframe. Do not send ads to pay.hotmart.com
+ * from the lander (attribution + branded confirm first).
  */
 export default function HotmartBuyButtonClient({
   slug,

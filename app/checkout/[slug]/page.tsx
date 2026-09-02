@@ -4,7 +4,7 @@ import CheckoutShell from "@/components/CheckoutShell"
 import { products, getProductBySlug } from "@/lib/products"
 import { createPageMetadata } from "@/lib/seo"
 import { DEFAULT_OG_IMAGE } from "@/lib/site"
-import { buildHotmartEmbedUrl, buildHotmartPayUrl } from "@/lib/hotmart"
+import { buildHotmartPayUrl } from "@/lib/hotmart"
 import { toURLSearchParams } from "@/lib/paid-traffic"
 
 type Props = {
@@ -46,10 +46,7 @@ export default function CheckoutPage({ params, searchParams }: Props) {
   if (!product) notFound()
 
   const search = toURLSearchParams(searchParams)
-  const embedUrl = buildHotmartEmbedUrl(product.buyUrl, search)
   const payUrl = buildHotmartPayUrl(product.buyUrl, search)
 
-  return (
-    <CheckoutShell product={product} embedUrl={embedUrl} payUrl={payUrl} />
-  )
+  return <CheckoutShell product={product} payUrl={payUrl} />
 }

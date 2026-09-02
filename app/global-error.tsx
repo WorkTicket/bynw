@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { RELOAD_KEY } from "@/components/NavigationRecovery"
+import { RELOAD_KEY, reloadOnce } from "@/components/NavigationRecovery"
 
 export default function GlobalError({
   error,
@@ -13,17 +13,7 @@ export default function GlobalError({
   const [showUi, setShowUi] = useState(false)
 
   useEffect(() => {
-    try {
-      if (sessionStorage.getItem(RELOAD_KEY) === "1") {
-        sessionStorage.removeItem(RELOAD_KEY)
-        window.location.replace("/")
-        return
-      }
-      sessionStorage.setItem(RELOAD_KEY, "1")
-      window.location.reload()
-    } catch {
-      window.location.replace("/")
-    }
+    if (!reloadOnce()) setShowUi(true)
   }, [error])
 
   useEffect(() => {

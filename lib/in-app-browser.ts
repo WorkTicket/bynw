@@ -83,6 +83,21 @@ export function androidChromeIntentUrl(httpsUrl: string): string {
   }
 }
 
+/** Top-level Hotmart URL. Android IAB opens Chrome so 3DS / PayPal / Klarna work. */
+export function checkoutPayHref(httpsUrl: string, userAgent?: string | null): string {
+  if (isInAppBrowser(userAgent) && isAndroidUa(userAgent)) {
+    return androidChromeIntentUrl(httpsUrl)
+  }
+  return httpsUrl
+}
+
+/** Desktop Safari/Chrome can embed Hotmart. In-app + phone WebViews cannot. */
+export function canEmbedHotmartCheckout(userAgent?: string | null): boolean {
+  if (isInAppBrowser(userAgent) || isFacebookInAppFromDom()) return false
+  if (typeof window === "undefined") return false
+  return window.matchMedia("(min-width: 1024px)").matches
+}
+
 export function applyInAppDomFlags(userAgent?: string | null): boolean {
   if (typeof document === "undefined") return false
   const ua = readUa(userAgent)

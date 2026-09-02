@@ -166,7 +166,7 @@ function BuyBlock({
         target="_blank"
         rel="noopener noreferrer"
         data-track-whatsapp-click="ads_product_buy"
-        className="text-[12px] font-medium text-rose-600 underline-offset-4 transition-colors hover:text-rose-700 hover:underline"
+        className={`text-[12px] font-medium text-rose-600 underline-offset-4 transition-colors hover:text-rose-700 hover:underline${compact ? " hidden sm:inline" : ""}`}
       >
         ¿Dudas? WhatsApp a Natalia
       </a>
@@ -214,28 +214,27 @@ export default function AdsProductLander({ product, reviews }: Props) {
         price={product.price}
       />
 
-      {/* ── Product Hero: Clean, responsive layout for high-converting ads ── */}
+      {/* Phone / FB in-app: badge → title → stars → price → Comprar, then proof. */}
       <section
         id="oferta"
-        className="relative scroll-mt-[var(--site-header-offset)] overflow-hidden bg-[#fffaf8] pb-[calc(var(--sticky-cta-stack)+1.25rem)] pt-6 sm:pb-[calc(var(--sticky-cta-stack)+2rem)] sm:pt-10 lg:pb-20 lg:pt-14"
+        className="ads-product-hero relative scroll-mt-[var(--site-header-offset)] overflow-hidden bg-[#fffaf8] pb-[calc(var(--sticky-cta-stack)+1.25rem)] pt-3 sm:pb-[calc(var(--sticky-cta-stack)+2rem)] sm:pt-10 lg:pb-20 lg:pt-14"
       >
         <div className="section relative z-10">
           <div className="mx-auto grid max-w-6xl items-start gap-8 lg:grid-cols-2 lg:gap-14 xl:gap-16">
-            {/* Left Column (Desktop) / Main Content */}
             <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
-              <span className="inline-flex items-center rounded-full bg-rose-100/90 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-rose-700">
+              <span className="order-1 inline-flex items-center rounded-full bg-rose-100/90 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-rose-700">
                 {promoHeroBadge()}
               </span>
 
-              <h1 className="mt-4 font-display text-2xl font-semibold leading-[1.1] tracking-tight text-ink sm:text-4xl lg:text-[2.65rem]">
+              <h1 className="order-2 mt-2.5 font-display text-2xl font-semibold leading-[1.1] tracking-tight text-ink sm:mt-4 sm:text-4xl lg:text-[2.65rem]">
                 {product.shortTitle}
               </h1>
 
-              <p className="mt-2.5 max-w-md text-sm leading-[1.55] text-muted sm:text-base sm:leading-[1.65]">
+              <p className="order-6 mt-3 max-w-md text-sm leading-[1.55] text-muted lg:order-3 lg:mt-2.5 sm:text-base sm:leading-[1.65]">
                 {heroSupport}
               </p>
 
-              <div className="mt-3 flex flex-wrap items-center justify-center gap-1.5 sm:mt-4 sm:gap-2 lg:justify-start">
+              <div className="order-3 mt-2.5 flex flex-wrap items-center justify-center gap-1.5 sm:mt-4 sm:gap-2 lg:order-4 lg:justify-start">
                 <div
                   className="flex items-center gap-0.5"
                   aria-label={`${SITE_RATING_DISPLAY} de 5 estrellas`}
@@ -253,7 +252,7 @@ export default function AdsProductLander({ product, reviews }: Props) {
               </div>
 
               {proofQuote && proofReview ? (
-                <p className="mt-2.5 max-w-md text-[11px] leading-snug text-ink/60 sm:text-xs sm:leading-relaxed">
+                <p className="order-7 mt-3 hidden max-w-md text-[11px] leading-snug text-ink/60 lg:order-5 lg:mt-2.5 lg:block sm:text-xs sm:leading-relaxed">
                   <span className="italic">“{proofQuote}”</span>
                   <span className="not-italic text-muted">
                     {" "}
@@ -263,24 +262,7 @@ export default function AdsProductLander({ product, reviews }: Props) {
                 </p>
               ) : null}
 
-              {/* Mobile Image preview (between title/rating and benefits/buy) */}
-              <div className="my-5 w-full max-w-sm overflow-hidden rounded-2xl bg-rose-50/40 ring-1 ring-rose-100/60 lg:hidden">
-                <div className="relative aspect-square w-full">
-                  <Image
-                    src={`/images/${product.images[0]}`}
-                    alt={product.shortTitle}
-                    fill
-                    priority
-                    fetchPriority="high"
-                    quality={80}
-                    sizes="(max-width: 640px) 90vw, 380px"
-                    unoptimized
-                    className="object-contain p-2"
-                  />
-                </div>
-              </div>
-
-              <ul className="mt-3 w-full max-w-md space-y-2 text-left sm:mt-5 sm:space-y-2.5">
+              <ul className="order-8 mt-3 w-full max-w-md space-y-2 text-left lg:order-6 sm:mt-5 sm:space-y-2.5">
                 {heroBenefits.map((b) => (
                   <li
                     key={b}
@@ -295,7 +277,7 @@ export default function AdsProductLander({ product, reviews }: Props) {
                 ))}
               </ul>
 
-              <div className="mt-4 flex flex-wrap items-baseline justify-center gap-x-2.5 gap-y-1 sm:mt-6 sm:gap-x-3 lg:justify-start">
+              <div className="order-4 mt-3 flex flex-wrap items-baseline justify-center gap-x-2.5 gap-y-1 sm:mt-6 sm:gap-x-3 lg:order-7 lg:justify-start">
                 <span className="text-2xl font-semibold tracking-tight text-ink sm:text-4xl">
                   {product.price}
                 </span>
@@ -309,24 +291,40 @@ export default function AdsProductLander({ product, reviews }: Props) {
                     {discountBadge}
                   </span>
                 )}
-                {savingsLabel && (
-                  <span className="w-full text-[11px] font-medium text-rose-700/90 sm:w-auto sm:text-xs">
+                {savingsLabel ? (
+                  <span className="hidden text-[11px] font-medium text-rose-700/90 sm:inline sm:text-xs">
                     {savingsLabel}
                   </span>
-                )}
+                ) : null}
                 <span className="w-full text-[11px] text-muted/80 sm:text-xs">
                   {promoLine}
                 </span>
-                <SaleCountdown className="w-full text-[12px] font-medium text-rose-700/90" />
+                <SaleCountdown className="hidden w-full text-[12px] font-medium text-rose-700/90 sm:block" />
               </div>
 
-              <div className="mt-5 w-full max-w-md sm:mt-7">
+              <div className="order-5 mt-3 w-full max-w-md sm:mt-7 lg:order-8">
                 <BuyBlock
                   buyProps={buyProps}
                   buyLabel={buyLabel}
                   align="start"
                   compact
                 />
+              </div>
+
+              <div className="order-9 my-5 w-full max-w-sm overflow-hidden rounded-2xl bg-rose-50/40 ring-1 ring-rose-100/60 lg:hidden">
+                <div className="relative aspect-square w-full">
+                  <Image
+                    src={`/images/${product.images[0]}`}
+                    alt={product.shortTitle}
+                    fill
+                    priority
+                    fetchPriority="high"
+                    quality={80}
+                    sizes="(max-width: 640px) 90vw, 380px"
+                    unoptimized
+                    className="object-contain p-2"
+                  />
+                </div>
               </div>
             </div>
 

@@ -2255,67 +2255,65 @@ html[data-lander="checkout"] main {
   }
 }
 
-/* ── Cookie consent (EU) ── */
+/* ── Cookie consent (EU) — slim bottom dock, above sticky Comprar ── */
 .cookie-consent {
   position: fixed;
   z-index: 80;
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 0.75rem;
-  padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  padding: 0.6rem 0.75rem;
+  padding-bottom: calc(0.6rem + env(safe-area-inset-bottom, 0px));
   pointer-events: none;
 }
 
-/* Paid traffic: park above the fold so it never covers Comprar / sticky buy */
-.cookie-consent--top {
-  top: var(--site-header-offset);
-  bottom: auto;
+html[data-sticky-cta="visible"] .cookie-consent {
+  bottom: var(--sticky-cta-stack);
   padding-bottom: 0.5rem;
 }
 
-/* Facebook in-app / paid landers: never cover the buy bar even if React class lags */
-html[data-fb-iab] .cookie-consent,
-html[data-lander="ads"] .cookie-consent {
-  top: var(--site-header-offset);
-  bottom: auto;
-  padding-bottom: 0.5rem;
-}
-
-.cookie-consent--compact .cookie-consent__panel {
-  padding: 0.75rem 0.95rem 0.85rem;
-}
-
-.cookie-consent--compact .cookie-consent__title {
-  font-size: 0.95rem;
-}
-
-.cookie-consent--compact .cookie-consent__text {
-  margin-top: 0.25rem;
-  font-size: 0.75rem;
+/* Ads / checkout / Facebook in-app: never dock the auto banner over Comprar.
+   Footer “Preferencias de cookies” still opens .cookie-consent--prefs. */
+html[data-lander="ads"] .cookie-consent:not(.cookie-consent--prefs),
+html[data-lander="checkout"] .cookie-consent:not(.cookie-consent--prefs),
+html[data-fb-iab] .cookie-consent:not(.cookie-consent--prefs),
+body:has([data-ads-lander], [data-checkout-lander])
+  .cookie-consent:not(.cookie-consent--prefs) {
+  display: none !important;
 }
 
 .cookie-consent__panel {
   pointer-events: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem 0.85rem;
   margin: 0 auto;
-  max-width: 36rem;
-  border: 1px solid rgba(232, 180, 184, 0.55);
+  max-width: 44rem;
+  border: 1px solid rgba(232, 180, 184, 0.5);
   border-radius: 1rem;
-  background: rgba(255, 250, 248, 0.97);
-  padding: 1rem 1.1rem 1.1rem;
+  background: #fffaf8;
+  padding: 0.7rem 0.9rem;
+}
+
+.cookie-consent--prefs .cookie-consent__panel {
+  flex-direction: column;
+  align-items: stretch;
 }
 
 .cookie-consent__title {
   font-family: var(--font-display), serif;
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--ink);
 }
 
 .cookie-consent__text {
-  margin-top: 0.4rem;
-  font-size: 0.8125rem;
-  line-height: 1.55;
+  flex: 1 1 12rem;
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.45;
   color: var(--muted);
 }
 
@@ -2326,10 +2324,9 @@ html[data-lander="ads"] .cookie-consent {
 }
 
 .cookie-consent__prefs {
-  margin-top: 0.75rem;
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
+  gap: 0.4rem;
 }
 
 .cookie-consent__check {
@@ -2341,17 +2338,18 @@ html[data-lander="ads"] .cookie-consent {
 }
 
 .cookie-consent__actions {
-  margin-top: 0.85rem;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
 }
 
 .cookie-consent__btn {
-  min-height: 2.5rem;
+  min-height: 2.25rem;
   border-radius: 999px;
-  padding: 0.45rem 0.95rem;
-  font-size: 0.8125rem;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.75rem;
   font-weight: 600;
   transition: background 0.15s ease, color 0.15s ease;
 }
@@ -2373,6 +2371,17 @@ html[data-lander="ads"] .cookie-consent {
 
 .cookie-consent__btn--ghost:hover {
   background: rgba(184, 74, 94, 0.06);
+}
+
+.cookie-consent__btn--text {
+  background: transparent;
+  color: var(--muted);
+  padding-left: 0.45rem;
+  padding-right: 0.45rem;
+}
+
+.cookie-consent__btn--text:hover {
+  color: #b84a5e;
 }
 
 /* ── Performance gates (mobile + paid landers) ── */
@@ -2423,12 +2432,13 @@ html[data-lander="checkout"] .ios-status-bar {
   background-color: var(--surface-pearl);
 }
 
-/* Branded checkout with embedded Hotmart iframe */
+/* Branded checkout: native Hotmart tap on phone / IAB; iframe on desktop */
 .checkout-shell__layout {
   width: 100%;
 }
 
 .checkout-hotmart-wrap {
+  display: none;
   overflow: hidden;
   border-radius: 1.15rem;
   border: 1px solid rgba(232, 180, 184, 0.45);
@@ -2444,14 +2454,6 @@ html[data-lander="checkout"] .ios-status-bar {
   height: min(920px, 92vh);
   border: 0;
   background: #fff;
-}
-
-.checkout-hotmart-frame--pending {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 250, 248, 0.95) 0%,
-    rgba(250, 243, 241, 0.9) 100%
-  );
 }
 
 .checkout-shell__fallback {
@@ -2470,6 +2472,11 @@ html[data-lander="checkout"] .ios-status-bar {
 
 .checkout-shell__fallback a:hover {
   text-decoration: underline;
+}
+
+.checkout-shell__fallback--embed,
+.checkout-shell__embed-retry {
+  display: none;
 }
 
 @media (min-width: 1024px) {
@@ -2494,24 +2501,11 @@ html[data-lander="checkout"] .ios-status-bar {
     display: none !important;
   }
 
-  html[data-sticky-cta="visible"] .cookie-consent:not(.cookie-consent--top) {
-    bottom: var(--sticky-cta-stack);
-    padding-bottom: 0.5rem;
-  }
-
-  html[data-sticky-cta="visible"] .cookie-consent {
-    top: var(--site-header-offset) !important;
-    bottom: auto !important;
-    padding-bottom: 0.5rem !important;
-  }
-
   .checkout-shell {
     display: flex;
     flex-direction: column;
     background: var(--surface-pearl);
-    height: calc(100vh - var(--header-nav-height) - var(--safe-area-top));
     min-height: calc(100vh - var(--header-nav-height) - var(--safe-area-top));
-    height: calc(100svh - var(--header-nav-height) - var(--safe-area-top));
     min-height: calc(100svh - var(--header-nav-height) - var(--safe-area-top));
   }
 
@@ -2539,36 +2533,16 @@ html[data-lander="checkout"] .ios-status-bar {
   .checkout-shell__layout,
   .checkout-shell__pay {
     display: flex;
-    flex: 1;
-    min-height: 0;
     flex-direction: column;
   }
 
   .checkout-hotmart-wrap {
-    flex: 1;
-    min-height: 0;
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
-    background: transparent;
+    display: none !important;
   }
 
-  .checkout-hotmart-frame {
-    display: block;
-    width: 100%;
-    height: 100%;
-    min-height: 22rem;
-    max-height: none;
-    background: transparent;
-  }
-
-  .checkout-shell__fallback {
-    margin: 0;
-    flex-shrink: 0;
-    padding: 0.55rem 1rem calc(0.7rem + env(safe-area-inset-bottom, 0px));
-    font-size: 11px;
-    background: var(--surface-pearl);
-    border-top: 1px solid rgba(232, 180, 184, 0.28);
+  .checkout-shell__fallback--embed,
+  .checkout-shell__embed-retry {
+    display: none !important;
   }
 }
 
@@ -2653,12 +2627,50 @@ html[data-lander="checkout"] body {
   background: var(--surface-pearl);
 }
 
-/* In-app checkout (Facebook/Instagram WebView) — native Hotmart tap, no iframe */
+/* Phone + Facebook/Instagram WebView — native Hotmart tap, no iframe */
 .checkout-pay-card {
   margin-inline: auto;
   max-width: 28rem;
-  padding: 1.75rem 1.25rem 2rem;
+  padding: 1.5rem 1.25rem 1.25rem;
   text-align: center;
+}
+
+.checkout-pay-card__kicker {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #b84a5e;
+}
+
+.checkout-pay-card__trust {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.checkout-pay-card__trust li {
+  position: relative;
+  padding: 0.35rem 0 0.35rem 1.1rem;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: rgba(58, 36, 40, 0.75);
+}
+
+.checkout-pay-card__trust li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.85rem;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: #f0a3ab;
+}
+
+.checkout-pay-card__cta {
+  margin-top: 1.25rem;
 }
 
 .checkout-pay-card__hint {
@@ -2668,11 +2680,30 @@ html[data-lander="checkout"] body {
   color: rgba(138, 101, 112, 0.8);
 }
 
+.checkout-pay-card__hint--ios,
+.checkout-pay-card__hint--android,
+.checkout-pay-card__alt {
+  display: none;
+}
+
+.checkout-pay-card__alt {
+  margin-top: 0.65rem;
+  font-size: 12px;
+}
+
+.checkout-pay-card__alt a {
+  font-weight: 600;
+  color: #b84a5e;
+  text-underline-offset: 3px;
+}
+
 .checkout-shell__sticky-spacer {
+  display: block;
   height: calc(4.25rem + env(safe-area-inset-bottom, 0px));
 }
 
 .checkout-shell__sticky {
+  display: block;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -2687,11 +2718,51 @@ html[data-lander="checkout"] body {
   padding: 0.65rem 1rem;
 }
 
+html[data-fb-iab][data-iab-os="ios"] .checkout-pay-card__hint--default,
+html[data-fb-iab][data-iab-os="android"] .checkout-pay-card__hint--default {
+  display: none;
+}
+
+html[data-fb-iab][data-iab-os="ios"] .checkout-pay-card__hint--ios {
+  display: block;
+}
+
+html[data-fb-iab][data-iab-os="android"] .checkout-pay-card__hint--android,
+html[data-fb-iab][data-iab-os="android"] .checkout-pay-card__alt--android {
+  display: block;
+}
+
+html[data-fb-iab] .checkout-hotmart-wrap,
+html[data-fb-iab] .checkout-shell__fallback--embed,
+html[data-fb-iab] .checkout-shell__embed-retry,
+html[data-fb-iab] .checkout-shell__desktop-help {
+  display: none !important;
+}
+
 @media (min-width: 1024px) {
   .checkout-pay-card {
     max-width: none;
-    padding: 2rem;
+    padding: 2rem 0 1rem;
     text-align: left;
+  }
+
+  .checkout-pay-card__trust {
+    max-width: 28rem;
+  }
+
+  html:not([data-fb-iab]) .checkout-shell__sticky,
+  html:not([data-fb-iab]) .checkout-shell__sticky-spacer {
+    display: none;
+  }
+
+  html:not([data-fb-iab]) .checkout-shell--embed .checkout-pay-card {
+    display: none;
+  }
+
+  html:not([data-fb-iab]) .checkout-shell--embed .checkout-hotmart-wrap,
+  html:not([data-fb-iab]) .checkout-shell--embed .checkout-shell__fallback--embed,
+  html:not([data-fb-iab]) .checkout-shell--embed .checkout-shell__embed-retry {
+    display: block;
   }
 }
 
@@ -2814,6 +2885,14 @@ html[data-fb-iab] .checkout-shell__sticky,
 html[data-fb-iab] .ios-status-bar {
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
+}
+
+html[data-fb-iab] .ads-product-hero {
+  padding-top: 0.65rem;
+}
+
+html[data-fb-iab] .sticky-mobile-cta {
+  z-index: 60;
 }
 
 html[data-fb-iab] .sticky-mobile-cta__panel,

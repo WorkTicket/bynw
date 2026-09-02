@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import PrimaryCTA from "@/components/PrimaryCTA"
 import SecondaryCTA from "@/components/SecondaryCTA"
-import { RELOAD_KEY } from "@/components/NavigationRecovery"
+import { RELOAD_KEY, reloadOnce } from "@/components/NavigationRecovery"
 
 export default function Error({
   error,
@@ -15,19 +15,7 @@ export default function Error({
   const [showUi, setShowUi] = useState(false)
 
   useEffect(() => {
-    try {
-      if (sessionStorage.getItem(RELOAD_KEY) === "1") {
-        sessionStorage.removeItem(RELOAD_KEY)
-        window.location.replace("/")
-        return
-      }
-      sessionStorage.setItem(RELOAD_KEY, "1")
-      window.location.reload()
-      return
-    } catch {
-      window.location.replace("/")
-      return
-    }
+    if (!reloadOnce()) setShowUi(true)
   }, [error])
 
   useEffect(() => {

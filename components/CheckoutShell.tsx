@@ -9,11 +9,13 @@ import type { Product } from "@/lib/products"
 import PaymentLogos from "@/components/PaymentLogos"
 import PetiteOrnament from "@/components/PetiteOrnament"
 import MetaInitiateCheckout from "@/components/MetaInitiateCheckout"
-import { isInAppBrowser } from "@/lib/in-app-browser"
+import {
+  canEmbedHotmartCheckout,
+  checkoutPayHref,
+} from "@/lib/in-app-browser"
 
 type Props = {
   product: Product
-  embedUrl: string
   payUrl: string
 }
 
@@ -23,10 +25,35 @@ const TRUST = [
   "Pago seguro con tarjeta, PayPal o Klarna vía Hotmart",
 ] as const
 
-export default function CheckoutShell({ product, embedUrl, payUrl }: Props) {
-  const [inApp, setInApp] = useState(false)
-  const [iframeSrc, setIframeSrc] = useState(embedUrl)
+function PayCta({
+  href,
+  price,
+  className = "",
+}: {
+  href: string
+  price: string
+  className?: string
+}) {
+  const intent = href.startsWith("intent:")
+  return (
+    <a
+      href={href}
+      target={intent ? undefined : "_top"}
+      rel="noopener"
+      data-buy-cta="true"
+      className={`btn-collection-buy btn-collection-buy--lg ${className}`.trim()}
+    >
+      <span className="btn-label">Pagar {price}</span>
+    </a>
+  )
+}
+
+export default function CheckoutShell({ product, payUrl }: Props) {
+  // SSR + first client paint: native pay card (works if JS is late / IAB).
+  // Desktop non-IAB then mounts the Hotmart iframe.
+  const [iframeSrc, setIframeSrc] = useState<string | null>(null)
   const [fullPageUrl, setFullPageUrl] = useState(payUrl)
+  const [payHref, setPayHref] = useState(payUrl)
   const [showPayFallback, setShowPayFallback] = useState(false)
   const iframeLoadedRef = useRef(false)
   const iframeKeyRef = useRef(0)
@@ -34,9 +61,14 @@ export default function CheckoutShell({ product, embedUrl, payUrl }: Props) {
 
   useLayoutEffect(() => {
     const search = window.location.search
-    setInApp(isInAppBrowser())
-    setFullPageUrl(buildHotmartPayUrl(product.buyUrl, search))
-    setIframeSrc(buildHotmartEmbedUrl(product.buyUrl, search))
+    const httpsPay = buildHotmartPayUrl(product.buyUrl, search)
+    setFullPageUrl(httpsPay)
+    setPayHref(checkoutPayHref(httpsPay))
+    if (canEmbedHotmartCheckout()) {
+      setIframeSrc(buildHotmartEmbedUrl(product.buyUrl, search))
+    } else {
+      setIframeSrc(null)
+    }
   }, [product.buyUrl])
 
   useEffect(() => {
@@ -45,9 +77,9 @@ export default function CheckoutShell({ product, embedUrl, payUrl }: Props) {
     setShowPayFallback(false)
     const t = window.setTimeout(() => {
       if (!iframeLoadedRef.current) setShowPayFallback(true)
-    }, inApp ? 4000 : 6000)
+    }, 8000)
     return () => window.clearTimeout(t)
-  }, [iframeSrc, iframeKey, inApp])
+  }, [iframeSrc, iframeKey])
 
   const retryIframe = () => {
     iframeKeyRef.current += 1
@@ -58,9 +90,13 @@ export default function CheckoutShell({ product, embedUrl, payUrl }: Props) {
 
   const discount = getDiscountPercent(product.price, product.originalPrice)
   const discountBadge = formatDiscountBadge(discount)
+  const embed = Boolean(iframeSrc)
+  const imageSrc = `/images/${product.images[0]}`
 
   return (
-    <div className="checkout-shell section-premium-dark">
+    <div
+      className={`checkout-shell section-premium-dark${embed ? " checkout-shell--embed" : " checkout-shell--in-app"}`}
+    >
       <MetaInitiateCheckout
         contentId={product.id}
         contentName={product.seoTitle}
@@ -70,7 +106,7 @@ export default function CheckoutShell({ product, embedUrl, payUrl }: Props) {
       <div className="checkout-shell__mobile-bar lg:hidden">
         <div className="checkout-shell__thumb">
           <Image
-            src={`/images/${product.images[0]}`}
+            src={imageSrc}
             alt=""
             fill
             priority
@@ -109,7 +145,7 @@ export default function CheckoutShell({ product, embedUrl, payUrl }: Props) {
 
           <div className="product-media relative mt-6 aspect-square overflow-hidden rounded-2xl">
             <Image
-              src={`/images/${product.images[0]}`}
+              src={imageSrc}
               alt={product.shortTitle}
               fill
               sizes="22rem"
@@ -159,7 +195,7 @@ export default function CheckoutShell({ product, embedUrl, payUrl }: Props) {
               target="_blank"
               rel="noopener noreferrer"
               data-track-whatsapp-click="checkout_help"
-              className="text-sm font-medium text-rose-600 transition-colors hover:text-rose-700"
+              className="checkout-shell__desktop-help text-sm font-medium text-rose-600 transition-colors hover:text-rose-700"
             >
               ¿Dudas? Escríbenos por WhatsApp
             </a>
@@ -167,22 +203,55 @@ export default function CheckoutShell({ product, embedUrl, payUrl }: Props) {
         </aside>
 
         <div className="checkout-shell__pay">
-          <div className="checkout-hotmart-wrap">
-            <iframe
-              key={iframeKey}
-              title={`Pago seguro — ${product.shortTitle}`}
-              src={iframeSrc}
-              className="checkout-hotmart-frame"
-              allow="clipboard-write; payment *; publickey-credentials-get *"
-              referrerPolicy="strict-origin-when-cross-origin"
-              onLoad={() => {
-                iframeLoadedRef.current = true
-                setShowPayFallback(false)
-              }}
-            />
+          {iframeSrc ? (
+            <div className="checkout-hotmart-wrap">
+              <iframe
+                key={iframeKey}
+                title={`Pago seguro — ${product.shortTitle}`}
+                src={iframeSrc}
+                className="checkout-hotmart-frame"
+                allow="payment *; publickey-credentials-get *; clipboard-write"
+                referrerPolicy="strict-origin-when-cross-origin"
+                onLoad={() => {
+                  iframeLoadedRef.current = true
+                  setShowPayFallback(false)
+                }}
+              />
+            </div>
+          ) : null}
+
+          <div className="checkout-pay-card">
+            <p className="checkout-pay-card__kicker">Pago seguro en euros</p>
+            <ul className="checkout-pay-card__trust">
+              {TRUST.map((line) => (
+                <li key={line}>{line}</li>
+              ))}
+            </ul>
+            <div className="checkout-pay-card__cta">
+              <PayCta href={payHref} price={product.price} className="w-full" />
+            </div>
+            <div className="mt-4 flex justify-center lg:justify-start">
+              <PaymentLogos />
+            </div>
+            <p className="checkout-pay-card__hint checkout-pay-card__hint--default">
+              Te llevamos al pago seguro de Hotmart. Tarjeta, PayPal o Klarna.
+            </p>
+            <p className="checkout-pay-card__hint checkout-pay-card__hint--ios">
+              Si Apple Pay o PayPal no aparecen, pulsa <strong>⋯</strong> y{" "}
+              <strong>Abrir en Safari</strong>.
+            </p>
+            <p className="checkout-pay-card__hint checkout-pay-card__hint--android">
+              Se abre en Chrome para que tarjeta, PayPal y Klarna funcionen.
+            </p>
+            <p className="checkout-pay-card__alt checkout-pay-card__alt--android">
+              <a href={fullPageUrl} target="_top" rel="noopener" data-buy-cta="true">
+                Continuar aquí si Chrome no abre
+              </a>
+            </p>
           </div>
+
           {showPayFallback ? (
-            <div className="mt-4 flex justify-center px-4 lg:justify-start">
+            <div className="checkout-shell__embed-retry mt-4 flex justify-center px-4 lg:justify-start">
               <button
                 type="button"
                 className="btn-collection-buy btn-collection-buy--lg w-full max-w-sm"
@@ -192,31 +261,29 @@ export default function CheckoutShell({ product, embedUrl, payUrl }: Props) {
               </button>
             </div>
           ) : null}
-          <p className="checkout-shell__fallback">
-            {inApp ? (
-              <>
-                Pagas en esta página, en euros. Si el formulario no aparece,
-                pulsa cargar el pago, o <strong>⋯</strong> →{" "}
-                <strong>Abrir en el navegador</strong>.
-              </>
-            ) : (
-              <>
-                Si el pago no carga,{" "}
-                <button
-                  type="button"
-                  className="font-semibold text-rose-600 underline-offset-4 hover:underline"
-                  onClick={retryIframe}
-                >
-                  recárgalo aquí
-                </button>
-                {" · "}
-                <a href={fullPageUrl} data-buy-cta="true">
-                  abrir pantalla completa
-                </a>
-                .
-              </>
-            )}
+
+          <p className="checkout-shell__fallback checkout-shell__fallback--embed">
+            Si el pago no carga,{" "}
+            <button
+              type="button"
+              className="font-semibold text-rose-600 underline-offset-4 hover:underline"
+              onClick={retryIframe}
+            >
+              recárgalo aquí
+            </button>
+            {" · "}
+            <a href={fullPageUrl} target="_top" rel="noopener" data-buy-cta="true">
+              abrir pantalla completa
+            </a>
+            .
           </p>
+        </div>
+      </div>
+
+      <div className="checkout-shell__sticky-spacer" aria-hidden="true" />
+      <div className="checkout-shell__sticky">
+        <div className="checkout-shell__sticky-panel">
+          <PayCta href={payHref} price={product.price} className="w-full" />
         </div>
       </div>
     </div>

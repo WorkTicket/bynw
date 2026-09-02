@@ -50,26 +50,26 @@ export default function AdsCatalogLander({ reviews, hrefQuery }: Props) {
       <MetaViewCatalog items={catalogItems} />
 
       <section className="relative overflow-hidden bg-[#fffaf8]">
-        <div className="section relative z-10 pb-[calc(var(--sticky-cta-stack)+1.15rem)] pt-10 sm:pb-[calc(var(--sticky-cta-stack)+2rem)] sm:pt-14 lg:pb-20 lg:pt-16">
+        <div className="section relative z-10 pb-[calc(var(--sticky-cta-stack)+1.15rem)] pt-4 sm:pb-[calc(var(--sticky-cta-stack)+2rem)] sm:pt-14 lg:pb-20 lg:pt-16">
           <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-14 xl:gap-20">
-            <div className="mx-auto max-w-xl text-center lg:mx-0 lg:text-left">
-              <span className="inline-flex items-center rounded-full bg-rose-100/90 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-rose-700">
+            <div className="mx-auto flex max-w-xl flex-col text-center lg:mx-0 lg:text-left">
+              <span className="order-1 inline-flex items-center self-center rounded-full bg-rose-100/90 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-rose-700 lg:self-start">
                 {promoHeroBadge()}
               </span>
 
-              <h1 className="mt-5 font-display text-[2.05rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.7rem] lg:text-[3.05rem]">
+              <h1 className="order-2 mt-3 font-display text-[1.85rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:mt-5 sm:text-[2.7rem] lg:text-[3.05rem]">
                 Todas las colecciones al{" "}
                 <span className="gradient-text-candy italic">{SALE_PERCENT}%</span>{" "}
                 esta semana
               </h1>
 
-              <p className="mt-5 max-w-md text-[15px] leading-[1.75] text-muted mx-auto lg:mx-0 sm:text-base lg:text-lg">
+              <p className="order-6 mt-4 max-w-md text-[15px] leading-[1.75] text-muted mx-auto lg:order-3 lg:mx-0 lg:mt-5 sm:text-base lg:text-lg">
                 Princesas, flores eternas, amigurumis, reversibles, Navidad y
                 Halloween. PDF con fotos paso a paso, para tejer, regalar o
                 vender.
               </p>
 
-              <div className="mt-5 flex flex-wrap items-center justify-center gap-2 lg:justify-start">
+              <div className="order-3 mt-3 flex flex-wrap items-center justify-center gap-2 sm:mt-5 lg:order-4 lg:justify-start">
                 <div className="flex items-center gap-0.5" aria-hidden="true">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <StarIcon key={i} className="text-rose-400" size={14} />
@@ -83,15 +83,15 @@ export default function AdsCatalogLander({ reviews, hrefQuery }: Props) {
                 </span>
               </div>
 
-              <div className="mt-8 flex justify-center lg:justify-start">
+              <div className="order-4 mt-4 flex justify-center sm:mt-8 lg:order-5 lg:justify-start">
                 <PrimaryCTA href="#colecciones" size="lg">
                   Ver colecciones
                 </PrimaryCTA>
               </div>
 
-              <SaleCountdown className="mt-4 text-[12px] font-medium tracking-[0.04em] text-rose-700/90 sm:text-[13px]" />
+              <SaleCountdown className="order-5 mt-3 text-[12px] font-medium tracking-[0.04em] text-rose-700/90 lg:order-6 sm:mt-4 sm:text-[13px]" />
 
-              <p className="mt-6 text-[11px] tracking-[0.06em] text-muted/65 sm:text-xs">
+              <p className="order-7 mt-4 text-[11px] tracking-[0.06em] text-muted/65 sm:mt-6 sm:text-xs">
                 {collectionCount} colecciones
                 <span className="meta-sep" aria-hidden="true">
                   ✦
