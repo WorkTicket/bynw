@@ -13,7 +13,7 @@ type Props = {
   price?: string
 }
 
-/** Server wrapper — Comprar goes to branded /checkout. Hotmart is native tap on phone / IAB. */
+/** Server wrapper — Comprar goes to branded /checkout, which opens Hotmart immediately on FB/IG. */
 export default function HotmartBuyButton({ slug, ...rest }: Props) {
   return (
     <HotmartBuyButtonClient

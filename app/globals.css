@@ -2723,13 +2723,14 @@ html[data-fb-iab][data-iab-os="android"] .checkout-pay-card__hint--default {
   display: none;
 }
 
-html[data-fb-iab][data-iab-os="ios"] .checkout-pay-card__hint--ios {
-  display: block;
-}
-
+html[data-fb-iab][data-iab-os="ios"] .checkout-pay-card__hint--ios,
 html[data-fb-iab][data-iab-os="android"] .checkout-pay-card__hint--android,
 html[data-fb-iab][data-iab-os="android"] .checkout-pay-card__alt--android {
-  display: block;
+  display: none;
+}
+
+html[data-fb-iab] .checkout-shell--handoff .checkout-pay-card__trust {
+  display: none;
 }
 
 html[data-fb-iab] .checkout-hotmart-wrap,

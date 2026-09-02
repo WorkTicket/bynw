@@ -12,6 +12,7 @@ import MetaInitiateCheckout from "@/components/MetaInitiateCheckout"
 import {
   canEmbedHotmartCheckout,
   checkoutPayHref,
+  shouldImmediateHotmartPay,
 } from "@/lib/in-app-browser"
 
 type Props = {
@@ -34,11 +35,10 @@ function PayCta({
   price: string
   className?: string
 }) {
-  const intent = href.startsWith("intent:")
   return (
     <a
       href={href}
-      target={intent ? undefined : "_top"}
+      target="_top"
       rel="noopener"
       data-buy-cta="true"
       className={`btn-collection-buy btn-collection-buy--lg ${className}`.trim()}
@@ -51,9 +51,11 @@ function PayCta({
 export default function CheckoutShell({ product, payUrl }: Props) {
   // SSR + first client paint: native pay card (works if JS is late / IAB).
   // Desktop non-IAB then mounts the Hotmart iframe.
+  // Facebook / Instagram skip the card and open Hotmart in this same WebView.
   const [iframeSrc, setIframeSrc] = useState<string | null>(null)
   const [fullPageUrl, setFullPageUrl] = useState(payUrl)
   const [payHref, setPayHref] = useState(payUrl)
+  const [handoff, setHandoff] = useState(false)
   const [showPayFallback, setShowPayFallback] = useState(false)
   const iframeLoadedRef = useRef(false)
   const iframeKeyRef = useRef(0)
@@ -66,8 +68,17 @@ export default function CheckoutShell({ product, payUrl }: Props) {
     setPayHref(checkoutPayHref(httpsPay))
     if (canEmbedHotmartCheckout()) {
       setIframeSrc(buildHotmartEmbedUrl(product.buyUrl, search))
-    } else {
-      setIframeSrc(null)
+      setHandoff(false)
+      return
+    }
+    setIframeSrc(null)
+    if (shouldImmediateHotmartPay()) {
+      setHandoff(true)
+      try {
+        window.location.replace(httpsPay)
+      } catch {
+        window.location.href = httpsPay
+      }
     }
   }, [product.buyUrl])
 
@@ -95,7 +106,7 @@ export default function CheckoutShell({ product, payUrl }: Props) {
 
   return (
     <div
-      className={`checkout-shell section-premium-dark${embed ? " checkout-shell--embed" : " checkout-shell--in-app"}`}
+      className={`checkout-shell section-premium-dark${embed ? " checkout-shell--embed" : " checkout-shell--in-app"}${handoff ? " checkout-shell--handoff" : ""}`}
     >
       <MetaInitiateCheckout
         contentId={product.id}
@@ -221,33 +232,35 @@ export default function CheckoutShell({ product, payUrl }: Props) {
           ) : null}
 
           <div className="checkout-pay-card">
-            <p className="checkout-pay-card__kicker">Pago seguro en euros</p>
-            <ul className="checkout-pay-card__trust">
-              {TRUST.map((line) => (
-                <li key={line}>{line}</li>
-              ))}
-            </ul>
+            <p className="checkout-pay-card__kicker">
+              {handoff ? "Abriendo el pago seguro" : "Pago seguro en euros"}
+            </p>
+            {handoff ? (
+              <p className="checkout-pay-card__hint">
+                Un momento — te llevamos al pago de Hotmart.
+              </p>
+            ) : (
+              <ul className="checkout-pay-card__trust">
+                {TRUST.map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
+            )}
             <div className="checkout-pay-card__cta">
               <PayCta href={payHref} price={product.price} className="w-full" />
             </div>
             <div className="mt-4 flex justify-center lg:justify-start">
               <PaymentLogos />
             </div>
-            <p className="checkout-pay-card__hint checkout-pay-card__hint--default">
-              Te llevamos al pago seguro de Hotmart. Tarjeta, PayPal o Klarna.
-            </p>
-            <p className="checkout-pay-card__hint checkout-pay-card__hint--ios">
-              Si Apple Pay o PayPal no aparecen, pulsa <strong>⋯</strong> y{" "}
-              <strong>Abrir en Safari</strong>.
-            </p>
-            <p className="checkout-pay-card__hint checkout-pay-card__hint--android">
-              Se abre en Chrome para que tarjeta, PayPal y Klarna funcionen.
-            </p>
-            <p className="checkout-pay-card__alt checkout-pay-card__alt--android">
-              <a href={fullPageUrl} target="_top" rel="noopener" data-buy-cta="true">
-                Continuar aquí si Chrome no abre
-              </a>
-            </p>
+            {handoff ? (
+              <p className="checkout-pay-card__hint">
+                Si no abre sola, pulsa <strong>Pagar</strong>.
+              </p>
+            ) : (
+              <p className="checkout-pay-card__hint checkout-pay-card__hint--default">
+                Te llevamos al pago seguro de Hotmart. Tarjeta, PayPal o Klarna.
+              </p>
+            )}
           </div>
 
           {showPayFallback ? (

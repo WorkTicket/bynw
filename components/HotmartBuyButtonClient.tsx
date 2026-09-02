@@ -4,7 +4,8 @@ import { useLayoutEffect, useState } from "react"
 import { getPriceCurrency } from "@/lib/tracking"
 import { parsePriceValue } from "@/lib/pricing"
 import { captureAndPersistFromLocation } from "@/lib/ad-attribution"
-import { onsiteCheckoutPath } from "@/lib/hotmart"
+import { buildHotmartPayUrl, onsiteCheckoutPath } from "@/lib/hotmart"
+import { isFacebookInAppFromDom, isInAppBrowser } from "@/lib/in-app-browser"
 import { fireInitiateCheckout } from "@/components/MetaInitiateCheckout"
 import { getProductBySlug } from "@/lib/products"
 
@@ -18,7 +19,7 @@ export type HotmartBuyButtonClientProps = {
   contentId?: string
   contentName?: string
   price?: string
-  /** First-paint href; hydrated to /checkout/{slug} with current query. */
+  /** First-paint href; hydrated to /checkout or Hotmart (Facebook/Instagram). */
   initialHref: string
 }
 
@@ -29,10 +30,10 @@ const sizeClass: Record<Size, string> = {
 }
 
 /**
- * Native <a> to branded /checkout — buyer stays on bynmwcreative.com.
- * Phone / Facebook in-app: checkout is a confirm screen + top-level Hotmart.
- * Desktop: Hotmart may embed in an iframe. Do not send ads to pay.hotmart.com
- * from the lander (attribution + branded confirm first).
+ * Native <a> to branded /checkout — desktop Google/Safari embed Hotmart there.
+ * Facebook / Instagram: after hydrate, Comprar goes straight to Hotmart in the
+ * same WebView (the lander tap is the user gesture). Pre-hydrate taps still
+ * hit /checkout, which redirects immediately.
  */
 export default function HotmartBuyButtonClient({
   slug,
@@ -50,8 +51,15 @@ export default function HotmartBuyButtonClient({
   useLayoutEffect(() => {
     const search = window.location.search
     captureAndPersistFromLocation(search)
+    if (
+      product?.buyUrl &&
+      (isInAppBrowser() || isFacebookInAppFromDom())
+    ) {
+      setHref(buildHotmartPayUrl(product.buyUrl, search))
+      return
+    }
     setHref(onsiteCheckoutPath(slug, search))
-  }, [slug])
+  }, [slug, product?.buyUrl])
 
   const value = price ? String(parsePriceValue(price)) : undefined
   const currency = price ? getPriceCurrency(price) : undefined

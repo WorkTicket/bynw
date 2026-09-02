@@ -68,8 +68,9 @@ export function isFacebookInAppFromDom(): boolean {
 }
 
 /**
- * Android Chrome intent — leave Facebook/Instagram WebView so 3DS / PayPal / Google Pay work.
- * Fallback URL keeps Hotmart inside the current WebView if Chrome is missing.
+ * Android Chrome intent — optional last resort only.
+ * Do not use this as the default pay href: Facebook/Instagram show a
+ * "open Chrome / leave the app" prompt that looks like an error and drops buyers.
  */
 export function androidChromeIntentUrl(httpsUrl: string): string {
   try {
@@ -83,11 +84,8 @@ export function androidChromeIntentUrl(httpsUrl: string): string {
   }
 }
 
-/** Top-level Hotmart URL. Android IAB opens Chrome so 3DS / PayPal / Klarna work. */
-export function checkoutPayHref(httpsUrl: string, userAgent?: string | null): string {
-  if (isInAppBrowser(userAgent) && isAndroidUa(userAgent)) {
-    return androidChromeIntentUrl(httpsUrl)
-  }
+/** Always stay on https Hotmart in the current WebView — no Chrome/app-switch dialog. */
+export function checkoutPayHref(httpsUrl: string, _userAgent?: string | null): string {
   return httpsUrl
 }
 
@@ -96,6 +94,17 @@ export function canEmbedHotmartCheckout(userAgent?: string | null): boolean {
   if (isInAppBrowser(userAgent) || isFacebookInAppFromDom()) return false
   if (typeof window === "undefined") return false
   return window.matchMedia("(min-width: 1024px)").matches
+}
+
+/** Facebook / Instagram / other WebViews should skip the extra confirm card. */
+export function shouldImmediateHotmartPay(userAgent?: string | null): boolean {
+  if (isInAppBrowser(userAgent) || isFacebookInAppFromDom()) return true
+  return false
+}
+
+/** Runs as soon as /checkout HTML parses — before React — so FB/IG never see the extra card. */
+export function immediateHotmartRedirectScript(payUrl: string): string {
+  return `(function(){var d=document.documentElement,u=navigator.userAgent||'',go=d.dataset.fbIab==="true"||/${META_IN_APP_UA_SOURCE}/i.test(u);if(!go)return;try{location.replace(${JSON.stringify(payUrl)})}catch(e){location.href=${JSON.stringify(payUrl)}}})();`
 }
 
 export function applyInAppDomFlags(userAgent?: string | null): boolean {

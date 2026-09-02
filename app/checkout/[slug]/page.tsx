@@ -5,6 +5,7 @@ import { products, getProductBySlug } from "@/lib/products"
 import { createPageMetadata } from "@/lib/seo"
 import { DEFAULT_OG_IMAGE } from "@/lib/site"
 import { buildHotmartPayUrl } from "@/lib/hotmart"
+import { immediateHotmartRedirectScript } from "@/lib/in-app-browser"
 import { toURLSearchParams } from "@/lib/paid-traffic"
 
 type Props = {
@@ -48,5 +49,14 @@ export default function CheckoutPage({ params, searchParams }: Props) {
   const search = toURLSearchParams(searchParams)
   const payUrl = buildHotmartPayUrl(product.buyUrl, search)
 
-  return <CheckoutShell product={product} payUrl={payUrl} />
+  return (
+    <>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: immediateHotmartRedirectScript(payUrl),
+        }}
+      />
+      <CheckoutShell product={product} payUrl={payUrl} />
+    </>
+  )
 }
