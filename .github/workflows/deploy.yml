@@ -22,9 +22,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build and deploy static export
+      - name: Build static export
+        run: npm run build
+
+      - name: Deploy static export
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: npm run deploy
+          command: deploy
