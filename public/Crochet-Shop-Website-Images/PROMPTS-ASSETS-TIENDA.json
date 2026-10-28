@@ -1,0 +1,82 @@
+[
+  {
+    "id": "hero-y-bundles-google-drive-reales",
+    "method": "Composición exacta de las capturas de Google Drive del archivo original. Sin portadas inventadas ni libros físicos.",
+    "source_image_indices_zero_based": {
+      "pack1000": [
+        34,
+        35,
+        38
+      ],
+      "princesas": [
+        77,
+        79,
+        84
+      ],
+      "hero": [
+        35,
+        40,
+        77
+      ]
+    }
+  },
+  {
+    "id": "04-digital-delivery-email-pdf",
+    "transparent": true,
+    "refs": [],
+    "prompt": "Professional transparent website section illustration for a feminine crochet pattern store explaining digital delivery. A large elegant cream envelope with a rose wax heart opens beside a smartphone, three cream document cards with simple pink PDF symbols, a tidy pink folder and a wooden crochet hook with one yarn ball. Polished tactile product illustration with realistic paper and yarn, soft pink ivory plum palette, confident simple silhouettes, soft studio lighting. No text beyond small 'PDF' on document tabs. No hands or dolls. Full arrangement on true transparent alpha with generous margins, landscape composition."
+  },
+  {
+    "id": "05-pattern-quality-crochet-details",
+    "transparent": true,
+    "refs": [],
+    "prompt": "Premium transparent section illustration for crochet pattern quality. A beautiful large magnifying glass with plum handle reveals crisp loops of a real ivory crocheted swatch; beside it a pink yarn ball, wooden crochet hook and small cream checklist card with three clean rose checkmarks only. Tactile real fibers, professionally art-directed studio still-life, blush and cream with plum contrast. No invented pattern pages, no instructions, no readable words. Full arrangement isolated on true transparent alpha, generous padding, clean polished ecommerce graphic."
+  },
+  {
+    "id": "06-included-gifts-open-box",
+    "transparent": true,
+    "refs": [],
+    "prompt": "An elegant open blush-pink gift box with a silky rose bow, cream interior, lid floating just above and behind. Small tasteful flat golden stars around it. No products inside or around the box: leave the open interior clear for later placement of actual included digital guide covers. Premium feminine boutique ecommerce section asset, realistic paper and satin with confident clean silhouette, soft studio lighting, ivory pink plum palette. Entire box and lid isolated on true transparent alpha, generous padding, no text or logos."
+  },
+  {
+    "id": "07-final-cta-yarn-and-flowers",
+    "transparent": true,
+    "refs": [
+      30,
+      31,
+      32,
+      33
+    ],
+    "prompt": "Wide premium transparent crochet shop call-to-action section artwork: a lush, sophisticated arrangement of the supplied real crochet flower bouquets, pink and ivory yarn balls, wooden crochet hooks, and a curling yarn strand forming a gentle heart. Preserve handmade crochet petals and fiber texture from the references. Elegant joyful feminine boutique photography, blush cream plum palette, clean dimensional arrangement with crisp edges. Whole composition isolated on true alpha with generous padding. No text, people, ebook covers, fake bonuses or logos."
+  },
+  {
+    "id": "08-yarn-tools-decorative-cluster",
+    "transparent": true,
+    "refs": [],
+    "prompt": "Professional transparent decorative website asset for an elegant crochet pattern shop. Three tactile yarn balls in blush pink, warm ivory and muted lavender, two beautiful smooth wooden crochet hooks, and one gracefully curved loose yarn tail. Premium studio still-life, exquisitely detailed fibers, balanced compact silhouette, refined feminine ecommerce art direction. No dolls, hands, text or symbols. Isolated on real transparent alpha with generous safe margins."
+  },
+  {
+    "id": "09-crochet-workspace-editorial",
+    "transparent": false,
+    "refs": [],
+    "prompt": "Professional editorial photograph for an elegant crochet pattern shop: adult artisan's hands carefully crocheting an ivory floral granny square using a wooden crochet hook at a beautiful warm ivory worktable. Blush pink and lavender yarn balls, tidy notebook closed without text, natural window light, intimate genuine handmade atmosphere. Focus sharply on authentic crochet loops and anatomically natural hands. Warm cream and rose palette, refined boutique craft aesthetic, landscape 3:2 composition, no face, no doll, no words, logos or watermark."
+  },
+  {
+    "id": "10-warm-ivory-paper-background",
+    "transparent": false,
+    "refs": [],
+    "prompt": "A subtle seamless-looking warm ivory handmade cotton paper texture for a premium feminine crochet ecommerce website section background. Extremely fine natural fibers, almost uniform #FFF9F3 ivory, soft diffuse flat lighting, no objects, folds, strong vignette, graphics, border, text or shadows. Delicate clean luxury stationery texture, very low contrast, landscape."
+  },
+  {
+    "id": "11-soft-blush-textile-background",
+    "transparent": false,
+    "refs": [],
+    "prompt": "A very subtle pale blush pink cotton textile surface for a premium crochet shop website section background. Very fine realistic woven fibers, almost uniform light blush #FFF0F5, matte, evenly lit, extremely low contrast so website text stays readable. No objects, seams, folds, wrinkles, text, vignette, strong shadows or border. Landscape, refined boutique texture."
+  },
+  {
+    "id": "12-crochet-yarn-heart-brand-mark",
+    "transparent": true,
+    "refs": [],
+    "prompt": "A beautiful simple original brand icon for an elegant crochet pattern shop: a heart-shaped blush pink ball of yarn with clean curved strand lines, a single plum-colored crochet hook diagonally through it and a restrained cream highlight. Flat 2D professional vector-like logo, bold confident silhouette, works at favicon size, no thin messy detail, no gradients, no shadows, no outer sticker outline, no letters or text. Symmetrical compact composition, isolated on true transparent alpha, generous margin."
+  }
+]

@@ -1,0 +1,9 @@
+Dirección: tienda de patrones de crochet, femenina y profesional; rosa empolvado, crema y ciruela, productos grandes con siluetas limpias, textura real de hilo y composiciones superpuestas para las cabeceras. Inspiración en la presentación visual de 180 Sites, adaptada a una tienda de artesanía.
+
+Prompt base de los recortes, usando cada foto como referencia:
+"Edit supplied reference product photograph seen in contact sheet. Isolate exact crochet doll(s), retaining the real design, outfit, colors, all accessories and yarn stitch construction. Premium realistic ecommerce studio presentation, full product/group centered with safe padding. Remove supporting hands, room, picture framing, background lettering and unrelated decorations. True transparent alpha background. No added words. Do not invent a new pattern, retain recognizable details and all dolls in the reference. Fine natural yarn texture, sharp clean edges, soft even lighting."
+
+Prompt de extracción simple usado en las últimas imágenes:
+"Background extraction of the supplied photograph of a handmade crocheted yarn toy. Keep the exact yarn toy unchanged, with the same clothes, stitch texture, colors and accessories. Remove room, table and supporting hand. Show complete craft alone, centered with padding, on a transparent background with clean edges. No redesign or added text."
+
+Se utilizó el generador de imágenes integrado. Los marcos de capturas y regalos se diseñaron por separado incorporando las imágenes reales suministradas; no se generaron páginas de patrones, contenido de regalos ni un retrato de reemplazo. Las excepciones sin recorte se identifican en la guía CSV.

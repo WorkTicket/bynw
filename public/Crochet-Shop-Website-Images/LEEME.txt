@@ -1,0 +1,20 @@
+IMÁGENES PARA LA TIENDA DE PATRONES DE CROCHET
+
+90 archivos corresponden a las 90 imágenes originales, más 2 composiciones hero.
+Formato: WebP sin pérdida. Los productos generados tienen recorte con transparencia real. Las imágenes indicadas como originales en GUIA-DE-IMAGENES.csv conservan la foto dentro de un marco transparente: el recorte con IA falló y no se sustituyó por otro diseño.
+Se mantienen las agrupaciones del archivo original con carpetas y nombres claros.
+
+ABRIR GALERIA.html para ver todos los archivos y su ubicación recomendada.
+GUIA-DE-IMAGENES.csv relaciona cada archivo nuevo con su original y su sección.
+
+00-heroes-colecciones: imágenes grandes para la cabecera de cada colección.
+01-pack-1000-patrones: portadas, entrega y calidad de la colección premium.
+02-pack-princesas: portadas, entrega, calidad y regalos de princesas.
+03-whatsapp-perfil: retrato suministrado para la sección de ayuda con pedidos.
+
+Los recortes de producto se realizaron con generación de imágenes a partir de las fotos originales; pueden variar pequeños detalles. Comprueba la fidelidad con el patrón antes de publicar. Los productos repetidos en ambas colecciones comparten el mismo recorte.
+Las muestras de patrones, capturas de entrega y regalos conservan la imagen real suministrada. El marco exterior es nuevo; no se inventaron páginas ni regalos. El retrato de Natalia se conserva sin cambios visuales.
+
+Los héroes son composiciones de los productos de las galerías. No se modificó ninguna web, precio, enlace de compra ni botón.
+Las imágenes muestran resultados de crochet; el producto vendido es un patrón digital, no un muñeco físico. Explica esto con texto HTML junto al botón de compra.
+Al insertar en una web: object-fit:contain para productos; no recortar sus siluetas. Fondo sugerido #FFF9F5 o #FFF0F5; texto #4F243A; acento #B82F69. Mantener los títulos y botones como texto HTML.

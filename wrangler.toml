@@ -1,7 +1,5 @@
 name = "bynmwcreative"
-main = ".open-next/worker.js"
 compatibility_date = "2024-09-23"
-compatibility_flags = ["nodejs_compat"]
 workers_dev = false
 
 routes = [
@@ -10,28 +8,5 @@ routes = [
 ]
 
 [assets]
-directory = ".open-next/assets"
-binding = "ASSETS"
-
-# Next.js Image Optimization via Cloudflare Images
-# https://opennext.js.org/cloudflare/howtos/image
-[images]
-binding = "IMAGES"
-
-[vars]
-NEXT_PUBLIC_SITE_URL = "https://bynmwcreative.com"
-NEXT_PUBLIC_GA_ID = "G-5764X8K11B"
-NEXT_PUBLIC_FB_PIXEL_ID = "1937320463558405"
-# Optional: real GSC meta token only (not the .html filename).
-# HTML-file verification is already at /googleb0de3a7eb0c354a5.html
-# NEXT_PUBLIC_GSC_VERIFICATION = ""
-
-# Secrets (set via `wrangler secret put`):
-# MAILCHIMP_API_KEY, MAILCHIMP_AUDIENCE_ID
-# META_CAPI_ACCESS_TOKEN, HOTMART_HOTTOK
-# Optional: META_PIXEL_ID, META_CAPI_TEST_EVENT_CODE, NEXT_PUBLIC_LEGAL_ADDRESS
-
-# Customer reviews (published on-site)
-[[kv_namespaces]]
-binding = "REVIEWS"
-id = "a792812e80e749b781bfa5b4bf7b49e1"
+directory = "./out"
+not_found_handling = "404-page"

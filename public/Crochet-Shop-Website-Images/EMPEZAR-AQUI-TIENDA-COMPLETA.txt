@@ -1,0 +1,10 @@
+PAQUETE VISUAL PARA LA TIENDA COMPLETA
+
+05-assets-tienda-completa contiene los recursos adicionales para construir la tienda, además de las galerías de productos originales.
+01: Hero principal. 02: bundles digitales de las dos colecciones. 03: entrega digital (ilustración y capturas reales). 04: calidad (ilustración y muestras reales). 05: regalos (caja decorativa y portadas reales). 06: llamada final a la acción. 07: ovillos, ganchillos, ondas, festones y pespuntes. 08: texturas. 09: 16 iconos. 10: cuatro sellos informativos. 11: símbolo de marca sin nombre y favicons. 12: fotografía editorial. 13: ayuda y contacto con la foto suministrada de Natalia. 14: imagen para compartir en redes.
+
+Los SVG tienen versiones WebP. Los iconos y dividers se pueden recolorear en el SVG. Los recursos con transparencia funcionan sobre crema #FFF9F5 o rosa #FFF0F5. Texto ciruela #4F243A; acento #B82F69; dorado discreto #C79A51.
+Usa textos, precios y botones HTML separados de las imágenes. Los bundles muestran las capturas REALES de Google Drive suministradas. Los PDF se entregan digitalmente; no se representan como colecciones de libros físicos ni portadas inventadas. Las muestras de calidad también utilizan las capturas reales. No se inventaron garantías, valoraciones, testimonios ni certificaciones. El símbolo de ovillo no lleva nombre porque no se ha confirmado el nombre comercial.
+Las texturas son fondos estáticos; no se garantiza una unión invisible al repetirlas. Usa background-size:cover. El archivo SVG de pespunte sí está diseñado como motivo repetible.
+Los mockups nuevos representan patrones digitales, no productos físicos enviados. Mantén esta distinción explícita junto a la compra.
+Se conserva la organización de las 90 imágenes suministradas. Cinco archivos de tres diseños (Rapunzel, Blancanieves y Elsa) conservan las fotos originales dentro de marcos: su extracción automática falló. Consulta la guía CSV original.
