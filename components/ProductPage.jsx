@@ -149,7 +149,7 @@ function TrustRow() {
 
 function ProductSupport() {
   const contact = whatsappHref || `mailto:${email}?subject=Ayuda%20con%20mi%20pedido`;
-  return <section className="cp-support"><div className="container cp-support-inner"><div className="cp-support-photo"><img src={`${ASSET_ROOT}/03-whatsapp-perfil/90-natalia-fundadora-ayuda-pedido-perfil.webp`} alt="Natalia, fundadora de Manos Creativas" loading="lazy" /><span><b>NATALIA</b> · FUNDADORA</span></div><div><Kicker>SOPORTE DIRECTO</Kicker><h2>¿Necesitas ayuda<br /><span>con tu pedido?</span></h2><p>Soy Natalia, de Manos Creativas. Escríbeme por WhatsApp y te ayudo con tu compra o con el ingreso a tus patrones.</p><Button href={contact}>ESCRIBIR A NATALIA</Button><small>Respuesta en menos de 24h</small></div></div></section>;
+  return <section className="cp-support"><div className="container cp-support-inner"><div className="cp-support-photo"><img src="/optimized/assets/natalia-crochet.webp" alt="Natalia, fundadora de Manos Creativas, con una muñeca de crochet" loading="lazy" /><span><b>NATALIA</b> · FUNDADORA</span></div><div><Kicker>SOPORTE DIRECTO</Kicker><h2>¿Necesitas ayuda<br /><span>con tu pedido?</span></h2><p>Soy Natalia, de Manos Creativas. Escríbeme por WhatsApp y te ayudo con tu compra o con el ingreso a tus patrones.</p><Button href={contact}>ESCRIBIR A NATALIA</Button><small>Respuesta en menos de 24h</small></div></div></section>;
 }
 
 function PaymentMethods() {

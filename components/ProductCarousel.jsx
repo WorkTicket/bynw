@@ -32,6 +32,7 @@ function belongsTo(label, category, kind) {
 export default function ProductCarousel({ files, folder, type = 'product', categories, kind, title, subtitle }) {
   const track = useRef(null);
   const [active, setActive] = useState('Ver todo');
+  const [range, setRange] = useState({ start: 1, end: 1 });
 
   const visibleFiles = type === 'product'
     ? files.filter(file => active === 'Ver todo' || (Array.isArray(file) && file[3] === active) || belongsTo(Array.isArray(file) ? file[1] : file, active, kind))
@@ -50,6 +51,34 @@ export default function ProductCarousel({ files, folder, type = 'product', categ
     return () => window.clearInterval(interval);
   }, [type, visibleFiles.length]);
 
+  useEffect(() => {
+    const element = track.current;
+    if (!element) return undefined;
+
+    function updateRange() {
+      const card = element.querySelector('.cp-carousel-card');
+      if (!card) {
+        setRange({ start: 0, end: 0 });
+        return;
+      }
+      const gap = parseFloat(getComputedStyle(element).columnGap) || 0;
+      const step = card.getBoundingClientRect().width + gap;
+      const visibleCount = Math.max(1, Math.floor((element.clientWidth + gap + 1) / step));
+      const firstIndex = Math.min(visibleFiles.length - 1, Math.max(0, Math.round(element.scrollLeft / step)));
+      const next = { start: firstIndex + 1, end: Math.min(visibleFiles.length, firstIndex + visibleCount) };
+      setRange(current => current.start === next.start && current.end === next.end ? current : next);
+    }
+
+    updateRange();
+    element.addEventListener('scroll', updateRange, { passive: true });
+    const observer = new ResizeObserver(updateRange);
+    observer.observe(element);
+    return () => {
+      element.removeEventListener('scroll', updateRange);
+      observer.disconnect();
+    };
+  }, [visibleFiles.length]);
+
   function selectCategory(category) {
     if (category === 'Regalos extra') {
       document.querySelector('.cp-gifts')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -62,7 +91,11 @@ export default function ProductCarousel({ files, folder, type = 'product', categ
   function move(direction) {
     const element = track.current;
     if (!element) return;
-    element.scrollBy({ left: direction * element.clientWidth * .82, behavior: 'smooth' });
+    const card = element.querySelector('.cp-carousel-card');
+    const gap = parseFloat(getComputedStyle(element).columnGap) || 0;
+    const step = (card?.getBoundingClientRect().width || element.clientWidth) + gap;
+    const visibleCount = Math.max(1, Math.floor((element.clientWidth + gap + 1) / step));
+    element.scrollBy({ left: direction * step * visibleCount, behavior: 'smooth' });
   }
 
   const isSmallCollection = type === 'product' && visibleFiles.length <= 2;
@@ -73,7 +106,8 @@ export default function ProductCarousel({ files, folder, type = 'product', categ
     </div>}
     <div className="cp-carousel-controls">
       <span className="cp-carousel-control-copy"><strong>{title || 'Desliza para explorar'}</strong>{subtitle && <small>{subtitle}</small>}</span>
-      <div>
+      <div className="cp-carousel-actions">
+        <span className="cp-carousel-count" aria-live="polite"><b>{range.start}{range.end > range.start ? `–${range.end}` : ''}</b><small>de {visibleFiles.length}</small></span>
         <button type="button" onClick={() => move(-1)} aria-label="Ver elementos anteriores">←</button>
         <button type="button" onClick={() => move(1)} aria-label="Ver más elementos">→</button>
       </div>
