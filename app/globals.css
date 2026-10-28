@@ -704,3 +704,68 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,t
   stroke-linecap:round;
   stroke-linejoin:round;
 }
+
+/*
+ * Editorial section rhythm.
+ * Alternate white, warm neutral, dark brand and one restrained blush surface
+ * so the page reads as distinct chapters instead of one continuous pink band.
+ */
+.benefit-section{background:#fff}
+.collections-section{
+  background:#f7f4f2;
+  border-block:1px solid #ebe4e1;
+}
+.delivery-section{
+  background:#fff;
+  border-bottom:1px solid #ebe4e1;
+}
+.support-section{
+  position:relative;
+  overflow:hidden;
+  background:#4b343e;
+  color:#fff;
+}
+.support-section:before{
+  content:"";
+  position:absolute;
+  width:440px;
+  height:440px;
+  right:-210px;
+  top:-250px;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:50%;
+  box-shadow:0 0 0 72px rgba(255,255,255,.025),0 0 0 144px rgba(255,255,255,.018);
+  pointer-events:none;
+}
+.support-section .container{position:relative;z-index:1}
+.support-section .kicker,.support-section .kicker>span{color:#f0b8cb}
+.support-section h2,.support-section h2>span{color:#fff}
+.support-section p{color:#e8dce1}
+.support-section .support-grid p.support-note{color:#e5cbd4}
+.support-section .founder-label{color:#4b343e;border-color:#4b343e;box-shadow:5px 5px 0 #2f2027}
+.support-section .founder-label strong{color:#4b343e}
+.support-section .founder-label small{color:#7f5968}
+.support-section .support-portrait>img{
+  border-color:rgba(255,255,255,.88);
+  box-shadow:0 24px 60px rgba(24,11,17,.34);
+}
+.support-section .button.button{
+  border-color:#fff;
+  background:#fff;
+  color:#4b343e;
+}
+.support-section .button.button>span{background:#f3e4e9;color:#7f4f62}
+.support-section .button.button:hover{border-color:#f7e8ed;background:#f7e8ed}
+.guarantee-section{
+  background:#f6e9ed;
+  border-bottom:1px solid #ead8de;
+}
+.reviews-section{
+  background:#fff;
+  border-bottom:1px solid #ebe4e1;
+}
+.faq-section{background:#f7f4f1}
+
+@media(max-width:760px){
+  .support-section:before{width:300px;height:300px;right:-190px;top:-170px}
+}
