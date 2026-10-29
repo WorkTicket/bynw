@@ -174,7 +174,7 @@ function AssetGrid({ files, folder, type = 'product' }) {
 }
 
 function OfferCard({ item }) {
-  return <aside className="cp-offer-card" id="comprar"><span className="cp-offer-label">OFERTA · 50% DE DESCUENTO</span><p className="cp-offer-title">Tu colección completa</p><div className="cp-price"><strong>{item.price}<sup>€</sup></strong><span>Pago único<br />acceso de por vida</span></div><Button href={item.checkout} external>COMPRAR AHORA</Button><PaymentMethods /><p className="cp-checkout-note"><span>✓</span> Pago cifrado y 100% seguro</p><hr /><ul><li>Acceso inmediato por correo</li><li>Garantía de 7 días</li><li>Archivos PDF en español</li></ul><p className="cp-digital-note"><b>Producto 100% digital.</b> Recibes patrones PDF; no se envían muñecos ni materiales físicos.</p></aside>;
+  return <aside className="cp-offer-card"><span className="cp-offer-label">OFERTA · 50% DE DESCUENTO</span><p className="cp-offer-title">Tu colección completa</p><div className="cp-price"><strong>{item.price}<sup>€</sup></strong><span>Pago único<br />acceso de por vida</span></div><Button href={item.checkout} external>COMPRAR AHORA</Button><PaymentMethods /><p className="cp-checkout-note"><span>✓</span> Pago cifrado y 100% seguro</p><hr /><ul><li>Acceso inmediato por correo</li><li>Garantía de 7 días</li><li>Archivos PDF en español</li></ul><p className="cp-digital-note"><b>Producto 100% digital.</b> Recibes patrones PDF; no se envían muñecos ni materiales físicos.</p></aside>;
 }
 
 export default function ProductPage({ kind }) {
