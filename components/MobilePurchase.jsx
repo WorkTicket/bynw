@@ -44,7 +44,7 @@ export default function MobilePurchase({ collection, whatsappHref }) {
       <span>WHATSAPP</span>
     </a>
     {collection
-      ? <a className="button" href={collection.checkout} target="_blank" rel="noopener noreferrer sponsored" tabIndex={visible ? 0 : -1}>COMPRAR · {collection.price} €<Arrow /></a>
+      ? <a className="button" href={collection.checkout} rel="noopener noreferrer sponsored" tabIndex={visible ? 0 : -1}>COMPRAR · {collection.price} €<Arrow /></a>
       : <Link className="button" href="/#colecciones" tabIndex={visible ? 0 : -1}>ELIGE TU COLECCIÓN<Arrow /></Link>}
   </div>;
 }

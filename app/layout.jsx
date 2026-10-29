@@ -1,6 +1,7 @@
 import localFont from 'next/font/local';
 import Header from '../components/Header';
 import JsonLd from '../components/JsonLd';
+import MetaBrowserOptimizer from '../components/MetaBrowserOptimizer';
 import { absoluteUrl, site } from '../lib/site';
 import './globals.css';
 import './product-page.css';
@@ -23,8 +24,16 @@ export const metadata = {
   icons: { icon: '/assets/favicon.png', apple: '/Crochet-Shop-Website-Images/05-assets-tienda-completa/11-marca/favicon-yarn-heart-180.png' },
   manifest: '/manifest.webmanifest',
 };
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: 'cover',
+  themeColor: '#fff8fb',
+  colorScheme: 'light',
+};
 const organization = {
   '@context': 'https://schema.org', '@type': 'Organization', name: site.name, url: site.url,
   logo: absoluteUrl('/assets/manos-logo.webp'), email: 'mailto:bynw808@gmail.com',
 };
-export default function RootLayout({ children }) { return <html lang="es" data-scroll-behavior="smooth" className={`${sans.variable} ${script.variable}`}><body className="antialiased"><JsonLd data={organization} /><Header />{children}</body></html>; }
+export default function RootLayout({ children }) { return <html lang="es" data-scroll-behavior="smooth" className={`${sans.variable} ${script.variable}`}><head><link rel="preconnect" href="https://pay.hotmart.com" /><link rel="dns-prefetch" href="https://pay.hotmart.com" /></head><body className="antialiased"><MetaBrowserOptimizer /><JsonLd data={organization} /><Header />{children}</body></html>; }

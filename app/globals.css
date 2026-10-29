@@ -649,6 +649,21 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,t
   .guarantee-value>b{font-size:37px}
 }
 
+/* Stable rendering inside Facebook and Instagram in-app browsers. */
+@media(max-width:760px){
+  .meta-in-app-browser{min-height:var(--meta-viewport-height,100dvh);overscroll-behavior-x:none}
+  .meta-in-app-browser .mobile-purchase{
+    background:#fff;
+    -webkit-backdrop-filter:none;
+    backdrop-filter:none;
+    contain:layout paint;
+    transform:translate3d(0,calc(100% + 14px),0);
+    will-change:transform,opacity;
+  }
+  .meta-in-app-browser .mobile-purchase.mobile-purchase-visible{transform:translate3d(0,0,0)}
+  .meta-in-app-browser .mobile-purchase a{-webkit-touch-callout:none}
+}
+
 /* The guarantee artwork carries the full promise; the copy supports it. */
 .guarantee-grid{
   grid-template-columns:minmax(250px,340px) minmax(0,1fr) auto;

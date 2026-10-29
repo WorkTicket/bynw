@@ -9,7 +9,7 @@ import MobilePurchase from './MobilePurchase';
 
 export function Button({ href, children, light = false, outline = false, external = false, className = '' }) {
   const style = `button ${light ? 'button-light' : ''} ${outline ? 'button-outline' : ''} ${className}`;
-  return external ? <a className={style} href={href} target="_blank" rel="noopener noreferrer sponsored">{children}<span aria-hidden="true">↗</span></a> : <Link className={style} href={href}>{children}<span aria-hidden="true">↗</span></Link>;
+  return external ? <a className={style} href={href} rel="noopener noreferrer sponsored">{children}<span aria-hidden="true">↗</span></a> : <Link className={style} href={href}>{children}<span aria-hidden="true">↗</span></Link>;
 }
 export function Kicker({ children }) { return <span className="kicker"><span>✦</span>{children}</span>; }
 export function Hero() {
