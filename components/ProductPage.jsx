@@ -74,8 +74,13 @@ const gifts = [
 ];
 
 const princessMoreDesigns = [
-  ['WhatsApp Image 2026-10-27 at 12.59.00 PM.jpeg', 'Más princesas de cuento', 'new final/PRINCESS/And many more exclusive designs princess', 'Princesas'],
-  ['WhatsApp Image 2026-10-27 at 12.59.00 PM (1).jpeg', 'Diseños exclusivos de princesas', 'new final/PRINCESS/And many more exclusive designs princess', 'Princesas'],
+  ['WhatsApp Image 2026-10-27 at 12.59.00 PM.jpeg', 'Collage de diseños exclusivos', 'new final/PRINCESS/And many more exclusive designs princess', 'Ver más'],
+  ['WhatsApp Image 2026-10-27 at 12.59.00 PM (1).jpeg', 'Más diseños de la colección', 'new final/PRINCESS/And many more exclusive designs princess', 'Ver más'],
+];
+
+const princessDesigns = [
+  ...princessProducts.map(([name, label]) => [name, label, null, 'Princesas']),
+  ...princessMoreDesigns,
 ];
 
 const premiumMoreDesigns = [
@@ -125,13 +130,13 @@ const productData = {
     productFolder: '02-pack-princesas/01-portadas-productos',
     deliveryFolder: '02-pack-princesas/02-asi-recibes-tu-coleccion',
     qualityFolder: '02-pack-princesas/03-calidad-de-los-patrones',
-    products: princessMoreDesigns,
+    products: princessDesigns,
     delivery: princessDelivery,
     quality: ['86-merida-calidad.webp', '87-munecas-amarillo-calidad.webp', '88-munecas-rosa-calidad.webp', '89-ariel-calidad.webp'],
     title: <>Más de 200 patrones de<br /><span>Princesas de Cuento</span></>,
     intro: 'Crea muñecas con vestidos, peinados y detalles llenos de encanto siguiendo patrones visuales en español, paso a paso y a tu ritmo.',
     count: '200+',
-    categories: ['Princesas', 'Regalos extra'],
+    categories: ['Princesas', 'Ver más'],
     specs: [
       ['200+', 'Contenido', 'Más de 200 patrones de princesas de cuento.'],
       ['ES', 'Idioma', 'Español.'],
@@ -153,7 +158,7 @@ function ProductSupport() {
 }
 
 function PaymentMethods() {
-  return <div className="cp-payment-methods" aria-label="Métodos de pago aceptados"><span className="cp-pay-visa">VISA</span><span className="cp-pay-master"><i /><i />Mastercard</span><span className="cp-pay-paypal">PayPal</span><span className="cp-pay-hotmart">◈ Hotmart</span></div>;
+  return <div className="cp-payment-methods" aria-label="Métodos de pago aceptados"><span className="cp-pay-visa">VISA</span><span className="cp-pay-master"><i /><i />Mastercard</span><span className="cp-pay-paypal">PayPal</span><span className="cp-pay-klarna">Klarna.</span></div>;
 }
 
 function AssetGrid({ files, folder, type = 'product' }) {
@@ -169,7 +174,7 @@ function AssetGrid({ files, folder, type = 'product' }) {
 }
 
 function OfferCard({ item }) {
-  return <aside className="cp-offer-card" id="comprar"><span className="cp-offer-label">−50% ESTA SEMANA</span><div className="cp-price"><strong>{item.price}<sup>€</sup></strong><span>Acceso de por vida<br />sin cuotas mensuales</span></div><Button href={item.checkout} external>COMPRAR AHORA</Button><PaymentMethods /><p className="cp-checkout-note"><span>▣</span> Pago 100% seguro · Socio oficial Hotmart</p><hr /><ul><li>Acceso inmediato</li><li>Garantía 7 días</li><li>Pago 100% seguro</li></ul><p className="cp-digital-note"><b>Producto 100% digital.</b> Recibes patrones PDF; no se envían muñecos ni materiales físicos.</p></aside>;
+  return <aside className="cp-offer-card" id="comprar"><span className="cp-offer-label">OFERTA · 50% DE DESCUENTO</span><p className="cp-offer-title">Tu colección completa</p><div className="cp-price"><strong>{item.price}<sup>€</sup></strong><span>Pago único<br />acceso de por vida</span></div><Button href={item.checkout} external>COMPRAR AHORA</Button><PaymentMethods /><p className="cp-checkout-note"><span>✓</span> Pago cifrado y 100% seguro</p><hr /><ul><li>Acceso inmediato por correo</li><li>Garantía de 7 días</li><li>Archivos PDF en español</li></ul><p className="cp-digital-note"><b>Producto 100% digital.</b> Recibes patrones PDF; no se envían muñecos ni materiales físicos.</p></aside>;
 }
 
 export default function ProductPage({ kind }) {
@@ -185,8 +190,10 @@ export default function ProductPage({ kind }) {
   return <><JsonLd data={productSchema} /><main id="contenido" className="cp-page">
     <section className="cp-hero">
       <div className="container"><Link className="cp-breadcrumb" href="/#colecciones">← Todas las colecciones</Link><div className="cp-hero-grid">
+        <div className="cp-hero-heading"><div className="cp-rating"><span>★★★★★</span><b>5.0</b> · 52 reseñas</div><Kicker>COLECCIÓN</Kicker><h1>{isPrincesses ? <>Patrones de<br /><span>Princesas de Cuento</span></> : data.title}</h1></div>
         <div className="cp-hero-visual"><img src={item.preview} width={item.previewWidth} height={item.previewHeight} alt={`Caja de producto de ${item.name}`} fetchPriority="high" decoding="async" /><span className="cp-hero-count"><b>{data.count}</b> patrones<br />digitales</span><span className="cp-real-badge">Colección real<br /><b>en español</b></span></div>
-        <div className="cp-hero-copy"><div className="cp-rating"><span>★★★★★</span><b>5.0</b> · 52 reseñas</div><Kicker>COLECCIÓN</Kicker><h1>{isPrincesses ? <>Patrones de<br /><span>Princesas de Cuento</span></> : data.title}</h1><p className="cp-lead">{isPrincesses ? 'Colección de más de 200 Patrones de Princesas de Cuento + 20 bonos y obsequios' : 'Patrones en PDF con fotos paso a paso, para tejer, regalar o vender.'}</p><ul className="cp-benefit-list">{item.benefits.map(text => <li key={text}><span>✓</span>{text}</li>)}</ul><div className="cp-mobile-offer"><OfferCard item={item} /></div><a className="cp-text-link" href="#contenido-real">Mira todo lo que incluye <span>↓</span></a></div>
+        <div className="cp-hero-copy"><p className="cp-lead">{isPrincesses ? 'Colección de más de 200 Patrones de Princesas de Cuento + 20 bonos y obsequios' : 'Patrones en PDF con fotos paso a paso, para tejer, regalar o vender.'}</p><ul className="cp-benefit-list">{item.benefits.map(text => <li key={text}><span>✓</span>{text}</li>)}</ul><a className="cp-text-link" href="#contenido-real">Mira todo lo que incluye <span>↓</span></a></div>
+        <div className="cp-mobile-offer"><OfferCard item={item} /></div>
         <div className="cp-desktop-offer"><OfferCard item={item} /></div>
       </div></div>
     </section>
@@ -194,7 +201,7 @@ export default function ProductPage({ kind }) {
 
     <section className="cp-section cp-proof" id="contenido-real"><div className="container"><div className="cp-spec-heading"><Kicker>DETALLES DE LA COLECCIÓN</Kicker><h2>Especificaciones<br /><span>técnicas</span></h2><p>Todo lo que recibirás, explicado de forma clara antes de tu compra.</p></div><div className="cp-spec-grid">{data.specs.map(([icon, title, text]) => <article className="cp-spec-card" key={title}><span>{icon}</span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div></div></section>
 
-    <section className={`cp-section cp-showcase cp-showcase-${kind}`}><div className="container"><div className="cp-heading-row"><div><Kicker>COLECCIÓN</Kicker><h2>Y muchos diseños<br /><span>exclusivos más…</span></h2></div><p>Esta es solo una muestra: la colección incluye muchos más patrones de los que ves aquí.</p></div><ProductCarousel files={data.products} folder={data.productFolder} categories={data.categories} kind={kind} title={isPrincesses ? 'Dos grandes muestras de la colección' : 'Explora todos los diseños disponibles'} subtitle={isPrincesses ? 'Pulsa cada imagen para verla completa' : 'Desliza o utiliza las flechas para continuar'} /></div></section>
+    <section className={`cp-section cp-showcase cp-showcase-${kind}`}><div className="container"><div className="cp-heading-row"><div><Kicker>COLECCIÓN</Kicker><h2>Y muchos diseños<br /><span>exclusivos más…</span></h2></div><p>Esta es solo una muestra: la colección incluye muchos más patrones de los que ves aquí.</p></div><ProductCarousel files={data.products} folder={data.productFolder} categories={data.categories} kind={kind} title={isPrincesses ? 'Princesas incluidas en la colección' : 'Explora todos los diseños disponibles'} subtitle={isPrincesses ? 'Elige Princesas o Ver más para explorar' : 'Desliza o utiliza las flechas para continuar'} /><p className="cp-more-designs">Y muchos diseños más…</p></div></section>
 
     <section className="cp-section cp-delivery"><div className="container"><div className="cp-delivery-heading"><Kicker>ENTREGA</Kicker><h2>Así de fácil recibes<br /><span>tu colección</span></h2><p>Tu biblioteca digital llega organizada y lista para explorar. El carrusel avanza automáticamente cada 20 segundos.</p></div><ProductCarousel files={data.delivery} folder={data.deliveryFolder} type="delivery" title="Así se ve la colección por dentro" subtitle="Imágenes reales · pulsa para ampliar" /></div></section>
 
@@ -206,6 +213,6 @@ export default function ProductPage({ kind }) {
     <ProductSupport />
     <Reviews />
     <FAQ />
-    <section className="cp-final"><div className="container cp-final-inner"><div><Kicker>MANOS CREATIVAS BYNMW</Kicker><h2>¿Lista para<br /><span>empezar?</span></h2><p>{item.name}. Acceso inmediato a la colección y a los bonos.</p></div><div className="cp-final-buy"><div className="cp-price"><strong>{item.price}<sup>€</sup></strong><span>pago único</span></div><Button href={item.checkout} external>COMPRAR AHORA</Button><PaymentMethods /><small>Pago 100% seguro · Socio oficial Hotmart</small></div></div></section>
+    <section className="cp-final"><div className="container cp-final-inner"><div><Kicker>MANOS CREATIVAS BYNMW</Kicker><h2>¿Lista para<br /><span>empezar?</span></h2><p>{item.name}. Acceso inmediato a la colección y a los bonos.</p></div><div className="cp-final-buy"><div className="cp-price"><strong>{item.price}<sup>€</sup></strong><span>pago único</span></div><Button href={item.checkout} external>COMPRAR AHORA</Button><PaymentMethods /><small>Pago cifrado y 100% seguro</small></div></div></section>
   </main><Footer collection={item} /></>;
 }

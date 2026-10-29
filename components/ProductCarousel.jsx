@@ -31,11 +31,11 @@ function belongsTo(label, category, kind) {
 
 export default function ProductCarousel({ files, folder, type = 'product', categories, kind, title, subtitle }) {
   const track = useRef(null);
-  const [active, setActive] = useState('Ver todo');
+  const [active, setActive] = useState(categories?.[0] || 'Ver todo');
   const [range, setRange] = useState({ start: 1, end: 1 });
 
   const visibleFiles = type === 'product'
-    ? files.filter(file => active === 'Ver todo' || (Array.isArray(file) && file[3] === active) || belongsTo(Array.isArray(file) ? file[1] : file, active, kind))
+    ? files.filter(file => active === 'Ver todo' || (Array.isArray(file) && file[3] ? file[3] === active : belongsTo(Array.isArray(file) ? file[1] : file, active, kind)))
     : files;
 
   useEffect(() => {
@@ -102,7 +102,7 @@ export default function ProductCarousel({ files, folder, type = 'product', categ
 
   return <div className={`cp-carousel cp-carousel-${type} ${isSmallCollection ? 'cp-carousel-few' : ''}`}>
     {categories && <div className="cp-category-row" role="group" aria-label="Filtrar diseños">
-      {['Ver todo', ...categories].map(category => <button key={category} type="button" className={active === category ? 'active' : ''} aria-pressed={active === category} onClick={() => selectCategory(category)}>{category}</button>)}
+      {categories.map(category => <button key={category} type="button" className={active === category ? 'active' : ''} aria-pressed={active === category} onClick={() => selectCategory(category)}>{category}</button>)}
     </div>}
     <div className="cp-carousel-controls">
       <span className="cp-carousel-control-copy"><strong>{title || 'Desliza para explorar'}</strong>{subtitle && <small>{subtitle}</small>}</span>
