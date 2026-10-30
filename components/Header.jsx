@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 export function Brand({ light = false, footer = false }) {
   const logo = footer ? '/optimized/assets/brand-footer-160.webp' : '/optimized/assets/brand-navbar-160.webp';
-  return <Link href="/" className={`brand ${light ? 'brand-light' : ''} ${footer ? 'brand-footer' : ''}`} aria-label="Manos Creativas Bynmw, inicio"><img src={logo} width={160} height={160} alt="" {...(footer ? { loading: 'lazy', decoding: 'async' } : { decoding: 'async' })} />{!footer && <span className="brand-wordmark"><strong>Manos Creativas</strong><small>Bynmw</small></span>}</Link>;
+  return <Link href="/" className={`brand ${light ? 'brand-light' : ''} ${footer ? 'brand-footer' : ''}`} aria-label="Manos Creativas Bynmw, inicio"><img src={logo} srcSet={!footer ? '/optimized/assets/brand-navbar-80.webp 80w, /optimized/assets/brand-navbar-160.webp 160w' : undefined} sizes={!footer ? '56px' : undefined} width={160} height={160} alt="" {...(footer ? { loading: 'lazy', decoding: 'async' } : { decoding: 'async' })} />{!footer && <span className="brand-wordmark"><strong>Manos Creativas</strong><small>Bynmw</small></span>}</Link>;
 }
 export default function Header() {
   const [open, setOpen] = useState(false);
