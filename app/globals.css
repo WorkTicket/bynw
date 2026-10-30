@@ -662,17 +662,15 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,t
 .button.button-small>span{right:7px}
 
 /* Logotipo gráfico con mayor presencia, sin duplicar el nombre de la marca. */
-.site-header .brand>img{width:58px;height:58px}
-.footer .brand>img{width:64px;height:64px}
-.footer-grid>div:first-child .brand-footer{width:100%;justify-content:center;flex-direction:column;gap:9px}
-.footer .brand-footer>span.brand-wordmark{align-items:baseline;flex-direction:row;gap:6px;white-space:nowrap}
-.footer .brand-footer .brand-wordmark>small{margin:0}
+.site-header .brand>img{width:64px;height:64px}
+.footer .brand>img{width:180px;height:180px}
+.footer-grid>div:first-child .brand-footer{width:100%;justify-content:center}
 .footer-grid>div:first-child{text-align:center}
 .footer-grid>div:first-child>p{margin-right:auto;margin-left:auto}
 .footer-grid>div:first-child .footer-script{display:block;text-align:center}
 @media(max-width:760px){
-  .site-header .brand>img{width:52px;height:52px}
-  .footer .brand>img{width:60px;height:60px}
+  .site-header .brand>img{width:56px;height:56px}
+  .footer .brand>img{width:150px;height:150px}
 }
 
 /* Sistema final de botones: tipografía, proporciones y centrado consistentes. */

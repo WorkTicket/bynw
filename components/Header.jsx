@@ -2,7 +2,9 @@
 import { useState } from 'react';
 import Link from 'next/link';
 export function Brand({ light = false, footer = false }) {
-  return <Link href="/" className={`brand ${light ? 'brand-light' : ''} ${footer ? 'brand-footer' : ''}`} aria-label="Manos Creativas Bynmw, inicio"><img src="/assets/live-logo-64.webp" width="64" height="64" alt="" /><span className="brand-wordmark"><strong>Manos Creativas</strong><small>Bynmw</small></span></Link>;
+  const logo = footer ? '/manos-creativas-footer.webp' : '/manos-creativas-navbar.webp';
+  const size = footer ? 512 : 256;
+  return <Link href="/" className={`brand ${light ? 'brand-light' : ''} ${footer ? 'brand-footer' : ''}`} aria-label="Manos Creativas Bynmw, inicio"><img src={logo} width={size} height={size} alt="" /></Link>;
 }
 export default function Header() {
   const [open, setOpen] = useState(false);
