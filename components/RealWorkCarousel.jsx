@@ -54,7 +54,7 @@ export default function RealWorkCarousel() {
     <div className="container">
       <div className="real-work-heading">
         <div><span className="kicker"><span>✦</span> Trabajos reales</span><h2 id="real-work-title">Hecho con nuestros<br /><span>patrones</span></h2><p>Fotos que nos envían artesanas después de tejer. Cada una con su propio toque.</p></div>
-        <div className="carousel-controls" aria-label="Controles del carrusel">
+        <div className="carousel-controls" aria-label="Controles de trabajos reales">
           <button type="button" onClick={() => move(-1)} aria-label="Ver fotos anteriores">←</button>
           <button type="button" onClick={() => move(1)} aria-label="Ver más fotos">→</button>
         </div>
