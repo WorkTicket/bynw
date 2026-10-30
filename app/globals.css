@@ -1040,6 +1040,24 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,t
   }
 }
 
+/* Contraste limpio para el CTA final sobre el fondo rosa. */
+.final-cta .button.button-light{
+  border-color:#4b2938;
+  background:#4b2938;
+  color:#fff;
+  box-shadow:0 7px 18px rgba(68,35,49,.22);
+}
+.final-cta .button.button-light>span{
+  border-color:rgba(255,255,255,.7);
+  background:#fff;
+  color:#4b2938;
+}
+.final-cta .button.button-light:hover{
+  border-color:#38202a;
+  background:#38202a;
+  box-shadow:0 9px 22px rgba(68,35,49,.28);
+}
+
 @media(max-width:1100px){
   .site-header .header-cta{display:none}
 }
