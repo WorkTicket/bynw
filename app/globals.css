@@ -9,7 +9,7 @@
 @media(max-width:380px){.brand>span{font-size:25px}.brand>img{width:44px;height:44px}.hero h1{font-size:47px}.hero-stage{height:400px}.hero-natalia{width:380px;height:540px;left:25px;bottom:-8px}.hero-unicorn{width:130px;height:185px;left:-14px}.hero-bouquet{width:135px;height:215px;right:-14px;top:80px}.sale-stamp{width:85px;height:85px}.sale-stamp b{font-size:25px}.tab-create{font-size:7px;padding:7px 8px}.tab-pdf{font-size:7px;padding:7px 8px}.project-image{height:185px}.product-hero h1{font-size:40px}.inner-hero h1{font-size:37px}.collection-title-row h3{font-size:23px}.collection-title-row .price{font-size:32px}.drive-art{height:290px}.guarantee-grid{grid-template-columns:83px 1fr;gap:18px}.guarantee-badge{width:83px;height:110px}.guarantee-badge>b{font-size:47px}.guarantee-section h2{font-size:27px}.guarantee-section p{font-size:10px}.star-options{gap:5px}.star-options span{padding:8px;font-size:11px}.support-grid h2{font-size:33px}.side-title h2{font-size:33px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
 
-@supports (content-visibility:auto){.section,.cp-section{content-visibility:auto;contain-intrinsic-size:auto 800px}}
+@supports (content-visibility:auto){.section,.cp-section{content-visibility:visible}}
 
 @media(max-width:760px){
   .mobile-purchase{display:grid;grid-template-columns:minmax(112px,.38fr) minmax(0,.62fr);gap:10px;align-items:center;padding:10px 12px calc(10px + env(safe-area-inset-bottom));border-top:1px solid #eadde1;background:rgba(255,255,255,.96);box-shadow:0 -12px 35px rgba(66,35,48,.12);backdrop-filter:blur(16px);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(calc(100% + 14px));transition:opacity .3s ease,transform .4s cubic-bezier(.22,1,.36,1),visibility 0s linear .4s}
@@ -37,7 +37,6 @@
   object-fit:contain;
   object-position:center;
   transform:translate(-50%,-44%);
-  filter:drop-shadow(0 18px 14px #8d5a6b30);
 }
 @media(min-width:1450px){.hero-natalia{width:150%;height:auto;left:50%;top:50%;bottom:auto}}
 @media(max-width:1100px){.hero-natalia{width:148%;height:auto;left:50%;top:51%;bottom:auto}}
@@ -723,10 +722,12 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,t
 }
 
 @keyframes buy-bump{
-  0%,80%,100%{transform:scale(1)}
-  88%{transform:scale(1.015)}
+  0%,72%,100%{transform:scale(1);box-shadow:0 5px 14px rgba(121,57,82,.13)}
+  78%{transform:scale(1.06);box-shadow:0 13px 28px rgba(121,57,82,.3)}
+  83%{transform:scale(.985)}
+  88%{transform:scale(1.025)}
 }
-.button.buy-button{animation:buy-bump 4s ease-in-out infinite;transform-origin:center}
+.button.buy-button{animation:buy-bump 3.4s cubic-bezier(.22,1,.36,1) infinite;transform-origin:center}
 .button.buy-button:hover{animation-play-state:paused}
 
 @media(prefers-reduced-motion:reduce){.button.buy-button{animation:none}}
@@ -1121,3 +1122,34 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,t
 .final-cta h2,
 .final-cta h2>span,
 .final-cta p{color:#fff}
+
+/* CTA polish requested for collection cards and testimonials. */
+.collection-details>.button.buy-button{
+  min-height:62px;
+  padding:10px 14px 10px 24px;
+  font-size:15px;
+  letter-spacing:.02em;
+}
+.collection-details>.button.buy-button>span{
+  width:36px;
+  height:36px;
+  font-size:17px;
+}
+.reviews-section .section-action .button-outline{
+  border-color:#a33b63;
+  background:#f7dce7;
+  color:#4a2936;
+}
+.reviews-section .section-action .button-outline:hover{
+  border-color:#a33b63;
+  background:#efc5d5;
+  color:#4a2936;
+}
+
+@media(max-width:760px){
+  .collection-details>.button.buy-button{
+    min-height:58px;
+    padding-left:20px;
+    font-size:14px;
+  }
+}

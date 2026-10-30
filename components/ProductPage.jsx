@@ -1,7 +1,9 @@
 import Link from 'next/link';
+import '../app/product-page.css';
 import Lightbox from './Lightbox';
 import ProductCarousel from './ProductCarousel';
-import { collections, reviews, whatsappHref } from '../lib/store';
+import { collections, whatsappHref } from '../lib/store';
+import { reviews } from '../lib/reviews';
 import { Button, FAQ, Footer, Guarantee, Kicker, Reviews } from './Sections';
 import JsonLd from './JsonLd';
 import { absoluteUrl, site } from '../lib/site';
@@ -122,6 +124,7 @@ const productData = {
       ['PDF', 'Formato', 'Archivos PDF descargables e imprimibles.'],
       ['✦', 'Metodología', 'Guía paso a paso con soporte visual de alta resolución, diseñada para facilitar la ejecución de cada punto y detalle.'],
       ['✉', 'Entrega', 'Acceso inmediato a tu correo electrónico tras la confirmación del pago.'],
+      ['▶', 'Vídeos incluidos', 'Vídeos para principiantes: aprenderás cómo leer abreviaturas en un tejido de crochet para interpretar correctamente tus patrones.'],
     ],
   },
   princesas: {
@@ -153,7 +156,7 @@ function TrustRow() {
 }
 
 function ProductSupport() {
-  return <section className="cp-support"><div className="container cp-support-inner"><div className="cp-support-photo"><img src="/optimized/assets/natalia-crochet.webp" alt="Natalia, fundadora de Manos Creativas, con una muñeca de crochet" loading="lazy" /><span><b>NATALIA</b> · FUNDADORA</span></div><div><Kicker>SOPORTE DIRECTO</Kicker><h2>¿Necesitas ayuda<br /><span>con tu pedido?</span></h2><p>Soy Natalia, de Manos Creativas. Escríbeme por WhatsApp y te ayudo con tu compra o con el acceso a tus patrones.</p><Button href={whatsappHref} external>ESCRIBIR A NATALIA</Button><small>Respondemos en menos de 24 horas</small></div></div></section>;
+  return <section className="cp-support"><div className="container cp-support-inner"><div className="cp-support-photo"><img src="/optimized/assets/natalia-crochet.webp" alt="Natalia, fundadora de Manos Creativas, con una muñeca de crochet" loading="lazy" decoding="async" /><span><b>NATALIA</b> · FUNDADORA</span></div><div><Kicker>SOPORTE DIRECTO</Kicker><h2>¿Necesitas ayuda<br /><span>con tu pedido?</span></h2><p>Soy Natalia, de Manos Creativas. Escríbeme por WhatsApp y te ayudo con tu compra o con el acceso a tus patrones.</p><Button href={whatsappHref} external>ESCRIBIR A NATALIA</Button><small>Respondemos en menos de 24 horas</small></div></div></section>;
 }
 
 function PaymentMethods() {
@@ -190,7 +193,7 @@ export default function ProductPage({ kind }) {
     <section className="cp-hero">
       <div className="container"><Link className="cp-breadcrumb" href="/#colecciones">← Todas las colecciones</Link><div className="cp-hero-grid">
         <div className="cp-hero-heading"><div className="cp-rating"><span>★★★★★</span><b>5.0</b> · 52 reseñas</div><Kicker>COLECCIÓN</Kicker><h1>{isPrincesses ? <>Patrones de<br /><span>Princesas de Cuento</span></> : data.title}</h1></div>
-        <div className="cp-hero-visual"><img src={item.preview} width={item.previewWidth} height={item.previewHeight} alt={`Caja de producto de ${item.name}`} fetchPriority="high" decoding="async" /><span className="cp-hero-count"><b>{data.count}</b> patrones<br />digitales</span><span className="cp-real-badge">Colección real<br /><b>en español</b></span></div>
+        <div className="cp-hero-visual"><img src={item.preview} srcSet={`${item.preview.replace('.webp', '-640.webp')} 640w, ${item.preview.replace('.webp', '-960.webp')} 960w`} sizes="(max-width: 800px) 90vw, 520px" width={item.previewWidth} height={item.previewHeight} alt={`Caja de producto de ${item.name}`} fetchPriority="high" decoding="async" /><span className="cp-hero-count"><b>{data.count}</b> patrones<br />digitales</span><span className="cp-real-badge">Colección real<br /><b>en español</b></span></div>
         <div className="cp-hero-copy"><p className="cp-lead">{isPrincesses ? 'Colección de más de 200 patrones de Princesas de Cuento + 20 regalos adicionales' : 'Patrones en PDF con fotos paso a paso, para tejer, regalar o vender.'}</p><ul className="cp-benefit-list">{item.benefits.map(text => <li key={text}><span>✓</span>{text}</li>)}</ul><a className="cp-text-link" href="#contenido-real">Mira todo lo que incluye <span>↓</span></a></div>
         <div className="cp-mobile-offer"><OfferCard item={item} /></div>
         <div className="cp-desktop-offer"><OfferCard item={item} /></div>
