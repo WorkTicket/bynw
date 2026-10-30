@@ -997,7 +997,7 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,t
   font-size:12px;
 }
 .hero-buttons>.button{min-width:0}
-.collection-details>.button,
+.collection-details>.button{width:100%;max-width:100%;min-height:44px;align-self:stretch}
 .support-text-action .button{width:max-content;max-width:100%;min-height:44px;align-self:center}
 .mobile-purchase .button,
 .mobile-purchase .button.button{
