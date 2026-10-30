@@ -1061,3 +1061,63 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,t
 @media(max-width:1100px){
   .site-header .header-cta{display:none}
 }
+
+/* WCAG AA palette: reserve pale pinks for decoration and use darker brand
+   tones whenever pink carries readable text or sits behind white text. */
+:root{
+  --pink:#a33b63;
+  --pink-dark:#762643;
+  --muted:#66565c;
+}
+
+.offer-bar{
+  background:#704452;
+  color:#fff;
+}
+.offer-bar strong,
+.offer-bar span{color:#fff}
+
+.brand-wordmark>small,
+.brand>span{color:#96364f}
+
+.sale-stamp{color:#4b2938}
+
+.button,
+.button.button{
+  border-color:#a33b63;
+  background:#a33b63;
+  color:#fff;
+}
+.button:hover,
+.button.button:hover{
+  border-color:#842c4d;
+  background:#842c4d;
+}
+.button.button-outline{
+  border-color:#4a3d42;
+  background:#fff;
+  color:#4a3d42;
+}
+
+.collections-section .section-title>p,
+.collection-details>p{color:#66565c}
+.collection-details>.button{
+  border-color:#a33b63;
+  background:#a33b63;
+  color:#fff;
+}
+.collection-details>.button:hover{
+  border-color:#842c4d;
+  background:#842c4d;
+}
+.collection-details .fine-print{color:#6b5960}
+
+.final-cta{
+  background:#83354f;
+  color:#fff;
+}
+.final-cta .kicker,
+.final-cta .kicker>span,
+.final-cta h2,
+.final-cta h2>span,
+.final-cta p{color:#fff}
