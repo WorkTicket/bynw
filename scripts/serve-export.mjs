@@ -1,9 +1,11 @@
 import { createServer } from 'node:http';
-import { createReadStream, existsSync, statSync } from 'node:fs';
+import { createReadStream, existsSync, readFileSync, statSync } from 'node:fs';
 import { resolve, sep, extname } from 'node:path';
+import { brotliCompressSync, gzipSync } from 'node:zlib';
 const root = resolve('out');
 if (!existsSync(root)) { console.error('Run npm run build first.'); process.exit(1); }
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json', '.txt': 'text/plain; charset=utf-8', '.webp': 'image/webp', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.ico': 'image/x-icon' };
+const compressible = new Set(['.html', '.css', '.js', '.json', '.txt', '.svg']);
 createServer((req, res) => {
   let path;
   try { path = resolve(root, '.' + decodeURIComponent(new URL(req.url, 'http://localhost').pathname)); } catch { res.writeHead(400); res.end('Bad request'); return; }
@@ -13,13 +15,31 @@ createServer((req, res) => {
   if (!found) path = resolve(root, '404.html');
   const extension = extname(path);
   const immutable = extension && extension !== '.html' && extension !== '.txt' && extension !== '.json';
-  res.writeHead(found ? 200 : 404, {
+  const headers = {
     'Content-Type': types[extension] || 'application/octet-stream',
     'Cache-Control': immutable ? 'public, max-age=31536000, immutable' : 'public, max-age=0, must-revalidate',
     'X-Content-Type-Options': 'nosniff',
     'Referrer-Policy': 'strict-origin-when-cross-origin',
     'X-Frame-Options': 'SAMEORIGIN',
-  });
+    Vary: 'Accept-Encoding',
+  };
+  if (found && compressible.has(extension) && req.method !== 'HEAD') {
+    const accept = req.headers['accept-encoding'] || '';
+    const body = readFileSync(path);
+    if (accept.includes('br')) {
+      headers['Content-Encoding'] = 'br';
+      res.writeHead(found ? 200 : 404, headers);
+      res.end(brotliCompressSync(body));
+      return;
+    }
+    if (accept.includes('gzip')) {
+      headers['Content-Encoding'] = 'gzip';
+      res.writeHead(found ? 200 : 404, headers);
+      res.end(gzipSync(body));
+      return;
+    }
+  }
+  res.writeHead(found ? 200 : 404, headers);
   if (req.method === 'HEAD') { res.end(); return; }
   createReadStream(path).pipe(res);
 }).listen(Number(process.env.PORT || 3000), '0.0.0.0', () => console.log(`Static Next.js export running on port ${process.env.PORT || 3000}`));

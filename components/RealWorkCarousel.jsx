@@ -63,7 +63,7 @@ export default function RealWorkCarousel() {
         <ul className="real-work-track" ref={track}>
           {work.map(item => <li className="real-work-card" key={item.id}>
             <figure>
-              <img src={item.image} alt={`Trabajo terminado de ${item.name}`} loading="lazy" />
+              <img src={item.image} srcSet={`${item.image.replace('.webp', '-320.webp')} 320w, ${item.image.replace('.webp', '-640.webp')} 640w`} sizes="(max-width: 760px) 72vw, 300px" width={640} height={800} alt={`Trabajo terminado de ${item.name}`} loading="lazy" decoding="async" />
               <figcaption><b>{item.name}</b><small>{item.city}</small></figcaption>
             </figure>
           </li>)}
