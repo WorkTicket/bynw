@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Lightbox from './Lightbox';
 import ProductCarousel from './ProductCarousel';
-import { collections, email, reviews, whatsappHref } from '../lib/store';
+import { collections, reviews, whatsappHref } from '../lib/store';
 import { Button, FAQ, Footer, Guarantee, Kicker, Reviews } from './Sections';
 import JsonLd from './JsonLd';
 import { absoluteUrl, site } from '../lib/site';
@@ -22,7 +22,7 @@ const premiumProducts = [
   ['11-muneca-fresa-producto.webp', 'Muñeca fresa'],
   ['12-merida-vestido-largo-producto.webp', 'Muñeca de vestido largo'],
   ['13-hada-verde-producto.webp', 'Hada verde'],
-  ['14-muneca-overol-azul-producto.webp', 'Muñeca con overol'],
+  ['14-muneca-overol-azul-producto.webp', 'Muñeca con peto azul'],
   ['15-muneca-rosa-lazos-producto.webp', 'Muñeca rosa con lazos'],
   ['16-muneca-pastel-rayas-producto.webp', 'Muñeca pastel'],
   ['17-muneca-cabello-violeta-producto.webp', 'Muñeca de cabello violeta'],
@@ -117,7 +117,7 @@ const productData = {
     count: '1.000+',
     categories: ['Más diseños'],
     specs: [
-      ['∞', 'Contenido', 'Más de 1.000 patrones digitales Premium de Ganchillo: Princesas Disney, Halloween, Profesiones, Santos y Ángeles, Navidad, Amigurumis en Chenille, Flores eternas, Muñecas flores reversibles y muñecas premium.'],
+      ['∞', 'Contenido', 'Más de 1.000 patrones digitales prémium de ganchillo: princesas de cuento, Halloween, profesiones, santos y ángeles, Navidad, amigurumis de chenilla, flores eternas, muñecas flor reversibles y muñecas prémium.'],
       ['ES', 'Idioma', 'Español.'],
       ['PDF', 'Formato', 'Archivos PDF descargables e imprimibles.'],
       ['✦', 'Metodología', 'Guía paso a paso con soporte visual de alta resolución, diseñada para facilitar la ejecución de cada punto y detalle.'],
@@ -142,7 +142,7 @@ const productData = {
       ['ES', 'Idioma', 'Español.'],
       ['PDF', 'Formato', 'PDF descargable e imprimible.'],
       ['✦', 'Guía visual', 'Guía paso a paso con fotos en alta resolución.'],
-      ['✉', 'Entrega', 'Acceso inmediato por correo electrónico (e-mail) en cuanto se confirme el pago.'],
+      ['✉', 'Entrega', 'Acceso inmediato por correo electrónico en cuanto se confirme el pago.'],
       ['▶', 'Vídeos incluidos', 'Vídeos para principiantes: aprenderás cómo leer abreviaturas en un tejido de crochet para interpretar correctamente tus patrones.'],
     ],
   },
@@ -153,8 +153,7 @@ function TrustRow() {
 }
 
 function ProductSupport() {
-  const contact = whatsappHref || `mailto:${email}?subject=Ayuda%20con%20mi%20pedido`;
-  return <section className="cp-support"><div className="container cp-support-inner"><div className="cp-support-photo"><img src="/optimized/assets/natalia-crochet.webp" alt="Natalia, fundadora de Manos Creativas, con una muñeca de crochet" loading="lazy" /><span><b>NATALIA</b> · FUNDADORA</span></div><div><Kicker>SOPORTE DIRECTO</Kicker><h2>¿Necesitas ayuda<br /><span>con tu pedido?</span></h2><p>Soy Natalia, de Manos Creativas. Escríbeme por WhatsApp y te ayudo con tu compra o con el ingreso a tus patrones.</p><Button href={contact}>ESCRIBIR A NATALIA</Button><small>Respuesta en menos de 24h</small></div></div></section>;
+  return <section className="cp-support"><div className="container cp-support-inner"><div className="cp-support-photo"><img src="/optimized/assets/natalia-crochet.webp" alt="Natalia, fundadora de Manos Creativas, con una muñeca de crochet" loading="lazy" /><span><b>NATALIA</b> · FUNDADORA</span></div><div><Kicker>SOPORTE DIRECTO</Kicker><h2>¿Necesitas ayuda<br /><span>con tu pedido?</span></h2><p>Soy Natalia, de Manos Creativas. Escríbeme por WhatsApp y te ayudo con tu compra o con el acceso a tus patrones.</p><Button href={whatsappHref} external>ESCRIBIR A NATALIA</Button><small>Respondemos en menos de 24 horas</small></div></div></section>;
 }
 
 function PaymentMethods() {
@@ -174,7 +173,7 @@ function AssetGrid({ files, folder, type = 'product' }) {
 }
 
 function OfferCard({ item }) {
-  return <aside className="cp-offer-card"><span className="cp-offer-label">OFERTA · 50% DE DESCUENTO</span><p className="cp-offer-title">Tu colección completa</p><div className="cp-price"><strong>{item.price}<sup>€</sup></strong><span>Pago único<br />acceso de por vida</span></div><Button href={item.checkout} external>COMPRAR AHORA</Button><PaymentMethods /><p className="cp-checkout-note"><span>✓</span> Pago cifrado y 100% seguro</p><hr /><ul><li>Acceso inmediato por correo</li><li>Garantía de 7 días</li><li>Archivos PDF en español</li></ul><p className="cp-digital-note"><b>Producto 100% digital.</b> Recibes patrones PDF; no se envían muñecos ni materiales físicos.</p></aside>;
+  return <aside className="cp-offer-card"><span className="cp-offer-label">OFERTA · 50% DE DESCUENTO</span><p className="cp-offer-title">Tu colección completa</p><div className="cp-price"><strong>{item.price}<sup>€</sup></strong><span>Pago único<br />acceso de por vida</span></div><Button href={item.checkout} external className="buy-button">COMPRAR AHORA</Button><PaymentMethods /><p className="cp-checkout-note"><span>✓</span> Pago cifrado y 100% seguro</p><hr /><ul><li>Acceso inmediato por correo</li><li>Garantía de 7 días</li><li>Archivos PDF en español</li></ul><p className="cp-digital-note"><b>Producto 100% digital.</b> Recibes patrones PDF; no se envían muñecos ni materiales físicos.</p></aside>;
 }
 
 export default function ProductPage({ kind }) {
@@ -192,7 +191,7 @@ export default function ProductPage({ kind }) {
       <div className="container"><Link className="cp-breadcrumb" href="/#colecciones">← Todas las colecciones</Link><div className="cp-hero-grid">
         <div className="cp-hero-heading"><div className="cp-rating"><span>★★★★★</span><b>5.0</b> · 52 reseñas</div><Kicker>COLECCIÓN</Kicker><h1>{isPrincesses ? <>Patrones de<br /><span>Princesas de Cuento</span></> : data.title}</h1></div>
         <div className="cp-hero-visual"><img src={item.preview} width={item.previewWidth} height={item.previewHeight} alt={`Caja de producto de ${item.name}`} fetchPriority="high" decoding="async" /><span className="cp-hero-count"><b>{data.count}</b> patrones<br />digitales</span><span className="cp-real-badge">Colección real<br /><b>en español</b></span></div>
-        <div className="cp-hero-copy"><p className="cp-lead">{isPrincesses ? 'Colección de más de 200 Patrones de Princesas de Cuento + 20 bonos y obsequios' : 'Patrones en PDF con fotos paso a paso, para tejer, regalar o vender.'}</p><ul className="cp-benefit-list">{item.benefits.map(text => <li key={text}><span>✓</span>{text}</li>)}</ul><a className="cp-text-link" href="#contenido-real">Mira todo lo que incluye <span>↓</span></a></div>
+        <div className="cp-hero-copy"><p className="cp-lead">{isPrincesses ? 'Colección de más de 200 patrones de Princesas de Cuento + 20 regalos adicionales' : 'Patrones en PDF con fotos paso a paso, para tejer, regalar o vender.'}</p><ul className="cp-benefit-list">{item.benefits.map(text => <li key={text}><span>✓</span>{text}</li>)}</ul><a className="cp-text-link" href="#contenido-real">Mira todo lo que incluye <span>↓</span></a></div>
         <div className="cp-mobile-offer"><OfferCard item={item} /></div>
         <div className="cp-desktop-offer"><OfferCard item={item} /></div>
       </div></div>
@@ -207,12 +206,12 @@ export default function ProductPage({ kind }) {
 
     <section className="cp-section cp-quality"><div className="container"><div className="cp-heading-row"><div><Kicker>CALIDAD</Kicker><h2>Echa un vistazo a la calidad<br /><span>de nuestros patrones</span></h2></div><p>Patrones detallados, con fotos en cada paso, pensados para que tejas con tranquilidad.</p></div><ProductCarousel files={data.quality} folder={data.qualityFolder} type="quality" title="Muestras reales de nuestros patrones" subtitle="2 imágenes por vista · pulsa para ampliar" /></div></section>
 
-    {kind === 'princesas' && <section className="cp-section cp-gifts"><div className="container"><div className="cp-gift-heading"><div><span className="cp-gift-kicker">OBSEQUIOS INCLUIDOS CON TU COLECCIÓN</span><h2>Bonos de regalo exclusivos<br /><span>por tu compra</span></h2><p>Guías, patrones y material adicional incluidos con tu colección.</p><span className="cp-gift-note">Incluidos con tu compra · para siempre</span></div><img src={`${ASSET_ROOT}/05-assets-tienda-completa/05-regalos/regalos-portadas-reales-composicion.webp`} alt="Composición de los regalos digitales incluidos" loading="lazy" /></div><ProductCarousel files={gifts} folder="02-pack-princesas/04-regalos-incluidos" type="gift" /><p className="cp-more-gifts">…y muchos regalos más.</p></div></section>}
+    {kind === 'princesas' && <section className="cp-section cp-gifts"><div className="container"><div className="cp-gift-heading"><div><span className="cp-gift-kicker">REGALOS INCLUIDOS CON TU COLECCIÓN</span><h2>Regalos digitales exclusivos<br /><span>con tu compra</span></h2><p>Guías, patrones y material adicional incluidos con tu colección.</p><span className="cp-gift-note">Incluidos con tu compra · para siempre</span></div><img src={`${ASSET_ROOT}/05-assets-tienda-completa/05-regalos/regalos-portadas-reales-composicion.webp`} alt="Composición de los regalos digitales incluidos" loading="lazy" /></div><ProductCarousel files={gifts} folder="02-pack-princesas/04-regalos-incluidos" type="gift" /><p className="cp-more-gifts">…y muchos regalos más.</p></div></section>}
 
     <Guarantee />
     <ProductSupport />
     <Reviews />
     <FAQ />
-    <section className="cp-final"><div className="container cp-final-inner"><div><Kicker>MANOS CREATIVAS BYNMW</Kicker><h2>¿Lista para<br /><span>empezar?</span></h2><p>{item.name}. Acceso inmediato a la colección y a los bonos.</p></div><div className="cp-final-buy"><div className="cp-price"><strong>{item.price}<sup>€</sup></strong><span>pago único</span></div><Button href={item.checkout} external>COMPRAR AHORA</Button><PaymentMethods /><small>Pago cifrado y 100% seguro</small></div></div></section>
+    <section className="cp-final"><div className="container cp-final-inner"><div><Kicker>MANOS CREATIVAS BYNMW</Kicker><h2>¿Lista para<br /><span>empezar?</span></h2><p>{item.name}. Acceso inmediato a la colección y a los regalos incluidos.</p></div><div className="cp-final-buy"><div className="cp-price"><strong>{item.price}<sup>€</sup></strong><span>pago único</span></div><Button href={item.checkout} external className="buy-button">COMPRAR AHORA</Button><PaymentMethods /><small>Pago cifrado y 100% seguro</small></div></div></section>
   </main><Footer collection={item} /></>;
 }

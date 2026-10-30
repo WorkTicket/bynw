@@ -649,6 +649,29 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,t
   .guarantee-value>b{font-size:37px}
 }
 
+/* Centrado uniforme de todos los CTA y llamada de atención suave para comprar. */
+.button.button{
+  position:relative;
+  justify-content:center;
+  text-align:center;
+}
+.button.button>span{
+  position:absolute;
+  right:9px;
+}
+.button.button-small>span{right:7px}
+
+@keyframes buy-bump{
+  0%,76%,100%{transform:scale(1)}
+  82%{transform:scale(1.025)}
+  88%{transform:scale(.99)}
+  94%{transform:scale(1.01)}
+}
+.button.buy-button{animation:buy-bump 3.2s ease-in-out infinite;transform-origin:center}
+.button.buy-button:hover{animation-play-state:paused}
+
+@media(prefers-reduced-motion:reduce){.button.buy-button{animation:none}}
+
 /* Stable rendering inside Facebook and Instagram in-app browsers. */
 @media(max-width:760px){
   .meta-in-app-browser{min-height:var(--meta-viewport-height,100dvh);overscroll-behavior-x:none}
@@ -856,3 +879,8 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,t
   .mobile-purchase{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
   .mobile-purchase .mobile-whatsapp,.mobile-purchase .mobile-whatsapp>span,.mobile-purchase .button{font-size:12px}
 }
+
+/* Debe prevalecer sobre los ajustes específicos de cada sección. */
+.button.button{position:relative;justify-content:center;text-align:center}
+.button.button>span{position:absolute;right:9px}
+.button.button-small>span{right:7px}
