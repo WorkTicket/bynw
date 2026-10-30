@@ -662,8 +662,8 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,t
 .button.button-small>span{right:7px}
 
 /* Logotipo gráfico con mayor presencia, sin duplicar el nombre de la marca. */
-.site-header .brand>img{width:72px;height:72px}
-.footer .brand>img{width:92px;height:92px}
+.site-header .brand>img{width:58px;height:58px}
+.footer .brand>img{width:64px;height:64px}
 .footer-grid>div:first-child .brand-footer{width:100%;justify-content:center;flex-direction:column;gap:9px}
 .footer .brand-footer>span.brand-wordmark{align-items:baseline;flex-direction:row;gap:6px;white-space:nowrap}
 .footer .brand-footer .brand-wordmark>small{margin:0}
@@ -671,8 +671,8 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,t
 .footer-grid>div:first-child>p{margin-right:auto;margin-left:auto}
 .footer-grid>div:first-child .footer-script{display:block;text-align:center}
 @media(max-width:760px){
-  .site-header .brand>img{width:62px;height:62px}
-  .footer .brand>img{width:78px;height:78px}
+  .site-header .brand>img{width:52px;height:52px}
+  .footer .brand>img{width:60px;height:60px}
 }
 
 /* Sistema final de botones: tipografía, proporciones y centrado consistentes. */
@@ -725,12 +725,10 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,t
 }
 
 @keyframes buy-bump{
-  0%,76%,100%{transform:scale(1)}
-  82%{transform:scale(1.025)}
-  88%{transform:scale(.99)}
-  94%{transform:scale(1.01)}
+  0%,80%,100%{transform:scale(1)}
+  88%{transform:scale(1.015)}
 }
-.button.buy-button{animation:buy-bump 3.2s ease-in-out infinite;transform-origin:center}
+.button.buy-button{animation:buy-bump 4s ease-in-out infinite;transform-origin:center}
 .button.buy-button:hover{animation-play-state:paused}
 
 @media(prefers-reduced-motion:reduce){.button.buy-button{animation:none}}
@@ -947,3 +945,91 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,t
 .button.button{position:relative;justify-content:center;text-align:center}
 .button.button>span{position:absolute;right:9px}
 .button.button-small>span{right:7px}
+
+/* Acabado definitivo de los CTA: compacto, equilibrado y consistente. */
+.button,
+.button.button{
+  position:relative;
+  display:inline-flex;
+  min-height:52px;
+  align-items:center;
+  justify-content:center;
+  padding:0 52px;
+  border-radius:999px;
+  box-shadow:0 7px 18px rgba(121,57,82,.14);
+  font-size:12px;
+  font-weight:800;
+  line-height:1.2;
+  letter-spacing:.025em;
+  text-align:center;
+  transition:background-color .2s ease,border-color .2s ease,box-shadow .2s ease,transform .2s ease;
+}
+.button>span,
+.button.button>span{
+  position:absolute;
+  right:8px;
+  display:grid;
+  width:34px;
+  height:34px;
+  place-items:center;
+  border:1px solid rgba(185,98,128,.14);
+  border-radius:50%;
+  background:#fff;
+  color:var(--pink-dark);
+  font-size:16px;
+  font-weight:400;
+  line-height:1;
+}
+.button:hover,
+.button.button:hover{
+  box-shadow:0 10px 24px rgba(121,57,82,.19);
+  transform:translateY(-1px);
+}
+.button.button-small{
+  min-height:42px;
+  padding:0 42px;
+  font-size:11px;
+}
+.button.button-small>span{
+  right:6px;
+  width:28px;
+  height:28px;
+  font-size:14px;
+}
+.mobile-purchase .button,
+.mobile-purchase .button.button{
+  height:60px;
+  min-height:60px;
+  padding:0 14px;
+  font-size:12px;
+  letter-spacing:0;
+}
+.mobile-purchase .button>span,
+.mobile-purchase .button.button>span{display:none}
+
+@media(max-width:760px){
+  .button,
+  .button.button{
+    min-height:50px;
+    padding:0 46px;
+    font-size:11.5px;
+  }
+  .button>span,
+  .button.button>span{
+    width:32px;
+    height:32px;
+    font-size:15px;
+  }
+  .button.button-small{
+    min-height:40px;
+    padding:0 38px;
+    font-size:11px;
+  }
+  .mobile-purchase .button,
+  .mobile-purchase .button.button{
+    height:60px;
+    min-height:60px;
+    padding:0 12px;
+    font-size:12px;
+  }
+}
