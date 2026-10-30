@@ -661,6 +661,14 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,t
 }
 .button.button-small>span{right:7px}
 
+/* Logotipo gráfico con mayor presencia, sin duplicar el nombre de la marca. */
+.site-header .brand>img{width:72px;height:72px}
+.footer .brand>img{width:92px;height:92px}
+@media(max-width:760px){
+  .site-header .brand>img{width:62px;height:62px}
+  .footer .brand>img{width:78px;height:78px}
+}
+
 @keyframes buy-bump{
   0%,76%,100%{transform:scale(1)}
   82%{transform:scale(1.025)}

@@ -25,7 +25,7 @@ const premiumProducts = [
   ['14-muneca-overol-azul-producto.webp', 'Muñeca con peto azul'],
   ['15-muneca-rosa-lazos-producto.webp', 'Muñeca rosa con lazos'],
   ['16-muneca-pastel-rayas-producto.webp', 'Muñeca pastel'],
-  ['17-muneca-cabello-violeta-producto.webp', 'Muñeca de cabello violeta'],
+  ['17-muneca-cabello-violeta-producto.webp', 'Muñeca de pelo violeta'],
   ['18-bruja-calabaza-producto.webp', 'Bruja y calabaza'],
   ['19-ingenieras-cascos-producto.webp', 'Muñecas profesionales'],
   ['20-amigas-vestidos-producto.webp', 'Amigas con vestidos'],

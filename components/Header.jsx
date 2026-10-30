@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 export function Brand({ light = false }) {
-  return <Link href="/" className={`brand ${light ? 'brand-light' : ''}`} aria-label="Manos Creativas Bynmw, inicio"><img src="/assets/live-logo-64.webp" width="48" height="48" alt="" /><span className="brand-wordmark"><strong>Manos Creativas</strong><small>Bynmw</small></span></Link>;
+  return <Link href="/" className={`brand ${light ? 'brand-light' : ''}`} aria-label="Manos Creativas Bynmw, inicio"><img src="/assets/live-logo-64.webp" width="96" height="96" alt="" /></Link>;
 }
 export default function Header() {
   const [open, setOpen] = useState(false);
