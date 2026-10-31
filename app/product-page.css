@@ -237,6 +237,12 @@
 .cp-support p { max-width: 500px; margin-bottom: 27px; }
 .cp-support small { display: block; margin-top: 16px; color: #8a6e79; font-weight: 700; }
 
+/* Keep supporting copy at a consistent reading size across the product page. */
+.cp-page .cp-spec-card h3,
+.cp-page .cp-delivery-steps strong { font-size: 15px; line-height: 1.25; }
+.cp-page .cp-spec-card p,
+.cp-page .cp-delivery-steps p { font-size: 13px; line-height: 1.6; }
+
 @media (max-width: 1100px) {
   .cp-hero-grid { grid-template-columns: 1fr 1fr; }
   .cp-hero-visual { min-height: 520px; }
