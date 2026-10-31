@@ -131,7 +131,7 @@
 .cp-carousel-track::-webkit-scrollbar { display: none; }
 .cp-carousel-card { flex: 0 0 calc((100% - 48px)/4); scroll-snap-align: start; }
 .cp-carousel-card .cp-asset-image { height: 330px; }
-.cp-carousel:after { position: absolute; right: 0; bottom: 4px; width: 45px; height: calc(100% - 64px); pointer-events: none; background: linear-gradient(90deg,transparent,rgba(255,255,255,.82)); content: ""; }
+.cp-carousel:after { display: none; }
 .cp-carousel-product:not(.cp-carousel-few) .cp-carousel-card { flex-basis: calc((100% - 32px)/3); }
 .cp-carousel-product:not(.cp-carousel-few) .cp-asset-image { height: 390px; border: 1px solid #eee0e5; background: linear-gradient(145deg,#fbf6f7,#fff); }
 .cp-carousel-few { padding: 24px; border: 1px solid #ead8df; border-radius: 20px; background: linear-gradient(145deg,#fff9fb,#fff); box-shadow: 0 20px 50px rgba(81,39,58,.07); }
@@ -388,6 +388,12 @@
 
 .cp-carousel-product .cp-asset-image{overflow:hidden}
 .cp-carousel-product .cp-asset-image img{width:100%;height:100%;object-fit:contain}
+
+/* Show the complete tall screenshots on desktop instead of cropping their bottom. */
+.cp-carousel-delivery .cp-asset-image,
+.cp-carousel-quality .cp-asset-image { height: auto; min-height: 0; aspect-ratio: auto; padding: 0; overflow: visible; }
+.cp-carousel-delivery .cp-asset-image img,
+.cp-carousel-quality .cp-asset-image img { width: 100%; height: auto; object-fit: contain; }
 
 .cp-final{padding:95px 0;background:linear-gradient(145deg,#f4dce5,#e9c3d1)}
 .cp-final-inner{max-width:920px;justify-content:center;padding:52px 60px;border:1px solid rgba(255,255,255,.72);border-radius:28px;background:rgba(255,255,255,.44);box-shadow:0 20px 55px rgba(81,39,58,.1);text-align:center}
