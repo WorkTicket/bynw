@@ -81,6 +81,11 @@ const princessMoreDesigns = [
   ['WhatsApp Image 2026-10-27 at 12.59.00 PM (1).jpeg', 'Más diseños de la colección', 'new final/PRINCESS/And many more exclusive designs princess', 'Ver más'],
 ];
 
+const premiumPrincesses = [
+  ['/rapunzel-transparent.webp', 'Princesa · Rapunzel', null, 'Princesas'],
+  ['/snow-white-transparent.webp', 'Princesa · Blancanieves', null, 'Princesas'],
+];
+
 const princessDesigns = [
   ...princessProducts.map(([name, label]) => [name, label, null, 'Princesas']),
   ...premiumPrincesses,
@@ -99,11 +104,6 @@ const premiumMoreDesigns = [
   'WhatsApp Image 2026-10-27 at 12.58.44 PM (8).jpeg',
   'WhatsApp Image 2026-10-27 at 1.10.51 PM.jpeg',
 ].map((name, index) => [name, `Más diseños · ${index + 1}`, 'new final/1000 PATRONES/And many more exclusive designs 1000', 'Más diseños']);
-
-const premiumPrincesses = [
-  ['/rapunzel-transparent.webp', 'Princesa · Rapunzel', null, 'Princesas'],
-  ['/snow-white-transparent.webp', 'Princesa · Blancanieves', null, 'Princesas'],
-];
 
 const princessDelivery = ['IMAGEN 5.jpeg', 'IMAGEN 5.3.jpeg', 'IMAGEN 5.4.jpeg', 'IMAGEN 5.5.jpeg', 'IMAGEN 5.6.jpeg', 'IMAGEN 5.7.jpeg', 'IMAGEN 5.8.jpeg', 'IMAGEN 5.9.jpeg']
   .map((name, index) => [name, `Tu colección organizada · ${index + 1}`, "new final/PRINCESS/That's how easy you receive your collection princess"]);
