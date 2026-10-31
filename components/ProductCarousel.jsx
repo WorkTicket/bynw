@@ -115,7 +115,7 @@ export default function ProductCarousel({ files, folder, type = 'product', categ
     <div className="cp-carousel-track" ref={track}>
       {visibleFiles.map((file) => {
         const [name, label, customFolder] = Array.isArray(file) ? file : [file, 'Biblioteca digital'];
-        const src = customFolder ? `/${customFolder}/${name}` : `${ASSET_ROOT}/${folder}/${name}`;
+        const src = name.startsWith('/') ? name : customFolder ? `/${customFolder}/${name}` : `${ASSET_ROOT}/${folder}/${name}`;
         const visualOnly = type === 'delivery' || type === 'gift' || type === 'quality';
         return <Lightbox key={name} src={src} caption={`${label} · Imagen real de la colección`} className={`cp-asset-card cp-carousel-card ${visualOnly ? 'cp-asset-visual' : ''}`}>
           <span className="cp-asset-image"><img src={src} alt={label} loading="lazy" /></span>

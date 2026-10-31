@@ -98,6 +98,11 @@ const premiumMoreDesigns = [
   'WhatsApp Image 2026-10-27 at 1.10.51 PM.jpeg',
 ].map((name, index) => [name, `Más diseños · ${index + 1}`, 'new final/1000 PATRONES/And many more exclusive designs 1000', 'Más diseños']);
 
+const premiumPrincesses = [
+  ['/rapunzel-transparent.webp', 'Princesa · Rapunzel', null, 'Princesas'],
+  ['/snow-white-transparent.webp', 'Princesa · Blancanieves', null, 'Princesas'],
+];
+
 const princessDelivery = ['IMAGEN 5.jpeg', 'IMAGEN 5.3.jpeg', 'IMAGEN 5.4.jpeg', 'IMAGEN 5.5.jpeg', 'IMAGEN 5.6.jpeg', 'IMAGEN 5.7.jpeg', 'IMAGEN 5.8.jpeg', 'IMAGEN 5.9.jpeg']
   .map((name, index) => [name, `Tu colección organizada · ${index + 1}`, "new final/PRINCESS/That's how easy you receive your collection princess"]);
 
@@ -111,13 +116,13 @@ const productData = {
     productFolder: '01-pack-1000-patrones/01-portadas-productos',
     deliveryFolder: '01-pack-1000-patrones/02-asi-recibes-tu-coleccion',
     qualityFolder: '01-pack-1000-patrones/03-calidad-de-los-patrones',
-    products: premiumMoreDesigns,
+    products: [...premiumPrincesses, ...premiumMoreDesigns],
     delivery: premiumDelivery,
     quality: ['44-girasol-calidad.webp', '45-santa-claus-calidad.webp', '46-blancanieves-calidad.webp', '47-unicornio-calidad.webp', '48-blancanieves-pasos-calidad.webp', '49-ingenieras-calidad.webp', '50-munecas-premium-calidad.webp', '51-munecas-pastel-calidad.webp', '52-nacimiento-calidad.webp'],
     title: <>Más de 1.000 patrones<br /><span>para no quedarte sin ideas</span></>,
     intro: 'Una biblioteca digital de amigurumis, muñecas, flores y proyectos de temporada, organizada para encontrar tu próximo proyecto sin perder tiempo.',
     count: '1.000+',
-    categories: ['Más diseños'],
+    categories: ['Princesas', 'Más diseños'],
     specs: [
       ['∞', 'Contenido', 'Más de 1.000 patrones digitales prémium de ganchillo: princesas de cuento, Halloween, profesiones, santos y ángeles, Navidad, amigurumis de chenilla, flores eternas, muñecas flor reversibles y muñecas prémium.'],
       ['ES', 'Idioma', 'Español.'],
