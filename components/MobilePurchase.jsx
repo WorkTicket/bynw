@@ -44,7 +44,7 @@ export default function MobilePurchase({ collection, whatsappHref }) {
       <span>WHATSAPP</span>
     </a>
     {collection
-      ? <a className="button buy-button" href={collection.checkout} rel="noopener noreferrer sponsored" tabIndex={visible ? 0 : -1}>COMPRAR · {collection.price} €<Arrow /></a>
+       ? <a className="button buy-button" href={collection.checkout} rel="noopener noreferrer sponsored" target="_blank" onClick={() => window.fbq?.('track', 'InitiateCheckout', { value: Number(collection.price.replace(',', '.')), currency: 'EUR', content_name: collection.name, content_ids: [collection.name], content_type: 'product' })} tabIndex={visible ? 0 : -1}>COMPRAR · {collection.price} €<Arrow /></a>
       : <Link className="button" href="/#colecciones" tabIndex={visible ? 0 : -1}>ELIGE TU COLECCIÓN<Arrow /></Link>}
   </div>;
 }

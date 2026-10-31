@@ -6,6 +6,10 @@ import { usePathname } from 'next/navigation';
 const PIXEL_ID = '1937320463558405';
 const SRC = 'https://connect.facebook.net/en_US/fbevents.js';
 const LOAD_DELAY = 8000;
+const PURCHASES = {
+  '/compra-confirmada/princesas/': { value: 9.90, name: 'Patrones de Princesas de Cuento', id: 'princesas' },
+  '/compra-confirmada/premium/': { value: 14.87, name: 'Colección Premium · 1.000+ patrones', id: 'premium' },
+};
 
 function installPixel() {
   if (window.fbq) return;
@@ -29,6 +33,7 @@ function installPixel() {
 export default function MetaPixel() {
   const pathname = usePathname();
   const firstPage = useRef(true);
+  const purchaseFired = useRef(false);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -62,6 +67,19 @@ export default function MetaPixel() {
       return;
     }
     window.fbq?.('track', 'PageView');
+  }, [pathname, ready]);
+
+  useEffect(() => {
+    const purchase = PURCHASES[pathname];
+    if (!ready || !purchase || purchaseFired.current) return;
+    purchaseFired.current = true;
+    window.fbq?.('track', 'Purchase', {
+      value: purchase.value,
+      currency: 'EUR',
+      content_name: purchase.name,
+      content_ids: [purchase.id],
+      content_type: 'product',
+    });
   }, [pathname, ready]);
 
   return <noscript><img height="1" width="1" style={{ display: 'none' }} src={`https://www.facebook.com/tr?id=${PIXEL_ID}&ev=PageView&noscript=1`} alt="" /></noscript>;
