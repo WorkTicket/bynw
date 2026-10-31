@@ -7,18 +7,20 @@ export function generateStaticParams() {
   return [{ product: 'princesas' }, { product: 'premium' }];
 }
 
-export function generateMetadata({ params }) {
-  const item = collections[params.product];
+export async function generateMetadata({ params }) {
+  const { product } = await params;
+  const item = collections[product];
   if (!item) return {};
   return pageMetadata({
     title: 'Compra confirmada',
     description: `Tu compra de ${item.name} ha sido confirmada.`,
-    path: `/compra-confirmada/${params.product}/`,
+    path: `/compra-confirmada/${product}/`,
   });
 }
 
-export default function PurchaseConfirmation({ params }) {
-  const item = collections[params.product];
+export default async function PurchaseConfirmation({ params }) {
+  const { product } = await params;
+  const item = collections[product];
   if (!item) notFound();
 
   return <main id="contenido"><section className="inner-hero"><div className="container centered">
