@@ -12,6 +12,8 @@ export const metadata = {
   title: { default: 'Manos Creativas Bynmw · Patrones de crochet', template: '%s | Manos Creativas Bynmw' },
   description: site.description,
   applicationName: site.name,
+  formatDetection: { telephone: false },
+  appleWebApp: { capable: true, title: site.name, statusBarStyle: 'default' },
   category: 'Crochet y manualidades',
   alternates: { canonical: '/' },
   openGraph: {

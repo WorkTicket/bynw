@@ -2,7 +2,8 @@
 
 import { useEffect } from 'react';
 
-const META_BROWSER = /FBAN|FBAV|FB_IAB|Instagram|Messenger/i;
+// Facebook and Instagram use several UA formats across iOS and Android.
+const META_BROWSER = /FBAN|FBAV|FB_IAB|FB4A|FBIOS|Instagram|Messenger/i;
 
 export default function MetaBrowserOptimizer() {
   useEffect(() => {
@@ -11,19 +12,33 @@ export default function MetaBrowserOptimizer() {
     const root = document.documentElement;
     const body = document.body;
     const viewport = window.visualViewport;
+    let frame = 0;
     const updateViewport = () => {
-      root.style.setProperty('--meta-viewport-height', `${Math.round(viewport?.height || window.innerHeight)}px`);
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        root.style.setProperty('--meta-viewport-height', `${Math.round(viewport?.height || window.innerHeight)}px`);
+        root.style.setProperty('--meta-viewport-width', `${Math.round(viewport?.width || window.innerWidth)}px`);
+      });
     };
 
+    root.classList.add('meta-in-app-browser');
     body.classList.add('meta-in-app-browser');
     updateViewport();
     viewport?.addEventListener('resize', updateViewport, { passive: true });
+    viewport?.addEventListener('scroll', updateViewport, { passive: true });
+    window.addEventListener('resize', updateViewport, { passive: true });
     window.addEventListener('orientationchange', updateViewport, { passive: true });
 
     return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      root.classList.remove('meta-in-app-browser');
       body.classList.remove('meta-in-app-browser');
       root.style.removeProperty('--meta-viewport-height');
+      root.style.removeProperty('--meta-viewport-width');
       viewport?.removeEventListener('resize', updateViewport);
+      viewport?.removeEventListener('scroll', updateViewport);
+      window.removeEventListener('resize', updateViewport);
       window.removeEventListener('orientationchange', updateViewport);
     };
   }, []);

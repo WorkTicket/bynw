@@ -9,6 +9,35 @@
 @media(max-width:380px){.brand>span{font-size:25px}.brand>img{width:44px;height:44px}.hero h1{font-size:47px}.hero-stage{height:400px}.hero-natalia{width:380px;height:540px;left:25px;bottom:-8px}.hero-unicorn{width:130px;height:185px;left:-14px}.hero-bouquet{width:135px;height:215px;right:-14px;top:80px}.sale-stamp{width:85px;height:85px}.sale-stamp b{font-size:25px}.tab-create{font-size:7px;padding:7px 8px}.tab-pdf{font-size:7px;padding:7px 8px}.project-image{height:185px}.product-hero h1{font-size:40px}.inner-hero h1{font-size:37px}.collection-title-row h3{font-size:23px}.collection-title-row .price{font-size:32px}.drive-art{height:290px}.guarantee-grid{grid-template-columns:83px 1fr;gap:18px}.guarantee-badge{width:83px;height:110px}.guarantee-badge>b{font-size:47px}.guarantee-section h2{font-size:27px}.guarantee-section p{font-size:10px}.star-options{gap:5px}.star-options span{padding:8px;font-size:11px}.support-grid h2{font-size:33px}.side-title h2{font-size:33px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
 
+/* Instagram/Facebook WebViews can report a stale layout viewport while their
+   browser chrome opens or closes. The client hook supplies the live visual
+   viewport, while these fallbacks keep the first paint usable on older iOS. */
+.meta-in-app-browser{min-height:100%;}
+@media(max-width:760px){
+  html.meta-in-app-browser,
+  body.meta-in-app-browser{min-height:var(--meta-viewport-height,100vh)}
+  .meta-in-app-browser .mobile-purchase{
+    padding-bottom:11px;
+    -webkit-backdrop-filter:none;
+  }
+  @supports (padding-bottom:env(safe-area-inset-bottom)){
+    .meta-in-app-browser .mobile-purchase{
+      padding-bottom:calc(11px + env(safe-area-inset-bottom));
+    }
+  }
+}
+
+/* Keep older WebKit-based in-app browsers from treating these newer rendering
+   features as a reason to omit content or create horizontal scroll. */
+@supports not (overflow:clip){body{overflow-x:hidden}}
+@media(max-width:760px){
+  .meta-in-app-browser .section,
+  .meta-in-app-browser .cp-section{
+    content-visibility:visible;
+    contain:none;
+  }
+}
+
 @supports (content-visibility:auto){.section,.cp-section{content-visibility:auto;contain-intrinsic-size:auto 800px}}
 
 @media(max-width:760px){
