@@ -39,6 +39,7 @@ export default function MetaPixel() {
   useEffect(() => {
     let timer;
     let loaded = false;
+    const loadImmediately = pathname.startsWith('/compra-confirmada/');
     const events = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
 
     const load = () => {
@@ -52,13 +53,14 @@ export default function MetaPixel() {
 
     events.forEach(event => window.addEventListener(event, load, { once: true, passive: true }));
     // Keep analytics light during the initial render; load on real engagement or shortly after.
-    timer = window.setTimeout(load, LOAD_DELAY);
+    if (loadImmediately) load();
+    else timer = window.setTimeout(load, LOAD_DELAY);
 
     return () => {
       events.forEach(event => window.removeEventListener(event, load));
       window.clearTimeout(timer);
     };
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     if (!ready) return;
