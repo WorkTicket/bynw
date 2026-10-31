@@ -1,12 +1,14 @@
 'use client';
 
-export default function TrackedCheckoutLink({ href, value, contentName, className = '', children }) {
+import { trackMetaEvent } from './MetaPixel';
+
+export default function TrackedCheckoutLink({ href, value, contentId, contentName, className = '', children }) {
   function handleClick() {
-    window.fbq?.('track', 'InitiateCheckout', {
+    trackMetaEvent('InitiateCheckout', {
       value,
       currency: 'EUR',
       content_name: contentName,
-      content_ids: [contentName],
+      content_ids: [contentId || contentName],
       content_type: 'product',
     });
   }

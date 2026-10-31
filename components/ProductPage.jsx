@@ -83,6 +83,7 @@ const princessMoreDesigns = [
 
 const princessDesigns = [
   ...princessProducts.map(([name, label]) => [name, label, null, 'Princesas']),
+  ...premiumPrincesses,
   ...princessMoreDesigns,
 ];
 
@@ -117,13 +118,13 @@ const productData = {
     productFolder: '01-pack-1000-patrones/01-portadas-productos',
     deliveryFolder: '01-pack-1000-patrones/02-asi-recibes-tu-coleccion',
     qualityFolder: '01-pack-1000-patrones/03-calidad-de-los-patrones',
-    products: [...premiumPrincesses, ...premiumMoreDesigns],
+    products: premiumMoreDesigns,
     delivery: premiumDelivery,
     quality: ['44-girasol-calidad.webp', '45-santa-claus-calidad.webp', '46-blancanieves-calidad.webp', '47-unicornio-calidad.webp', '48-blancanieves-pasos-calidad.webp', '49-ingenieras-calidad.webp', '50-munecas-premium-calidad.webp', '51-munecas-pastel-calidad.webp', '52-nacimiento-calidad.webp'],
     title: <>Más de 1.000 patrones<br /><span>para no quedarte sin ideas</span></>,
     intro: 'Una biblioteca digital de amigurumis, muñecas, flores y proyectos de temporada, organizada para encontrar tu próximo proyecto sin perder tiempo.',
     count: '1.000+',
-    categories: ['Princesas', 'Más diseños'],
+    categories: undefined,
     specs: [
       ['∞', 'Contenido', 'Más de 1.000 patrones digitales prémium de ganchillo: princesas de cuento, Halloween, profesiones, santos y ángeles, Navidad, amigurumis de chenilla, flores eternas, muñecas flor reversibles y muñecas prémium.'],
       ['ES', 'Idioma', 'Español.'],
@@ -182,7 +183,7 @@ function AssetGrid({ files, folder, type = 'product' }) {
 }
 
 function OfferCard({ item }) {
-  return <aside className="cp-offer-card"><span className="cp-offer-label">OFERTA · 50% DE DESCUENTO</span><p className="cp-offer-title">Tu colección completa</p><div className="cp-price"><strong>{item.price}<sup>€</sup></strong><span>Pago único<br />acceso de por vida</span></div><TrackedCheckoutLink href={item.checkout} value={Number(item.price.replace(',', '.'))} contentName={item.name} className="button   buy-button">COMPRAR AHORA<span aria-hidden="true">↗</span></TrackedCheckoutLink><PaymentMethods /><p className="cp-checkout-note"><span>✓</span> Pago cifrado y 100% seguro</p><hr /><ul><li>Acceso inmediato por correo</li><li>Garantía de 7 días</li><li>Archivos PDF en español</li></ul><p className="cp-digital-note"><b>Producto 100% digital.</b> Recibes patrones PDF; no se envían muñecos ni materiales físicos.</p></aside>;
+  return <aside className="cp-offer-card"><span className="cp-offer-label">OFERTA · 50% DE DESCUENTO</span><p className="cp-offer-title">Tu colección completa</p><div className="cp-price"><strong>{item.price}<sup>€</sup></strong><span>Pago único<br />acceso de por vida</span></div><TrackedCheckoutLink href={item.checkout} value={Number(item.price.replace(',', '.'))} contentId={item.id} contentName={item.name} className="button   buy-button">COMPRAR AHORA<span aria-hidden="true">↗</span></TrackedCheckoutLink><PaymentMethods /><p className="cp-checkout-note"><span>✓</span> Pago cifrado y 100% seguro</p><hr /><ul><li>Acceso inmediato por correo</li><li>Garantía de 7 días</li><li>Archivos PDF en español</li></ul><p className="cp-digital-note"><b>Producto 100% digital.</b> Recibes patrones PDF; no se envían muñecos ni materiales físicos.</p></aside>;
 }
 
 export default function ProductPage({ kind }) {
@@ -221,6 +222,6 @@ export default function ProductPage({ kind }) {
     <ProductSupport />
     <Reviews />
     <FAQ />
-     <section className="cp-final"><div className="container cp-final-inner"><div><Kicker>MANOS CREATIVAS BYNMW</Kicker><h2>¿Lista para<br /><span>empezar?</span></h2><p>{item.name}. Acceso inmediato a la colección y a los regalos incluidos.</p></div><div className="cp-final-buy"><div className="cp-price"><strong>{item.price}<sup>€</sup></strong><span>pago único</span></div><TrackedCheckoutLink href={item.checkout} value={Number(item.price.replace(',', '.'))} contentName={item.name} className="button   buy-button">COMPRAR AHORA<span aria-hidden="true">↗</span></TrackedCheckoutLink><PaymentMethods /><small>Pago cifrado y 100% seguro</small></div></div></section>
+      <section className="cp-final"><div className="container cp-final-inner"><div><Kicker>MANOS CREATIVAS BYNMW</Kicker><h2>¿Lista para<br /><span>empezar?</span></h2><p>{item.name}. Acceso inmediato a la colección y a los regalos incluidos.</p></div><div className="cp-final-buy"><div className="cp-price"><strong>{item.price}<sup>€</sup></strong><span>pago único</span></div><TrackedCheckoutLink href={item.checkout} value={Number(item.price.replace(',', '.'))} contentId={item.id} contentName={item.name} className="button   buy-button">COMPRAR AHORA<span aria-hidden="true">↗</span></TrackedCheckoutLink><PaymentMethods /><small>Pago cifrado y 100% seguro</small></div></div></section>
   </main><Footer collection={item} /></>;
 }
