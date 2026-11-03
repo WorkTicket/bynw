@@ -87,8 +87,11 @@ const premiumPrincesses = [
 ];
 
 const princessDesigns = [
-  ...princessProducts.map(([name, label]) => [name, label, null, 'Princesas']),
-  ...premiumPrincesses,
+  // Show Rapunzel first, followed by the couple design in the princess carousel.
+  premiumPrincesses[0],
+  [princessProducts[0][0], princessProducts[0][1], null, 'Princesas'],
+  ...princessProducts.slice(1).map(([name, label]) => [name, label, null, 'Princesas']),
+  premiumPrincesses[1],
   ...princessMoreDesigns,
 ];
 
