@@ -48,4 +48,16 @@ The supplied Spanish marketing wording is used for the hero, collections, benefi
 - Reviews prepare an email for the visitor to review and send; there is no automatic publication, upload endpoint or review database.
 - The 52 reviews and 14 customer photos are a static snapshot migrated from the previous live site, not a live review feed.
 
+## Lead funnel setup
+
+The `/recursos-gratis/` landing page and home lead section post to `/api/leads`. The Cloudflare Worker stores subscribers in D1 and can send a welcome email through Resend.
+
+1. Create a D1 database: `npx wrangler d1 create bynmw-leads`.
+2. Add the returned `database_id` to the commented `d1_databases` binding in `wrangler.toml`.
+3. Initialize it: `npx wrangler d1 execute bynmw-leads --remote --file=schema.sql`.
+4. Add `RESEND_API_KEY` as a Worker secret and `LEAD_FROM_EMAIL` as a Worker variable after verifying the sender domain in Resend.
+5. Deploy with `npm run deploy`.
+
+Without the D1 binding the form intentionally returns a configuration message instead of pretending that a subscriber was saved.
+
 No passwords, API keys, repository credentials or payment secrets are included.

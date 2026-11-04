@@ -7,7 +7,7 @@ const PIXEL_ID = '1937320463558405';
 const SRC = 'https://connect.facebook.net/en_US/fbevents.js';
 const PURCHASES = {
   '/compra-confirmada/princesas/': { value: 9.90, name: 'Patrones de Princesas de Cuento', id: 'princesas' },
-  '/compra-confirmada/premium/': { value: 14.87, name: 'Colección Premium · 1.000+ patrones', id: 'premium' },
+  '/compra-confirmada/premium/': { value: 24.96, name: 'Colección Premium · 1.000+ patrones', id: 'premium' },
 };
 
 export function installPixel() {
@@ -31,6 +31,7 @@ export function installPixel() {
 }
 
 export function trackMetaEvent(eventName, parameters) {
+  if (typeof window === 'undefined' || window.localStorage.getItem('mc-cookie-consent') !== 'accepted') return;
   const fbq = installPixel();
   fbq?.('track', eventName, parameters);
 }
@@ -43,8 +44,7 @@ export default function MetaPixel() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    // Initialize immediately so checkout clicks are never faster than the pixel.
-    // fbq queues events while fbevents.js is still downloading.
+    if (window.localStorage.getItem('mc-cookie-consent') !== 'accepted') return;
     installPixel();
     setReady(true);
   }, [pathname]);
@@ -82,5 +82,5 @@ export default function MetaPixel() {
     });
   }, [pathname, ready]);
 
-  return <noscript><img height="1" width="1" style={{ display: 'none' }} src={`https://www.facebook.com/tr?id=${PIXEL_ID}&ev=PageView&noscript=1`} alt="" /></noscript>;
+  return null;
 }
