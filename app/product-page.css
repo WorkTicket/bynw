@@ -381,6 +381,7 @@
 .cp-payment-methods>span{min-height:30px;padding:5px 9px;border-radius:7px;font-size:8px}
 .cp-payment-methods .cp-pay-klarna{background:#ffb3c7;border-color:#ff9bb7;color:#25151c;font-size:9px}
 .cp-checkout-note{align-items:center;margin-top:12px;font-size:10px}
+.cp-checkout-explanation{margin:7px auto 0;max-width:300px;color:#8b747e;font-size:10px;line-height:1.45}
 .cp-checkout-note>span{display:grid;width:17px;height:17px;place-items:center;border-radius:50%;background:#e4f3e9;color:#257344;font-size:9px;font-weight:900}
 .cp-offer-card ul{gap:11px;font-size:12px}
 .cp-digital-note{border-radius:10px;background:#fff8ed;font-size:10px}

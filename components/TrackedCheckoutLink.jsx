@@ -13,6 +13,5 @@ export default function TrackedCheckoutLink({ href, value, contentId, contentNam
     });
   }
 
-  const bridgeHref = contentId ? `/checkout/${contentId}/` : href;
-  return <a className={className} href={bridgeHref} rel="noopener noreferrer" onClick={handleClick}>{children}</a>;
+  return <a className={className} href={href} rel="noopener noreferrer" onClick={handleClick}>{children}</a>;
 }
