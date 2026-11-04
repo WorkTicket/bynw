@@ -43,6 +43,7 @@
 .cp-offer-label { display: block; padding-bottom: 15px; border-bottom: 1px solid #eee1e6; color: #9a526e; font-size: 9px; font-weight: 900; letter-spacing: .11em; }
 .cp-price { display: flex; align-items: center; gap: 14px; margin: 18px 0; }
 .cp-price strong { color: var(--cp-plum); font-size: 52px; line-height: 1; letter-spacing: -.07em; }
+.cp-price del { color: #9b8790; font-size: 18px; font-weight: 700; text-decoration-thickness: 2px; }
 .cp-price sup { font-size: 22px; }
 .cp-price>span { color: #8b747e; font-size: 10px; font-weight: 700; line-height: 1.45; text-transform: uppercase; }
 .cp-offer-card .button { width: 100%; justify-content: space-between; }
