@@ -755,11 +755,13 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,t
 
 @keyframes buy-bump{
   0%,72%,100%{transform:scale(1);box-shadow:0 5px 14px rgba(121,57,82,.13)}
-  78%{transform:scale(1.06);box-shadow:0 13px 28px rgba(121,57,82,.3)}
-  83%{transform:scale(.985)}
-  88%{transform:scale(1.025)}
+  78%{transform:scale(1.018);box-shadow:0 7px 18px rgba(121,57,82,.2)}
+  83%{transform:scale(.998)}
+  88%{transform:scale(1.01)}
 }
-.button.buy-button{animation:buy-bump 3.4s cubic-bezier(.22,1,.36,1) infinite;transform-origin:center}
+.button.buy-button{animation:buy-bump 5.2s cubic-bezier(.22,1,.36,1) infinite;transform-origin:center}
+.collection-princesas .button.buy-button{animation-delay:0s}
+.collection-premium .button.buy-button{animation-delay:2.6s}
 .button.buy-button:hover{animation-play-state:paused}
 
 @media(prefers-reduced-motion:reduce){.button.buy-button{animation:none}}
