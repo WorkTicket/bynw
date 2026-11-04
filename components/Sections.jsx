@@ -7,7 +7,6 @@ import Gallery from './Gallery';
 import { Brand } from './Header';
 import JsonLd from './JsonLd';
 import MobilePurchase from './MobilePurchase';
-import LeadCapture from './LeadCapture';
 
 export function Button({ href, children, light = false, outline = false, external = false, className = '' }) {
   const style = `button ${light ? 'button-light' : ''} ${outline ? 'button-outline' : ''} ${className}`;
@@ -20,9 +19,6 @@ export function Hero() {
 }
 export function ProofBar() {
   return <div className="proof-bar"><div className="container proof-inner"><p><b>5.0</b><span className="stars">★★★★★</span><small>{reviews.length} reseñas</small></p><span>PATRONES EN PDF</span><span>DESCARGA AL MOMENTO</span><span>ACCESO DE POR VIDA</span><span>GARANTÍA 7 DÍAS</span></div></div>;
-}
-export function LeadSection() {
-  return <section className="lead-section"><div className="container lead-section-inner"><div><Kicker>CLUB CREATIVO · GRATUITO</Kicker><h2>Una idea bonita<br /><span>para cada semana.</span></h2><p>Recibe inspiración, consejos y novedades de Manos Creativas directamente en tu email.</p><Link className="lead-section-link" href="/recursos-gratis/">Descubre el club creativo ↗</Link></div><div className="lead-section-form"><LeadCapture compact /></div></div></section>;
 }
 export function Benefits() {
   const items = [

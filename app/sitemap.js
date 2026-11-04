@@ -10,7 +10,6 @@ export default function sitemap() {
     ['/testimonios', .7, 'monthly'],
     ['/sobre-nosotras', .6, 'monthly'],
     ['/contacto', .6, 'monthly'],
-    ['/recursos-gratis', .7, 'monthly'],
     ['/aviso-legal', .3, 'yearly'],
     ['/privacidad', .3, 'yearly'],
     ['/terminos', .3, 'yearly'],
