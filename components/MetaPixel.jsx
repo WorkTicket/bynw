@@ -9,6 +9,10 @@ const PURCHASES = {
   '/compra-confirmada/princesas/': { value: 9.90, name: 'Patrones de Princesas de Cuento', id: 'princesas' },
   '/compra-confirmada/premium/': { value: 24.96, name: 'Colección Premium · 1.000+ patrones', id: 'premium' },
 };
+const VIEW_CONTENT = {
+  '/coleccion-princesas/': { value: 9.90, name: 'Patrones de Princesas de Cuento', id: 'princesas' },
+  '/coleccion-premium/': { value: 24.96, name: 'Colección Premium · 1.000+ patrones', id: 'premium' },
+};
 
 export function installPixel() {
   if (window.fbq) return window.fbq;
@@ -36,18 +40,6 @@ export function trackMetaEvent(eventName, parameters) {
   fbq?.('track', eventName, parameters);
 }
 
-export function trackViewContent(route, item) {
-  if (typeof window === 'undefined' || window.localStorage.getItem('mc-cookie-consent') !== 'accepted') return;
-  const fbq = installPixel();
-  fbq?.('track', 'ViewContent', {
-    value: item?.value ?? undefined,
-    currency: 'EUR',
-    content_name: item?.name ?? undefined,
-    content_ids: item?.id ? [item.id] : undefined,
-    content_type: 'product',
-  });
-}
-
 export default function MetaPixel() {
   const pathname = usePathname();
   const route = pathname === '/' ? '/' : pathname.replace(/\/+$/, '') + '/';
@@ -55,11 +47,23 @@ export default function MetaPixel() {
   const purchaseFired = useRef(new Set());
   const [ready, setReady] = useState(false);
 
+  // Initialize on mount if consent was already granted.
   useEffect(() => {
     if (window.localStorage.getItem('mc-cookie-consent') !== 'accepted') return;
     installPixel();
     setReady(true);
   }, [pathname]);
+
+  // If consent is granted later in the session (no reload), initialize immediately.
+  useEffect(() => {
+    const onAccept = () => {
+      if (window.localStorage.getItem('mc-cookie-consent') !== 'accepted') return;
+      installPixel();
+      setReady(true);
+    };
+    window.addEventListener('mc-consent-accepted', onAccept);
+    return () => window.removeEventListener('mc-consent-accepted', onAccept);
+  }, []);
 
   useEffect(() => {
     if (!ready) return;
@@ -95,15 +99,16 @@ export default function MetaPixel() {
   }, [pathname, ready]);
 
   useEffect(() => {
-    if (!ready) return;
-    const viewContentItem = PURCHASES[route];
-    if (!viewContentItem) return;
+    const item = VIEW_CONTENT[route];
+    if (!ready || !item) return;
     window.fbq?.('track', 'ViewContent', {
-      value: viewContentItem.value,
+      value: item.value,
       currency: 'EUR',
-      content_name: viewContentItem.name,
-      content_ids: [viewContentItem.id],
+      content_name: item.name,
+      content_ids: [item.id],
       content_type: 'product',
     });
   }, [pathname, ready]);
+
+  return null;
 }
