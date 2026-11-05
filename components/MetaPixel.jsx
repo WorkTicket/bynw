@@ -36,6 +36,18 @@ export function trackMetaEvent(eventName, parameters) {
   fbq?.('track', eventName, parameters);
 }
 
+export function trackViewContent(route, item) {
+  if (typeof window === 'undefined' || window.localStorage.getItem('mc-cookie-consent') !== 'accepted') return;
+  const fbq = installPixel();
+  fbq?.('track', 'ViewContent', {
+    value: item?.value ?? undefined,
+    currency: 'EUR',
+    content_name: item?.name ?? undefined,
+    content_ids: item?.id ? [item.id] : undefined,
+    content_type: 'product',
+  });
+}
+
 export default function MetaPixel() {
   const pathname = usePathname();
   const route = pathname === '/' ? '/' : pathname.replace(/\/+$/, '') + '/';
@@ -82,5 +94,16 @@ export default function MetaPixel() {
     });
   }, [pathname, ready]);
 
-  return null;
+  useEffect(() => {
+    if (!ready) return;
+    const viewContentItem = PURCHASES[route];
+    if (!viewContentItem) return;
+    window.fbq?.('track', 'ViewContent', {
+      value: viewContentItem.value,
+      currency: 'EUR',
+      content_name: viewContentItem.name,
+      content_ids: [viewContentItem.id],
+      content_type: 'product',
+    });
+  }, [pathname, ready]);
 }
