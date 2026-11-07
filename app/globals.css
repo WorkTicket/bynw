@@ -175,7 +175,7 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,t
 .hero-guarantee{color:var(--muted)}
 .footer-script{color:#f0c5d5}
 .footer-ribbon{background:#f8dfe8;color:#89596a}
-.footer .brand-light>img{filter:brightness(0) invert(1)}
+.footer .brand-light>img{filter:none}
 .footer .brand-light>span,.footer .brand-light small{color:#fff}
 .footer-grid>div>p,.footer-grid>div>a:not(.brand){color:#fff}
 .footer-grid>div>a:not(.brand):hover{color:#f8dfe8}
