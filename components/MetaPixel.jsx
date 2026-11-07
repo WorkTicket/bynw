@@ -2,17 +2,25 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
+import { collections } from '../lib/store';
 
 const PIXEL_ID = '1937320463558405';
 const SRC = 'https://connect.facebook.net/en_US/fbevents.js';
-const PURCHASES = {
-  '/compra-confirmada/princesas/': { value: 9.90, name: 'Patrones de Princesas de Cuento', id: 'princesas' },
-  '/compra-confirmada/premium/': { value: 24.96, name: 'Colección Premium · 1.000+ patrones', id: 'premium' },
-};
-const VIEW_CONTENT = {
-  '/coleccion-princesas/': { value: 9.90, name: 'Patrones de Princesas de Cuento', id: 'princesas' },
-  '/coleccion-premium/': { value: 24.96, name: 'Colección Premium · 1.000+ patrones', id: 'premium' },
-};
+
+// Build one product payload per collection so every event (ViewContent,
+// InitiateCheckout and Purchase) uses the same id, name and price.
+const PRODUCT_EVENTS = Object.values(collections).reduce((events, item) => {
+  const payload = {
+    value: Number(String(item.price).replace(',', '.')),
+    currency: 'EUR',
+    content_name: item.name,
+    content_ids: [item.id],
+    content_type: 'product',
+  };
+  events.viewContent[`/${item.slug}/`] = payload;
+  events.purchase[`/compra-confirmada/${item.id}/`] = payload;
+  return events;
+}, { viewContent: {}, purchase: {} });
 
 export function installPixel() {
   if (window.fbq) return window.fbq;
@@ -45,6 +53,7 @@ export default function MetaPixel() {
   const route = pathname === '/' ? '/' : pathname.replace(/\/+$/, '') + '/';
   const firstPage = useRef(true);
   const purchaseFired = useRef(new Set());
+  const lastViewContentRoute = useRef(null);
   const [ready, setReady] = useState(false);
 
   // Initialize on mount if consent was already granted.
@@ -75,7 +84,7 @@ export default function MetaPixel() {
   }, [pathname, ready]);
 
   useEffect(() => {
-    const purchase = PURCHASES[route];
+    const purchase = PRODUCT_EVENTS.purchase[route];
     if (!ready || !purchase || purchaseFired.current.has(route)) return;
     let alreadyTracked = false;
     try {
@@ -89,26 +98,19 @@ export default function MetaPixel() {
     }
     purchaseFired.current.add(route);
     try { window.sessionStorage.setItem(`meta-purchase:${route}`, '1'); } catch { /* no-op */ }
-    window.fbq?.('track', 'Purchase', {
-      value: purchase.value,
-      currency: 'EUR',
-      content_name: purchase.name,
-      content_ids: [purchase.id],
-      content_type: 'product',
-    });
-  }, [pathname, ready]);
+    window.fbq?.('track', 'Purchase', purchase);
+  }, [route, ready]);
 
   useEffect(() => {
-    const item = VIEW_CONTENT[route];
-    if (!ready || !item) return;
-    window.fbq?.('track', 'ViewContent', {
-      value: item.value,
-      currency: 'EUR',
-      content_name: item.name,
-      content_ids: [item.id],
-      content_type: 'product',
-    });
-  }, [pathname, ready]);
+    const item = PRODUCT_EVENTS.viewContent[route];
+    if (!ready || !item) {
+      lastViewContentRoute.current = null;
+      return;
+    }
+    if (lastViewContentRoute.current === route) return;
+    lastViewContentRoute.current = route;
+    window.fbq?.('track', 'ViewContent', item);
+  }, [route, ready]);
 
   return null;
 }
