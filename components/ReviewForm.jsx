@@ -50,7 +50,7 @@ export default function ReviewForm() {
     const name = data.get('name');
     const city = data.get('city')?.trim();
     const subject = `Reseña de ${name} · Manos Creativas`;
-    const body = `Enviar a: bynw808@gmail.com\n\nNombre: ${name}${city ? `\nCiudad: ${city}` : ''}\nValoración: ${data.get('rating')}/5\n\n${review}${image ? '\n\nFoto del trabajo adjunta. Usar como foto de perfil de esta reseña.' : ''}`;
+    const body = `Enviar a: bynw808@gmail.com\n\nNombre: ${name}${city ? `\nCiudad: ${city}` : ''}\nValoración: ${data.get('rating')}/5\n\n${review}${image ? '\n\nFoto del trabajo adjunta. Úsala como foto de perfil de esta reseña.' : ''}`;
 
     if (image && navigator.share && navigator.canShare?.({ files: [image] })) {
       try {

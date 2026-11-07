@@ -20,7 +20,7 @@ function belongsTo(label, category, kind) {
   if (category === 'Princesas') return /princesa|sirena|arquera|rapunzel|blancanieves|cenicienta|alicia/.test(value);
   if (category === 'Muñecas') return /muñeca|amigas|hada/.test(value);
   if (category === 'Flores') return /flor|ramo|plantas/.test(value);
-  if (category === 'Navidad') return /navidad|santa|cascanueces|nacimiento|jengibre/.test(value);
+  if (category === 'Navidad') return /navidad|santa|papá|papa|noel|cascanueces|nacimiento|jengibre/.test(value);
   if (category === 'Halloween') return /bruja|calabaza/.test(value);
   if (category === 'Profesiones') return /ingenieras|bombero|profesional/.test(value);
   if (category === 'Santos') return /virgen|santo|ángel/.test(value);
@@ -105,7 +105,7 @@ export default function ProductCarousel({ files, folder, type = 'product', categ
       {categories.map(category => <button key={category} type="button" className={active === category ? 'active' : ''} aria-pressed={active === category} onClick={() => selectCategory(category)}>{category}</button>)}
     </div>}
     <div className="cp-carousel-controls">
-      <span className="cp-carousel-control-copy"><strong>{title || 'Desliza para explorar'}</strong>{subtitle && <small>{subtitle}</small>}</span>
+      <span className="cp-carousel-control-copy"><strong>{title || 'Desliza para ver más'}</strong>{subtitle && <small>{subtitle}</small>}</span>
       <div className="cp-carousel-actions">
         <span className="cp-carousel-count" aria-live="polite"><b>{range.start}{range.end > range.start ? `–${range.end}` : ''}</b><small>de {visibleFiles.length}</small></span>
         <button type="button" onClick={() => move(-1)} aria-label="Ver elementos anteriores">←</button>

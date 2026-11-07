@@ -27,6 +27,6 @@ export default async function PurchaseConfirmation({ params }) {
     <span className="kicker"><span>✦</span>COMPRA CONFIRMADA</span>
     <h1>¡Gracias por tu compra!</h1>
     <p>Hemos recibido tu pedido de <strong>{item.name}</strong>. Hotmart te enviará el acceso a los patrones por correo electrónico.</p>
-    <p>Si no lo encuentras, revisa spam y promociones. Para cualquier duda, <Link href="/contacto/">habla con Natalia</Link>.</p>
+    <p>Si no lo encuentras, revisa el correo no deseado y las promociones. Para cualquier duda, <Link href="/contacto/">habla con Natalia</Link>.</p>
   </div></section></main>;
 }

@@ -18,7 +18,7 @@ const premiumProducts = [
   ['04-blancanieves-enanito-producto.webp', 'Princesa y enanito'],
   ['05-cenicienta-azul-producto.webp', 'Princesa de azul'],
   ['06-unicornio-pastel-producto.webp', 'Unicornio pastel'],
-  ['07-vacas-fresa-producto.webp', 'Vaquitas fresa'],
+  ['07-vacas-fresa-producto.webp', 'Vaquitas de fresa'],
   ['08-plantas-amigurumi-producto.webp', 'Plantas amigurumi'],
   ['09-muneca-navidad-producto.webp', 'Muñeca de Navidad'],
   ['10-cascanueces-rosa-producto.webp', 'Cascanueces rosa'],
@@ -32,15 +32,15 @@ const premiumProducts = [
   ['18-bruja-calabaza-producto.webp', 'Bruja y calabaza'],
   ['19-ingenieras-cascos-producto.webp', 'Muñecas profesionales'],
   ['20-amigas-vestidos-producto.webp', 'Amigas con vestidos'],
-  ['21-muneca-pelirroja-overol-producto.webp', 'Muñeca pelirroja'],
+  ['21-muneca-pelirroja-overol-producto.webp', 'Muñeca pelirroja con peto'],
   ['22-alice-conejo-producto.webp', 'Alicia y conejo'],
   ['23-muneca-vestido-rojo-producto.webp', 'Muñeca de vestido rojo'],
   ['24-bombero-producto.webp', 'Bombero amigurumi'],
   ['25-virgen-corona-producto.webp', 'Virgen con corona'],
   ['26-nacimiento-familia-producto.webp', 'Nacimiento tejido'],
   ['27-virgen-guadalupe-producto.webp', 'Virgen de Guadalupe'],
-  ['28-santa-claus-producto.webp', 'Santa Claus'],
-  ['29-casa-jengibre-producto.webp', 'Casa de jengibre'],
+  ['28-santa-claus-producto.webp', 'Papá Noel'],
+  ['29-casa-jengibre-producto.webp', 'Casita de pan de jengibre'],
   ['30-munecas-flor-reversible-producto.webp', 'Muñecas flor reversibles'],
   ['31-ramo-girasoles-producto.webp', 'Ramo de girasoles'],
   ['32-ramo-margaritas-producto.webp', 'Ramo de margaritas'],
@@ -65,12 +65,12 @@ const gifts = [
   ['53-virgen-guadalupe-regalo.webp', 'Virgen de Guadalupe'],
   ['54-guia-abreviaturas-regalo.webp', 'Guía de abreviaturas'],
   ['55-libro-amigurumis-regalo.webp', 'Libro de amigurumis'],
-  ['56-rosa-virgen-regalo.webp', 'Rosa Virgen'],
+  ['56-rosa-virgen-regalo.webp', 'Rosa de la Virgen'],
   ['57-rosa-rapunzel-regalo.webp', 'Rosa Rapunzel'],
   ['58-flores-amigurumi-regalo.webp', 'Flores amigurumi'],
   ['59-animalitos-amigurumis-regalo.webp', 'Animalitos amigurumi'],
   ['60-burrito-azul-regalo.webp', 'Burrito azul'],
-  ['61-libro-amigurumi-volumen-2-regalo.webp', 'Amigurumis · Volumen 2'],
+  ['61-libro-amigurumi-volumen-2-regalo.webp', 'Amigurumi a ganchillo · Volumen 2'],
   ['62-guia-puntos-regalo.webp', 'Guía de puntos'],
   ['63-ideas-para-celebrar-regalo.webp', 'Ideas para celebrar'],
   ['64-muneca-flor-reversible-regalo.webp', 'Muñeca flor reversible'],
@@ -129,12 +129,12 @@ const productData = {
     count: '1.000+',
     categories: undefined,
     specs: [
-      ['∞', 'Contenido', 'Más de 1.000 patrones digitales prémium de ganchillo: princesas de cuento, Halloween, profesiones, santos y ángeles, Navidad, amigurumis de chenilla, flores eternas, muñecas flor reversibles y muñecas prémium.'],
+      ['∞', 'Contenido', 'Más de 1.000 patrones digitales de ganchillo de alta calidad: princesas de cuento, Halloween, profesiones, santos y ángeles, Navidad, amigurumis de chenilla, flores eternas, muñecas flor reversibles y muñecas exclusivas.'],
       ['ES', 'Idioma', 'Español.'],
       ['PDF', 'Formato', 'Archivos PDF descargables e imprimibles.'],
-      ['✦', 'Metodología', 'Guía paso a paso con soporte visual de alta resolución, diseñada para facilitar la ejecución de cada punto y detalle.'],
+      ['✦', 'Guía visual', 'Guía paso a paso con fotos en alta resolución, pensada para que cada punto y detalle se entienda bien.'],
       ['✉', 'Entrega', 'Acceso inmediato a tu correo electrónico tras la confirmación del pago.'],
-      ['▶', 'Vídeos incluidos', 'Vídeos para principiantes: aprenderás cómo leer abreviaturas en un tejido de crochet para interpretar correctamente tus patrones.'],
+      ['▶', 'Vídeos incluidos', 'Vídeos para principiantes: aprenderás a leer las abreviaturas del crochet para seguir los patrones sin líos.'],
     ],
   },
   princesas: {
@@ -156,7 +156,7 @@ const productData = {
       ['PDF', 'Formato', 'PDF descargable e imprimible.'],
       ['✦', 'Guía visual', 'Guía paso a paso con fotos en alta resolución.'],
       ['✉', 'Entrega', 'Acceso inmediato por correo electrónico en cuanto se confirme el pago.'],
-      ['▶', 'Vídeos incluidos', 'Vídeos para principiantes: aprenderás cómo leer abreviaturas en un tejido de crochet para interpretar correctamente tus patrones.'],
+      ['▶', 'Vídeos incluidos', 'Vídeos para principiantes: aprenderás a leer las abreviaturas del crochet para seguir los patrones sin líos.'],
     ],
   },
 };
@@ -166,7 +166,7 @@ function TrustRow() {
 }
 
 function ProductSupport() {
-  return <section className="cp-support"><div className="container cp-support-inner"><div className="cp-support-photo"><img src="/optimized/assets/natalia-crochet.webp" alt="Natalia, fundadora de Manos Creativas, con una muñeca de crochet" loading="lazy" decoding="async" /><span><b>NATALIA</b> · FUNDADORA</span></div><div><Kicker>SOPORTE DIRECTO</Kicker><h2>¿Necesitas ayuda<br /><span>con tu pedido?</span></h2><p>Soy Natalia, de Manos Creativas. Escríbeme por WhatsApp y te ayudo con tu compra o con el acceso a tus patrones.</p><Button href={whatsappHref} external>ESCRIBIR A NATALIA</Button><small>Respondemos en menos de 24 horas</small></div></div></section>;
+  return <section className="cp-support"><div className="container cp-support-inner"><div className="cp-support-photo"><img src="/optimized/assets/natalia-crochet.webp" alt="Natalia, fundadora de Manos Creativas, con una muñeca de crochet" loading="lazy" decoding="async" /><span><b>NATALIA</b> · FUNDADORA</span></div><div><Kicker>AYUDA DIRECTA</Kicker><h2>¿Necesitas ayuda<br /><span>con tu pedido?</span></h2><p>Soy Natalia, de Manos Creativas. Escríbeme por WhatsApp y te ayudo con tu compra o con el acceso a tus patrones.</p><Button href={whatsappHref} external>ESCRIBIR A NATALIA</Button><small>Respondemos en menos de 24 horas</small></div></div></section>;
 }
 
 function PaymentMethods() {
@@ -186,7 +186,7 @@ function AssetGrid({ files, folder, type = 'product' }) {
 }
 
 function OfferCard({ item }) {
-  return <aside className="cp-offer-card"><span className="cp-offer-label">COLECCIÓN DIGITAL</span><p className="cp-offer-title">Tu colección completa</p><div className="cp-price"><del>{item.originalPrice}€</del><strong>{item.price}<sup>€</sup></strong><span>Pago único<br />acceso de por vida</span></div><TrackedCheckoutLink href={item.checkout} value={Number(item.price.replace(',', '.'))} contentId={item.id} contentName={item.name} className="button   buy-button">COMPRAR AHORA<span aria-hidden="true">↗</span></TrackedCheckoutLink><PaymentMethods /><p className="cp-checkout-note"><span>✓</span> Pago cifrado y 100% seguro en Hotmart</p><p className="cp-checkout-explanation">Al pulsar, irás directamente al checkout de Hotmart. Allí elegirás tu método de pago y confirmarás la compra en una plataforma segura.</p><hr /><ul><li>Acceso inmediato por correo</li><li>Garantía de 7 días</li><li>Archivos PDF en español</li></ul><p className="cp-digital-note"><b>Producto 100% digital.</b> Recibes patrones PDF; no se envían muñecos ni materiales físicos.</p></aside>;
+  return <aside className="cp-offer-card"><span className="cp-offer-label">COLECCIÓN DIGITAL</span><p className="cp-offer-title">Tu colección completa</p><div className="cp-price"><del>{item.originalPrice}€</del><strong>{item.price}<sup>€</sup></strong><span>Pago único<br />acceso vitalicio</span></div><TrackedCheckoutLink href={item.checkout} value={Number(item.price.replace(',', '.'))} contentId={item.id} contentName={item.name} className="button   buy-button">COMPRAR AHORA<span aria-hidden="true">↗</span></TrackedCheckoutLink><PaymentMethods /><p className="cp-checkout-note"><span>✓</span> Pago cifrado y 100% seguro en Hotmart</p><p className="cp-checkout-explanation">Al pulsar, irás directamente a la pasarela de pago de Hotmart. Allí elegirás tu método de pago y confirmarás la compra en una plataforma segura.</p><hr /><ul><li>Acceso inmediato por correo</li><li>Garantía de 7 días</li><li>Archivos PDF en español</li></ul><p className="cp-digital-note"><b>Producto 100% digital.</b> Recibes patrones PDF; no se envían muñecos ni materiales físicos.</p></aside>;
 }
 
 export default function ProductPage({ kind }) {
@@ -202,8 +202,8 @@ export default function ProductPage({ kind }) {
   return <><JsonLd data={productSchema} /><main id="contenido" className="cp-page">
     <section className="cp-hero">
       <div className="container"><Link className="cp-breadcrumb" href="/#colecciones">← Todas las colecciones</Link><div className="cp-hero-grid">
-        <div className="cp-hero-heading"><div className="cp-rating"><span>★★★★★</span><b>5.0</b> · 52 reseñas</div><Kicker>COLECCIÓN</Kicker><h1>{isPrincesses ? <>Patrones de<br /><span>Princesas de Cuento</span></> : data.title}</h1></div>
-        <div className="cp-hero-visual"><img src={item.preview} srcSet={`${item.preview.replace('.webp', '-640.webp')} 640w, ${item.preview.replace('.webp', '-960.webp')} 960w`} sizes="(max-width: 800px) 90vw, 520px" width={item.previewWidth} height={item.previewHeight} alt={`Caja de producto de ${item.name}`} fetchPriority="high" decoding="async" /><span className="cp-hero-count"><b>{data.count}</b> patrones<br />digitales</span><span className="cp-real-badge">Colección real<br /><b>en español</b></span></div>
+        <div className="cp-hero-heading"><div className="cp-rating"><span>★★★★★</span><b>5,0</b> · 52 reseñas</div><Kicker>COLECCIÓN</Kicker><h1>{isPrincesses ? <>Patrones de<br /><span>Princesas de Cuento</span></> : data.title}</h1></div>
+        <div className="cp-hero-visual"><img src={item.preview} srcSet={`${item.preview.replace('.webp', '-640.webp')} 640w, ${item.preview.replace('.webp', '-960.webp')} 960w`} sizes="(max-width: 800px) 90vw, 520px" width={item.previewWidth} height={item.previewHeight} alt={`Pack de ${item.name}`} fetchPriority="high" decoding="async" /><span className="cp-hero-count"><b>{data.count}</b> patrones<br />digitales</span><span className="cp-real-badge">Colección real<br /><b>en español</b></span></div>
         <div className="cp-hero-copy"><p className="cp-lead">{isPrincesses ? 'Colección de más de 200 patrones de Princesas de Cuento + 20 regalos adicionales' : 'Patrones en PDF con fotos paso a paso, para tejer, regalar o vender.'}</p><ul className="cp-benefit-list">{item.benefits.map(text => <li key={text}><span>✓</span>{text}</li>)}</ul><a className="cp-text-link" href="#contenido-real">Mira todo lo que incluye <span>↓</span></a></div>
         <div className="cp-mobile-offer"><OfferCard item={item} /></div>
         <div className="cp-desktop-offer"><OfferCard item={item} /></div>
@@ -213,11 +213,11 @@ export default function ProductPage({ kind }) {
 
     <section className="cp-section cp-proof" id="contenido-real"><div className="container"><div className="cp-spec-heading"><Kicker>DETALLES DE LA COLECCIÓN</Kicker><h2>Especificaciones<br /><span>técnicas</span></h2><p>Todo lo que recibirás, explicado de forma clara antes de tu compra.</p></div><div className="cp-spec-grid">{data.specs.map(([icon, title, text]) => <article className="cp-spec-card" key={title}><span>{icon}</span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div></div></section>
 
-    <section className={`cp-section cp-showcase cp-showcase-${kind}`}><div className="container"><div className="cp-heading-row"><div><Kicker>COLECCIÓN</Kicker><h2>Y muchos diseños<br /><span>exclusivos más…</span></h2></div><p>Esta es solo una muestra: la colección incluye muchos más patrones de los que ves aquí.</p></div><ProductCarousel files={data.products} folder={data.productFolder} categories={data.categories} kind={kind} title={isPrincesses ? 'Princesas incluidas en la colección' : 'Explora todos los diseños disponibles'} subtitle={isPrincesses ? 'Elige Princesas o Ver más para explorar' : 'Desliza o utiliza las flechas para continuar'} /><p className="cp-more-designs">Y muchos diseños más…</p></div></section>
+    <section className={`cp-section cp-showcase cp-showcase-${kind}`}><div className="container"><div className="cp-heading-row"><div><Kicker>COLECCIÓN</Kicker><h2>Y muchos más<br /><span>diseños exclusivos…</span></h2></div><p>Esta es solo una muestra: la colección incluye muchos más patrones de los que ves aquí.</p></div><ProductCarousel files={data.products} folder={data.productFolder} categories={data.categories} kind={kind} title={isPrincesses ? 'Princesas incluidas en la colección' : 'Descubre todos los diseños disponibles'} subtitle={isPrincesses ? 'Elige Princesas o Ver más para seguir mirando' : 'Desliza o utiliza las flechas para continuar'} /><p className="cp-more-designs">Y muchos diseños más…</p></div></section>
 
-    <section className="cp-section cp-delivery"><div className="container"><div className="cp-delivery-heading"><Kicker>ENTREGA</Kicker><h2>Así de fácil recibes<br /><span>tu colección</span></h2><p>Tu biblioteca digital llega organizada y lista para explorar</p></div><ProductCarousel files={data.delivery} folder={data.deliveryFolder} type="delivery" title="Así se ve la colección por dentro" subtitle="Imágenes reales · pulsa para ampliar" /></div></section>
+    <section className="cp-section cp-delivery"><div className="container"><div className="cp-delivery-heading"><Kicker>ENTREGA</Kicker><h2>Así de fácil recibes<br /><span>tu colección</span></h2><p>Tu biblioteca digital llega organizada y lista para consultar</p></div><ProductCarousel files={data.delivery} folder={data.deliveryFolder} type="delivery" title="Así se ve la colección por dentro" subtitle="Imágenes reales · pulsa para ampliar" /></div></section>
 
-    <section className="cp-section cp-quality"><div className="container"><div className="cp-heading-row"><div><Kicker>CALIDAD</Kicker><h2>Echa un vistazo a la calidad<br /><span>de nuestros patrones</span></h2></div><p>Patrones detallados, con fotos en cada paso, pensados para que tejas con tranquilidad.</p></div><ProductCarousel files={data.quality} folder={data.qualityFolder} type="quality" title="Muestras reales de nuestros patrones" subtitle="2 imágenes por vista · pulsa para ampliar" /></div></section>
+    <section className="cp-section cp-quality"><div className="container"><div className="cp-heading-row"><div><Kicker>CALIDAD</Kicker><h2>Echad un vistazo a la calidad<br /><span>de nuestros patrones</span></h2></div><p>Patrones detallados, con fotos en cada paso, pensados para que tejáis con tranquilidad.</p></div><ProductCarousel files={data.quality} folder={data.qualityFolder} type="quality" title="Muestras reales de nuestros patrones" subtitle="2 imágenes por vista · pulsa para ampliar" /></div></section>
 
     {kind === 'princesas' && <section className="cp-section cp-gifts"><div className="container"><div className="cp-gift-heading"><div><span className="cp-gift-kicker">REGALOS INCLUIDOS CON TU COLECCIÓN</span><h2>Regalos digitales exclusivos<br /><span>con tu compra</span></h2><p>Guías, patrones y material adicional incluidos con tu colección.</p><span className="cp-gift-note">Incluidos con tu compra · para siempre</span></div><img src={`${ASSET_ROOT}/05-assets-tienda-completa/05-regalos/regalos-portadas-reales-composicion.webp`} alt="Composición de los regalos digitales incluidos" loading="lazy" /></div><ProductCarousel files={gifts} folder="02-pack-princesas/04-regalos-incluidos" type="gift" /><p className="cp-more-gifts">…y muchos regalos más.</p></div></section>}
 

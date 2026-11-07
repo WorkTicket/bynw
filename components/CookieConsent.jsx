@@ -15,5 +15,5 @@ export default function CookieConsent() {
     window.dispatchEvent(new Event('mc-consent-accepted'));
   }
   if (!visible) return null;
-  return <aside className="cookie-consent" role="dialog" aria-label="Preferencias de cookies"><div><strong>Tu privacidad importa</strong><p>Usamos cookies analíticas y de marketing, incluido Meta Pixel, solo con tu permiso. Puedes consultar la <a href="/cookies/">política de cookies</a>.</p></div><button onClick={accept}>Aceptar cookies</button><button className="cookie-reject" onClick={() => { window.localStorage.setItem('mc-cookie-consent', 'rejected'); setVisible(false); }}>Solo necesarias</button></aside>;
+  return <aside className="cookie-consent" role="dialog" aria-label="Preferencias de cookies"><div><strong>Tu privacidad es importante</strong><p>Usamos cookies de análisis y marketing, incluido el píxel de Meta, solo con tu permiso. Puedes consultar la <a href="/cookies/">política de cookies</a>.</p></div><button onClick={accept}>Aceptar cookies</button><button className="cookie-reject" onClick={() => { window.localStorage.setItem('mc-cookie-consent', 'rejected'); setVisible(false); }}>Solo las necesarias</button></aside>;
 }
